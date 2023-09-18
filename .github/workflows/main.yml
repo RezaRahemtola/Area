@@ -6,6 +6,32 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-PAR-5-1-area-reza.rahemtola.git"
 
 jobs:
+  eslint-web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/web/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: 'frontend/web/yarn.lock'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run eslint
+        run: yarn lint > eslint-results
+      - name: Get eslint results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: eslint-web-results
+          path: frontend/web/eslint-results
+          retention-days: 5
+
   push_to_mirror:
     name: Push to Epitech repository
     runs-on: ubuntu-latest
@@ -21,3 +47,5 @@ jobs:
             ${{ env.MIRROR_URL }}
           ssh_private_key:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+    needs:
+      - eslint-web
