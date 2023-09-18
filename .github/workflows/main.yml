@@ -32,7 +32,35 @@ jobs:
           path: frontend/web/eslint-results
           retention-days: 5
 
-  push_to_mirror:
+  build-mobile-apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/mobile/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.4'
+          channel: stable
+          cache: true
+      - name: Fetch dependencies
+        run: flutter pub get
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+      - name: Analyze code
+        run: flutter analyze
+      - name: Run tests
+        run: flutter test
+      - name: Build APK
+        run: flutter build apk --debug
+
+  push-to-mirror:
     name: Push to Epitech repository
     runs-on: ubuntu-latest
     steps:
@@ -49,3 +77,4 @@ jobs:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
     needs:
       - eslint-web
+      - build-mobile-apk
