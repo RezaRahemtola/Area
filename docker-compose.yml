@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  client_web:
+    container_name: area_web
+    build: ./frontend/web
+    ports:
+      - "8081:3000"
