@@ -5,4 +5,4 @@ services:
     container_name: area_web
     build: ./frontend/web
     ports:
-      - "127.0.0.1:8081:3000"
+      - "8081:3000"
