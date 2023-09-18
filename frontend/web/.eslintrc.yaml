@@ -1,0 +1,17 @@
+parser: "@typescript-eslint/parser"
+
+parserOptions:
+  ecmaVersion: latest
+  project: tsconfig.json
+
+extends:
+  - airbnb-base
+  - airbnb-typescript
+  - plugin:@typescript-eslint/recommended
+  - plugin:@next/next/recommended
+  - prettier
+
+rules:
+  no-plusplus: [ "error", { "allowForLoopAfterthoughts": true } ]
+
+  react/jsx-filename-extension: off
