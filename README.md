@@ -1,5 +1,20 @@
 # AREA
 
+## Installation
+
+Please run the following commands in order to setup the project for a local development environment.
+
+```bash
+ln -s ../.env backend/.env
+ln -s ../../.env frontend/mobile/.env
+ln -s ../../.env frontend/web/.env
+
+ln -s ../yarn.lock backend/yarn.lock
+ln -s ../yarn.lock frontend/web/yarn.lock
+
+docker-compose up -d database
+```
+
 ## Team
 
 ### Frontend

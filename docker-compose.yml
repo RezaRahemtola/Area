@@ -1,8 +1,47 @@
 version: '3.8'
 
 services:
+  server:
+    container_name: area_server
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      args:
+        - build_context=backend
+    env_file: .env
+    ports:
+      - "8080:3000"
+    networks:
+      - backend_network
+
   client_web:
     container_name: area_web
-    build: ./frontend/web
+    build:
+      context: .
+      dockerfile: ./frontend/web/Dockerfile
+      args:
+        - build_context=frontend/web
+    env_file: .env
     ports:
       - "8081:3000"
+
+  database:
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+volumes:
+  data:
+
+networks:
+  backend_network:
