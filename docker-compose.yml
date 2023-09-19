@@ -13,7 +13,7 @@ services:
     ports:
       - "8081:3000"
     volumes:
-      - apk_volume:/app/public/uploads/
+      - apk_volume:/app/apk/
     depends_on:
       - client_mobile
 
