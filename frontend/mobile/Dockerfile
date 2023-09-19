@@ -33,7 +33,6 @@ RUN apt-get update \
     libpulse0 \
     libxcomposite1 \
     libgl1-mesa-glx \
-    htop \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
 
 # Install Gradle.
