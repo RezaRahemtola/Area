@@ -3,7 +3,7 @@ version: '3.8'
 services:
   server:
     container_name: area_server
-    build: ./backend/Dockerfile
+    build: ./backend
     env_file: .env
     ports:
       - "8080:3000"
@@ -12,7 +12,7 @@ services:
 
   client_web:
     container_name: area_web
-    build: ./frontend/web/Dockerfile
+    build: ./frontend/web
     env_file: .env
     ports:
       - "8081:3000"
