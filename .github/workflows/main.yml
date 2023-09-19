@@ -7,7 +7,7 @@ env:
 
 jobs:
   eslint-backend:
-    name: "EsLint: Backend"
+    name: "ESLint: Backend"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,7 +34,7 @@ jobs:
           retention-days: 5
 
   eslint-web:
-    name: "EsLint: Web"
+    name: "ESLint: Web"
     runs-on: ubuntu-latest
     defaults:
       run:
