@@ -3,11 +3,7 @@ version: '3.8'
 services:
   server:
     container_name: area_server
-    build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-      args:
-        - build_context=backend
+    build: ./backend/Dockerfile
     env_file: .env
     ports:
       - "8080:3000"
@@ -16,11 +12,7 @@ services:
 
   client_web:
     container_name: area_web
-    build:
-      context: .
-      dockerfile: ./frontend/web/Dockerfile
-      args:
-        - build_context=frontend/web
+    build: ./frontend/web/Dockerfile
     env_file: .env
     ports:
       - "8081:3000"
@@ -36,12 +28,12 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
-      - data:/var/lib/postgresql/data
+      - database_volume:/var/lib/postgresql/data
     networks:
       - backend_network
 
 volumes:
-  data:
+  database_volume:
 
 networks:
   backend_network:

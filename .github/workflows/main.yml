@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-          cache-dependency-path: 'yarn.lock'
+          cache-dependency-path: "backend/yarn.lock"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run eslint
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-          cache-dependency-path: 'yarn.lock'
+          cache-dependency-path: "frontend/web/yarn.lock"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run eslint
@@ -72,11 +72,11 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.4'
+          flutter-version: "3.13.4"
           channel: stable
           cache: true
       - name: Fetch dependencies
