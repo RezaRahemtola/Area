@@ -13,7 +13,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build
-RUN yarn workspace back build
+RUN yarn build
 
 FROM node:18.17.1-alpine3.18 AS runner
 
