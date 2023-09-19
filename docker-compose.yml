@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  client_mobile:
+    container_name: area_mobile
+    build: ./frontend/mobile
+    volumes:
+      - apk_volume:/app/build/app/outputs/apk/debug
+
+  client_web:
+    container_name: area_web
+    build: ./frontend/web
+    ports:
+      - "8081:3000"
+    volumes:
+      - apk_volume:/app/public/uploads/
+    depends_on:
+      - client_mobile
+
   server:
     container_name: area_server
     build: ./backend
@@ -9,12 +25,6 @@ services:
       - "8080:3000"
     networks:
       - backend_network
-
-  client_web:
-    container_name: area_web
-    build: ./frontend/web
-    ports:
-      - "8081:3000"
 
   database:
     image: postgres:16-alpine
@@ -33,6 +43,7 @@ services:
 
 volumes:
   database_volume:
+  apk_volume:
 
 networks:
   backend_network:

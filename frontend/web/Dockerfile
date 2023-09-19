@@ -13,16 +13,17 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build
-RUN yarn build
+CMD ["yarn", "dev"]
 
-FROM node:18.18.0-alpine3.18 AS runner
 
-WORKDIR /app
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/.next/standalone ./standalone
-COPY --from=builder /app/public ./standalone/public
-COPY --from=builder /app/.next/static ./standalone/.next/static
-
-CMD ["node", "./standalone/server.js"]
+#FROM node:18.17.1-alpine3.18 AS runner
+#
+#WORKDIR /app
+#
+## Automatically leverage output traces to reduce image size
+## https://nextjs.org/docs/advanced-features/output-file-tracing
+#COPY --from=builder /app/.next/standalone ./standalone
+#COPY --from=builder /app/public ./standalone/public
+#COPY --from=builder /app/.next/static ./standalone/.next/static
+#
+#CMD ["node", "./standalone/server.js"]
