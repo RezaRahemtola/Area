@@ -13,12 +13,11 @@ services:
   client_web:
     container_name: area_web
     build: ./frontend/web
-    env_file: .env
     ports:
       - "8081:3000"
 
   database:
-    image: postgres:latest
+    image: postgres:16-alpine
     restart: always
     ports:
       - "5432:5432"
