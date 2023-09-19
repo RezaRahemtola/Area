@@ -61,6 +61,7 @@ jobs:
           retention-days: 5
 
   build-mobile-apk:
+    name: "Build: Mobile"
     runs-on: ubuntu-latest
     defaults:
       run:
