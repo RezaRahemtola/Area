@@ -23,7 +23,7 @@ const Navbar = () => (
 		</div>
 		<div className="navbar-end">
 			<ThemeSelector />
-			<a className="btn btn-ghost mr-2">Login</a>
+			<a className="btn btn-ghost mx-2">Login</a>
 			<a className="btn btn-secondary mr-2">Sign up</a>
 		</div>
 	</div>

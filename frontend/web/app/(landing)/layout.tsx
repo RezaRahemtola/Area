@@ -3,14 +3,12 @@ import { ReactNode } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-function LandingLayout({ children }: { children: ReactNode }) {
-	return (
-		<div className="flex flex-col h-screen justify-between">
-			<Navbar />
-			{children}
-			<Footer />
-		</div>
-	);
-}
+const LandingLayout = ({ children }: { children: ReactNode }) => (
+	<>
+		<Navbar />
+		{children}
+    <Footer />
+	</>
+);
 
 export default LandingLayout;
