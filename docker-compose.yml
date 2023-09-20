@@ -6,6 +6,8 @@ services:
     build: ./frontend/mobile
     volumes:
       - apk_volume:/app/build/app/outputs/apk/debug
+    networks:
+      - mobile_network
 
   client_web:
     container_name: area_web
@@ -14,8 +16,11 @@ services:
       - "8081:3000"
     volumes:
       - apk_volume:/app/apk/
+    networks:
+      - web_network
     depends_on:
       - client_mobile
+      - server
 
   server:
     container_name: area_server
@@ -25,6 +30,8 @@ services:
       - "8080:3000"
     networks:
       - backend_network
+      - web_network
+      - mobile_network
 
   database:
     image: postgres:16-alpine
@@ -47,3 +54,5 @@ volumes:
 
 networks:
   backend_network:
+  web_network:
+  mobile_network:
