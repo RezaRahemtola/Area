@@ -1,4 +1,4 @@
-FROM node:18.17.1-alpine3.18 AS builder
+FROM node:18.18.0-alpine3.18 AS builder
 
 # Create app directory
 WORKDIR /app
@@ -15,8 +15,7 @@ COPY . .
 # Build
 RUN yarn build
 
-
-FROM node:18.17.1-alpine3.18 AS runner
+FROM node:18.18.0-alpine3.18 AS runner
 
 WORKDIR /app
 

@@ -6,7 +6,35 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-PAR-5-1-area-reza.rahemtola.git"
 
 jobs:
+  eslint-backend:
+    name: "ESLint: Backend"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: "backend/yarn.lock"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run eslint
+        run: yarn lint > eslint-results
+      - name: Get eslint results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: eslint-back-results
+          path: backend/eslint-results
+          retention-days: 5
+
   eslint-web:
+    name: "ESLint: Web"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -19,7 +47,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-          cache-dependency-path: 'frontend/web/yarn.lock'
+          cache-dependency-path: "frontend/web/yarn.lock"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run eslint
@@ -33,6 +61,7 @@ jobs:
           retention-days: 5
 
   build-mobile-apk:
+    name: "Build: Mobile"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -43,11 +72,11 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.4'
+          flutter-version: "3.13.4"
           channel: stable
           cache: true
       - name: Fetch dependencies
@@ -77,5 +106,6 @@ jobs:
           ssh_private_key:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
     needs:
+      - eslint-backend
       - eslint-web
       - build-mobile-apk
