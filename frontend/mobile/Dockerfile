@@ -1,20 +1,16 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
-ENV DEBIAN_FRONTEND="noninteractive"
 ENV JAVA_VERSION="11"
 ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
-ENV ANDROID_VERSION="29"
-ENV ANDROID_BUILD_TOOLS_VERSION="29.0.3"
+ENV ANDROID_VERSION="34"
+ENV ANDROID_BUILD_TOOLS_VERSION="34.0.0"
 ENV ANDROID_ARCHITECTURE="x86_64"
 ENV ANDROID_SDK_ROOT="/usr/local/android-sdk"
 ENV FLUTTER_CHANNEL="stable"
 ENV FLUTTER_VERSION="3.13.4"
-ENV GRADLE_VERSION="7.2"
-ENV GRADLE_USER_HOME="/opt/gradle"
-ENV GRADLE_URL="https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
 ENV FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-$FLUTTER_CHANNEL.tar.xz"
 ENV FLUTTER_ROOT="/opt/flutter"
-ENV PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/platforms:$FLUTTER_ROOT/bin:$GRADLE_USER_HOME/bin:$PATH"
+ENV PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/platforms:$FLUTTER_ROOT/bin:$PATH"
 
 # Install the necessary dependencies.
 RUN apt-get update \
@@ -34,13 +30,6 @@ RUN apt-get update \
     libxcomposite1 \
     libgl1-mesa-glx \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
-
-# Install Gradle.
-RUN curl -L $GRADLE_URL -o gradle-$GRADLE_VERSION-bin.zip \
-  && apt-get install -y unzip \
-  && unzip gradle-$GRADLE_VERSION-bin.zip \
-  && mv gradle-$GRADLE_VERSION $GRADLE_USER_HOME \
-  && rm gradle-$GRADLE_VERSION-bin.zip
 
 # Install the Android SDK.
 RUN mkdir /root/.android \
