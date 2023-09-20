@@ -25,7 +25,7 @@ services:
   server:
     container_name: area_server
     build: ./backend
-    env_file: .env
+    env_file: ./backend/.env
     ports:
       - "8080:3000"
     networks:
@@ -34,15 +34,11 @@ services:
       - mobile_network
 
   database:
-    image: postgres:16-alpine
+    image: postgres:16.0-alpine3.18
     restart: always
     ports:
       - "5432:5432"
-    env_file: .env
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE}
+    env_file: ./backend/.env
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:
