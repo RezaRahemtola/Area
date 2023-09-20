@@ -1,31 +1,44 @@
 version: '3.8'
 
 services:
-  server:
-    container_name: area_server
-    build: ./backend
-    env_file: .env
-    ports:
-      - "8080:3000"
+  client_mobile:
+    container_name: area_mobile
+    build: ./frontend/mobile
+    volumes:
+      - apk_volume:/app/build/app/outputs/apk/debug
     networks:
-      - backend_network
+      - mobile_network
 
   client_web:
     container_name: area_web
     build: ./frontend/web
     ports:
       - "8081:3000"
+    volumes:
+      - apk_volume:/app/apk/
+    networks:
+      - web_network
+    depends_on:
+      - client_mobile
+      - server
+
+  server:
+    container_name: area_server
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "8080:3000"
+    networks:
+      - backend_network
+      - web_network
+      - mobile_network
 
   database:
-    image: postgres:16-alpine
+    image: postgres:16.0-alpine3.18
     restart: always
     ports:
       - "5432:5432"
-    env_file: .env
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_DB: ${DB_DATABASE}
+    env_file: ./backend/.env
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:
@@ -33,6 +46,9 @@ services:
 
 volumes:
   database_volume:
+  apk_volume:
 
 networks:
   backend_network:
+  web_network:
+  mobile_network:
