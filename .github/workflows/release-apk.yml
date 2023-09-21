@@ -1,0 +1,42 @@
+name: Release APK
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/mobile
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure APK signature
+        run: |
+          echo "${{secrets.ANDROID_KEY_PROPERTIES}}" > ./android/key.properties
+          echo "${{secrets.ANDROID_RELEASE_KEYSTORE}}" > area-keystore.encoded
+          base64 -d -i area-keystore.encoded > ./android/app/area-keystore.jks
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.13.4"
+          channel: stable
+          cache: true
+      - name: Build APK
+        run: flutter build apk
+      - name: Add APK to release
+        uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: frontend/mobile/build/app/outputs/flutter-apk/app-release.apk
+          asset_name: area.apk

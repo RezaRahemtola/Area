@@ -60,8 +60,8 @@ jobs:
           path: frontend/web/eslint-results
           retention-days: 5
 
-  build-mobile-apk:
-    name: "Build: Mobile"
+  check-mobile:
+    name: "Mobile: Analyze code & run tests"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -79,16 +79,12 @@ jobs:
           flutter-version: "3.13.4"
           channel: stable
           cache: true
-      - name: Fetch dependencies
-        run: flutter pub get
       - name: Check formatting
         run: dart format --set-exit-if-changed .
       - name: Analyze code
         run: flutter analyze
       - name: Run tests
         run: flutter test
-      - name: Build APK
-        run: flutter build apk --debug
 
   push-to-mirror:
     name: Push to Epitech repository
@@ -108,4 +104,4 @@ jobs:
     needs:
       - eslint-backend
       - eslint-web
-      - build-mobile-apk
+      - check-mobile
