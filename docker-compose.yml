@@ -24,8 +24,10 @@ services:
 
   server:
     container_name: area_server
-    build: ./backend
-    env_file: ./backend/.env
+    depends_on:
+      - background_worker
+    build: ./backend/back
+    env_file: backend/back/.env
     ports:
       - "8080:3000"
     networks:
@@ -33,12 +35,18 @@ services:
       - web_network
       - mobile_network
 
+  background_worker:
+    container_name: area_worker
+    build: ./backend/worker
+    networks:
+      - backend_network
+
   database:
     image: postgres:16.0-alpine3.18
     restart: always
     ports:
       - "5432:5432"
-    env_file: ./backend/.env
+    env_file: backend/back/.env
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:

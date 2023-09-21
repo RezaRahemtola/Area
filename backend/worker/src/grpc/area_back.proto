@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package area_back;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
+service AreaBackService {
+    rpc OnAction(AreaData) returns (google.protobuf.Empty) {}
+    rpc OnReaction(AreaData) returns (google.protobuf.Empty) {}
+}
+
+message AreaData {
+    string name = 1;
+    google.protobuf.Struct params = 2;
+}
