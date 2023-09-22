@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GrpcModule } from "./grpc/grpc.module";
+import { User } from "../user/entities/user.entity";
 
 @Module({
 	imports: [
@@ -17,7 +18,7 @@ import { GrpcModule } from "./grpc/grpc.module";
 				username: config.getOrThrow<string>("POSTGRES_USER"),
 				password: config.getOrThrow<string>("POSTGRES_PASSWORD"),
 				database: config.getOrThrow<string>("POSTGRES_DB"),
-				entities: [],
+				entities: [User],
 				migrations: [],
 				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),
