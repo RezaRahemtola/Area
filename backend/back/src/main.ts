@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./services/app.module";
+import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { version } from "package.json";
@@ -11,7 +11,7 @@ async function bootstrap() {
 		transport: Transport.GRPC,
 		options: {
 			package: "area_back",
-			protoPath: "src/grpc/area_back.proto",
+			protoPath: "src/grpc/proto/area_back.proto",
 		},
 	});
 

@@ -7,13 +7,13 @@ import { ApiExcludeController } from "@nestjs/swagger";
 @ApiExcludeController()
 @Controller()
 export class GrpcController {
-	@GrpcMethod('AreaBackService', 'OnAction')
+	@GrpcMethod("AreaBackService", "OnAction")
 	onAction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<any, any>): void {
-		console.log('OnAction', data);
+		console.log("OnAction", data);
 	}
 
-	@GrpcMethod('AreaBackService', 'OnReaction')
+	@GrpcMethod("AreaBackService", "OnReaction")
 	onReaction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<any, any>): void {
-		console.log('OnReaction', data);
+		console.log("OnReaction", data);
 	}
 }

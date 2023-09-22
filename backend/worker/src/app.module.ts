@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
+import { GrpcModule } from "./grpc/grpc.module";
 
 @Module({
-	imports: [],
+	imports: [GrpcModule],
 	controllers: [],
 	providers: [],
 })

@@ -1,6 +1,4 @@
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export default class JobsService {
-
-}
+export default class GrpcService {}
