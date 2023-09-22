@@ -1,5 +1,5 @@
 const DashboardMenu = ({ isFull }: { isFull: boolean }) => (
-	<ul className="menu bg-accent w-fit rounded-box min-h-screen">
+	<ul className={"menu bg-accent h-screen overflow-y-auto" + (isFull ? " w-64" : " w-16")}>
 		<li>
 			<a className={isFull ? "" : "tooltip tooltip-right"} data-tip="Home">
 				<svg

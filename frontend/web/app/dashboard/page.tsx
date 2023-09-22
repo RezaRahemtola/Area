@@ -1,3 +1,9 @@
-const DashboardPage = () => <span>My name is Board. Dash Board 🔫</span>;
+const DashboardPage = () => {
+    return (
+        <div className="flex bg-neutral w-screen h-screen justify-center items-center">
+            <span>Dashboard</span>
+        </div>
+    );
+}
 
 export default DashboardPage;
