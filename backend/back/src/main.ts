@@ -12,8 +12,8 @@ async function bootstrap() {
 		options: {
 			package: "area_back",
 			protoPath: "src/grpc/area_back.proto",
-		}
-	})
+		},
+	});
 
 	const config = new DocumentBuilder()
 		.setTitle("AREA API")
@@ -30,4 +30,5 @@ async function bootstrap() {
 	await app.startAllMicroservices();
 	await app.listen(3000);
 }
+
 bootstrap();
