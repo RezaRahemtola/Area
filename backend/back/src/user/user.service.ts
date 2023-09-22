@@ -24,11 +24,14 @@ export class UserService {
 		return this.userRepository.findOne({ where: options });
 	}
 
-	updateUser(options: UserGetOptions, update: UpdateUserDto): Promise<boolean> {
-		return this.userRepository
-			.update(options, update)
-			.then(() => true)
-			.catch(() => false);
+	async updateUser(options: UserGetOptions, update: UpdateUserDto): Promise<boolean> {
+		try {
+			if (!(await this.userRepository.exist({ where: options }))) return false;
+			await this.userRepository.update(options, update);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	deleteUser(options: UserGetOptions): Promise<boolean> {
