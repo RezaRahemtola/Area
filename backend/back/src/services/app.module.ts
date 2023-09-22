@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GrpcModule } from "./grpc/grpc.module";
 import { User } from "./user/entities/user.entity";
+import { UserModule } from "./user/user.module";
 
 @Module({
 	imports: [
@@ -25,6 +26,7 @@ import { User } from "./user/entities/user.entity";
 			inject: [ConfigService],
 		}),
 		GrpcModule,
+		UserModule,
 	],
 	controllers: [],
 	providers: [],
