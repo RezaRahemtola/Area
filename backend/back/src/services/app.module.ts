@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GrpcModule } from "./grpc/grpc.module";
-import { User } from "../user/entities/user.entity";
+import { User } from "./user/entities/user.entity";
 
 @Module({
 	imports: [
