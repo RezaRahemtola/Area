@@ -20,7 +20,7 @@ import { User } from "./user/entities/user.entity";
 				database: config.getOrThrow<string>("POSTGRES_DB"),
 				entities: [User],
 				migrations: [],
-				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
+				synchronize: config.get<string>("NODE_ENV", "production") === "development",
 			}),
 			inject: [ConfigService],
 		}),
