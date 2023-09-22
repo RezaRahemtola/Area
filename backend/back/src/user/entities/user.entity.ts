@@ -1,17 +1,17 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
-	@PrimaryColumn({ type: "uuid" })
+	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
 	@Column({ unique: true })
 	mail!: string;
 
-	@Column({ name: "password_hash" })
+	@Column()
 	passwordHash!: string;
 
-	@Column({ name: "totp_secret", nullable: true })
+	@Column({ nullable: true })
 	totpSecret?: string;
 
 	// TODO: Add plan
