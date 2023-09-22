@@ -4,7 +4,7 @@ import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "./dto/update-user.dto";
 
-type UserGetOptions = { id: string } | { mail: string };
+type UserIdentification = { id: string } | { mail: string };
 
 @Injectable()
 export class UserService {
@@ -20,24 +20,25 @@ export class UserService {
 			.catch(() => false);
 	}
 
-	getUser(options: UserGetOptions): Promise<User | null> {
+	getUser(options: UserIdentification): Promise<User | null> {
 		return this.userRepository.findOne({ where: options });
 	}
 
-	async updateUser(options: UserGetOptions, update: UpdateUserDto): Promise<boolean> {
+	async updateUser(options: UserIdentification, update: UpdateUserDto): Promise<boolean> {
 		try {
 			if (!(await this.userRepository.exist({ where: options }))) return false;
-			await this.userRepository.update(options, update);
-			return true;
+			return (await this.userRepository.update(options, update)).affected > 0;
 		} catch (error) {
 			return false;
 		}
 	}
 
-	deleteUser(options: UserGetOptions): Promise<boolean> {
-		return this.userRepository
-			.delete(options)
-			.then(() => true)
-			.catch(() => false);
+	async deleteUser(options: UserIdentification): Promise<boolean> {
+		try {
+			if (!(await this.userRepository.exist({ where: options }))) return false;
+			return (await this.userRepository.delete(options)).affected > 0;
+		} catch {
+			return false;
+		}
 	}
 }
