@@ -160,6 +160,8 @@ jobs:
           ssh_private_key:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
     needs:
-      - eslint-backend
+      - eslint-backend-main-api
+      - eslint-backend-workers-supervisor
+      - unit-tests-backend-main-api
       - eslint-web
       - build-mobile-apk
