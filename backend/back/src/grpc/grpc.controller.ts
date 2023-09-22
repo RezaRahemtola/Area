@@ -8,12 +8,14 @@ import { ApiExcludeController } from "@nestjs/swagger";
 @Controller()
 export class GrpcController {
 	@GrpcMethod("AreaBackService", "OnAction")
-	onAction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<any, any>): void {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	onAction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<unknown, unknown>): void {
 		console.log("OnAction", data);
 	}
 
 	@GrpcMethod("AreaBackService", "OnReaction")
-	onReaction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<any, any>): void {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	onReaction(data: AreaData, metadata: Metadata, call: ServerUnaryCall<unknown, unknown>): void {
 		console.log("OnReaction", data);
 	}
 }
