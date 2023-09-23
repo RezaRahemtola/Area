@@ -1,6 +1,5 @@
 import ThemeSelector from "@/components/ThemeSelector";
-import LoginLayout from "@/layouts/auth/LoginLayout";
-import RegisterLayout from "@/layouts/auth/RegisterLayout";
+import AuthLayout from "@/layouts/auth/AuthLayout";
 
 const Navbar = () => (
 	<div className="navbar bg-primary">
@@ -25,8 +24,7 @@ const Navbar = () => (
 		</div>
 		<div className="navbar-end">
 			<ThemeSelector />
-			<LoginLayout />
-			<RegisterLayout />
+			<AuthLayout />
 		</div>
 	</div>
 );
