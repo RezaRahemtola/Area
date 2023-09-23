@@ -5,6 +5,7 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { GrpcModule } from "./grpc/grpc.module";
 import { User } from "./user/entities/user.entity";
 import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { UserModule } from "./user/user.module";
 		}),
 		GrpcModule,
 		UserModule,
+		AuthModule,
 	],
 	controllers: [],
 	providers: [],
