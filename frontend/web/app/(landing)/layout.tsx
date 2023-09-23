@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LandingNavbar from "@/components/landing/LandingNavbar";
 
 const LandingLayout = ({ children }: { children: ReactNode }) => (
 	<>
-		<Navbar />
+		<LandingNavbar />
 		{children}
-    <Footer />
+		<Footer />
 	</>
 );
 
