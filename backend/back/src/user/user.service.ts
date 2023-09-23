@@ -28,7 +28,7 @@ export class UserService {
 		try {
 			if (!(await this.userRepository.exist({ where: options }))) return false;
 			return (await this.userRepository.update(options, update)).affected > 0;
-		} catch (error) {
+		} catch {
 			return false;
 		}
 	}
