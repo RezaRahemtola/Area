@@ -14,6 +14,7 @@
     "autoprefixer": "^10.4.16",
     "daisyui": "^3.7.7",
     "express": "^4.18.2",
+    "jotai": "^2.4.2",
     "next": "^13.5.2",
     "postcss": "^8.4.30",
     "react": "^18.2.0",
