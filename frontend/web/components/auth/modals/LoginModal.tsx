@@ -6,9 +6,10 @@ import AuthModal from "@/components/auth/modals/AuthModal";
 
 type LoginModalProps = {
 	onAuthTypeChange: () => void;
+	onAuthSuccess: () => void;
 };
 
-const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeChange }, ref) => (
+const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeChange, onAuthSuccess }, ref) => (
 	<dialog ref={ref} className="modal">
 		<AuthModal
 			title="Login"
@@ -17,7 +18,9 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 					<AuthEmailField />
 					<AuthPasswordField placeholder="Enter Password" />
 					<div>
-						<button className="btn btn-block btn-accent">Login</button>
+						<button className="btn btn-block btn-accent" onClick={onAuthSuccess}>
+							Login
+						</button>
 					</div>
 				</>
 			}
