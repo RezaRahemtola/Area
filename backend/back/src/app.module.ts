@@ -32,7 +32,7 @@ import { JobsModule } from "./jobs/jobs.module";
 		GrpcModule,
 		UserModule,
 		AuthModule,
-    JobsModule,
+		JobsModule,
 	],
 	controllers: [],
 	providers: [],

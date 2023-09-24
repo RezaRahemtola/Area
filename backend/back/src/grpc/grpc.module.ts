@@ -6,6 +6,6 @@ import { GrpcService } from "./grpc.service";
 	imports: [],
 	controllers: [GrpcController],
 	providers: [GrpcService],
-  exports: [GrpcService],
+	exports: [GrpcService],
 })
 export class GrpcModule {}
