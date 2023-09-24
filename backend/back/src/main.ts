@@ -10,6 +10,7 @@ async function bootstrap() {
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.GRPC,
 		options: {
+			url: "localhost:50050",
 			package: "area_back",
 			protoPath: "src/grpc/proto/area_back.proto",
 		},

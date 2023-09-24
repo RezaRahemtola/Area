@@ -30,6 +30,7 @@ services:
     env_file: backend/back/.env
     ports:
       - "8080:3000"
+      - "50050:50050"
     networks:
       - backend_network
       - web_network
@@ -38,6 +39,8 @@ services:
   background_worker:
     container_name: area_worker
     build: ./backend/worker
+    ports:
+      - "50051:50051"
     networks:
       - backend_network
 
