@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "../user/user.service";
-import { verify as verifyArgonHash } from "argon2";
+import { hash, verify as verifyArgonHash } from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import LoginResultDto from "./dto/login-result.dto";
 
@@ -24,7 +24,7 @@ export class AuthService {
 	}
 
 	async register(mail: string, password: string): Promise<LoginResultDto> {
-		const isUserCreated = await this.userService.createUser(mail, password);
+		const isUserCreated = await this.userService.createUser(mail, await hash(password));
 		if (!isUserCreated) throw new ConflictException("An user already exists with this mail.");
 		const { id } = await this.userService.getUser({ mail });
 		return {
