@@ -6,6 +6,7 @@ import { GrpcModule } from "./grpc/grpc.module";
 import { User } from "./user/entities/user.entity";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
+import { JobsModule } from "./jobs/jobs.module";
 
 @Module({
 	imports: [
@@ -24,13 +25,14 @@ import { AuthModule } from "./auth/auth.module";
 				database: config.getOrThrow<string>("POSTGRES_DB"),
 				entities: [User],
 				migrations: [],
-				synchronize: config.get<string>("NODE_ENV", "production") === "development",
+				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),
 			inject: [ConfigService],
 		}),
 		GrpcModule,
 		UserModule,
 		AuthModule,
+    JobsModule,
 	],
 	controllers: [],
 	providers: [],

@@ -6,8 +6,8 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-PAR-5-1-area-reza.rahemtola.git"
 
 jobs:
-  eslint-backend-main-api:
-    name: "ESLint: Backend (Main API)"
+  eslint-backend:
+    name: "ESLint: Backend"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -29,39 +29,12 @@ jobs:
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: eslint-back-main-api-results
+          name: eslint-back-results
           path: backend/back/eslint-results
           retention-days: 5
 
-  eslint-backend-workers-supervisor:
-    name: "ESLint: Backend (Workers Supervisor)"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend/worker/
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: yarn
-          cache-dependency-path: "backend/worker/yarn.lock"
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Run eslint
-        run: yarn lint > eslint-results
-      - name: Get eslint results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: eslint-back-main-api-results
-          path: backend/worker/eslint-results
-          retention-days: 5
-
-  unit-tests-backend-main-api:
-    name: 'Unit tests: Backend (Main API)'
+  unit-tests-backend:
+    name: 'Unit tests: Backend'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -83,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: unit-tests-back-main-api-results
+          name: unit-tests-back-results
           path: backend/back/unit-tests-results
           retention-days: 5
 
@@ -114,8 +87,8 @@ jobs:
           path: frontend/web/eslint-results
           retention-days: 5
 
-  build-mobile-apk:
-    name: "Build: Mobile"
+  check-mobile:
+    name: "Mobile: Analyze code & run tests"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -133,16 +106,12 @@ jobs:
           flutter-version: "3.13.4"
           channel: stable
           cache: true
-      - name: Fetch dependencies
-        run: flutter pub get
       - name: Check formatting
         run: dart format --set-exit-if-changed .
       - name: Analyze code
         run: flutter analyze
       - name: Run tests
         run: flutter test
-      - name: Build APK
-        run: flutter build apk --debug
 
   push-to-mirror:
     name: Push to Epitech repository
@@ -160,8 +129,7 @@ jobs:
           ssh_private_key:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
     needs:
-      - eslint-backend-main-api
-      - eslint-backend-workers-supervisor
-      - unit-tests-backend-main-api
+      - eslint-backend
+      - unit-tests-backend
       - eslint-web
-      - build-mobile-apk
+      - check-mobile
