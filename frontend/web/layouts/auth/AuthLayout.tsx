@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import LoginModal from "@/components/auth/modals/LoginModal";
 import RegisterModal from "@/components/auth/modals/RegisterModal";
 import { userRegisteredAtom } from "@/stores/user";
+import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 const AuthLayout = () => {
 	const loginModalRef = useRef<HTMLDialogElement>(null);
@@ -26,11 +27,15 @@ const AuthLayout = () => {
 		loginModalRef.current?.showModal();
 	};
 
-	const onAuthSuccess = async () => {
+	const onAuthSuccess = () => {
 		setUserRegistered(true);
 		if (!pathname.startsWith("/dashboard")) {
 			router.push("/dashboard");
 		}
+	};
+
+	const onLogout = () => {
+		setUserRegistered(false);
 	};
 
 	return (
@@ -42,6 +47,14 @@ const AuthLayout = () => {
 							<Image alt="Profile picture" width="100" height="100" src="/user/default-profile-picture.webp" />
 						</div>
 					</label>
+					<ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+						<li>
+							<a onClick={onLogout}>
+								<FontAwesomeIcon icon="arrow-right-from-bracket" />
+								Logout
+							</a>
+						</li>
+					</ul>
 				</div>
 			) : (
 				<>
