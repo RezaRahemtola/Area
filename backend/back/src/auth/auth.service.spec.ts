@@ -85,7 +85,7 @@ describe("AuthService", () => {
 			expect(userServiceMock.createUser).toHaveBeenCalledWith(user.mail, expect.any(String));
 		});
 
-		it("should trow a conflict exception because a user already exists in te database and not return a JWT", async () => {
+		it("should throw a conflict exception because a user already exists in te database and not return a JWT", async () => {
 			userServiceMock.createUser.mockReturnValue(Promise.resolve(false));
 			await expect(service.register(user.mail, userPassword)).rejects.toThrow(ConflictException);
 			expect(userServiceMock.createUser).toHaveBeenCalledWith(user.mail, expect.any(String));
