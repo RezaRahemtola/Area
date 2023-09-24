@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend/back
+        working-directory: ./backend/back/
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,6 +31,33 @@ jobs:
         with:
           name: eslint-back-results
           path: backend/back/eslint-results
+          retention-days: 5
+
+  unit-tests-backend:
+    name: 'Unit tests: Backend'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/back/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: "backend/back/yarn.lock"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run unit tests
+        run: yarn test > unit-tests-results
+      - name: Get unit tests results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: unit-tests-back-results
+          path: backend/back/unit-tests-results
           retention-days: 5
 
   eslint-web:
@@ -103,5 +130,6 @@ jobs:
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}
     needs:
       - eslint-backend
+      - unit-tests-backend
       - eslint-web
       - check-mobile

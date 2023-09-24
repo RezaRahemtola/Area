@@ -4,8 +4,8 @@ import { GrpcService } from "./grpc.service";
 
 @Module({
 	imports: [],
-	exports: [GrpcService],
 	controllers: [GrpcController],
 	providers: [GrpcService],
+	exports: [GrpcService],
 })
 export class GrpcModule {}

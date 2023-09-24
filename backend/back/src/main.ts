@@ -23,12 +23,22 @@ async function bootstrap() {
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 
-	SwaggerModule.setup("api", app, document);
+	SwaggerModule.setup("documentation", app, document);
 
 	app.enableCors();
-	app.useGlobalPipes(new ValidationPipe({ transform: true }));
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			transformOptions: {
+				enableImplicitConversion: true,
+			},
+			whitelist: true,
+			forbidNonWhitelisted: true,
+		}),
+	);
 
 	await app.startAllMicroservices();
 	await app.listen(3000);
 }
+
 bootstrap();
