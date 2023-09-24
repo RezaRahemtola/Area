@@ -10,15 +10,25 @@ const AuthLayout = () => {
 	const loginModalRef = useRef<HTMLDialogElement>(null);
 	const registerModalRef = useRef<HTMLDialogElement>(null);
 
+	const switchAuthToRegister = () => {
+		loginModalRef.current?.close();
+		registerModalRef.current?.showModal();
+	};
+
+	const switchAuthToLogin = () => {
+		registerModalRef.current?.close();
+		loginModalRef.current?.showModal();
+	};
+
 	return (
 		<>
-			<LoginModal ref={loginModalRef} />
-			<a className="btn btn-ghost mx-2" onClick={() => loginModalRef.current?.showModal()}>
+			<LoginModal ref={loginModalRef} onAuthTypeChange={switchAuthToRegister} />
+			<a className="btn btn-ghost mx-2" onClick={switchAuthToLogin}>
 				Login
 			</a>
 
-			<RegisterModal ref={registerModalRef} />
-			<a className="btn btn-secondary mr-2" onClick={() => registerModalRef.current?.showModal()}>
+			<RegisterModal ref={registerModalRef} onAuthTypeChange={switchAuthToLogin} />
+			<a className="btn btn-secondary mr-2" onClick={switchAuthToRegister}>
 				Register
 			</a>
 

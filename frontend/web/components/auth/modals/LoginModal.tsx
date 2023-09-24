@@ -4,7 +4,11 @@ import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
 import AuthModal from "@/components/auth/modals/AuthModal";
 
-const LoginModal = forwardRef<HTMLDialogElement>((props, ref) => (
+type LoginModalProps = {
+	onAuthTypeChange: () => void;
+};
+
+const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeChange }, ref) => (
 	<dialog ref={ref} className="modal">
 		<AuthModal
 			title="Login"
@@ -19,7 +23,10 @@ const LoginModal = forwardRef<HTMLDialogElement>((props, ref) => (
 			}
 			otherAuthChildren={
 				<p className="text-center">
-					Don't have an account yet? <a className="link">Create one</a>
+					Don't have an account yet?{" "}
+					<a className="link" onClick={onAuthTypeChange}>
+						Create one
+					</a>
 				</p>
 			}
 		/>
