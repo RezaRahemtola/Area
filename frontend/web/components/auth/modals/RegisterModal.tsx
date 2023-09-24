@@ -6,9 +6,10 @@ import AuthModal from "@/components/auth/modals/AuthModal";
 
 type RegisterModalProps = {
 	onAuthTypeChange: () => void;
+	onAuthSuccess: () => void;
 };
 
-const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAuthTypeChange }, ref) => (
+const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAuthTypeChange, onAuthSuccess }, ref) => (
 	<dialog ref={ref} className="modal">
 		<AuthModal
 			title="Register"
@@ -18,7 +19,9 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 					<AuthPasswordField />
 					<AuthPasswordField placeholder="Enter password confirmation" label="Confirm password" />
 					<div>
-						<button className="btn btn-block btn-accent">Register</button>
+						<button className="btn btn-block btn-accent" onClick={onAuthSuccess}>
+							Register
+						</button>
 					</div>
 				</>
 			}
