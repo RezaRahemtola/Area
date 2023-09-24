@@ -24,10 +24,11 @@ services:
 
   server:
     container_name: area_server
-    build: ./backend
-    env_file: ./backend/.env
+    build: ./backend/back
+    env_file: backend/back/.env
     ports:
       - "8080:3000"
+      - "50050:50050"
     networks:
       - backend_network
       - web_network
@@ -38,7 +39,7 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    env_file: ./backend/.env
+    env_file: backend/back/.env
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:
