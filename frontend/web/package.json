@@ -1,6 +1,7 @@
 {
   "name": "area-web",
   "version": "0.1.0",
+  "description": "Area Web",
   "private": true,
   "scripts": {
     "dev": "node server.js",
