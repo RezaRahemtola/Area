@@ -4,7 +4,8 @@ import { verify as verifyArgonHash } from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import LoginResultDto from "./dto/login-result.dto";
 
-export type JwtPayload = { id: string };
+export type JwtBasePayload = { iat: number; exp?: number };
+export type JwtCustomPayload = { id: string } & JwtBasePayload;
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
 		if (!user || !(await verifyArgonHash(user.passwordHash, password)))
 			throw new UnauthorizedException("Invalid credentials.");
 		return {
-			accessToken: this.jwtService.sign({ id: user.id } as JwtPayload),
+			accessToken: this.jwtService.sign({ id: user.id }),
 		};
 	}
 
@@ -27,11 +28,11 @@ export class AuthService {
 		if (!isUserCreated) throw new ConflictException("An user already exists with this mail.");
 		const { id } = await this.userService.getUser({ mail });
 		return {
-			accessToken: this.jwtService.sign({ id } as JwtPayload),
+			accessToken: this.jwtService.sign({ id }),
 		};
 	}
 
-	async verifyToken(token: string): Promise<JwtPayload | null> {
+	async verifyToken(token: string): Promise<JwtCustomPayload | null> {
 		try {
 			return this.jwtService.verify(token);
 		} catch {
