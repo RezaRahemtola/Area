@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./backend/back
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 18
           cache: yarn
-          cache-dependency-path: "backend/yarn.lock"
+          cache-dependency-path: "backend/back/yarn.lock"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run eslint
@@ -30,7 +30,7 @@ jobs:
         if: failure()
         with:
           name: eslint-back-results
-          path: backend/eslint-results
+          path: backend/back/eslint-results
           retention-days: 5
 
   eslint-web:

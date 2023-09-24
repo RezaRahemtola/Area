@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { GrpcModule } from "./grpc/grpc.module";
+import { JobsModule } from "./jobs/jobs.module";
 
 @Module({
 	imports: [
@@ -18,10 +20,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 				database: config.getOrThrow<string>("POSTGRES_DB"),
 				entities: [],
 				migrations: [],
-				synchronize: config.get<string>("NODE_ENV") === "development",
+				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),
 			inject: [ConfigService],
 		}),
+		GrpcModule,
+		JobsModule,
 	],
 	controllers: [],
 	providers: [],

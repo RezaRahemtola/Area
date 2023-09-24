@@ -1,13 +1,13 @@
-import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
+import Navbar from "@/components/Navbar";
 
 type DashboardNavbarProps = {
 	isDrawerOpen: boolean;
 	setIsDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
 const DashboardNavbar = ({ isDrawerOpen, setIsDrawerOpen }: DashboardNavbarProps) => (
-	<div className="navbar bg-primary">
-		<div className="navbar-start">
+	<Navbar
+		beforeLogoContent={
 			<div className="flex-none">
 				<button className="btn btn-square btn-ghost" onClick={() => setIsDrawerOpen((prev) => !prev)}>
 					<svg
@@ -29,18 +29,8 @@ const DashboardNavbar = ({ isDrawerOpen, setIsDrawerOpen }: DashboardNavbarProps
 					</svg>
 				</button>
 			</div>
-			<a className="btn btn-ghost normal-case text-xl">Area</a>
-		</div>
-		<div className="navbar-end">
-			<div className="dropdown dropdown-end">
-				<label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-					<div className="w-10 rounded-full">
-						<Image alt="Profile picture" width="100" height="100" src="/user/default-profile-picture.webp" />
-					</div>
-				</label>
-			</div>
-		</div>
-	</div>
+		}
+	/>
 );
 
 export default DashboardNavbar;
