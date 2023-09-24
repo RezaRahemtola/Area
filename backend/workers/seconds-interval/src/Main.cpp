@@ -50,7 +50,7 @@ bool ParseArguments(int argc, char *argv[], int &seconds, std::string &target) {
 
 int main(int argc, char *argv[])
 {
-    std::string target = "localhost:50051";
+    std::string target = "localhost:50050";
     int seconds = 0;
 
     if (!ParseArguments(argc, argv, seconds, target)) {

@@ -1,4 +1,1 @@
-import { JobsParams } from "./jobParams";
-
-export type Jobs =
-	| "seconds-interval"
+export type Jobs = "seconds-interval";

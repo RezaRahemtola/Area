@@ -24,8 +24,6 @@ services:
 
   server:
     container_name: area_server
-    depends_on:
-      - background_worker
     build: ./backend/back
     env_file: backend/back/.env
     ports:
@@ -35,14 +33,6 @@ services:
       - backend_network
       - web_network
       - mobile_network
-
-  background_worker:
-    container_name: area_worker
-    build: ./backend/worker
-    ports:
-      - "50051:50051"
-    networks:
-      - backend_network
 
   database:
     image: postgres:16.0-alpine3.18
