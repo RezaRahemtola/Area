@@ -1,5 +1,5 @@
 import React from "react";
-import AREAContainer from "@/components/dashboard/home/actionReactionContainer";
+import AREAContainer from "@/components/dashboard/home/AREAContainer";
 
 const DashboardPage = () => (
     <div className="flex bg-neutral w-screen h-screen justify-center items-center flex-row">
