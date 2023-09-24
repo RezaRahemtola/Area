@@ -3,10 +3,7 @@ import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-
-type MockType<T> = {
-	[P in keyof T]?: jest.Mock<NonNullable<unknown>>;
-};
+import { MockType } from "../types/test";
 
 const repositoryMockFactory: <T>() => MockType<Repository<T>> = jest.fn(() => ({
 	findOne: jest.fn(),
