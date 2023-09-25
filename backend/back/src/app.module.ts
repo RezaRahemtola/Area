@@ -12,6 +12,7 @@ import { JobsModule } from "./jobs/jobs.module";
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [".env"],
+			isGlobal: true,
 		}),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
