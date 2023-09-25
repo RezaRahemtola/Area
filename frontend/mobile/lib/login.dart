@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-              LoginValidationButton(
+              LoginButtons(
                   formKey: _formKey,
                   emailController: emailController,
                   passwordController: passwordController)
@@ -69,8 +69,8 @@ class _LoginState extends State<Login> {
   }
 }
 
-class LoginValidationButton extends StatelessWidget {
-  const LoginValidationButton({
+class LoginButtons extends StatelessWidget {
+  const LoginButtons({
     super.key,
     required GlobalKey<FormState> formKey,
     required this.emailController,
@@ -83,30 +83,49 @@ class LoginValidationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            if (emailController.text == "azerty@qwerty" &&
-                passwordController.text == "bepo") {
-              // validation
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage(
-                          email: emailController.text,
-                        )),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Invalid Credentials')),
-              );
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please fill the login form.")),
-            );
-          }
-        },
-        child: const Text("Submit"));
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+            onPressed: () {
+              print("test");
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                Text("Register"),
+              ],
+            )),
+        ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (emailController.text == "azerty@qwerty" &&
+                    passwordController.text == "bepo") {
+                  // validation
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              email: emailController.text,
+                            )),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid Credentials')),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please fill the login form.")),
+                );
+              }
+            },
+            child: const Text("Submit")),
+      ],
+    );
   }
 }
