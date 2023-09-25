@@ -2,13 +2,13 @@ package grpc
 
 import (
 	"context"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 	supervisor "supervisor/proto"
 )
 
-func (s *AreaWorkerServiceServer) LaunchJob(_ context.Context, in *supervisor.AreaData) (*emptypb.Empty, error) {
-	log.Printf("Received: %v", in.GetName())
+func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobData) (*supervisor.Response, error) {
+	log.Printf("Received: %v (id %v)", in.GetName(), in.GetIdentifier())
 	log.Printf("Params: %v", in.GetParams())
-	return &emptypb.Empty{}, nil
+
+	return &supervisor.Response{}, nil
 }

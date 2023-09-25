@@ -1,13 +1,17 @@
-import { Jobs } from "./jobs";
+import { JobsType } from "./jobs";
 
-interface Mapper<TMappings extends Record<Jobs, object>> {
+interface Mapper<TMappings extends Record<JobsType, object>> {
 	mappings: TMappings;
 }
 
 export type JobsParams = Mapper<{
-	"seconds-interval": TimedJobParams;
+	"seconds-interval": SecondIntervalParams;
 }>;
 
-export type TimedJobParams = {
+export type UniqueJobParams = {
+	workflowStepId: string;
+};
+
+export type SecondIntervalParams = UniqueJobParams & {
 	seconds: number;
 };

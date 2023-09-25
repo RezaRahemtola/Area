@@ -8,8 +8,8 @@ import (
 	"supervisor/proto"
 )
 
-type AreaWorkerServiceServer struct {
-	supervisor.UnimplementedAreaWorkerServiceServer
+type AreaSupervisorServer struct {
+	supervisor.UnimplementedAreaSupervisorServiceServer
 }
 
 func InitGrpcServer(port int) {
@@ -19,7 +19,7 @@ func InitGrpcServer(port int) {
 	}
 
 	server := grpc.NewServer()
-	supervisor.RegisterAreaWorkerServiceServer(server, &AreaWorkerServiceServer{})
+	supervisor.RegisterAreaSupervisorServiceServer(server, &AreaSupervisorServer{})
 	fmt.Println("Supervisor gRPC server listening on port", port)
 	err = server.Serve(tcp)
 	if err != nil {

@@ -1,10 +1,10 @@
 import { JobsParams } from "./jobParams";
-import { Jobs } from "./jobs";
+import { JobsType } from "./jobs";
 
 type JobsIdentifiers = {
-	[key in Jobs]: (obj: JobsParams["mappings"][key], workflowId: string) => string;
+	[key in JobsType]: (obj: JobsParams["mappings"][key]) => string;
 };
 
 export const JobsIdentifiers: JobsIdentifiers = {
-	"seconds-interval": (_, workflowId) => `seconds-interval-${workflowId}`,
+	"seconds-interval": ({ workflowStepId }) => `seconds-interval-${workflowStepId}`,
 };

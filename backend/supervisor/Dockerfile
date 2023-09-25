@@ -17,7 +17,7 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
 # Get proto files
 RUN apk add git protobuf protobuf-dev
 RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
-RUN protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/area_supervisor.proto
+RUN protoc --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
 
 # Copy source (see .dockerignore)
 COPY . .

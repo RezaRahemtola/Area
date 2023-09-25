@@ -1,5 +1,5 @@
 .idea/
 proto/
-.env
+.env*
 docker-compose.yml
 supervisor
