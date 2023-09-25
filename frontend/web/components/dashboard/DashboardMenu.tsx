@@ -1,6 +1,10 @@
 import DashboardMenuLink from "@/components/dashboard/DashboardMenuLink";
 
-const DashboardMenu = ({isFull}: { isFull: boolean }) => (
+type DashboardMenuProps = {
+    isFull: boolean;
+}
+
+const DashboardMenu = ({isFull}: DashboardMenuProps) => (
     <ul className={`menu bg-accent h-screen overflow-y-auto${isFull ? " w-64" : " w-16"}`}>
         <li>
             <DashboardMenuLink

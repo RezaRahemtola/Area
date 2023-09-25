@@ -1,6 +1,13 @@
 import React from "react"
 
-const DashboardMenuLink = ({svgLink, title, href, isFull}: { svgLink: string, title: string, href: string, isFull: boolean }) => (
+type DashboardMenuLinkProps = {
+    svgLink: string;
+    title: string;
+    href: string;
+    isFull: boolean;
+}
+
+const DashboardMenuLink = ({svgLink, title, href, isFull}: DashboardMenuLinkProps) => (
     <a className={isFull ? "" : "tooltip tooltip-right"} data-tip={title} href={href}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
