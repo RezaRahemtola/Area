@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 type DashboardMenuLinkProps = {
 	svgLink: string;
@@ -8,12 +9,12 @@ type DashboardMenuLinkProps = {
 };
 
 const DashboardMenuLink = ({ svgLink, title, href, isFull }: DashboardMenuLinkProps) => (
-	<a className={isFull ? "" : "tooltip tooltip-right"} data-tip={title} href={href}>
+	<Link className={isFull ? "" : "tooltip tooltip-right"} data-tip={title} href={href}>
 		<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={svgLink} />
 		</svg>
 		{isFull ? title : ""}
-	</a>
+	</Link>
 );
 
 export default DashboardMenuLink;
