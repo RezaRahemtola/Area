@@ -1,0 +1,5 @@
+.idea/
+proto/
+.env
+docker-compose.yml
+supervisor
