@@ -3,7 +3,7 @@ import { UserService } from "../user/user.service";
 import { hash, verify as verifyArgonHash } from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import LoginResultDto from "./dto/login-result.dto";
-import { JwtCustomPayload } from "../types/jwt";
+import { JwtPayload } from "../types/jwt";
 
 @Injectable()
 export class AuthService {
@@ -30,7 +30,7 @@ export class AuthService {
 		};
 	}
 
-	async verifyToken(token: string): Promise<JwtCustomPayload | null> {
+	async verifyToken(token: string): Promise<JwtPayload | null> {
 		try {
 			return this.jwtService.verify(token);
 		} catch {

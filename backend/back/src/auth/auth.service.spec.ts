@@ -1,10 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { AuthService, JwtCustomPayload } from "./auth.service";
+import { AuthService } from "./auth.service";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { MockType } from "../types/test";
 import { ConflictException, UnauthorizedException } from "@nestjs/common";
 import LoginResultDto from "./dto/login-result.dto";
+import { JwtPayload } from "../types/jwt";
 
 const mockUserService: MockType<UserService> = {
 	getUser: jest.fn(),
@@ -46,7 +47,7 @@ describe("AuthService", () => {
 			expect(result).toEqual<LoginResultDto>({
 				accessToken: expect.any(String),
 			});
-			const verifyResult = jwtService.verify<JwtCustomPayload>(result.accessToken);
+			const verifyResult = jwtService.verify<JwtPayload>(result.accessToken);
 			expect(verifyResult).not.toBeNull();
 			const { id, iat, exp } = verifyResult!;
 			expect(id).toEqual<string>(user.id);
@@ -76,7 +77,7 @@ describe("AuthService", () => {
 			expect(result).toEqual<LoginResultDto>({
 				accessToken: expect.any(String),
 			});
-			const verifyResult = jwtService.verify<JwtCustomPayload>(result.accessToken);
+			const verifyResult = jwtService.verify<JwtPayload>(result.accessToken);
 			expect(verifyResult).not.toBeNull();
 			const { id, iat, exp } = verifyResult!;
 			expect(id).toEqual<string>(user.id);
