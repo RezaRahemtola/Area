@@ -3,9 +3,7 @@ import { UserService } from "../user/user.service";
 import { hash, verify as verifyArgonHash } from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import LoginResultDto from "./dto/login-result.dto";
-
-export type JwtBasePayload = { iat: number; exp?: number };
-export type JwtCustomPayload = { id: string } & JwtBasePayload;
+import { JwtCustomPayload } from "../types/jwt";
 
 @Injectable()
 export class AuthService {
