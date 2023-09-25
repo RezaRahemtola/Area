@@ -1,4 +1,5 @@
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/register.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -26,39 +27,8 @@ class _LoginState extends State<Login> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email.';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Password",
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password.';
-                    }
-                    return null;
-                  },
-                ),
-              ),
+              EmailField(emailController: emailController),
+              PasswordField(passwordController: passwordController),
               LoginButtons(
                   formKey: _formKey,
                   emailController: emailController,
@@ -66,6 +36,65 @@ class _LoginState extends State<Login> {
             ],
           ),
         ));
+  }
+}
+
+class PasswordField extends StatelessWidget {
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+  });
+
+  final TextEditingController passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+      child: TextFormField(
+        obscureText: true,
+        controller: passwordController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Password",
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password.';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
+
+class EmailField extends StatelessWidget {
+  const EmailField({
+    super.key,
+    required this.emailController,
+  });
+
+  final TextEditingController emailController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: TextFormField(
+        controller: emailController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Email",
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your email.';
+          }
+          return null;
+        },
+      ),
+    );
   }
 }
 
@@ -89,7 +118,13 @@ class LoginButtons extends StatelessWidget {
       children: [
         ElevatedButton(
             onPressed: () {
-              print("test");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const Register(
+                          title: 'Register',
+                        )),
+              );
             },
             child: const Row(
               children: [
