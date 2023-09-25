@@ -9,7 +9,7 @@ const DocumentationGeneralHero = () => (
                 <p className="py-6">
                     TEAM PAGE
                 </p>
-                <a href={"/dashboard"} className="btn btn-secondary">Get Started</a>
+                <a href={"/product"} className="btn btn-secondary">Get Started</a>
                 <Image src="/landing/main.webp" width="1168" height="657" alt="landing-image" className="w-lg"/>
             </div>
         </div>
