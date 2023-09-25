@@ -29,8 +29,8 @@ const AuthLayout = () => {
 
 	const onAuthSuccess = () => {
 		setUserRegistered(true);
-		if (!pathname.startsWith("/dashboard")) {
-			router.push("/dashboard");
+		if (!pathname.startsWith("/app")) {
+			router.push("/app");
 		}
 	};
 

@@ -1,6 +1,7 @@
 {
   "name": "area-web",
   "version": "0.1.0",
+  "description": "Area Web",
   "private": true,
   "scripts": {
     "dev": "node server.js",
@@ -8,29 +9,29 @@
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "format": "prettier **/*.{ts,tsx} --write"
+    "format": "prettier **/**/*.{ts,tsx} --write"
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
     "daisyui": "^3.7.7",
     "express": "^4.18.2",
     "jotai": "^2.4.2",
-    "next": "^13.5.2",
+    "next": "^13.5.3",
     "postcss": "^8.4.30",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
-    "@types/node": "^20.6.4",
+    "@types/node": "^20.7.0",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-config-next": "^13.5.2",
+    "eslint-config-next": "^13.5.3",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
