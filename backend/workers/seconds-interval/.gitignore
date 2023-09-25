@@ -1,0 +1,5 @@
+*.o
+*.pb.cc
+*.pb.h
+seconds-interval
+cmake-build-debug/

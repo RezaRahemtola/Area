@@ -1,28 +1,25 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 
-import { Theme } from "@/types/theme";
+import { useAtom } from "jotai";
+import { interfaceThemeAtom } from "@/stores/user";
 
 const ThemeSelector = () => {
-	const [theme, setTheme] = useState<Theme>("dark");
+	const [interfaceTheme, setInterfaceTheme] = useAtom(interfaceThemeAtom);
 
 	useEffect(() => {
-		setTheme((localStorage.getItem("theme") as Theme) ?? "dark");
-	}, []);
-
-	useEffect(() => {
-		localStorage.setItem("theme", theme);
-		document.querySelector("html")?.setAttribute("data-theme", theme);
-	}, [theme]);
+		document.querySelector("html")?.setAttribute("data-theme", interfaceTheme);
+	}, [interfaceTheme]);
 
 	const handleThemeChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setTheme(e.target.checked ? "dark" : "light");
+		const newTheme = e.target.checked ? "dark" : "light";
+		setInterfaceTheme(newTheme);
 	};
 
 	return (
 		<label className="swap swap-rotate">
-			<input type="checkbox" onChange={handleThemeChange} checked={theme !== "light"} />
+			<input type="checkbox" onChange={handleThemeChange} checked={interfaceTheme !== "light"} />
 
 			{/* sun icon */}
 			<svg className="swap-on fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
