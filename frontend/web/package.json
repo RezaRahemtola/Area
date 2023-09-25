@@ -9,7 +9,7 @@
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "format": "prettier **/*.{ts,tsx} --write"
+    "format": "prettier **/**/*.{ts,tsx} --write"
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
