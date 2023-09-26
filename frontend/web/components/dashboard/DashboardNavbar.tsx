@@ -1,19 +1,19 @@
 import { Dispatch, SetStateAction } from "react";
 import { useAtom } from "jotai";
 import Navbar from "@/components/Navbar";
-import { userRegisteredAtom } from "@/stores/user";
+import { userAuthTokenAtom } from "@/stores/user";
 
 type DashboardNavbarProps = {
 	isDrawerOpen: boolean;
 	setIsDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
 const DashboardNavbar = ({ isDrawerOpen, setIsDrawerOpen }: DashboardNavbarProps) => {
-	const [userRegistered] = useAtom(userRegisteredAtom);
+	const [userAuthToken] = useAtom(userAuthTokenAtom);
 
 	return (
 		<Navbar
 			beforeLogoContent={
-				userRegistered ? (
+				userAuthToken ? (
 					<div className="flex-none">
 						<button className="btn btn-square btn-ghost" onClick={() => setIsDrawerOpen((prev) => !prev)}>
 							<svg
