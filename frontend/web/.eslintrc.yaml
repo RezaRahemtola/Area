@@ -13,6 +13,7 @@ extends:
 
 rules:
   no-plusplus: [ "error", { "allowForLoopAfterthoughts": true } ]
+  no-console: [ "error", { allow: [ "error" ] } ]
   "import/extensions": [ "error", "ignorePackages", { "": "never", } ]
 
   react/jsx-filename-extension: off
