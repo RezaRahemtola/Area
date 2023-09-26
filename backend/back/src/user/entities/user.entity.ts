@@ -6,7 +6,7 @@ export class User {
 	id!: string;
 
 	@Column({ unique: true })
-	mail!: string;
+	email!: string;
 
 	@Column()
 	passwordHash!: string;

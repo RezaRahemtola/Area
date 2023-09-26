@@ -12,8 +12,8 @@ export class AuthService {
 		private readonly userService: UserService,
 	) {}
 
-	async logIn(mail: string, password: string): Promise<LoginResultDto> {
-		const user = await this.userService.getUser({ mail });
+	async logIn(email: string, password: string): Promise<LoginResultDto> {
+		const user = await this.userService.getUser({ email });
 		if (!user || !(await verifyArgonHash(user.passwordHash, password)))
 			throw new UnauthorizedException("Invalid credentials.");
 		return {
@@ -21,10 +21,10 @@ export class AuthService {
 		};
 	}
 
-	async register(mail: string, password: string): Promise<LoginResultDto> {
-		const isUserCreated = await this.userService.createUser(mail, await hash(password));
-		if (!isUserCreated) throw new ConflictException("An user already exists with this mail.");
-		const { id } = await this.userService.getUser({ mail });
+	async register(email: string, password: string): Promise<LoginResultDto> {
+		const isUserCreated = await this.userService.createUser(email, await hash(password));
+		if (!isUserCreated) throw new ConflictException("An user already exists with this email.");
+		const { id } = await this.userService.getUser({ email });
 		return {
 			accessToken: this.jwtService.sign({ id }),
 		};
