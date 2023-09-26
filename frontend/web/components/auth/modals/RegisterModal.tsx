@@ -13,9 +13,14 @@ type RegisterModalProps = {
 const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAuthTypeChange, onAuthSuccess }, ref) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [passwordConfirmation, setPasswordConfirmation] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const onRegister = async () => {
+		if (password !== passwordConfirmation) {
+			setErrorMessage("Passwords don't match");
+			return;
+		}
 		const { data: accessToken, error } = await services.auth.register({ email, password });
 		if (accessToken !== null) {
 			onAuthSuccess(accessToken);
@@ -37,7 +42,12 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 					<>
 						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} />
 						<AuthPasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
-						<AuthPasswordField placeholder="Enter password confirmation" label="Confirm password" />
+						<AuthPasswordField
+							value={passwordConfirmation}
+							onChange={(e) => setPasswordConfirmation(e.target.value)}
+							placeholder="Enter password confirmation"
+							label="Confirm password"
+						/>
 						<div>
 							<button className="btn btn-block btn-accent" onClick={onRegister}>
 								Register
