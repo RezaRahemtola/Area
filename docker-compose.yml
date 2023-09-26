@@ -35,6 +35,7 @@ services:
       - mobile_network
 
   database:
+    container_name: area_database
     image: postgres:16.0-alpine3.18
     restart: always
     ports:

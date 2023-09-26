@@ -27,7 +27,7 @@ describe("UserService", () => {
 
 	const user = {
 		id: "475d94b1-90b2-431a-bfa0-0a805f81b3b4",
-		mail: "john.smith@cramptarea.org",
+		email: "john.smith@cramptarea.org",
 		passwordHash: "$argon2d$v=19$m=16,t=2,p=1$T0dSTTRDVE5IdUpVMXNFdg$/ydwhzzjLeDsSlFG7wyZ9Q",
 		isAdmin: false,
 		totpSecret: null,
@@ -51,23 +51,23 @@ describe("UserService", () => {
 	describe("createUser", () => {
 		it("should create an user and return true", async () => {
 			repositoryMock.insert.mockReturnValue(Promise.resolve({ identifiers: [{ id: user.id }] }));
-			await expect(userService.createUser(user.mail, user.passwordHash, user.isAdmin)).resolves.toBeTruthy();
+			await expect(userService.createUser(user.email, user.passwordHash, user.isAdmin)).resolves.toBeTruthy();
 			expect(repositoryMock.insert).toHaveBeenCalledWith({
-				mail: user.mail,
+				email: user.email,
 				passwordHash: user.passwordHash,
 				isAdmin: user.isAdmin,
 			});
 		});
 
-		it("should not create an user and return false because the user's mail is already used", async () => {
+		it("should not create an user and return false because the user's email is already used", async () => {
 			repositoryMock.insert.mockReturnValue(
-				Promise.reject(new Error("duplicated mail value violates unique constraint")),
+				Promise.reject(new Error("duplicated email value violates unique constraint")),
 			);
 			await expect(
 				userService.createUser("other.mail@cramptarea.org", user.passwordHash, user.isAdmin),
 			).resolves.toBeFalsy();
 			expect(repositoryMock.insert).toHaveBeenCalledWith({
-				mail: "other.mail@cramptarea.org",
+				email: "other.mail@cramptarea.org",
 				passwordHash: user.passwordHash,
 				isAdmin: user.isAdmin,
 			});
@@ -83,14 +83,14 @@ describe("UserService", () => {
 			expect(repositoryMock.update).toHaveBeenCalledWith({ id: user.id }, { isAdmin: true });
 		});
 
-		it("should not update an user and return false because the new user's mail is already used by another user", async () => {
+		it("should not update an user and return false because the new user's meail is already used by another user", async () => {
 			repositoryMock.exist.mockReturnValue(Promise.resolve(true));
 			repositoryMock.update.mockReturnValue(
-				Promise.reject(new Error("duplicated mail value violates unique constraint")),
+				Promise.reject(new Error("duplicated email value violates unique constraint")),
 			);
-			expect(await userService.updateUser({ id: user.id }, { mail: "other.mail@cramptarea.org" })).toEqual(false);
+			expect(await userService.updateUser({ id: user.id }, { email: "other.mail@cramptarea.org" })).toEqual(false);
 			expect(repositoryMock.exist).toHaveBeenCalledWith({ where: { id: user.id } });
-			expect(repositoryMock.update).toHaveBeenCalledWith({ id: user.id }, { mail: "other.mail@cramptarea.org" });
+			expect(repositoryMock.update).toHaveBeenCalledWith({ id: user.id }, { email: "other.mail@cramptarea.org" });
 		});
 
 		it("should not update an user and return false because the user does not exists", async () => {
