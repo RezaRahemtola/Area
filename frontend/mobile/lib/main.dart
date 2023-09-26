@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'login.dart';
 
-void main() {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future main() async {
   runApp(const MyApp());
+  await dotenv.load(fileName: ".env");
 }
 
 class MyApp extends StatelessWidget {
