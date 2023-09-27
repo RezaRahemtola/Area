@@ -1,7 +1,5 @@
-const EditorPage = () => (
-	<div className="flex bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<span>Workflow editor</span>
-	</div>
-);
+import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+
+const EditorPage = () => <AppPageWrapper title="Workflow editor" />;
 
 export default EditorPage;
