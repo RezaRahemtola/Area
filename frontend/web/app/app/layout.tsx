@@ -3,7 +3,7 @@
 import { ReactNode, useState } from "react";
 import { useAtom } from "jotai";
 
-import DashboardMenu from "@/components/dashboard/DashboardMenu";
+import DashboardMenu from "@/components/dashboard/menu/DashboardMenu";
 import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
 import { userAuthTokenAtom } from "@/stores/user";
 

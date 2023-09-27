@@ -7,13 +7,14 @@ import AuthLayout from "@/layouts/auth/AuthLayout";
 type NavbarProps = {
 	beforeLogoContent?: ReactNode;
 	centerContent?: ReactNode;
+	logoLink?: string;
 };
 
-const Navbar = ({ beforeLogoContent, centerContent }: NavbarProps) => (
+const Navbar = ({ beforeLogoContent, centerContent, logoLink }: NavbarProps) => (
 	<div className="navbar bg-primary">
 		<div className="navbar-start">
 			{beforeLogoContent}
-			<Link className="btn btn-ghost normal-case text-xl" href="/">
+			<Link className="btn btn-ghost normal-case text-xl" href={logoLink ?? "/"}>
 				Area
 			</Link>
 		</div>

@@ -1,7 +1,7 @@
-const DashboardPage = () => (
+const LibraryPage = () => (
 	<div className="flex bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<span>Dashboard</span>
+		<span>My Workflows</span>
 	</div>
 );
 
-export default DashboardPage;
+export default LibraryPage;
