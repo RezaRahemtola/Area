@@ -1,6 +1,6 @@
-import { HTMLAttributes } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 
-type AuthPasswordFieldProps = HTMLAttributes<HTMLInputElement> & {
+type AuthPasswordFieldProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
 	label?: string;
 };
 

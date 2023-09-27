@@ -6,7 +6,7 @@ export default class CredentialsDto {
 		description: "The email of the user",
 	})
 	@IsEmail()
-	mail!: string;
+	email!: string;
 
 	@ApiProperty({
 		description: "The password of the user",

@@ -1,6 +1,6 @@
-import { HTMLAttributes } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 
-const AuthPasswordField = (props: HTMLAttributes<HTMLInputElement>) => (
+const AuthPasswordField = (props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) => (
 	<div>
 		<label className="label">
 			<span className="text-base label-text">Email</span>

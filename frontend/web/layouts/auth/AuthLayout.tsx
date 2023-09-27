@@ -7,13 +7,14 @@ import { usePathname, useRouter } from "next/navigation";
 
 import LoginModal from "@/components/auth/modals/LoginModal";
 import RegisterModal from "@/components/auth/modals/RegisterModal";
-import { userRegisteredAtom } from "@/stores/user";
+import { userAuthTokenAtom } from "@/stores/user";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 const AuthLayout = () => {
 	const loginModalRef = useRef<HTMLDialogElement>(null);
 	const registerModalRef = useRef<HTMLDialogElement>(null);
-	const [userRegistered, setUserRegistered] = useAtom(userRegisteredAtom);
+	const [userAuthToken, setUserAuthToken] = useAtom(userAuthTokenAtom);
+
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -27,20 +28,20 @@ const AuthLayout = () => {
 		loginModalRef.current?.showModal();
 	};
 
-	const onAuthSuccess = () => {
-		setUserRegistered(true);
-		if (!pathname.startsWith("/dashboard")) {
-			router.push("/dashboard");
+	const onAuthSuccess = (accessToken: string) => {
+		setUserAuthToken(accessToken);
+		if (!pathname.startsWith("/app")) {
+			router.push("/app");
 		}
 	};
 
 	const onLogout = () => {
-		setUserRegistered(false);
+		setUserAuthToken(null);
 	};
 
 	return (
 		<>
-			{userRegistered ? (
+			{userAuthToken ? (
 				<div className="dropdown dropdown-end">
 					<label tabIndex={0} className="btn btn-ghost btn-circle avatar">
 						<div className="w-10 rounded-full">
@@ -59,7 +60,7 @@ const AuthLayout = () => {
 			) : (
 				<>
 					<LoginModal ref={loginModalRef} onAuthTypeChange={switchAuthToRegister} onAuthSuccess={onAuthSuccess} />
-					<a className="btn btn-ghost mx-2" onClick={switchAuthToLogin}>
+					<a className="btn btn-ghost mr-2" onClick={switchAuthToLogin}>
 						Login
 					</a>
 					<RegisterModal ref={registerModalRef} onAuthTypeChange={switchAuthToLogin} onAuthSuccess={onAuthSuccess} />
