@@ -25,6 +25,12 @@ export class GrpcService implements OnModuleInit {
 		params: TParams,
 	): Promise<GrpcResponse> {
 		const identifier = JobsIdentifiers[name](params);
-		return firstValueFrom(this.areaSupervisorService.launchJob({ name, identifier, params }));
+		return firstValueFrom(
+			this.areaSupervisorService.launchJob({
+				name,
+				identifier,
+				params,
+			}),
+		);
 	}
 }

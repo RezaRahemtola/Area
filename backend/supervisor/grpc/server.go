@@ -10,5 +10,9 @@ func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobDa
 	log.Printf("Received: %v (id %v)", in.GetName(), in.GetIdentifier())
 	log.Printf("Params: %v", in.GetParams())
 
+	if in.GetParams() == nil {
+		log.Printf("Nil map")
+	}
+
 	return &supervisor.Response{}, nil
 }

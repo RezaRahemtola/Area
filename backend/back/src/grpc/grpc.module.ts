@@ -10,8 +10,12 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
 				name: "AREA_SUPERVISOR_PACKAGE",
 				transport: Transport.GRPC,
 				options: {
+					url: "localhost:50051",
 					package: "area_supervisor",
 					protoPath: "proto/area_supervisor.proto",
+					loader: {
+						objects: true,
+					},
 				},
 			},
 		]),

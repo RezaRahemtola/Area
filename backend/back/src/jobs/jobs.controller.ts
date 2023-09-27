@@ -9,7 +9,7 @@ export class JobsController {
 
 	@ApiOperation({ summary: "DEV - TO BE REMOVED" })
 	@Post("launch")
-	launchJob(@Body() body: LaunchJobDto): void {
-		this.jobsService.launchJob(body);
+	launchJob(@Body() body: LaunchJobDto): Promise<void> {
+		return this.jobsService.launchJob(body);
 	}
 }

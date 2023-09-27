@@ -1,7 +1,7 @@
 export class JobData {
 	name: string;
 	identifier: string;
-	params: unknown;
+	params: object;
 }
 
 export class GrpcResponse {
