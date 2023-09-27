@@ -1,5 +1,7 @@
-import 'package:area_mobile/login.dart';
+import 'package:area_mobile/Components/email_field.dart';
+import 'package:area_mobile/Components/password_re_field.dart';
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/Components/password_field.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -39,36 +41,6 @@ class _RegisterState extends State<Register> {
             ],
           ),
         ));
-  }
-}
-
-class PasswordReField extends StatelessWidget {
-  const PasswordReField({
-    super.key,
-    required this.passwordController,
-  });
-
-  final TextEditingController passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: TextFormField(
-        obscureText: true,
-        controller: passwordController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Re-enter password",
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please re-enter your password.';
-          }
-          return null;
-        },
-      ),
-    );
   }
 }
 
