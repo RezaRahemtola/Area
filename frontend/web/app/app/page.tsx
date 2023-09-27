@@ -1,7 +1,5 @@
-const DashboardPage = () => (
-	<div className="flex bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<span>Dashboard</span>
-	</div>
-);
+import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+
+const DashboardPage = () => <AppPageWrapper title="Dashboard" />;
 
 export default DashboardPage;

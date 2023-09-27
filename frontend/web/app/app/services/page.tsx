@@ -1,7 +1,5 @@
-const ServicesPage = () => (
-	<div className="flex bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<span>Services</span>
-	</div>
-);
+import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+
+const ServicesPage = () => <AppPageWrapper title="Services" />;
 
 export default ServicesPage;

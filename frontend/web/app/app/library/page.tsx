@@ -1,7 +1,7 @@
+import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+
 const LibraryPage = () => (
-	<div className="bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<h1 className="text-3xl font-bold m-5">My Workflows</h1>
-		<span></span>
+	<AppPageWrapper title="My workflows">
 		<div className="overflow-x-auto">
 			<table className="table">
 				{/* head */}
@@ -146,7 +146,7 @@ const LibraryPage = () => (
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</AppPageWrapper>
 );
 
 export default LibraryPage;

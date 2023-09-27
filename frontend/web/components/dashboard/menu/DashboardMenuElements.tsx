@@ -12,8 +12,8 @@ type DashboardMenuElementProps = {
 
 const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementProps) => (
 	<li>
-		<Link className={isFull ? "" : "tooltip tooltip-right"} data-tip={title} href={href}>
-			<FontAwesomeIcon icon={icon} />
+		<Link className={isFull ? "" : "justify-center"} href={href}>
+			<FontAwesomeIcon icon={icon} svgProps={isFull ? undefined : { className: "h-6 w-6" }} />
 			{isFull ? title : ""}
 		</Link>
 	</li>
@@ -21,7 +21,7 @@ const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementPr
 
 const DashboardMenuButton = ({ icon, title, href, isFull }: DashboardMenuElementProps) => (
 	<Link className="justify-center" href={href}>
-		<button className="btn btn-secondary btn-wide">
+		<button className={`btn btn-secondary ${isFull ? "btn-wide" : ""}`}>
 			<FontAwesomeIcon icon={icon} /> {isFull ? title : ""}
 		</button>
 	</Link>
