@@ -1,4 +1,5 @@
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/register.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -26,40 +27,9 @@ class _LoginState extends State<Login> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email.';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Password",
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password.';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              LoginValidationButton(
+              EmailField(emailController: emailController),
+              PasswordField(passwordController: passwordController),
+              LoginButtons(
                   formKey: _formKey,
                   emailController: emailController,
                   passwordController: passwordController)
@@ -69,8 +39,67 @@ class _LoginState extends State<Login> {
   }
 }
 
-class LoginValidationButton extends StatelessWidget {
-  const LoginValidationButton({
+class PasswordField extends StatelessWidget {
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+  });
+
+  final TextEditingController passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+      child: TextFormField(
+        obscureText: true,
+        controller: passwordController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Password",
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password.';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
+
+class EmailField extends StatelessWidget {
+  const EmailField({
+    super.key,
+    required this.emailController,
+  });
+
+  final TextEditingController emailController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: TextFormField(
+        controller: emailController,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Email",
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your email.';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
+
+class LoginButtons extends StatelessWidget {
+  const LoginButtons({
     super.key,
     required GlobalKey<FormState> formKey,
     required this.emailController,
@@ -83,30 +112,55 @@ class LoginValidationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            if (emailController.text == "azerty@qwerty" &&
-                passwordController.text == "bepo") {
-              // validation
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => HomePage(
-                          email: emailController.text,
+                    builder: (context) => const Register(
+                          title: 'Register',
                         )),
               );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Invalid Credentials')),
-              );
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please fill the login form.")),
-            );
-          }
-        },
-        child: const Text("Submit"));
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                Text("Register"),
+              ],
+            )),
+        ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (emailController.text == "azerty@qwerty" &&
+                    passwordController.text == "bepo") {
+                  // validation
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage(
+                              email: emailController.text,
+                            )),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid Credentials')),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please fill the login form.")),
+                );
+              }
+            },
+            child: const Text("Submit")),
+      ],
+    );
   }
 }
