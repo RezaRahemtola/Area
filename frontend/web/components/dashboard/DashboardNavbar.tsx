@@ -39,7 +39,6 @@ const DashboardNavbar = ({ isDrawerOpen, setIsDrawerOpen }: DashboardNavbarProps
 					<></>
 				)
 			}
-			logoLink="/app"
 		/>
 	);
 };

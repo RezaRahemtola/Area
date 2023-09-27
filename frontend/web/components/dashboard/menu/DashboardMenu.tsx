@@ -9,6 +9,7 @@ const DashboardMenu = ({ isFull }: DashboardMenuProps) => (
 		<li className="pb-5">
 			<DashboardMenuButton icon="plus" title="Create workflow" href="/app/editor" isFull={isFull} />
 		</li>
+		<DashboardMenuLink icon="objects-column" title="Dashboard" href="/app" isFull={isFull} />
 		<DashboardMenuLink icon="bolt" title="Library" href="/app/library" isFull={isFull} />
 		<DashboardMenuLink icon="grid-2-plus" title="Apps" href="/app/services" isFull={isFull} />
 	</ul>
