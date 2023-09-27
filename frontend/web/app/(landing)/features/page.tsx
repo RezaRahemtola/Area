@@ -1,4 +1,4 @@
-import FeaturesGeneralHero from "@/components/features/GeneralHero";
+import FeaturesGeneralHero from "@/components/landing/features/GeneralHero";
 
 const LandingPage = () => <FeaturesGeneralHero />;
 

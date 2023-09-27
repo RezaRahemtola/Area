@@ -1,7 +1,7 @@
-const DashboardPage = () => (
+const ServicesPage = () => (
 	<div className="flex bg-neutral text-neutral-content w-screen h-screen justify-center items-center">
-		<span>Dashboard</span>
+		<span>Services</span>
 	</div>
 );
 
-export default DashboardPage;
+export default ServicesPage;

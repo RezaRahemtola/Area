@@ -1,4 +1,4 @@
-import TeamGeneralHero from "@/components/team/GeneralHero";
+import TeamGeneralHero from "@/components/landing/team/GeneralHero";
 
 const LandingPage = () => <TeamGeneralHero />;
 

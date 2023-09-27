@@ -1,4 +1,4 @@
-import PricingGeneralHero from "@/components/pricing/GeneralHero";
+import PricingGeneralHero from "@/components/landing/pricing/GeneralHero";
 
 const LandingPage = () => <PricingGeneralHero />;
 
