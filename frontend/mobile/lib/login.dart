@@ -1,4 +1,6 @@
+import 'package:area_mobile/Components/email_field.dart';
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/Components/password_field.dart';
 import 'package:area_mobile/register.dart';
 import 'package:flutter/material.dart';
 
@@ -36,65 +38,6 @@ class _LoginState extends State<Login> {
             ],
           ),
         ));
-  }
-}
-
-class PasswordField extends StatelessWidget {
-  const PasswordField({
-    super.key,
-    required this.passwordController,
-  });
-
-  final TextEditingController passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: TextFormField(
-        obscureText: true,
-        controller: passwordController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Password",
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your password.';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-}
-
-class EmailField extends StatelessWidget {
-  const EmailField({
-    super.key,
-    required this.emailController,
-  });
-
-  final TextEditingController emailController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(25),
-      child: TextFormField(
-        controller: emailController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Email",
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your email.';
-          }
-          return null;
-        },
-      ),
-    );
   }
 }
 

@@ -1,5 +1,7 @@
+import 'package:area_mobile/Components/email_field.dart';
 import 'package:area_mobile/login.dart';
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/Components/password_field.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
