@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 const LandingNavbar = () => (
@@ -5,16 +6,16 @@ const LandingNavbar = () => (
 		centerContent={
 			<ul className="menu menu-horizontal px-1">
 				<li>
-					<a>Features</a>
+					<Link href="/features">Features</Link>
 				</li>
 				<li>
-					<a>Pricing</a>
+					<Link href="/pricing">Pricing</Link>
 				</li>
 				<li>
-					<a>Documentation</a>
+					<Link href="/documentation">Documentation</Link>
 				</li>
 				<li>
-					<a>Team</a>
+					<Link href="/team">Team</Link>
 				</li>
 			</ul>
 		}
