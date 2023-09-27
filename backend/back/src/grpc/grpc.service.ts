@@ -5,6 +5,7 @@ import { firstValueFrom, Observable } from "rxjs";
 import { JobsType } from "../types/jobs";
 import { JobsParams } from "../types/jobParams";
 import { JobsIdentifiers } from "../types/jobIds";
+import "../types/struct";
 
 interface AreaSupervisorService {
 	launchJob(data: JobData): Observable<GrpcResponse>;

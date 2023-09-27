@@ -2,17 +2,17 @@ package grpc
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	supervisor "supervisor/proto"
 )
 
 func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobData) (*supervisor.Response, error) {
-	log.Printf("Received: %v (id %v)", in.GetName(), in.GetIdentifier())
-	log.Printf("Params: %v", in.GetParams())
+	obj, _ := in.GetParams().MarshalJSON()
 
-	if in.GetParams() == nil {
-		log.Printf("Nil map")
-	}
+	objMap := map[string]interface{}{}
+	_ = json.Unmarshal(obj, &objMap)
+	log.Printf("ParamsMap: %v", objMap)
 
 	return &supervisor.Response{}, nil
 }
