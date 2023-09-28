@@ -1,152 +1,65 @@
 import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+import { Workflow } from "@/types/workflows";
+import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
 
-const LibraryPage = () => (
-	<AppPageWrapper title="My workflows">
-		<div className="overflow-x-auto">
-			<table className="table">
-				{/* head */}
-				<thead className="text-neutral-content">
-					<tr>
-						<th>
-							<label>
-								<input type="checkbox" className="checkbox border-primary" />
-							</label>
-						</th>
-						<th></th>
-						<th>Name</th>
-						<th>Running</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{/* row 1 */}
-					<tr>
-						<th>
-							<label>
-								<input type="checkbox" className="checkbox border-primary" />
-							</label>
-						</th>
-						<td>
-							<div className="flex items-center space-x-3">
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-2@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>Zemlak, Daniel and Leannon</td>
-						<td>
-							<input type="checkbox" className="toggle toggle-success" />
-						</td>
-						<th>
-							<button className="btn btn-ghost btn-xs">details</button>
-						</th>
-					</tr>
-					{/* row 2 */}
-					<tr>
-						<th>
-							<label>
-								<input type="checkbox" className="checkbox border-primary" />
-							</label>
-						</th>
-						<td>
-							<div className="flex items-center space-x-3">
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-3@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>Carroll Group</td>
-						<td>
-							<input type="checkbox" className="toggle toggle-success" />
-						</td>
-						<th>
-							<button className="btn btn-ghost btn-xs">details</button>
-						</th>
-					</tr>
-					{/* row 3 */}
-					<tr>
-						<th>
-							<label>
-								<input type="checkbox" className="checkbox border-primary" />
-							</label>
-						</th>
-						<td>
-							<div className="flex items-center space-x-3">
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-4@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>Rowe-Schoen</td>
-						<td>
-							<input type="checkbox" className="toggle toggle-success" />
-						</td>
-						<th>
-							<button className="btn btn-ghost btn-xs">details</button>
-						</th>
-					</tr>
-					{/* row 4 */}
-					<tr>
-						<th>
-							<label>
-								<input type="checkbox" className="checkbox border-primary" />
-							</label>
-						</th>
-						<td>
-							<div className="flex items-center space-x-3">
-								<div className="avatar">
-									<div className="mask mask-squircle w-12 h-12">
-										<img
-											src="https://daisyui.com/tailwind-css-component-profile-5@56w.png"
-											alt="Avatar Tailwind CSS Component"
-										/>
-									</div>
-								</div>
-							</div>
-						</td>
-						<td>Wyman-Ledner</td>
-						<td>
-							<input type="checkbox" className="toggle toggle-success" />
-						</td>
-						<th>
-							<button className="btn btn-ghost btn-xs">details</button>
-						</th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</AppPageWrapper>
-);
+const LibraryPage = () => {
+	const workflows: Workflow[] = [
+		{
+			id: "1",
+			name: "Zemlak, Daniel and Leannon",
+			pictures: [
+				"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
+				"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
+				"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
+			],
+			running: true,
+		},
+		{
+			id: "2",
+			name: "Carroll Group",
+			pictures: ["https://daisyui.com/tailwind-css-component-profile-3@56w.png"],
+			running: false,
+		},
+		{
+			id: "3",
+			name: "Rowe-Schoen",
+			pictures: ["https://daisyui.com/tailwind-css-component-profile-4@56w.png"],
+			running: false,
+		},
+		{
+			id: "4",
+			name: "Wyman-Ledner",
+			pictures: ["https://daisyui.com/tailwind-css-component-profile-5@56w.png"],
+			running: false,
+		},
+	];
+
+	return (
+		<AppPageWrapper title="My workflows">
+			<div className="overflow-x-auto">
+				<table className="table">
+					<thead className="text-neutral-content">
+						<tr>
+							<th>
+								<label>
+									<input type="checkbox" className="checkbox border-primary" />
+								</label>
+							</th>
+							<th></th>
+							<th>Name</th>
+							<th>Running</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{workflows.map((workflow) => (
+							<LibraryWorkflowLine workflow={workflow} key={workflow.id} />
+						))}
+					</tbody>
+				</table>
+			</div>
+		</AppPageWrapper>
+	);
+};
 
 export default LibraryPage;
