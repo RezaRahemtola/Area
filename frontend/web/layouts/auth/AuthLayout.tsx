@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 import LoginModal from "@/components/auth/modals/LoginModal";
 import RegisterModal from "@/components/auth/modals/RegisterModal";
@@ -49,6 +50,12 @@ const AuthLayout = () => {
 						</div>
 					</label>
 					<ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+						<li>
+							<Link href="/app/user">
+								<FontAwesomeIcon icon="gear" />
+								Settings
+							</Link>
+						</li>
 						<li>
 							<a onClick={onLogout}>
 								<FontAwesomeIcon icon="arrow-right-from-bracket" />
