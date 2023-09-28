@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { axiosInstance } from "@/services";
 import { AuthResult, Credentials } from "@/types/user";
-import { ServiceReturn } from "@/types/services";
+import { ServiceReturn } from "@/types/api";
 import { SERVICE_ERROR_UNKNOWN } from "@/config/services";
 
 const register = async ({ email, password }: Credentials): Promise<ServiceReturn<string>> => {
