@@ -20,6 +20,7 @@ async function bootstrap() {
 		.setTitle("AREA API")
 		.setDescription("AREA Internal API")
 		.setVersion(version)
+		.addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" })
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 
