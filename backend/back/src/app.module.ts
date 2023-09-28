@@ -7,6 +7,11 @@ import { User } from "./users/entities/user.entity";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { JobsModule } from "./jobs/jobs.module";
+import { ConnectionsModule } from "./connections/connections.module";
+import { ServicesModule } from "./services/services.module";
+import Service from "./services/entities/service.entity";
+import ServiceScope from "./services/entities/service-scope.entity";
+import UserConnection from "./connections/entities/user-connection.entity";
 
 @Module({
 	imports: [
@@ -24,7 +29,7 @@ import { JobsModule } from "./jobs/jobs.module";
 				username: config.getOrThrow<string>("POSTGRES_USER"),
 				password: config.getOrThrow<string>("POSTGRES_PASSWORD"),
 				database: config.getOrThrow<string>("POSTGRES_DB"),
-				entities: [User],
+				entities: [User, Service, ServiceScope, UserConnection],
 				migrations: [],
 				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),
@@ -34,6 +39,8 @@ import { JobsModule } from "./jobs/jobs.module";
 		UsersModule,
 		AuthModule,
 		JobsModule,
+		ConnectionsModule,
+		ServicesModule,
 	],
 	controllers: [],
 	providers: [],
