@@ -1,4 +1,4 @@
-import { UserService } from "./user.service";
+import { UsersService } from "./users.service";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -14,14 +14,14 @@ const repositoryMockFactory: <T>() => MockType<Repository<T>> = jest.fn(() => ({
 }));
 
 describe("UserService", () => {
-	let userService: UserService;
+	let userService: UsersService;
 	let repositoryMock: MockType<Repository<User>>;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [UserService, { provide: getRepositoryToken(User), useFactory: repositoryMockFactory }],
+			providers: [UsersService, { provide: getRepositoryToken(User), useFactory: repositoryMockFactory }],
 		}).compile();
-		userService = module.get<UserService>(UserService);
+		userService = module.get<UsersService>(UsersService);
 		repositoryMock = module.get(getRepositoryToken(User));
 	});
 
