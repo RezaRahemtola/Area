@@ -1,14 +1,4 @@
-import {
-	BeforeInsert,
-	BeforeUpdate,
-	Column,
-	CreateDateColumn,
-	Entity,
-	JoinTable,
-	ManyToMany,
-	ManyToOne,
-	PrimaryColumn,
-} from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import Service from "../../services/entities/service.entity";
 import { User } from "../../users/entities/user.entity";
 import ServiceScope from "../../services/entities/service-scope.entity";
@@ -34,14 +24,4 @@ export default class UserConnection {
 
 	@CreateDateColumn()
 	createdAt!: Date;
-
-	@BeforeInsert()
-	async beforeInsert() {
-		console.log("this:", this);
-	}
-
-	@BeforeUpdate()
-	async beforeUpdate() {
-		console.log("this:", this);
-	}
 }
