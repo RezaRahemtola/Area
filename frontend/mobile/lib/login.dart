@@ -2,7 +2,9 @@ import 'package:area_mobile/Components/email_field.dart';
 import 'package:area_mobile/main.dart';
 import 'package:area_mobile/Components/password_field.dart';
 import 'package:area_mobile/register.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -79,11 +81,12 @@ class LoginButtons extends StatelessWidget {
               ],
             )),
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                if (emailController.text == "azerty@qwerty" &&
-                    passwordController.text == "bepo") {
-                  // validation
+                  print("test");
+                if (await signIn(
+                    emailController.text, passwordController.text)) {
+                  print("validé");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -92,10 +95,26 @@ class LoginButtons extends StatelessWidget {
                             )),
                   );
                 } else {
+                  print("pas");
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Invalid Credentials')),
                   );
                 }
+                // if (emailController.text == "azerty@qwerty" &&
+                //     passwordController.text == "bepo") {
+                //   // validation
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => HomePage(
+                //               email: emailController.text,
+                //             )),
+                //   );
+                // } else {
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     const SnackBar(content: Text('Invalid Credentials')),
+                //   );
+                // }
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Please fill the login form.")),
@@ -106,4 +125,25 @@ class LoginButtons extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<bool> signIn(email, password) async {
+  var dio = Dio();
+  print('http://${dotenv.env['BACKIP']}/auth/login/');
+  try {
+    var response = await dio.post('http://${dotenv.env['BACKIP']}/auth/login/',
+        data: {"email": email, "password": password},
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        )).timeout(const Duration(seconds: 3));
+    print(response.data);
+    print(response.statusCode);
+    return (response.statusCode == 201);
+  } catch (e) {
+    print(e.toString());
+  }
+  return false;
 }
