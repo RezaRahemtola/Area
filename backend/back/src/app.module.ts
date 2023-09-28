@@ -12,6 +12,7 @@ import { ServicesModule } from "./services/services.module";
 import Service from "./services/entities/service.entity";
 import ServiceScope from "./services/entities/service-scope.entity";
 import UserConnection from "./connections/entities/user-connection.entity";
+import Area from "./services/entities/area.entity";
 
 @Module({
 	imports: [
@@ -29,7 +30,7 @@ import UserConnection from "./connections/entities/user-connection.entity";
 				username: config.getOrThrow<string>("POSTGRES_USER"),
 				password: config.getOrThrow<string>("POSTGRES_PASSWORD"),
 				database: config.getOrThrow<string>("POSTGRES_DB"),
-				entities: [User, Service, ServiceScope, UserConnection],
+				entities: [User, Service, ServiceScope, UserConnection, Area],
 				migrations: [],
 				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),

@@ -1,10 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import ServiceScope from "./service-scope.entity";
 
 @Entity()
 export default class Service {
 	@PrimaryColumn()
-	id: string;
+	id!: string;
 
 	@Column()
-	imageUrl: string;
+	imageUrl!: string;
+
+	@OneToMany(() => ServiceScope, (scope) => scope.service)
+	scopes!: ServiceScope[];
 }
