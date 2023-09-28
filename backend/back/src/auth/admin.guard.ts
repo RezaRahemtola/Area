@@ -1,10 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { UserService } from "../user/user.service";
+import { UsersService } from "../users/users.service";
 import { APIRequest } from "../types/request";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-	constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UsersService) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const { id } = context.switchToHttp().getRequest<APIRequest>().user;
