@@ -1,4 +1,5 @@
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
+import ApkDownloadButton from "@/components/ApkDownloadButton";
 
 const Footer = () => (
 	<footer className="footer p-10 bg-primary text-primary-content">
@@ -36,6 +37,7 @@ const Footer = () => (
 				</a>
 			</div>
 		</nav>
+		<ApkDownloadButton />
 	</footer>
 );
 
