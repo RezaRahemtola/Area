@@ -1,13 +1,13 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AuthService } from "./auth.service";
 import { JwtModule, JwtService } from "@nestjs/jwt";
-import { UserService } from "../user/user.service";
+import { UsersService } from "../users/users.service";
 import { MockType } from "../types/test";
 import { ConflictException, UnauthorizedException } from "@nestjs/common";
 import LoginResultDto from "./dto/login-result.dto";
 import { JwtPayload } from "../types/jwt";
 
-const mockUserService: MockType<UserService> = {
+const mockUserService: MockType<UsersService> = {
 	getUser: jest.fn(),
 	createUser: jest.fn(),
 	deleteUser: jest.fn(),
@@ -16,18 +16,18 @@ const mockUserService: MockType<UserService> = {
 
 describe("AuthService", () => {
 	let service: AuthService;
-	let userServiceMock: MockType<UserService>;
+	let usersServiceMock: MockType<UsersService>;
 	let jwtService: JwtService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [AuthService, { provide: UserService, useValue: mockUserService }],
+			providers: [AuthService, { provide: UsersService, useValue: mockUserService }],
 			imports: [JwtModule.register({ secret: "secret", signOptions: { expiresIn: "1d" } })],
 		}).compile();
 
 		service = module.get<AuthService>(AuthService);
 		jwtService = module.get<JwtService>(JwtService);
-		userServiceMock = module.get(UserService);
+		usersServiceMock = module.get(UsersService);
 	});
 
 	const userPassword = "sUp3rP4ssw0rd!";
@@ -42,7 +42,7 @@ describe("AuthService", () => {
 
 	describe("logIn", () => {
 		it("should return a valid signed JWT with the user's id as a payload", async () => {
-			userServiceMock.getUser.mockReturnValue(Promise.resolve(user));
+			usersServiceMock.getUser.mockReturnValue(Promise.resolve(user));
 			const result = await service.logIn(user.email, userPassword);
 			expect(result).toEqual<LoginResultDto>({
 				accessToken: expect.any(String),
@@ -53,26 +53,26 @@ describe("AuthService", () => {
 			expect(id).toEqual<string>(user.id);
 			expect(iat).toBeGreaterThan(new Date().getTime() / 1000 - 60 * 2); // 2 minutes ago
 			expect(exp).toBeLessThan(new Date().getTime() / 1000 + 60 * 60 * 24 + 60 * 2); // 1 day and 2 minutes from now
-			expect(userServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
+			expect(usersServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
 		});
 
 		it("should throw an unauthorized exception as the passed email is unknown and not return a JWT", async () => {
-			userServiceMock.getUser.mockReturnValue(Promise.resolve(null));
+			usersServiceMock.getUser.mockReturnValue(Promise.resolve(null));
 			await expect(service.logIn("not.john.smith@cramptarea.org", userPassword)).rejects.toThrow(UnauthorizedException);
-			expect(userServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
+			expect(usersServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
 		});
 
 		it("should throw an unauthorized exception as the passed password is not valid and not return a JWT", async () => {
-			userServiceMock.getUser.mockReturnValue(Promise.resolve(user));
+			usersServiceMock.getUser.mockReturnValue(Promise.resolve(user));
 			await expect(service.logIn(user.email, "notsUp3rP4ssw0rd!")).rejects.toThrow(UnauthorizedException);
-			expect(userServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
+			expect(usersServiceMock.getUser).toHaveBeenCalledWith({ email: user.email });
 		});
 	});
 
 	describe("register", () => {
 		it("should create a user and return a signed JWT with the user's id as a payload", async () => {
-			userServiceMock.createUser.mockReturnValue(Promise.resolve(true));
-			userServiceMock.getUser.mockReturnValue(Promise.resolve(user));
+			usersServiceMock.createUser.mockReturnValue(Promise.resolve(true));
+			usersServiceMock.getUser.mockReturnValue(Promise.resolve(user));
 			const result = await service.register(user.email, userPassword);
 			expect(result).toEqual<LoginResultDto>({
 				accessToken: expect.any(String),
@@ -83,13 +83,13 @@ describe("AuthService", () => {
 			expect(id).toEqual<string>(user.id);
 			expect(iat).toBeGreaterThan(new Date().getTime() / 1000 - 60 * 2); // 2 minutes ago
 			expect(exp).toBeLessThan(new Date().getTime() / 1000 + 60 * 60 * 24 + 60 * 2); // 1 day and 2 minutes from now
-			expect(userServiceMock.createUser).toHaveBeenCalledWith(user.email, expect.any(String));
+			expect(usersServiceMock.createUser).toHaveBeenCalledWith(user.email, expect.any(String));
 		});
 
 		it("should throw a conflict exception because a user already exists in te database and not return a JWT", async () => {
-			userServiceMock.createUser.mockReturnValue(Promise.resolve(false));
+			usersServiceMock.createUser.mockReturnValue(Promise.resolve(false));
 			await expect(service.register(user.email, userPassword)).rejects.toThrow(ConflictException);
-			expect(userServiceMock.createUser).toHaveBeenCalledWith(user.email, expect.any(String));
+			expect(usersServiceMock.createUser).toHaveBeenCalledWith(user.email, expect.any(String));
 		});
 	});
 
