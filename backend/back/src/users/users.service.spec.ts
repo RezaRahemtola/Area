@@ -3,15 +3,7 @@ import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { MockType } from "../types/test";
-
-const repositoryMockFactory: <T>() => MockType<Repository<T>> = jest.fn(() => ({
-	findOne: jest.fn(),
-	insert: jest.fn(),
-	update: jest.fn(),
-	delete: jest.fn(),
-	exist: jest.fn(),
-}));
+import { MockType, repositoryMockFactory } from "../types/test";
 
 describe("UserService", () => {
 	let userService: UsersService;
