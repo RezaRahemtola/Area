@@ -7,7 +7,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 type UserIdentification = { id: string } | { email: string };
 
 @Injectable()
-export class UserService {
+export class UsersService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
