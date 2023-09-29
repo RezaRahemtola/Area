@@ -1,15 +1,27 @@
-import { Controller, Delete, Get, InternalServerErrorException, Param, Req, UseGuards } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	InternalServerErrorException,
+	Param,
+	Post,
+	Req,
+	UseGuards,
+} from "@nestjs/common";
 import { ConnectionsService } from "./connections.service";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { APIRequest } from "../types/request";
 import {
 	ApiBearerAuth,
+	ApiBody,
 	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiProduces,
 	ApiTags,
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
+import GithubOAuthDto from "./dto/github-oauth.dto";
 
 @ApiBearerAuth()
 @ApiTags("OAuth Connections")
@@ -44,5 +56,15 @@ export class ConnectionsController {
 	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param("serviceId") serviceId: string) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
 			throw new InternalServerErrorException("An unknown error occurred while deleting the connection");
+	}
+
+	@ApiBody({ type: GithubOAuthDto })
+	@Post("/github")
+	async createGithubConnection(
+		@Req()
+		{ user: { id: userId } }: APIRequest,
+		@Body() { code, scopes }: GithubOAuthDto,
+	) {
+		return this.connectionsService.createGitHubConnection(userId, scopes, code);
 	}
 }
