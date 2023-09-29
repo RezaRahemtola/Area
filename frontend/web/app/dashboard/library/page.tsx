@@ -1,4 +1,4 @@
-import AppPageWrapper from "@/layouts/app/AppPageWrapper";
+import DashboardPageWrapper from "@/layouts/dashboard/DashboardPageWrapper";
 import { Workflow } from "@/types/workflows";
 import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
 
@@ -35,7 +35,7 @@ const LibraryPage = () => {
 	];
 
 	return (
-		<AppPageWrapper title="My workflows">
+		<DashboardPageWrapper title="My workflows">
 			<div className="overflow-x-auto">
 				<table className="table">
 					<thead className="text-neutral-content">
@@ -58,7 +58,7 @@ const LibraryPage = () => {
 					</tbody>
 				</table>
 			</div>
-		</AppPageWrapper>
+		</DashboardPageWrapper>
 	);
 };
 
