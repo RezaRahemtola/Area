@@ -15,21 +15,25 @@ export class ServicesService {
 		private readonly areaRepository: Repository<Area>,
 	) {}
 
-	async getServices(withScopes: boolean = false): Promise<ServiceDto[]> {
-		return (
-			await this.serviceRepository.find({
-				relations: {
-					scopes: withScopes,
-				},
-			})
-		).map(({ scopes, ...service }) => ({ ...service, scopes: scopes.map(({ id }) => id) }));
+	async getServices(withScopes: boolean = false): Promise<ServiceDto[] | Service[]> {
+		const services = await this.serviceRepository.find({
+			relations: {
+				scopes: withScopes,
+			},
+		});
+		if (withScopes)
+			return services.map(({ scopes, ...service }) => ({ ...service, scopes: scopes.map(({ id }) => id) }));
+		return services;
 	}
 
-	async getService(id: string, withScopes: boolean = false): Promise<ServiceDto | null> {
+	async getService(id: string, withScopes: boolean = false): Promise<ServiceDto | Service | null> {
 		const service = await this.serviceRepository.findOne({ where: { id }, relations: { scopes: withScopes } });
 		if (!service) return null;
-		const { scopes, ...serviceDto } = service;
-		return { ...serviceDto, scopes: scopes.map(({ id }) => id) };
+		if (withScopes) {
+			const { scopes, ...serviceDto } = service;
+			return { ...serviceDto, scopes: scopes.map(({ id }) => id) };
+		}
+		return service;
 	}
 
 	async getAREAsForService(id: string, action: boolean): Promise<AreaDto[] | null> {
