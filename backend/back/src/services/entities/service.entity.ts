@@ -9,6 +9,9 @@ export default class Service {
 	@Column()
 	imageUrl!: string;
 
+	@Column()
+	oauthUrl!: string;
+
 	@OneToMany(() => ServiceScope, (scope) => scope.service)
 	scopes!: ServiceScope[];
 }
