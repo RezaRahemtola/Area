@@ -8,7 +8,7 @@ const PricingGeneralHero = () => (
 				<h1 className="text-5xl font-extrabold">CREATE, AUTOMATE,</h1>
 				<h1 className="text-7xl font-extrabold leading-relaxed">SUCCEED</h1>
 				<p className="py-6">PRICING PAGE</p>
-				<Link href="/app" className="btn btn-secondary">
+				<Link href="/dashboard" className="btn btn-secondary">
 					Get Started
 				</Link>
 				<Image src="/landing/main.webp" width="1168" height="657" alt="landing-image" className="w-lg" />

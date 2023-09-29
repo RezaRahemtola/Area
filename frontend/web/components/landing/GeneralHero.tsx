@@ -12,7 +12,7 @@ const LandingGeneralHero = () => (
 					into reality, automate tasks, and achieve excellence effortlessly. Join us on a journey where the
 					extraordinary becomes routine.
 				</p>
-				<Link href="/app" className="btn btn-secondary">
+				<Link href="/dashboard" className="btn btn-secondary">
 					Get Started
 				</Link>
 				<Image src="/landing/main.webp" width="1168" height="657" alt="landing-image" className="w-lg" />
