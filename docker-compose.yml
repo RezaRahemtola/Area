@@ -33,6 +33,8 @@ services:
       - backend_network
       - web_network
       - mobile_network
+    depends_on:
+      - database
 
   database:
     container_name: area_database
