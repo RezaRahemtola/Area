@@ -11,7 +11,7 @@ const ApkDownloadButton = () => {
 	useEffect(() => {
 		(async () => {
 			const isFileAvailable = async (url: string) => {
-				let statusCode = 200;
+				let statusCode = StatusCodes.OK;
 				try {
 					await axios.head(url);
 				} catch (error) {
