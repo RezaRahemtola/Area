@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { API_URL } from "@/config/environment";
 import authService from "@/services/auth";
+import servicesService from "@/services/services";
 
 const axiosInstance = axios.create({
 	baseURL: API_URL,
@@ -17,6 +18,7 @@ axiosInstance.interceptors.request.use((config) => {
 
 const services = {
 	auth: authService,
+	services: servicesService,
 };
 
 export default services;
