@@ -5,7 +5,7 @@ services:
     container_name: area_mobile
     build: ./frontend/mobile
     volumes:
-      - apk_volume:/app/build/app/outputs/apk/debug
+      - apk_volume:/app/build/app/outputs/apk/release
     networks:
       - mobile_network
 
