@@ -18,12 +18,9 @@ RUN apt-get update \
     openjdk-$JAVA_VERSION-jdk \
     curl \
     unzip \
-    sed \
     git \
-    bash \
     xz-utils \
     libglvnd0 \
-    ssh \
     xauth \
     x11-xserver-utils \
     libpulse0 \
@@ -63,6 +60,6 @@ COPY . .
 
 RUN flutter pub get
 
-RUN flutter build apk --debug
+RUN flutter build apk
 
 CMD ["ls"]

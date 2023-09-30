@@ -22,7 +22,7 @@ const ApkDownloadButton = () => {
 				return statusCode !== StatusCodes.NOT_FOUND;
 			};
 
-			const isAvailable = await isFileAvailable("/apk/app-debug.apk");
+			const isAvailable = await isFileAvailable("/apk/app-release.apk");
 			setIsApkAvailable(isAvailable);
 		})();
 	}, []);
@@ -31,7 +31,7 @@ const ApkDownloadButton = () => {
 		<>
 			{isApkAvailable ? (
 				<nav>
-					<a href="/apk/app-debug.apk" download>
+					<a href="/apk/app-release.apk" download>
 						<button className="btn btn-accent">
 							<FontAwesomeIcon icon="android" /> Download APK
 						</button>
