@@ -47,6 +47,18 @@ services:
     networks:
       - backend_network
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/nginx/sites-available/default:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt/archive/area.rezar.fr:/etc/nginx/ssl/area.rezar.fr:ro
+    profiles:
+      - prod
+
 volumes:
   database_volume:
   apk_volume:

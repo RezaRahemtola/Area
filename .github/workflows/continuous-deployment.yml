@@ -28,4 +28,4 @@ jobs:
             docker compose down --remove-orphans && cd .. && rm -rf ${{ secrets.SCP_TARGET }}
           after_script: |
             cd ${{ secrets.SCP_TARGET }}
-            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && docker compose up --build -d
+            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && docker compose --profile prod up --build -d
