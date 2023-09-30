@@ -34,7 +34,7 @@ jobs:
           retention-days: 5
 
   unit-tests-backend:
-    name: 'Unit tests: Backend'
+    name: "Unit tests: Backend"
     runs-on: ubuntu-latest
     defaults:
       run:

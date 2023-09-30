@@ -1,0 +1,33 @@
+name: Continuous Deployment
+
+on:
+  push:
+#    branches:
+#      - main
+
+jobs:
+  deploy-server:
+    runs-on: ubuntu-latest
+    name: Deploy
+    environment: Production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_KEY }}
+          scp_source: .
+          scp_target: ${{ secrets.SCP_TARGET }}
+          before_script: |
+            cd ${{ secrets.SCP_TARGET }}
+            docker compose down --remove-orphans
+            rm -rf ${{ secrets.SCP_TARGET }}
+          after_script: |
+            cd ${{ secrets.SCP_TARGET }}
+            ./scripts/dump_env.sh prod
+            docker compose up --build -d
