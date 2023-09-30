@@ -40,8 +40,6 @@ services:
     container_name: area_database
     image: postgres:16.0-alpine3.18
     restart: always
-    ports:
-      - "5432:5432"
     env_file: backend/back/.env
     volumes:
       - database_volume:/var/lib/postgresql/data
