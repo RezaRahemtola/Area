@@ -127,7 +127,7 @@ jobs:
           target_repo_url:
             ${{ env.MIRROR_URL }}
           ssh_private_key:
-            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+            ${{ secrets.SSH_KEY }}
     needs:
       - eslint-backend
       - unit-tests-backend
