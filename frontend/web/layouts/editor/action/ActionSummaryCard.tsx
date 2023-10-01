@@ -1,7 +1,10 @@
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
-const ActionCard = () => (
-	<div className="card mx-auto w-96 border-primary shadow-2xl">
+type ActionSummaryCardProps = {
+	onClick: () => void;
+};
+const ActionSummaryCard = ({ onClick }: ActionSummaryCardProps) => (
+	<div className="card mx-auto w-96 shadow-2xl" onClick={onClick}>
 		<div className="card-body">
 			<div className="flex">
 				<div className="card shadow-xl">
@@ -18,4 +21,4 @@ const ActionCard = () => (
 	</div>
 );
 
-export default ActionCard;
+export default ActionSummaryCard;

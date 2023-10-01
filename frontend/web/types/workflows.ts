@@ -8,12 +8,13 @@ export type Workflow = {
 };
 
 export type EditorElement = {
-	service: Service;
-	event: Area;
+	id: string;
+	service?: Service;
+	event?: Area;
 };
 
 export type EditorWorkflow = {
 	name: string;
-	action?: EditorElement;
-	reactions: (EditorElement | undefined)[];
+	action: EditorElement;
+	reactions: EditorElement[];
 };

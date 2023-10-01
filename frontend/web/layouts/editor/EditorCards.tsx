@@ -1,9 +1,8 @@
 "use client";
 
 import { useAtom } from "jotai";
-
 import { editorWorkflowAtom } from "@/stores/editor";
-import ActionCard from "@/layouts/editor/ActionCard";
+import ActionCard from "@/layouts/editor/action/ActionCard";
 import EditorSeparator from "@/components/editor/EditorSeparator";
 import ReactionCard from "@/layouts/editor/ReactionCard";
 
@@ -15,7 +14,7 @@ const EditorCards = () => {
 			<ActionCard />
 			<EditorSeparator index={0} />
 			{workflow.reactions.map((reaction, index) => (
-				<div key={index}>
+				<div key={reaction.id}>
 					<ReactionCard reaction={reaction} />
 					<EditorSeparator index={index + 1} />
 				</div>

@@ -14,7 +14,7 @@ const LibraryWorkflowLine = ({ workflow: { name, pictures, running } }: LibraryW
 		<td>
 			<div className="flex items-center space-x-3">
 				{pictures.map((picture) => (
-					<div className="avatar">
+					<div className="avatar" key={picture}>
 						<div className="mask mask-squircle w-12 h-12">
 							<Image src={picture} alt="Service logo" width={500} height={500} />
 						</div>
