@@ -6,5 +6,6 @@ export type Service = {
 
 export type Area = {
 	id: string;
+	name: string;
 	serviceScopesNeeded: string[];
 };
