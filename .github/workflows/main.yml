@@ -116,6 +116,7 @@ jobs:
   push-to-mirror:
     name: Push to Epitech repository
     runs-on: ubuntu-latest
+    environment: Epitech repository
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
