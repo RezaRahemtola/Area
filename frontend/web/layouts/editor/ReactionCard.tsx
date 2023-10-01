@@ -1,6 +1,7 @@
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
+import { EditorElement } from "@/types/workflows";
 
-const ReactionCard = () => (
+const ReactionCard = ({ reaction }: { reaction: EditorElement | undefined }) => (
 	<div className="card mx-auto w-96 border-primary shadow-2xl">
 		<div className="card-body">
 			<div className="flex">

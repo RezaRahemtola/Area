@@ -5,7 +5,7 @@ type DashboardMenuProps = {
 };
 
 const DashboardMenu = ({ isFull }: DashboardMenuProps) => (
-	<ul className={`menu bg-accent h-screen overflow-y-auto ${isFull ? "w-96" : "w-24"}`}>
+	<ul className={`menu sticky top-0 self-start bg-accent min-h-screen overflow-y-auto ${isFull ? "w-96" : "w-24"}`}>
 		<li className="pb-5">
 			<DashboardMenuButton icon="plus" title="Create workflow" href="/dashboard/editor" isFull={isFull} />
 		</li>
