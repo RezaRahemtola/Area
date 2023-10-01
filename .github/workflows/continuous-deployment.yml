@@ -2,14 +2,14 @@ name: Continuous Deployment
 
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
 
 jobs:
   deploy-server:
     runs-on: ubuntu-latest
     name: Deploy
-    environment: Production
+    environment: Preview
 
     steps:
       - name: Checkout repository
