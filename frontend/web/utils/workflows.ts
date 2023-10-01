@@ -1,8 +1,11 @@
-import { EditorWorkflow } from "@/types/workflows";
+import { nanoid } from "nanoid";
 
-// eslint-disable-next-line import/prefer-default-export
+import { EditorElement, EditorWorkflow } from "@/types/workflows";
+
+export const getEmptyArea = (): EditorElement => ({ id: nanoid() });
+
 export const getEmptyWorkflow = (): EditorWorkflow => ({
 	name: "Untitled workflow",
-	action: undefined,
-	reactions: [undefined],
+	action: getEmptyArea(),
+	reactions: [getEmptyArea()],
 });

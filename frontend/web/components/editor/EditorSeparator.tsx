@@ -1,14 +1,16 @@
 "use client";
 
 import { useAtom } from "jotai";
+
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import { editorWorkflowAtom } from "@/stores/editor";
+import { getEmptyArea } from "@/utils/workflows";
 
 const EditorSeparator = ({ index }: { index: number }) => {
 	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
 
 	const onClick = () => {
-		setEditorWorkflow((prev) => ({ ...prev, reactions: prev.reactions.toSpliced(index, 0, undefined) }));
+		setEditorWorkflow((prev) => ({ ...prev, reactions: prev.reactions.toSpliced(index, 0, getEmptyArea()) }));
 	};
 
 	return (
