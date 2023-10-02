@@ -66,39 +66,37 @@ const LibraryWorkflowTable = () => {
 	};
 
 	return (
-		<div className="overflow-x-auto">
-			<table className="table">
-				<thead className="text-neutral-content">
-					<tr>
-						<th>
-							<label className="custom-checkbox">
-								<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
-								{selectedWorkflows.length === 0 ? (
-									<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
-								) : (
-									<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
-								)}
-								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
-							</label>
-						</th>
-						<th></th>
-						<th>Name</th>
-						<th>Running</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{workflows.map((workflow) => (
-						<LibraryWorkflowLine
-							workflow={workflow}
-							key={workflow.id}
-							selected={selectedWorkflows.includes(workflow.id)}
-							onSelect={onSelectLine}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
+		<table className="table">
+			<thead className="text-neutral-content">
+				<tr>
+					<th>
+						<label className="custom-checkbox">
+							<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
+							{selectedWorkflows.length === 0 ? (
+								<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
+							) : (
+								<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
+							)}
+							<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
+						</label>
+					</th>
+					<th></th>
+					<th>Name</th>
+					<th>Running</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{workflows.map((workflow) => (
+					<LibraryWorkflowLine
+						workflow={workflow}
+						key={workflow.id}
+						selected={selectedWorkflows.includes(workflow.id)}
+						onSelect={onSelectLine}
+					/>
+				))}
+			</tbody>
+		</table>
 	);
 };
 
