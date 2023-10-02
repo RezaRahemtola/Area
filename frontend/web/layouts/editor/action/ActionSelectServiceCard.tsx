@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useAtom } from "jotai";
+import { useState } from "react";
 
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import { editorWorkflowAtom } from "@/stores/editor";
@@ -33,8 +34,16 @@ const services: Service[] = [
 	},
 ];
 
-const ActionServiceElement = ({ service, onClick }: { service: Service; onClick: (service: Service) => void }) => (
-	<button className="btn btn-ghost normal-case" onClick={() => onClick(service)}>
+const ActionServiceElement = ({
+	service,
+	onClick,
+	selected,
+}: {
+	service: Service;
+	onClick: (service: Service) => void;
+	selected: boolean;
+}) => (
+	<button className={`btn normal-case ${selected ? "btn-secondary" : "btn-ghost"}`} onClick={() => onClick(service)}>
 		<div className="flex">
 			<div className="avatar">
 				<div className="mask mask-squircle w-8 h-8">
@@ -46,12 +55,13 @@ const ActionServiceElement = ({ service, onClick }: { service: Service; onClick:
 	</button>
 );
 const ActionSelectServiceCard = () => {
-	const [, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [selectedService, setSelectedService] = useState<Service | undefined>(workflow.action.service);
 
 	const servicesChunks = splitArrayInChunks(services, 3);
 
-	const onServiceClick = (service: Service) => {
-		setWorkflow((prev) => ({ ...prev, action: { ...prev.action, service } }));
+	const onServiceSave = () => {
+		setWorkflow((prev) => ({ ...prev, action: { ...prev.action, service: selectedService!, event: undefined } }));
 	};
 
 	return (
@@ -65,10 +75,25 @@ const ActionSelectServiceCard = () => {
 				{servicesChunks.map((chunk, index) => (
 					<div className="flex w-full justify-around my-2" key={index}>
 						{chunk.map((service) => (
-							<ActionServiceElement service={service} onClick={onServiceClick} key={service.id} />
+							<ActionServiceElement
+								service={service}
+								onClick={() => setSelectedService(service)}
+								key={service.id}
+								selected={selectedService?.id === service.id}
+							/>
 						))}
 					</div>
 				))}
+
+				<div className="card-actions">
+					<button
+						className="btn btn-primary btn-wide disabled:bg-accent"
+						disabled={!selectedService}
+						onClick={onServiceSave}
+					>
+						Next
+					</button>
+				</div>
 			</div>
 		</div>
 	);
