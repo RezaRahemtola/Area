@@ -83,10 +83,12 @@ class LoginButtons extends StatelessWidget {
         ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                  print("test");
-                if (await signIn(
-                    emailController.text, passwordController.text)) {
+                print("test");
+                signIn(emailController.text, passwordController.text, context,
+                    (response) {
                   print("validé");
+                  print(response.data);
+                  print(response.statusCode);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -94,31 +96,11 @@ class LoginButtons extends StatelessWidget {
                               email: emailController.text,
                             )),
                   );
-                } else {
-                  print("pas");
+                }, () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Invalid Credentials')),
                   );
-                }
-                // if (emailController.text == "azerty@qwerty" &&
-                //     passwordController.text == "bepo") {
-                //   // validation
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => HomePage(
-                //               email: emailController.text,
-                //             )),
-                //   );
-                // } else {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     const SnackBar(content: Text('Invalid Credentials')),
-                //   );
-                // }
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Please fill the login form.")),
-                );
+                });
               }
             },
             child: const Text("Submit")),
@@ -127,23 +109,26 @@ class LoginButtons extends StatelessWidget {
   }
 }
 
-Future<bool> signIn(email, password) async {
+Future<void> signIn(email, password, BuildContext context,
+    ValueChanged<Response<dynamic>> onSuccess, VoidCallback onFail) async {
   var dio = Dio();
-  print('http://${dotenv.env['BACKIP']}/auth/login/');
   try {
-    var response = await dio.post('http://${dotenv.env['BACKIP']}/auth/login/',
-        data: {"email": email, "password": password},
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        )).timeout(const Duration(seconds: 3));
-    print(response.data);
-    print(response.statusCode);
-    return (response.statusCode == 201);
+    var response = await dio
+        .post('http://${dotenv.env['BACKIP']}/auth/login/',
+            data: {"email": email, "password": password},
+            options: Options(
+              followRedirects: true,
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+            ))
+        .timeout(const Duration(seconds: 3));
+    if (response.statusCode == 200) {
+      onSuccess.call(response);
+    }
   } catch (e) {
     print(e.toString());
   }
-  return false;
+  onFail.call();
 }
