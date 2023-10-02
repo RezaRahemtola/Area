@@ -1,5 +1,6 @@
 export type Service = {
 	id: string;
+	name: string;
 	imageUrl: string;
 	scopes: string[];
 };

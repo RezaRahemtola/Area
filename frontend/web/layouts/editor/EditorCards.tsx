@@ -12,7 +12,7 @@ const EditorCards = () => {
 
 	return (
 		<div className="bg-neutral">
-			<ActionCard />
+			<ActionCard action={workflow.action} />
 			<EditorSeparator index={0} />
 			{workflow.reactions.map((reaction, index) => (
 				<div key={reaction.id}>
