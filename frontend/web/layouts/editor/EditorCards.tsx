@@ -1,6 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
+
 import { editorWorkflowAtom } from "@/stores/editor";
 import ActionCard from "@/layouts/editor/action/ActionCard";
 import EditorSeparator from "@/components/editor/EditorSeparator";
