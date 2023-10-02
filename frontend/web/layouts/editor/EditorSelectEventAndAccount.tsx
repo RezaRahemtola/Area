@@ -1,10 +1,9 @@
-import { useAtom } from "jotai";
 import { useState } from "react";
 
 import Image from "next/image";
-import { editorWorkflowAtom } from "@/stores/editor";
 import { Area } from "@/types/services";
 import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
+import { EditorElement } from "@/types/workflows";
 
 const options: Area[] = [
 	{
@@ -19,22 +18,15 @@ const options: Area[] = [
 	},
 ];
 
-const ActionSelectEventAndAccount = ({ onNextStep }: { onNextStep: () => void }) => {
-	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
-	const [selectedEvent, setSelectedEvent] = useState<string | null>(workflow.action.event?.id ?? null);
-	const [selectedAccount, setSelectedAccount] = useState<boolean>(workflow.action.account);
-
-	const onSave = () => {
-		setWorkflow((prev) => ({
-			...prev,
-			action: {
-				...prev.action,
-				event: options.find((option) => option.id === selectedEvent),
-				account: selectedAccount,
-			},
-		}));
-		onNextStep();
-	};
+const EditorSelectEventAndAccount = ({
+	area,
+	onNextStep,
+}: {
+	area: EditorElement;
+	onNextStep: (event: Area, account: boolean) => void;
+}) => {
+	const [selectedEvent, setSelectedEvent] = useState<string | null>(area.event?.id ?? null);
+	const [selectedAccount, setSelectedAccount] = useState<boolean>(area.account);
 
 	return (
 		<EditorAreaStepCard title="Action">
@@ -65,7 +57,7 @@ const ActionSelectEventAndAccount = ({ onNextStep }: { onNextStep: () => void })
 				<button className="btn btn-ghost w-16 h-16">
 					<div className="avatar m-auto" onClick={() => setSelectedAccount(true)}>
 						<div className="mask mask-squircle w-16 h-16">
-							<Image src={workflow.action.service!.imageUrl} alt="Service logo" width={300} height={300} />
+							<Image src={area.service!.imageUrl} alt="Service logo" width={300} height={300} />
 						</div>
 					</div>
 				</button>
@@ -74,7 +66,7 @@ const ActionSelectEventAndAccount = ({ onNextStep }: { onNextStep: () => void })
 					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
 						disabled={!selectedEvent || !selectedAccount}
-						onClick={onSave}
+						onClick={() => onNextStep(options.find((option) => option.id === selectedEvent)!, selectedAccount)}
 					>
 						Next
 					</button>
@@ -84,4 +76,4 @@ const ActionSelectEventAndAccount = ({ onNextStep }: { onNextStep: () => void })
 	);
 };
 
-export default ActionSelectEventAndAccount;
+export default EditorSelectEventAndAccount;

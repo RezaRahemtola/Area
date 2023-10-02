@@ -3,20 +3,19 @@
 import { useAtom } from "jotai";
 
 import { editorWorkflowAtom } from "@/stores/editor";
-import ActionCard from "@/layouts/editor/action/ActionCard";
 import EditorSeparator from "@/components/editor/EditorSeparator";
-import ReactionCard from "@/layouts/editor/ReactionCard";
+import EditorCard from "@/layouts/editor/EditorCard";
 
 const EditorCards = () => {
 	const [workflow] = useAtom(editorWorkflowAtom);
 
 	return (
 		<div className="bg-neutral">
-			<ActionCard action={workflow.action} />
+			<EditorCard area={workflow.action} isAction />
 			<EditorSeparator index={0} />
 			{workflow.reactions.map((reaction, index) => (
 				<div key={reaction.id}>
-					<ReactionCard reaction={reaction} />
+					<EditorCard area={reaction} isAction={false} />
 					<EditorSeparator index={index + 1} />
 				</div>
 			))}

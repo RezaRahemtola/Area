@@ -1,8 +1,5 @@
 import Image from "next/image";
-import { useAtom } from "jotai";
 import { useState } from "react";
-
-import { editorWorkflowAtom } from "@/stores/editor";
 import { Service } from "@/types/services";
 import { splitArrayInChunks } from "@/utils/arrays";
 import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
@@ -54,16 +51,16 @@ const ActionServiceElement = ({
 		</div>
 	</button>
 );
-const ActionSelectServiceCard = ({ onNextStep }: { onNextStep: () => void }) => {
-	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
-	const [selectedService, setSelectedService] = useState<Service | undefined>(workflow.action.service);
+const EditorSelectServiceCard = ({
+	currentService,
+	onNextStep,
+}: {
+	currentService?: Service;
+	onNextStep: (service: Service) => void;
+}) => {
+	const [selectedService, setSelectedService] = useState<Service | undefined>(currentService);
 
 	const servicesChunks = splitArrayInChunks(services, 3);
-
-	const onServiceSave = () => {
-		setWorkflow((prev) => ({ ...prev, action: { ...prev.action, service: selectedService!, event: undefined } }));
-		onNextStep();
-	};
 
 	return (
 		<EditorAreaStepCard title="Action">
@@ -84,7 +81,7 @@ const ActionSelectServiceCard = ({ onNextStep }: { onNextStep: () => void }) => 
 				<button
 					className="btn btn-primary btn-wide disabled:bg-accent"
 					disabled={!selectedService}
-					onClick={onServiceSave}
+					onClick={() => onNextStep(selectedService!)}
 				>
 					Next
 				</button>
@@ -93,4 +90,4 @@ const ActionSelectServiceCard = ({ onNextStep }: { onNextStep: () => void }) => 
 	);
 };
 
-export default ActionSelectServiceCard;
+export default EditorSelectServiceCard;
