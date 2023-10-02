@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"encoding/json"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"supervisor/jobs"
 	supervisor "supervisor/proto"
 )
@@ -24,6 +25,35 @@ func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobDa
 		return newServerError(err), nil
 	}
 	return &supervisor.Response{}, nil
+}
+
+func (s *AreaSupervisorServer) KillJob(_ context.Context, in *supervisor.JobId) (*supervisor.Response, error) {
+	err := jobs.GetJobManager().KillJob(in.GetIdentifier())
+	if err != nil {
+		return newServerError(err), nil
+	}
+	return &supervisor.Response{}, nil
+}
+
+func (s *AreaSupervisorServer) KillAllJobs(_ context.Context, _ *emptypb.Empty) (*supervisor.Response, error) {
+	for _, job := range jobs.GetJobManager().ListJobs() {
+		err := jobs.GetJobManager().KillJob(job.Identifier)
+		if err != nil {
+			return newServerError(err), nil
+		}
+	}
+	return &supervisor.Response{}, nil
+}
+
+func (s *AreaSupervisorServer) ListJobs(_ context.Context, _ *emptypb.Empty) (*supervisor.JobList, error) {
+	list := supervisor.JobList{}
+	for _, job := range jobs.GetJobManager().ListJobs() {
+		list.Jobs = append(list.Jobs, &supervisor.Job{
+			Name:       job.Name,
+			Identifier: job.Identifier,
+		})
+	}
+	return &list, nil
 }
 
 func newServerError(err error) *supervisor.Response {

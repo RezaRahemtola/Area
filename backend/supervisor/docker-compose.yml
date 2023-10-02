@@ -7,3 +7,7 @@ services:
     env_file: .env
     ports:
       - "50051:50051"
+
+  seconds-interval:
+    container_name: seconds-interval
+    build: ../workers/seconds-interval
