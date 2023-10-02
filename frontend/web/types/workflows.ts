@@ -10,6 +10,7 @@ export type Workflow = {
 export type EditorElement = {
 	id: string;
 	service?: Service;
+	account: boolean;
 	event?: Area;
 };
 

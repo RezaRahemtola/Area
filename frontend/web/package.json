@@ -4,7 +4,7 @@
   "description": "Area Web",
   "private": true,
   "scripts": {
-    "dev": "infisical run --path '/frontend/web' -- next dev",
+    "dev": "infisical run --path=/frontend/web -- next dev",
     "build": "next build",
     "start": "node server.js",
     "lint": "next lint",

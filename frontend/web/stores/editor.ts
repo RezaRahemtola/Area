@@ -4,4 +4,4 @@ import { EditorWorkflow } from "@/types/workflows";
 
 export const editorWorkflowAtom = atom<EditorWorkflow>(getEmptyWorkflow());
 
-export const selectedEditorArea = atom<string | null>(null);
+export const selectedEditorAreaAtom = atom<string | null>(null);

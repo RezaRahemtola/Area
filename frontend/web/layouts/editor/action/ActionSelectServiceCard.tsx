@@ -2,10 +2,10 @@ import Image from "next/image";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
-import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import { editorWorkflowAtom } from "@/stores/editor";
 import { Service } from "@/types/services";
 import { splitArrayInChunks } from "@/utils/arrays";
+import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
 
 const services: Service[] = [
 	{
@@ -54,7 +54,7 @@ const ActionServiceElement = ({
 		</div>
 	</button>
 );
-const ActionSelectServiceCard = () => {
+const ActionSelectServiceCard = ({ onNextStep }: { onNextStep: () => void }) => {
 	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedService, setSelectedService] = useState<Service | undefined>(workflow.action.service);
 
@@ -62,40 +62,34 @@ const ActionSelectServiceCard = () => {
 
 	const onServiceSave = () => {
 		setWorkflow((prev) => ({ ...prev, action: { ...prev.action, service: selectedService!, event: undefined } }));
+		onNextStep();
 	};
 
 	return (
-		<div className="card mx-auto w-2/3 shadow-2xl">
-			<div className="card-body items-center pt-3">
-				<div className="flex mb-5">
-					<FontAwesomeIcon icon="bolt" svgProps={{ className: "h-7 w-7" }} />
-					<p className="card-title text-2xl ml-2">Action</p>
+		<EditorAreaStepCard title="Action">
+			{servicesChunks.map((chunk, index) => (
+				<div className="flex w-full justify-around my-2" key={index}>
+					{chunk.map((service) => (
+						<ActionServiceElement
+							service={service}
+							onClick={() => setSelectedService(service)}
+							key={service.id}
+							selected={selectedService?.id === service.id}
+						/>
+					))}
 				</div>
+			))}
 
-				{servicesChunks.map((chunk, index) => (
-					<div className="flex w-full justify-around my-2" key={index}>
-						{chunk.map((service) => (
-							<ActionServiceElement
-								service={service}
-								onClick={() => setSelectedService(service)}
-								key={service.id}
-								selected={selectedService?.id === service.id}
-							/>
-						))}
-					</div>
-				))}
-
-				<div className="card-actions">
-					<button
-						className="btn btn-primary btn-wide disabled:bg-accent"
-						disabled={!selectedService}
-						onClick={onServiceSave}
-					>
-						Next
-					</button>
-				</div>
+			<div className="card-actions">
+				<button
+					className="btn btn-primary btn-wide disabled:bg-accent"
+					disabled={!selectedService}
+					onClick={onServiceSave}
+				>
+					Next
+				</button>
 			</div>
-		</div>
+		</EditorAreaStepCard>
 	);
 };
 
