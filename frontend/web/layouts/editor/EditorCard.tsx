@@ -17,7 +17,7 @@ enum Step {
 }
 
 const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean }) => {
-	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
 
