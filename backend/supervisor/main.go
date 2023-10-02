@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/docker/docker/client"
 	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"os"
 	"strconv"
 	"supervisor/grpc"
+	"supervisor/jobs"
 )
 
 func GetEnvNumber(env string) (int, error) {
@@ -19,5 +21,11 @@ func main() {
 		log.Fatal("Invalid server port", err)
 	}
 
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		log.Fatal("Cannot create docker client: ", err)
+	}
+
+	jobs.InitJobManager(cli)
 	grpc.InitGrpcServer(port)
 }
