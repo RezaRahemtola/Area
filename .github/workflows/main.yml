@@ -34,7 +34,7 @@ jobs:
           retention-days: 5
 
   unit-tests-backend:
-    name: 'Unit tests: Backend'
+    name: "Unit tests: Backend"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -116,6 +116,7 @@ jobs:
   push-to-mirror:
     name: Push to Epitech repository
     runs-on: ubuntu-latest
+    environment: Epitech repository
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
@@ -127,7 +128,7 @@ jobs:
           target_repo_url:
             ${{ env.MIRROR_URL }}
           ssh_private_key:
-            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+            ${{ secrets.SSH_KEY }}
     needs:
       - eslint-backend
       - unit-tests-backend

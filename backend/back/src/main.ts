@@ -12,7 +12,7 @@ async function bootstrap() {
 		options: {
 			url: "localhost:50050",
 			package: "area_back",
-			protoPath: "proto/area_back.proto",
+			protoPath: "src/grpc/proto/area_back.proto",
 		},
 	});
 
@@ -20,6 +20,7 @@ async function bootstrap() {
 		.setTitle("AREA API")
 		.setDescription("AREA Internal API")
 		.setVersion(version)
+		.addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" })
 		.build();
 	const document = SwaggerModule.createDocument(app, config);
 

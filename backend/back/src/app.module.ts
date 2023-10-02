@@ -3,15 +3,22 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { GrpcModule } from "./grpc/grpc.module";
-import { User } from "./user/entities/user.entity";
-import { UserModule } from "./user/user.module";
+import { User } from "./users/entities/user.entity";
+import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { JobsModule } from "./jobs/jobs.module";
+import { ConnectionsModule } from "./connections/connections.module";
+import { ServicesModule } from "./services/services.module";
+import Service from "./services/entities/service.entity";
+import ServiceScope from "./services/entities/service-scope.entity";
+import UserConnection from "./connections/entities/user-connection.entity";
+import Area from "./services/entities/area.entity";
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [".env"],
+			isGlobal: true,
 		}),
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
@@ -23,16 +30,18 @@ import { JobsModule } from "./jobs/jobs.module";
 				username: config.getOrThrow<string>("POSTGRES_USER"),
 				password: config.getOrThrow<string>("POSTGRES_PASSWORD"),
 				database: config.getOrThrow<string>("POSTGRES_DB"),
-				entities: [User],
+				entities: [User, Service, ServiceScope, UserConnection, Area],
 				migrations: [],
 				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),
 			inject: [ConfigService],
 		}),
-		AuthModule,
-		GrpcModule,
-		JobsModule,
-		UserModule,
+        AuthModule,
+        ConnectionsModule,
+        GrpcModule,
+        JobsModule,
+        UsersModule,
+		ServicesModule,
 	],
 	controllers: [],
 	providers: [],

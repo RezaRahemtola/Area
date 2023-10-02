@@ -4,18 +4,18 @@ import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import { UpdateUserDto } from "./dto/update-user.dto";
 
-type UserIdentification = { id: string } | { mail: string };
+type UserIdentification = { id: string } | { email: string };
 
 @Injectable()
-export class UserService {
+export class UsersService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
 	) {}
 
-	createUser(mail: string, passwordHash: string, isAdmin: boolean = false): Promise<boolean> {
+	createUser(email: string, passwordHash: string, isAdmin: boolean = false): Promise<boolean> {
 		return this.userRepository
-			.insert({ mail, passwordHash, isAdmin })
+			.insert({ email, passwordHash, isAdmin })
 			.then(() => true)
 			.catch(() => false);
 	}

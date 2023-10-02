@@ -15,10 +15,10 @@ const config: Config = {
 					"color-scheme": "light",
 					primary: "#C5C6C6",
 					secondary: "#F1895C",
-					accent: "#ffffff",
+					accent: "#FFFFFF",
 					neutral: "#516079",
 
-					"base-100": "#ffffff",
+					"base-100": "#FFFFFF",
 					"base-content": "#1f2937",
 				},
 				dark: {
@@ -29,7 +29,7 @@ const config: Config = {
 					neutral: "#C5C6C6",
 
 					"base-100": "#2E3244",
-					"base-content": "#ffffff",
+					"base-content": "#FFFFFF",
 				},
 			},
 		],

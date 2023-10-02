@@ -1,3 +1,5 @@
-const DashboardPage = () => <span>My name is Board. Dash Board 🔫</span>;
+import DashboardPageWrapper from "@/layouts/dashboard/DashboardPageWrapper";
+
+const DashboardPage = () => <DashboardPageWrapper title="Dashboard" />;
 
 export default DashboardPage;

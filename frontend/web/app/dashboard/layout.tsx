@@ -3,18 +3,18 @@
 import { ReactNode, useState } from "react";
 import { useAtom } from "jotai";
 
-import DashboardMenu from "@/components/dashboard/DashboardMenu";
+import DashboardMenu from "@/components/dashboard/menu/DashboardMenu";
 import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
-import { userRegisteredAtom } from "@/stores/user";
+import { userAuthTokenAtom } from "@/stores/user";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-	const [userRegistered] = useAtom(userRegisteredAtom);
+	const [userAuthToken] = useAtom(userAuthTokenAtom);
 
 	return (
 		<>
 			<DashboardNavbar isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
-			{userRegistered ? (
+			{userAuthToken ? (
 				<div className="flex">
 					<DashboardMenu isFull={isDrawerOpen} />
 					{children}
