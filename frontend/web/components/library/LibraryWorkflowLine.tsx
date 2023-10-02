@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Workflow } from "@/types/workflows";
+import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 type LibraryWorkflowLineProps = {
 	workflow: Workflow;
@@ -34,7 +35,22 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect }: LibraryWorkflowLi
 			<input type="checkbox" className="toggle toggle-success" defaultChecked={workflow.running} />
 		</td>
 		<th>
-			<button className="btn btn-ghost btn-xs">details</button>
+			<div className="dropdown dropdown-end">
+				<button className="btn btn-ghost btn-xs">
+					<FontAwesomeIcon icon="ellipsis" />
+				</button>
+				<ul
+					tabIndex={0}
+					className="dropdown-content z-[1] menu p-2 shadow-xl bg-neutral text-neutral-content rounded-box w-52"
+				>
+					<li>
+						<a className="hover:text-neutral-content">Item 1</a>
+					</li>
+					<li>
+						<a className="hover:text-neutral-content">Item 2</a>
+					</li>
+				</ul>
+			</div>
 		</th>
 	</tr>
 );
