@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:area_mobile/Components/email_field.dart';
-import 'package:area_mobile/Components/password_field.dart';
+import 'package:area_mobile/components/auth/email_field.dart';
+import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/main.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key, required this.title});
@@ -36,7 +36,7 @@ class _RegisterState extends State<Register> {
               EmailField(emailController: emailController),
               PasswordField(passwordController: passwordController),
               PasswordField(
-                  passwordController: passwordController,
+                  passwordController: passwordReController,
                   label: "Confirm password",
                   placeholder: 'Please re-enter your password.'),
               RegisterButton(
@@ -116,19 +116,11 @@ Future<void> registerAccount(
     BuildContext context,
     ValueChanged<Response<dynamic>> onSuccess,
     VoidCallback onFail) async {
-  var dio = Dio();
   try {
-    var response = await dio
-        .post('${dotenv.env['API_URL']}/auth/register',
-            data: {"email": email, "password": password},
-            options: Options(
-              followRedirects: true,
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-              },
-            ))
-        .timeout(const Duration(seconds: 3));
+    final response = await dio.post(
+      '/auth/register',
+      data: {"email": email, "password": password},
+    );
     if (response.statusCode == HttpStatus.created) {
       onSuccess.call(response);
     }

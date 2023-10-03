@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'login.dart';
+import 'pages/auth/login.dart';
 
 Future main() async {
   runApp(const MyApp());
