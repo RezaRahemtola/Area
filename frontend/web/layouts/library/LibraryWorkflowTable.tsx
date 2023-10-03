@@ -6,6 +6,7 @@ import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 import "@/styles/customCheckbox.css";
+import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
 
 const workflows: Workflow[] = [
 	{
@@ -72,18 +73,20 @@ const LibraryWorkflowTable = () => {
 		<table className="table">
 			<thead className="text-neutral-content">
 				<tr>
-					<th>
-						<label className="custom-checkbox">
-							<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
-							{selectedWorkflows.length === 0 ? (
-								<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
-							) : (
-								<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
-							)}
-							<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
-						</label>
+					<th className="table-cell " colSpan={2}>
+						<div className="flex">
+							<label className="custom-checkbox">
+								<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
+								{selectedWorkflows.length === 0 ? (
+									<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
+								) : (
+									<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
+								)}
+								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
+							</label>
+							{selectedWorkflows.length !== 0 ? <LibraryGlobalActions /> : <></>}
+						</div>
 					</th>
-					<th></th>
 					<th>Name</th>
 					<th>Running</th>
 					<th></th>
