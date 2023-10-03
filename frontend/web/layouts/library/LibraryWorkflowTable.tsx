@@ -76,7 +76,12 @@ const LibraryWorkflowTable = () => {
 					<th className="table-cell " colSpan={2}>
 						<div className="flex">
 							<label className="custom-checkbox">
-								<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
+								<input
+									type="checkbox"
+									className="global-workflow-selector"
+									checked={globalSelect}
+									onChange={onGlobalSelect}
+								/>
 								{selectedWorkflows.length === 0 ? (
 									<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
 								) : (

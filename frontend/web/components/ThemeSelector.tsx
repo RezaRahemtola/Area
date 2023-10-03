@@ -19,7 +19,7 @@ const ThemeSelector = () => {
 
 	return (
 		<label className="swap swap-rotate mr-2">
-			<input type="checkbox" onChange={handleThemeChange} checked={interfaceTheme !== "light"} />
+			<input type="checkbox" name="theme-selector" onChange={handleThemeChange} checked={interfaceTheme !== "light"} />
 
 			{/* sun icon */}
 			<svg className="swap-on fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
