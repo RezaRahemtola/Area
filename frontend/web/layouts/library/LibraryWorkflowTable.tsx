@@ -44,6 +44,9 @@ const LibraryWorkflowTable = () => {
 
 	const onSelectLine = (workflowId: string, selected: boolean) => {
 		if (selected && !selectedWorkflows.includes(workflowId)) {
+			if (selectedWorkflows.length + 1 === workflows.length) {
+				setGlobalSelect(true);
+			}
 			setSelectedWorkflows((prev) => [...prev, workflowId]);
 		} else {
 			setSelectedWorkflows((prev) => prev.filter((workflow) => workflow !== workflowId));
