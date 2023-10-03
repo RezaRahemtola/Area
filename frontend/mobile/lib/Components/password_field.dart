@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
-  const PasswordField({
-    super.key,
-    required this.passwordController,
-  });
-
   final TextEditingController passwordController;
+  final String label;
+  final String placeholder;
+
+  const PasswordField(
+      {super.key,
+      required this.passwordController,
+      this.label = "Password",
+      this.placeholder = "Please enter your password"});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +18,13 @@ class PasswordField extends StatelessWidget {
       child: TextFormField(
         obscureText: true,
         controller: passwordController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Password",
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: label,
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your password.';
+            return placeholder;
           }
           return null;
         },

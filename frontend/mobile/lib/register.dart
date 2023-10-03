@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:area_mobile/Components/email_field.dart';
 import 'package:area_mobile/Components/password_field.dart';
-import 'package:area_mobile/Components/password_re_field.dart';
 import 'package:area_mobile/main.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,10 @@ class _RegisterState extends State<Register> {
             children: [
               EmailField(emailController: emailController),
               PasswordField(passwordController: passwordController),
-              PasswordReField(passwordController: passwordReController),
+              PasswordField(
+                  passwordController: passwordController,
+                  label: "Confirm password",
+                  placeholder: 'Please re-enter your password.'),
               RegisterButton(
                   formKey: _formKey,
                   emailController: emailController,
