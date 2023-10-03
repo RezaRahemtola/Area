@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:area_mobile/components/auth/email_field.dart';
 import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/main.dart';
 import 'package:area_mobile/services/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -67,7 +64,7 @@ class RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState!.validate()) {
             if (passwordController.text != passwordReController.text) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -79,9 +76,11 @@ class RegisterButton extends StatelessWidget {
                 const SnackBar(content: Text("Invalid email.")),
               );
             } else {
-              registerAccount(
-                  emailController.text, passwordController.text, context,
-                  (value) {
+              final result = await services.auth
+                  .register(emailController.text, passwordController.text);
+              if (!context.mounted) return;
+
+              if (result.data != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Registered")),
                 );
@@ -92,13 +91,11 @@ class RegisterButton extends StatelessWidget {
                             email: emailController.text,
                           )),
                 );
-              }, () {
+              } else if (result.error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content:
-                          Text("Invalid/Existing Email / Password too simple")),
+                  SnackBar(content: Text(result.error!)),
                 );
-              });
+              }
             }
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -108,24 +105,4 @@ class RegisterButton extends StatelessWidget {
         },
         child: const Text("Submit"));
   }
-}
-
-Future<void> registerAccount(
-    String email,
-    String password,
-    BuildContext context,
-    ValueChanged<Response<dynamic>> onSuccess,
-    VoidCallback onFail) async {
-  try {
-    final response = await dio.post(
-      '/auth/register',
-      data: {"email": email, "password": password},
-    );
-    if (response.statusCode == HttpStatus.created) {
-      onSuccess.call(response);
-    }
-  } catch (e) {
-    print(e.toString());
-  }
-  onFail.call();
 }
