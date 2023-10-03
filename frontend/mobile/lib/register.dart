@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:area_mobile/Components/email_field.dart';
+import 'package:area_mobile/Components/password_field.dart';
 import 'package:area_mobile/Components/password_re_field.dart';
 import 'package:area_mobile/main.dart';
 import 'package:dio/dio.dart';
-import 'package:area_mobile/Components/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -70,7 +72,7 @@ class RegisterButton extends StatelessWidget {
                 const SnackBar(content: Text("Passwords don't match.")),
               );
             } else if (emailController.text.isEmpty) {
-              // acutally impossible, but will insert here the email validation condition
+              // actually impossible, but will insert here the email validation condition
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Invalid email.")),
               );
@@ -79,9 +81,7 @@ class RegisterButton extends StatelessWidget {
                   emailController.text, passwordController.text, context,
                   (value) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content:
-                          Text("Registered")),
+                  const SnackBar(content: Text("Registered")),
                 );
                 Navigator.push(
                   context,
@@ -108,12 +108,16 @@ class RegisterButton extends StatelessWidget {
   }
 }
 
-Future<void> registerAccount(email, password, BuildContext context,
-    ValueChanged<Response<dynamic>> onSuccess, VoidCallback onFail) async {
+Future<void> registerAccount(
+    String email,
+    String password,
+    BuildContext context,
+    ValueChanged<Response<dynamic>> onSuccess,
+    VoidCallback onFail) async {
   var dio = Dio();
   try {
     var response = await dio
-        .post('http://${dotenv.env['BACKIP']}/auth/register/',
+        .post('${dotenv.env['API_URL']}/auth/register',
             data: {"email": email, "password": password},
             options: Options(
               followRedirects: true,
@@ -123,7 +127,7 @@ Future<void> registerAccount(email, password, BuildContext context,
               },
             ))
         .timeout(const Duration(seconds: 3));
-    if (response.statusCode == 200) {
+    if (response.statusCode == HttpStatus.created) {
       onSuccess.call(response);
     }
   } catch (e) {

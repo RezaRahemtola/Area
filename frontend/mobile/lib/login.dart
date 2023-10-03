@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:area_mobile/Components/email_field.dart';
-import 'package:area_mobile/main.dart';
 import 'package:area_mobile/Components/password_field.dart';
+import 'package:area_mobile/main.dart';
 import 'package:area_mobile/register.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -83,12 +85,8 @@ class LoginButtons extends StatelessWidget {
         ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                print("test");
                 signIn(emailController.text, passwordController.text, context,
                     (response) {
-                  print("validé");
-                  print(response.data);
-                  print(response.statusCode);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -109,12 +107,12 @@ class LoginButtons extends StatelessWidget {
   }
 }
 
-Future<void> signIn(email, password, BuildContext context,
+Future<void> signIn(String email, String password, BuildContext context,
     ValueChanged<Response<dynamic>> onSuccess, VoidCallback onFail) async {
   var dio = Dio();
   try {
     var response = await dio
-        .post('http://${dotenv.env['BACKIP']}/auth/login/',
+        .post('${dotenv.env['API_URL']}/auth/login',
             data: {"email": email, "password": password},
             options: Options(
               followRedirects: true,
@@ -124,7 +122,7 @@ Future<void> signIn(email, password, BuildContext context,
               },
             ))
         .timeout(const Duration(seconds: 3));
-    if (response.statusCode == 200) {
+    if (response.statusCode == HttpStatus.ok) {
       onSuccess.call(response);
     }
   } catch (e) {

@@ -11,6 +11,7 @@ INFISICAL_ENVIRONMENT=$1
 # Define paths to dump
 paths=( \
   "frontend/web/" \
+  "frontend/mobile/" \
   "backend/back/" \
 )
 file=".env"
