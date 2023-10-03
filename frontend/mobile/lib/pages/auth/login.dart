@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:area_mobile/components/auth/email_field.dart';
 import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/main.dart';
 import 'package:area_mobile/pages/auth/register.dart';
 import 'package:area_mobile/services/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -85,8 +82,11 @@ class LoginButtons extends StatelessWidget {
         ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                signIn(emailController.text, passwordController.text, context,
-                    (response) {
+                final result = await services.auth
+                    .login(emailController.text, passwordController.text);
+                if (!context.mounted) return;
+
+                if (result.data != null) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -94,29 +94,15 @@ class LoginButtons extends StatelessWidget {
                               email: emailController.text,
                             )),
                   );
-                }, () {
+                } else if (result.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Invalid Credentials')),
+                    SnackBar(content: Text(result.error!)),
                   );
-                });
+                }
               }
             },
             child: const Text("Submit")),
       ],
     );
   }
-}
-
-Future<void> signIn(String email, String password, BuildContext context,
-    ValueChanged<Response<dynamic>> onSuccess, VoidCallback onFail) async {
-  try {
-    final response = await dio
-        .post('/auth/login', data: {"email": email, "password": password});
-    if (response.statusCode == HttpStatus.ok) {
-      onSuccess.call(response);
-    }
-  } catch (e) {
-    print(e.toString());
-  }
-  onFail.call();
 }
