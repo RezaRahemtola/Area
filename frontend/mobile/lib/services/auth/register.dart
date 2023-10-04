@@ -8,8 +8,8 @@ Future<ServiceReturn<String>> register(String email, String password) async {
       '/auth/register',
       data: {"email": email, "password": password},
     );
-    const FlutterSecureStorage()
-        .write(key: 'jwt', value: response.data["accessToken"]);
+    final storage = new FlutterSecureStorage();
+    await storage.write(key: 'jwt', value: response.data["accessToken"]);
     return ServiceReturn(data: response.data["accessToken"]);
   } catch (e) {
     return ServiceReturn(error: e.toString());
