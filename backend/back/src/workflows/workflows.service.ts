@@ -33,10 +33,9 @@ export class WorkflowsService {
 			throw new ConflictException(`Workflow ${name} already exists.`);
 		const workflowId = randomUUID();
 		const entryToSave = await this.createWorkflowStep(entry, workflowId);
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflowId);
 
-		await this.workflowStepRepository.save([entryToSave]);
+		await this.workflowStepRepository.save([entryToSave, ...stepsToSave]);
 
 		const owner = await this.userRepository.findOneBy({ id: ownerId });
 		if (!owner) throw new NotFoundException(`User ${ownerId} not found.`);
