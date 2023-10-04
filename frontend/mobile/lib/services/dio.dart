@@ -1,4 +1,5 @@
 import 'package:area_mobile/services/auth/index.dart';
+import 'package:area_mobile/services/services/index.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -10,8 +11,9 @@ final dio = Dio(BaseOptions(
 
 class DioServices {
   final AuthService auth;
+  final ServicesService services;
 
-  const DioServices({required this.auth});
+  const DioServices({required this.auth, required this.services});
 }
 
-const services = DioServices(auth: authService);
+const services = DioServices(auth: authService, services: servicesService);
