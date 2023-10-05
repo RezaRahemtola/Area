@@ -9,6 +9,7 @@ import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
+import { EditorCardActions } from "@/types/editor";
 
 enum Step {
 	SUMMARY = 0,
@@ -39,7 +40,6 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
-
 	const onSelectEventAndAccount = (type: "back" | "next", event?: Area, account: boolean = false) => {
 		setWorkflow((prev) => ({
 			...prev,
@@ -61,6 +61,13 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 		}
 	};
 
+	const actions: EditorCardActions = {
+		enabled: true,
+		onDeleteStep: () => {
+			setWorkflow((prev) => ({ ...prev, reactions: prev.reactions.filter((r) => r.id !== reaction.id) }));
+		},
+	};
+
 	if (step === Step.SUMMARY || selectedArea !== reaction.id) {
 		return (
 			<EditorSummaryCard
@@ -76,10 +83,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 		return (
 			<EditorSelectServiceCard
 				title="Reaction"
-				actions={{
-					enabled: true,
-					onDeleteStep: () => {},
-				}}
+				actions={actions}
 				currentService={reaction.service}
 				onNextStep={onSelectServiceClick}
 			/>
@@ -88,10 +92,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 		return (
 			<EditorSelectEventAndAccount
 				title="Reaction"
-				actions={{
-					enabled: true,
-					onDeleteStep: () => {},
-				}}
+				actions={actions}
 				area={reaction}
 				onEvent={onSelectEventAndAccount}
 			/>

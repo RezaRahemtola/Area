@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Area } from "@/types/services";
 import { EditorElement } from "@/types/workflows";
 import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
+import { EditorCardActions } from "@/types/editor";
 
 const options: Area[] = [
 	{
@@ -23,7 +24,7 @@ const options: Area[] = [
 type EditorSelectEventAndAccountProps = {
 	area: EditorElement;
 	title: string;
-	actions: { enabled: true; onDeleteStep: () => void } | { enabled: false };
+	actions: EditorCardActions;
 	onEvent: (type: "back" | "next", event?: Area, account?: boolean) => void;
 };
 

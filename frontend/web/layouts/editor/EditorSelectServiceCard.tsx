@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Service } from "@/types/services";
 import ServicesList from "@/components/editor/ServicesList";
 import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
+import { EditorCardActions } from "@/types/editor";
 
 const services: Service[] = [
 	{
@@ -54,7 +55,7 @@ const ServiceElement = ({
 
 type EditorSelectServiceCardProps = {
 	title: string;
-	actions: { enabled: true; onDeleteStep: () => void } | { enabled: false };
+	actions: EditorCardActions;
 	currentService?: Service;
 	onNextStep: (service: Service) => void;
 };
