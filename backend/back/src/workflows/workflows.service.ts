@@ -6,7 +6,6 @@ import WorkflowStep from "./entities/workflow-step.entity";
 import WorkflowStepDto, { WorkflowEntryDto } from "./dto/workflow-step.dto";
 import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
-import { randomUUID } from "node:crypto";
 
 @Injectable()
 export class WorkflowsService {
@@ -26,25 +25,27 @@ export class WorkflowsService {
 		ownerId: string,
 		entry: WorkflowEntryDto,
 		steps: WorkflowStepDto[],
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		active: boolean = false,
 	) {
-		if (await this.workflowRepository.exist({ where: { name } }))
+		if (await this.workflowRepository.exist({ where: { name, ownerId } }))
 			throw new ConflictException(`Workflow ${name} already exists.`);
-		const workflowId = randomUUID();
-		const entryToSave = await this.createWorkflowStep(entry, workflowId);
-		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflowId);
-
-		await this.workflowStepRepository.save([entryToSave, ...stepsToSave]);
 
 		const owner = await this.userRepository.findOneBy({ id: ownerId });
 		if (!owner) throw new NotFoundException(`User ${ownerId} not found.`);
 
-		return await this.workflowRepository.insert({ owner, name, active, entry: entryToSave, id: workflowId });
+		const workflow = await this.workflowRepository.save({ name, owner, active });
+		const { id } = workflow;
+
+		const entryToSave = await this.createWorkflowStep(entry, workflow);
+		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflow);
+		await this.workflowRepository.save({ ...workflow, entry: entryToSave, steps: stepsToSave });
+		return {
+			id,
+		};
 	}
 
-	private async createWorkflowSteps(entry: WorkflowStep, steps: WorkflowStepDto[], workflowId: string) {
-		const dbSteps = await Promise.all(steps.map(async (step) => await this.createWorkflowStep(step, workflowId)));
+	private async createWorkflowSteps(entry: WorkflowStep, steps: WorkflowStepDto[], workflow: Workflow) {
+		const dbSteps = await Promise.all(steps.map(async (step) => await this.createWorkflowStep(step, workflow)));
 		for (const dbStep of dbSteps) {
 			if (!dbStep.previousStep) {
 				const previousStepId = steps.find((step) => step.id === dbStep.id)?.previousStepId;
@@ -58,15 +59,15 @@ export class WorkflowsService {
 
 	private async createWorkflowStep(
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowStepDto>,
-		workflowId: string,
+		workflow: Workflow,
 	) {
 		if (await this.workflowStepRepository.exist({ where: { id } }))
 			throw new ConflictException(`Workflow step ${id} already exists.`);
 		const entry = new WorkflowStep();
 		entry.id = id;
 		entry.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
-		entry.workflowId = workflowId;
 		entry.parameters = parameters;
+		entry.workflow = workflow;
 		return entry;
 	}
 }
