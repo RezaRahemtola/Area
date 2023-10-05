@@ -53,47 +53,6 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          // Image de fond
-          Image.asset(
-            'assets/landing_background.jpg', // Remplacez par le chemin de votre image
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Titre
-                Text(
-                  'Bienvenue sur Notre Application',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20.0), // Espacement
-
-                // Bouton "Get Started"
-                ElevatedButton(
-                  onPressed: () {
-                    // Mettez ici la logique pour aller vers une autre page
-                    // par exemple, Navigator.push() vers une page de connexion.
-                  },
-                  child: Text(
-                    'Commencer',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -102,18 +61,23 @@ class _LandingPageState extends State<LandingPage> {
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.create),
+            label: 'CREATE',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'Library',
             backgroundColor: Colors.purple,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.apps),
+            label: 'Apps',
             backgroundColor: Colors.pink,
           ),
         ],
