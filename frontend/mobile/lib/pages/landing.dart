@@ -23,7 +23,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -31,15 +31,19 @@ class _LandingPageState extends State<LandingPage> {
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     ),
     Text(
-      'Index 1: Business',
+      'Index 1: Dashboard',
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     ),
     Text(
-      'Index 2: School',
+      'Index 2: CREATE',
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     ),
     Text(
-      'Index 3: Settings',
+      'Index 3: Library',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+    ),
+    Text(
+      'Index 4: Apps',
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     ),
   ];
