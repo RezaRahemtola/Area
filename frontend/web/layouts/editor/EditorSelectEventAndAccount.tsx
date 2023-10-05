@@ -22,11 +22,10 @@ const options: Area[] = [
 
 type EditorSelectEventAndAccountProps = {
 	area: EditorElement;
-	onNextStep: (event: Area, account: boolean) => void;
-	onPreviousStep: () => void;
+	onEvent: (type: "back" | "next", event?: Area, account?: boolean) => void;
 };
 
-const EditorSelectEventAndAccount = ({ area, onNextStep, onPreviousStep }: EditorSelectEventAndAccountProps) => {
+const EditorSelectEventAndAccount = ({ area, onEvent }: EditorSelectEventAndAccountProps) => {
 	const [selectedEvent, setSelectedEvent] = useState<string | null>(area.event?.id ?? null);
 	const [selectedAccount, setSelectedAccount] = useState<boolean>(area.account);
 
@@ -67,14 +66,14 @@ const EditorSelectEventAndAccount = ({ area, onNextStep, onPreviousStep }: Edito
 				<div className="card-actions">
 					<button
 						className="btn btn-outline btn-neutral text-neutral-content hover:text-neutral-content"
-						onClick={onPreviousStep}
+						onClick={() => onEvent("back")}
 					>
 						Back
 					</button>
 					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
 						disabled={!selectedEvent || !selectedAccount}
-						onClick={() => onNextStep(options.find((option) => option.id === selectedEvent)!, selectedAccount)}
+						onClick={() => onEvent("next", options.find((option) => option.id === selectedEvent)!, selectedAccount)}
 					>
 						Next
 					</button>
