@@ -2,35 +2,46 @@ import { ReactNode } from "react";
 
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
-type EditorAreaStepCardProps = {
-	isAction: boolean;
+type EditorStepCardWrapperProps = {
+	title: string;
 	children: ReactNode;
-	onDeleteStep?: () => void;
-};
+} & (
+	| {
+			actions: {
+				enabled: true;
+				onDeleteStep: () => void;
+			};
+	  }
+	| {
+			actions: {
+				enabled: false;
+			};
+	  }
+);
 
-const EditorAreaStepCard = ({ isAction, children, onDeleteStep }: EditorAreaStepCardProps) => (
+const EditorStepCardWrapper = ({ title, children, actions }: EditorStepCardWrapperProps) => (
 	<div className="card mx-auto w-2/3 shadow-2xl">
 		<div className="card-body items-center pt-3">
 			<div className="flex w-full mb-5">
 				<p className="card-title justify-center text-2xl ml-2">
-					<FontAwesomeIcon icon="bolt" svgProps={{ className: "h-7 w-7" }} /> {isAction ? "Action" : "Reaction"}
+					<FontAwesomeIcon icon="bolt" svgProps={{ className: "h-7 w-7" }} /> {title}
 				</p>
-				{isAction ? (
-					<></>
-				) : (
+				{actions.enabled ? (
 					<div className="dropdown">
 						<button tabIndex={0} className="btn btn-ghost btn-xs">
 							<FontAwesomeIcon icon="ellipsis" />
 						</button>
 						<ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow-xl bg-base-content rounded-box w-52">
 							<li>
-								<a className="hover:text-neutral-content" onClick={onDeleteStep}>
+								<a className="hover:text-neutral-content" onClick={actions.onDeleteStep}>
 									<FontAwesomeIcon icon="trash" />
 									Delete
 								</a>
 							</li>
 						</ul>
 					</div>
+				) : (
+					<></>
 				)}
 			</div>
 			{children}
@@ -38,4 +49,4 @@ const EditorAreaStepCard = ({ isAction, children, onDeleteStep }: EditorAreaStep
 	</div>
 );
 
-export default EditorAreaStepCard;
+export default EditorStepCardWrapper;

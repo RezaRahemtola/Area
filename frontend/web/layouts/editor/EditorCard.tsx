@@ -93,9 +93,11 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 		);
 	}
 	if (step === Step.SELECT_SERVICE)
-		return <EditorSelectServiceCard currentService={currentService} onNextStep={onSelectServiceClick} />;
+		return (
+			<EditorSelectServiceCard isAction={isAction} currentService={currentService} onNextStep={onSelectServiceClick} />
+		);
 	if (step === Step.SELECT_EVENT_AND_ACCOUNT)
-		return <EditorSelectEventAndAccount area={area} onEvent={onSelectEventAndAccount} />;
+		return <EditorSelectEventAndAccount isAction={isAction} area={area} onEvent={onSelectEventAndAccount} />;
 	return <></>;
 };
 

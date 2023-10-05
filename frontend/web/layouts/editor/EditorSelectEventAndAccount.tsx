@@ -21,16 +21,17 @@ const options: Area[] = [
 ];
 
 type EditorSelectEventAndAccountProps = {
+	isAction: boolean;
 	area: EditorElement;
 	onEvent: (type: "back" | "next", event?: Area, account?: boolean) => void;
 };
 
-const EditorSelectEventAndAccount = ({ area, onEvent }: EditorSelectEventAndAccountProps) => {
+const EditorSelectEventAndAccount = ({ isAction, area, onEvent }: EditorSelectEventAndAccountProps) => {
 	const [selectedEvent, setSelectedEvent] = useState<string | null>(area.event?.id ?? null);
 	const [selectedAccount, setSelectedAccount] = useState<boolean>(area.account);
 
 	return (
-		<EditorAreaStepCard title="Action">
+		<EditorAreaStepCard isAction={isAction}>
 			<>
 				<div className="form-control w-full max-w-xs">
 					<label className="label">
