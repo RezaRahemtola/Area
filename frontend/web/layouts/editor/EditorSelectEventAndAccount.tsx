@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-
 import Image from "next/image";
+
 import { Area } from "@/types/services";
-import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
 import { EditorElement } from "@/types/workflows";
+import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
 
 const options: Area[] = [
 	{
@@ -21,17 +21,18 @@ const options: Area[] = [
 ];
 
 type EditorSelectEventAndAccountProps = {
-	isAction: boolean;
 	area: EditorElement;
+	title: string;
+	actions: { enabled: true; onDeleteStep: () => void } | { enabled: false };
 	onEvent: (type: "back" | "next", event?: Area, account?: boolean) => void;
 };
 
-const EditorSelectEventAndAccount = ({ isAction, area, onEvent }: EditorSelectEventAndAccountProps) => {
+const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSelectEventAndAccountProps) => {
 	const [selectedEvent, setSelectedEvent] = useState<string | null>(area.event?.id ?? null);
 	const [selectedAccount, setSelectedAccount] = useState<boolean>(area.account);
 
 	return (
-		<EditorAreaStepCard isAction={isAction}>
+		<EditorStepCardWrapper title={title} actions={actions}>
 			<>
 				<div className="form-control w-full max-w-xs">
 					<label className="label">
@@ -80,7 +81,7 @@ const EditorSelectEventAndAccount = ({ isAction, area, onEvent }: EditorSelectEv
 					</button>
 				</div>
 			</>
-		</EditorAreaStepCard>
+		</EditorStepCardWrapper>
 	);
 };
 

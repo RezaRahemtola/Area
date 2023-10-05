@@ -5,19 +5,8 @@ import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 type EditorStepCardWrapperProps = {
 	title: string;
 	children: ReactNode;
-} & (
-	| {
-			actions: {
-				enabled: true;
-				onDeleteStep: () => void;
-			};
-	  }
-	| {
-			actions: {
-				enabled: false;
-			};
-	  }
-);
+	actions: { enabled: true; onDeleteStep: () => void } | { enabled: false };
+};
 
 const EditorStepCardWrapper = ({ title, children, actions }: EditorStepCardWrapperProps) => (
 	<div className="card mx-auto w-2/3 shadow-2xl">
