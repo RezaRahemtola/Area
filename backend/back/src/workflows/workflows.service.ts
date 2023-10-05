@@ -20,6 +20,22 @@ export class WorkflowsService {
 		private readonly userRepository: Repository<User>,
 	) {}
 
+	async getWorkflowWithSteps(id: string) {
+		const workflow = await this.workflowRepository.findOne({
+			where: { id },
+			relations: { action: true, reactions: true },
+		});
+		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
+		const { name, active, reactions, action } = workflow;
+		return {
+			id,
+			name,
+			active,
+			action,
+			reactions,
+		};
+	}
+
 	async createWorkflow(
 		name: string,
 		ownerId: string,
@@ -38,7 +54,7 @@ export class WorkflowsService {
 
 		const entryToSave = await this.createWorkflowStep(entry, workflow);
 		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflow);
-		await this.workflowRepository.save({ ...workflow, entry: entryToSave, steps: stepsToSave });
+		await this.workflowRepository.save({ ...workflow, action: entryToSave, reactions: stepsToSave });
 		return {
 			id,
 		};
