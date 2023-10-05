@@ -46,28 +46,7 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
 
-	const onSelectEventAndAccountPrevious = () => {
-		if (isAction) {
-			setWorkflow((prev) => ({
-				...prev,
-				action: {
-					...prev.action,
-					event: undefined,
-					account: false,
-				},
-			}));
-		} else {
-			setWorkflow((prev) => ({
-				...prev,
-				reactions: prev.reactions.map((reaction) => {
-					if (reaction.id === area.id) return { ...reaction, event: undefined, account: false };
-					return reaction;
-				}),
-			}));
-		}
-		setStep(Step.SELECT_SERVICE);
-	};
-	const onSelectEventAndAccountClick = (event: Area, account: boolean) => {
+	const onSelectEventAndAccount = (type: "back" | "next", event?: Area, account: boolean = false) => {
 		if (isAction) {
 			setWorkflow((prev) => ({
 				...prev,
@@ -91,7 +70,11 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 				}),
 			}));
 		}
-		setSelectedArea(null);
+		if (type === "next") {
+			setSelectedArea(null);
+		} else {
+			setStep(Step.SELECT_SERVICE);
+		}
 	};
 
 	if (step === Step.SUMMARY || selectedArea !== area.id) {
@@ -112,13 +95,7 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 	if (step === Step.SELECT_SERVICE)
 		return <EditorSelectServiceCard currentService={currentService} onNextStep={onSelectServiceClick} />;
 	if (step === Step.SELECT_EVENT_AND_ACCOUNT)
-		return (
-			<EditorSelectEventAndAccount
-				area={area}
-				onNextStep={onSelectEventAndAccountClick}
-				onPreviousStep={onSelectEventAndAccountPrevious}
-			/>
-		);
+		return <EditorSelectEventAndAccount area={area} onEvent={onSelectEventAndAccount} />;
 	return <></>;
 };
 
