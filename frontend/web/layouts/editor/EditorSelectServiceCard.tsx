@@ -31,7 +31,7 @@ const services: Service[] = [
 	},
 ];
 
-const ActionServiceElement = ({
+const ServiceElement = ({
 	service,
 	onClick,
 	selected,
@@ -51,23 +51,23 @@ const ActionServiceElement = ({
 		</div>
 	</button>
 );
-const EditorSelectServiceCard = ({
-	currentService,
-	onNextStep,
-}: {
+
+type EditorSelectServiceCardProps = {
+	isAction: boolean;
 	currentService?: Service;
 	onNextStep: (service: Service) => void;
-}) => {
+};
+const EditorSelectServiceCard = ({ isAction, currentService, onNextStep }: EditorSelectServiceCardProps) => {
 	const [selectedService, setSelectedService] = useState<Service | undefined>(currentService);
 
 	const servicesChunks = splitArrayInChunks(services, 3);
 
 	return (
-		<EditorAreaStepCard title="Action">
+		<EditorAreaStepCard isAction={isAction}>
 			{servicesChunks.map((chunk, index) => (
 				<div className="flex w-full justify-around my-2" key={index}>
 					{chunk.map((service) => (
-						<ActionServiceElement
+						<ServiceElement
 							service={service}
 							onClick={() => setSelectedService(service)}
 							key={service.id}
