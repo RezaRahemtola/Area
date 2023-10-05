@@ -17,9 +17,13 @@ enum Step {
 }
 
 const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean }) => {
-	const [, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
+
+	const currentService = isAction
+		? workflow.action.service
+		: workflow.reactions.find((reaction) => reaction.id === area.id)?.service;
 
 	const onSummaryClick = () => {
 		if (step === Step.SUMMARY) {
@@ -42,6 +46,27 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
 
+	const onSelectEventAndAccountPrevious = () => {
+		if (isAction) {
+			setWorkflow((prev) => ({
+				...prev,
+				action: {
+					...prev.action,
+					event: undefined,
+					account: false,
+				},
+			}));
+		} else {
+			setWorkflow((prev) => ({
+				...prev,
+				reactions: prev.reactions.map((reaction) => {
+					if (reaction.id === area.id) return { ...reaction, event: undefined, account: false };
+					return reaction;
+				}),
+			}));
+		}
+		setStep(Step.SELECT_SERVICE);
+	};
 	const onSelectEventAndAccountClick = (event: Area, account: boolean) => {
 		if (isAction) {
 			setWorkflow((prev) => ({
@@ -84,9 +109,16 @@ const EditorCard = ({ area, isAction }: { area: EditorElement; isAction: boolean
 			/>
 		);
 	}
-	if (step === Step.SELECT_SERVICE) return <EditorSelectServiceCard onNextStep={onSelectServiceClick} />;
+	if (step === Step.SELECT_SERVICE)
+		return <EditorSelectServiceCard currentService={currentService} onNextStep={onSelectServiceClick} />;
 	if (step === Step.SELECT_EVENT_AND_ACCOUNT)
-		return <EditorSelectEventAndAccount area={area} onNextStep={onSelectEventAndAccountClick} />;
+		return (
+			<EditorSelectEventAndAccount
+				area={area}
+				onNextStep={onSelectEventAndAccountClick}
+				onPreviousStep={onSelectEventAndAccountPrevious}
+			/>
+		);
 	return <></>;
 };
 
