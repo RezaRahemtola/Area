@@ -31,11 +31,11 @@ export default class Workflow {
 	active!: boolean;
 
 	@OneToMany(() => WorkflowStep, (step) => step.workflow, { cascade: true, nullable: true })
-	steps!: WorkflowStep[];
+	reactions!: WorkflowStep[];
 
 	@OneToOne(() => WorkflowStep, (entry) => entry.entryOfWorkflow, { cascade: true, nullable: true })
 	@JoinColumn()
-	entry!: WorkflowStep;
+	action!: WorkflowStep;
 
 	@CreateDateColumn()
 	createdAt!: Date;
