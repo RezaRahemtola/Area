@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import WorkflowStep from "./entities/workflow-step.entity";
 import WorkflowStepDto, { WorkflowEntryDto } from "./dto/workflow-step.dto";
 import Area from "../services/entities/area.entity";
@@ -20,9 +20,9 @@ export class WorkflowsService {
 		private readonly userRepository: Repository<User>,
 	) {}
 
-	async getWorkflowWithSteps(id: string) {
+	async getWorkflowWithSteps(id: string, ownerId: string) {
 		const workflow = await this.workflowRepository.findOne({
-			where: { id },
+			where: { id, ownerId },
 			relations: { action: true, reactions: true },
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
@@ -34,6 +34,20 @@ export class WorkflowsService {
 			action,
 			reactions,
 		};
+	}
+
+	async getWorkflowsWithSteps(ownerId: string) {
+		const workflows = await this.workflowRepository.find({
+			where: { ownerId },
+			relations: { action: true, reactions: true },
+		});
+		return workflows.map(({ id, name, active, action, reactions }) => ({
+			id,
+			name,
+			active,
+			action,
+			reactions,
+		}));
 	}
 
 	async createWorkflow(
@@ -58,6 +72,36 @@ export class WorkflowsService {
 		return {
 			id,
 		};
+	}
+
+	async toggleWorkflows(workflows: string[], newState: boolean, ownerId: string) {
+		const { affected } = await this.workflowRepository.update(
+			{
+				id: In(workflows),
+				active: !newState,
+				ownerId,
+			},
+			{ active: () => `${newState}` },
+		);
+		return affected > 0;
+	}
+
+	async toggleWorkflow(workflowId: string, ownerId: string) {
+		const workflow = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
+		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
+		const { active } = workflow;
+		await this.workflowRepository.update(workflowId, { active: !active });
+		return { newState: !active };
+	}
+
+	async deleteWorkflows(workflows: string[], ownerId: string) {
+		const { affected } = await this.workflowRepository.delete({ id: In(workflows), ownerId });
+		return affected > 0;
+	}
+
+	async deleteWorkflow(workflowId: string, ownerId: string) {
+		const { affected } = await this.workflowRepository.delete({ id: workflowId, ownerId });
+		return affected === 1;
 	}
 
 	private async createWorkflowSteps(entry: WorkflowStep, steps: WorkflowStepDto[], workflow: Workflow) {
