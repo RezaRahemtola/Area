@@ -1,52 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AREA',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LandingPage(),
-    );
-  }
-}
-
 class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
   @override
-  _LandingPageState createState() => _LandingPageState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 2;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Index 1: Dashboard',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Index 2: CREATE',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Index 3: Library',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-    Text(
-      'Index 4: Apps',
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-    ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {

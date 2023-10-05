@@ -1,6 +1,5 @@
 import 'package:area_mobile/components/auth/email_field.dart';
 import 'package:area_mobile/components/auth/password_field.dart';
-import 'package:area_mobile/main.dart';
 import 'package:area_mobile/pages/landing.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
@@ -87,8 +86,7 @@ class RegisterButton extends StatelessWidget {
                 );
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => LandingPage()),
+                  MaterialPageRoute(builder: (context) => const LandingPage()),
                 );
               } else if (result.error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
