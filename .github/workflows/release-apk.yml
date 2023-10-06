@@ -33,8 +33,9 @@ jobs:
           channel: stable
           cache: true
       - name: Add environment file
+        working-directory: .
         run: |
-          INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ../../scripts/dump_env.sh prod
+          INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod
       - name: Build APK
         run: flutter build apk
       - name: Add APK to release
