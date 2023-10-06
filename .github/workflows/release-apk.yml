@@ -34,7 +34,7 @@ jobs:
           cache: true
       - name: Add environment file
         run: |
-          INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} infisical export--path=frontend/mobile --env=prod > .env
+          INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod
       - name: Build APK
         run: flutter build apk
       - name: Add APK to release
