@@ -32,6 +32,9 @@ jobs:
           flutter-version: "3.13.4"
           channel: stable
           cache: true
+      - name: Add environment file
+        run: |
+          INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} infisical export--path=frontend/mobile --env=prod > .env
       - name: Build APK
         run: flutter build apk
       - name: Add APK to release
