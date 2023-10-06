@@ -5,7 +5,10 @@ import Navbar from "@/components/Navbar";
 import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
-const EditorNavbar = () => {
+type EditorNavbarProps = {
+	isAuthenticated: boolean;
+};
+const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const router = useRouter();
 
@@ -31,9 +34,11 @@ const EditorNavbar = () => {
 			hasLogo={false}
 			centerContent={<span className="text-xl font-semibold">Area</span>}
 			endContent={
-				<button className="btn btn-secondary" onClick={onSaveWorkflow}>
-					Save
-				</button>
+				isAuthenticated ? (
+					<button className="btn btn-secondary" onClick={onSaveWorkflow}>
+						Save
+					</button>
+				) : undefined
 			}
 		/>
 	);
