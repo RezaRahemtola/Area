@@ -33,7 +33,11 @@ export default class Workflow {
 	@OneToMany(() => WorkflowStep, (step) => step.workflow, { cascade: true, nullable: true })
 	reactions!: WorkflowStep[];
 
-	@OneToOne(() => WorkflowStep, (entry) => entry.entryOfWorkflow, { cascade: true, nullable: true })
+	@OneToOne(() => WorkflowStep, (entry) => entry.entryOfWorkflow, {
+		cascade: true,
+		nullable: true,
+		onDelete: "SET NULL",
+	})
 	@JoinColumn()
 	action!: WorkflowStep;
 
