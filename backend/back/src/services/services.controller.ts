@@ -3,6 +3,7 @@ import { ServicesService } from "./services.service";
 import { ApiNotFoundResponse, ApiOkResponse, ApiProduces, ApiTags } from "@nestjs/swagger";
 import ServiceDto from "./dto/service.dto";
 import { AreaDto } from "./dto/area.dto";
+import { UuidParamDto } from "../param-validators.dto";
 
 @ApiTags("Services")
 @ApiProduces("application/json")
@@ -26,8 +27,8 @@ export class ServicesController {
 	@ApiNotFoundResponse({
 		description: "The service with the given id does not exist",
 	})
-	@Get("/:serviceId")
-	async getService(@Param("serviceId") serviceId: string) {
+	@Get("/:uuid")
+	async getService(@Param() { uuid: serviceId }: UuidParamDto) {
 		const service = await this.servicesService.getService(serviceId, true);
 		if (!service) throw new NotFoundException("Service not found");
 		return service;
@@ -40,8 +41,8 @@ export class ServicesController {
 	@ApiNotFoundResponse({
 		description: "The service with the given id does not exist",
 	})
-	@Get("/:serviceId/actions")
-	async getActionsForService(@Param("serviceId") serviceId: string) {
+	@Get("/:uuid/actions")
+	async getActionsForService(@Param() { uuid: serviceId }: UuidParamDto) {
 		const actions = await this.servicesService.getAREAsForService(serviceId, true);
 		if (!actions) throw new NotFoundException("Service not found");
 		return actions;
@@ -54,8 +55,8 @@ export class ServicesController {
 	@ApiNotFoundResponse({
 		description: "The service with the given id does not exist",
 	})
-	@Get("/:serviceId/reactions")
-	async getReactionsForService(@Param("serviceId") serviceId: string) {
+	@Get("/:uuid/reactions")
+	async getReactionsForService(@Param() { uuid: serviceId }: UuidParamDto) {
 		const reactions = await this.servicesService.getAREAsForService(serviceId, false);
 		if (!reactions) throw new NotFoundException("Service not found");
 		return reactions;
