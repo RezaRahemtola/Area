@@ -7,11 +7,12 @@ export default class WorkflowStep {
 	@PrimaryColumn({ type: "uuid" })
 	id!: string;
 
-	@ManyToOne(() => Workflow, (workflow) => workflow.reactions, { nullable: false, onDelete: "CASCADE" })
+	@ManyToOne(() => Workflow, (workflow) => workflow.reactions, { nullable: true, onDelete: "CASCADE" })
 	@JoinColumn()
 	workflow!: Workflow;
 
 	@OneToOne(() => Workflow, (workflow) => workflow.action, { nullable: true, onDelete: "CASCADE" })
+	@JoinColumn()
 	entryOfWorkflow!: Workflow;
 
 	@ManyToOne(() => WorkflowStep, { nullable: true, onDelete: "CASCADE" })

@@ -67,7 +67,7 @@ export class WorkflowsService {
 		const workflow = await this.workflowRepository.save({ name, owner, active });
 		const { id } = workflow;
 
-		const entryToSave = await this.createWorkflowStep(entry, workflow);
+		const entryToSave = await this.createWorkflowStep(entry, workflow, true);
 		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflow);
 		await this.workflowRepository.save({ ...workflow, action: entryToSave, reactions: stepsToSave });
 		return {
@@ -166,6 +166,7 @@ export class WorkflowsService {
 	private async createWorkflowStep(
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowStepDto>,
 		workflow: Workflow,
+		isEntry: boolean = false,
 	) {
 		if (await this.workflowStepRepository.exist({ where: { id } }))
 			throw new ConflictException(`Workflow step ${id} already exists.`);
@@ -173,7 +174,8 @@ export class WorkflowsService {
 		entry.id = id;
 		entry.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
 		entry.parameters = parameters;
-		entry.workflow = workflow;
+		if (isEntry) entry.entryOfWorkflow = workflow;
+		else entry.workflow = workflow;
 		return entry;
 	}
 }
