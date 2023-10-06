@@ -20,8 +20,10 @@ file=".env"
 green='\033[0;32m'
 clear='\033[0m'
 
+INDEX=1
 for path in "${paths[@]}"
   do
     infisical export --env="$INFISICAL_ENVIRONMENT" --path="$path" > "$path"$file
-    echo -e "${green}Dumped ${path}${file}!${clear}"
+    echo -e "${green}Dumped ${path}${file} ($INDEX/${#paths[@]}) ${clear}"
+    ((INDEX++))
 done
