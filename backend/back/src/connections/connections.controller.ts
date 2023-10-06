@@ -17,6 +17,7 @@ import {
 	ApiBody,
 	ApiNotFoundResponse,
 	ApiOkResponse,
+	ApiParam,
 	ApiProduces,
 	ApiTags,
 	ApiUnauthorizedResponse,
@@ -52,6 +53,10 @@ export class ConnectionsController {
 	})
 	@ApiNotFoundResponse({
 		description: "The user is not connected to this service",
+	})
+	@ApiParam({
+		description: "The UUID of the user connection to delete",
+		name: "uuid",
 	})
 	@Delete("/:uuid")
 	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { uuid: serviceId }: UuidParamDto) {
