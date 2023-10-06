@@ -22,6 +22,7 @@ import {
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import GithubOAuthDto from "./dto/github-oauth.dto";
+import { UuidParamDto } from "../param-validators.dto";
 
 @ApiBearerAuth()
 @ApiTags("OAuth Connections")
@@ -52,8 +53,8 @@ export class ConnectionsController {
 	@ApiNotFoundResponse({
 		description: "The user is not connected to this service",
 	})
-	@Delete("/:serviceId")
-	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param("serviceId") serviceId: string) {
+	@Delete("/:uuid")
+	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { uuid: serviceId }: UuidParamDto) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
 			throw new InternalServerErrorException("An unknown error occurred while deleting the connection");
 	}

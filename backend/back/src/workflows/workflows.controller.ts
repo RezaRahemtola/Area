@@ -6,6 +6,7 @@ import { APIRequest } from "../types/request";
 import BulkWorkflowsDto, { BulkToggleWorkflowsDto } from "./dto/bulk-workflows.dto";
 import { Response } from "express";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
+import { UuidParamDto } from "../param-validators.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("workflows")
@@ -25,14 +26,14 @@ export class WorkflowsController {
 		return await this.workspacesService.getWorkflowsWithAreas(ownerId);
 	}
 
-	@Get(":id")
-	async getWorkflow(@Param("id") workflowId: string, @Req() { user: { id: ownerId } }: APIRequest) {
+	@Get(":uuid")
+	async getWorkflow(@Param() { uuid: workflowId }: UuidParamDto, @Req() { user: { id: ownerId } }: APIRequest) {
 		return await this.workspacesService.getWorkflowWithAreas(workflowId, ownerId);
 	}
 
-	@Patch(":id")
+	@Patch(":uuid")
 	async updateWorkflow(
-		@Param("id") workflowId: string,
+		@Param() { uuid: workflowId }: UuidParamDto,
 		@Req() { user: { id: ownerId } }: APIRequest,
 		@Body() updateWorkflowDto: UpdateWorkflowDto,
 		@Res() response: Response,
@@ -51,8 +52,8 @@ export class WorkflowsController {
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).send();
 	}
 
-	@Patch("/toggle/:id")
-	async toggleWorkflow(@Param("id") workflowId: string, @Req() { user: { id: ownerId } }: APIRequest) {
+	@Patch("/toggle/:uuid")
+	async toggleWorkflow(@Param() { uuid: workflowId }: UuidParamDto, @Req() { user: { id: ownerId } }: APIRequest) {
 		return await this.workspacesService.toggleWorkflow(workflowId, ownerId);
 	}
 
@@ -66,7 +67,7 @@ export class WorkflowsController {
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).send();
 	}
 
-	@Delete(":id")
+	@Delete(":uuid")
 	async deleteWorkflow(
 		@Param("id") workflowId: string,
 		@Req() { user: { id: ownerId } }: APIRequest,
