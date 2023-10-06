@@ -2,8 +2,8 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
 import { In, Repository } from "typeorm";
-import WorkflowStep from "./entities/workflow-step.entity";
-import WorkflowStepDto, { WorkflowEntryDto } from "./dto/workflow-step.dto";
+import WorkflowArea from "./entities/workflow-area.entity";
+import WorkflowReactionDto, { WorkflowActionDto } from "./dto/workflow-reaction.dto";
 import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
@@ -13,15 +13,15 @@ export class WorkflowsService {
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
-		@InjectRepository(WorkflowStep)
-		private readonly workflowStepRepository: Repository<WorkflowStep>,
+		@InjectRepository(WorkflowArea)
+		private readonly workflowAreaRepository: Repository<WorkflowArea>,
 		@InjectRepository(Area)
 		private readonly areaRepository: Repository<Area>,
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
 	) {}
 
-	async getWorkflowWithSteps(id: string, ownerId: string) {
+	async getWorkflowWithAreas(id: string, ownerId: string) {
 		const workflow = await this.workflowRepository.findOne({
 			where: { id, ownerId },
 			relations: { action: true, reactions: true },
@@ -37,7 +37,7 @@ export class WorkflowsService {
 		};
 	}
 
-	async getWorkflowsWithSteps(ownerId: string) {
+	async getWorkflowsWithAreas(ownerId: string) {
 		const workflows = await this.workflowRepository.find({
 			where: { ownerId },
 			relations: { action: true, reactions: true },
@@ -54,8 +54,8 @@ export class WorkflowsService {
 	async createWorkflow(
 		name: string,
 		ownerId: string,
-		entry: WorkflowEntryDto,
-		steps: WorkflowStepDto[],
+		entry: WorkflowActionDto,
+		steps: WorkflowReactionDto[],
 		active: boolean = false,
 	) {
 		if (await this.workflowRepository.exist({ where: { name, ownerId } }))
@@ -67,8 +67,8 @@ export class WorkflowsService {
 		const workflow = await this.workflowRepository.save({ name, owner, active });
 		const { id } = workflow;
 
-		const entryToSave = await this.createWorkflowStep(entry, workflow, true);
-		const stepsToSave = await this.createWorkflowSteps(entryToSave, steps, workflow);
+		const entryToSave = await this.createWorkflowArea(entry, workflow, true);
+		const stepsToSave = await this.createWorkflowReactions(entryToSave, steps, workflow);
 		await this.workflowRepository.save({ ...workflow, action: entryToSave, reactions: stepsToSave });
 		return {
 			id,
@@ -104,7 +104,7 @@ export class WorkflowsService {
 			}
 			result ||=
 				(
-					await this.workflowStepRepository.update(id, {
+					await this.workflowAreaRepository.update(id, {
 						area: { id: areaId, serviceId: areaServiceId },
 						parameters,
 					})
@@ -112,8 +112,8 @@ export class WorkflowsService {
 		}
 
 		if (reactions) {
-			await this.workflowStepRepository.delete({ id: In(workflow.reactions.map((reaction) => reaction.id)) });
-			const reactionsToSave = await this.createWorkflowSteps(workflow.action, reactions, workflow);
+			await this.workflowAreaRepository.delete({ id: In(workflow.reactions.map((reaction) => reaction.id)) });
+			const reactionsToSave = await this.createWorkflowReactions(workflow.action, reactions, workflow);
 			result ||= (await this.workflowRepository.update(workflowId, { reactions: reactionsToSave })).affected > 0;
 		}
 
@@ -150,32 +150,32 @@ export class WorkflowsService {
 		return affected === 1;
 	}
 
-	private async createWorkflowSteps(entry: WorkflowStep, steps: WorkflowStepDto[], workflow: Workflow) {
-		const dbSteps = await Promise.all(steps.map(async (step) => await this.createWorkflowStep(step, workflow)));
-		for (const dbStep of dbSteps) {
-			if (!dbStep.previousStep) {
-				const previousStepId = steps.find((step) => step.id === dbStep.id)?.previousStepId;
-				dbStep.previousStep = [entry, ...dbSteps].find((step) => step.id === previousStepId);
-				if (!dbStep.previousStep)
+	private async createWorkflowReactions(action: WorkflowArea, reactions: WorkflowReactionDto[], workflow: Workflow) {
+		const dbReactions = await Promise.all(reactions.map(async (step) => await this.createWorkflowArea(step, workflow)));
+		for (const dbStep of dbReactions) {
+			if (!dbStep.previousArea) {
+				const { previousAreaId } = reactions.find((step) => step.id === dbStep.id);
+				dbStep.previousArea = [action, ...dbReactions].find((step) => step.id === previousAreaId);
+				if (!dbStep.previousArea)
 					throw new NotFoundException(`You not provided a previous step for step ${dbStep.id}.`);
 			}
 		}
-		return dbSteps;
+		return dbReactions;
 	}
 
-	private async createWorkflowStep(
-		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowStepDto>,
+	private async createWorkflowArea(
+		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
 		workflow: Workflow,
-		isEntry: boolean = false,
+		isAction: boolean = false,
 	) {
-		if (await this.workflowStepRepository.exist({ where: { id } }))
+		if (await this.workflowAreaRepository.exist({ where: { id } }))
 			throw new ConflictException(`Workflow step ${id} already exists.`);
-		const entry = new WorkflowStep();
-		entry.id = id;
-		entry.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
-		entry.parameters = parameters;
-		if (isEntry) entry.entryOfWorkflow = workflow;
-		else entry.workflow = workflow;
-		return entry;
+		const action = new WorkflowArea();
+		action.id = id;
+		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
+		action.parameters = parameters;
+		if (isAction) action.actionOfWorkflow = workflow;
+		else action.workflow = workflow;
+		return action;
 	}
 }

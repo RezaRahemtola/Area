@@ -22,12 +22,12 @@ export class WorkflowsController {
 
 	@Get()
 	async getWorkflows(@Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.getWorkflowsWithSteps(ownerId);
+		return await this.workspacesService.getWorkflowsWithAreas(ownerId);
 	}
 
 	@Get(":id")
 	async getWorkflow(@Param("id") workflowId: string, @Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.getWorkflowWithSteps(workflowId, ownerId);
+		return await this.workspacesService.getWorkflowWithAreas(workflowId, ownerId);
 	}
 
 	@Patch(":id")

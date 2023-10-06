@@ -3,7 +3,7 @@ import Workflow from "./workflow.entity";
 import Area from "../../services/entities/area.entity";
 
 @Entity()
-export default class WorkflowStep {
+export default class WorkflowArea {
 	@PrimaryColumn({ type: "uuid" })
 	id!: string;
 
@@ -13,12 +13,12 @@ export default class WorkflowStep {
 
 	@OneToOne(() => Workflow, (workflow) => workflow.action, { nullable: true, onDelete: "CASCADE" })
 	@JoinColumn()
-	entryOfWorkflow!: Workflow;
+	actionOfWorkflow!: Workflow;
 
-	@ManyToOne(() => WorkflowStep, { nullable: true, onDelete: "CASCADE" })
-	previousStep!: WorkflowStep;
-	@OneToMany(() => WorkflowStep, (step) => step.previousStep, { nullable: true, onDelete: "CASCADE" })
-	nextSteps!: WorkflowStep[];
+	@ManyToOne(() => WorkflowArea, { nullable: true, onDelete: "CASCADE" })
+	previousArea!: WorkflowArea;
+	@OneToMany(() => WorkflowArea, (reactions) => reactions.previousArea, { nullable: true, onDelete: "CASCADE" })
+	nextReactions!: WorkflowArea[];
 
 	@ManyToOne(() => Area, { nullable: false })
 	area!: Area;
