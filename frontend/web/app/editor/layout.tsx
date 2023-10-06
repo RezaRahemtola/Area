@@ -5,14 +5,15 @@ import { useAtom } from "jotai";
 
 import { userAuthTokenAtom } from "@/stores/user";
 import EditorNavbar from "@/components/editor/EditorNavbar";
+import NotAuthenticatedLayout from "@/layouts/auth/NotAuthenticatedLayout";
 
 const EditorLayout = ({ children }: { children: ReactNode }) => {
 	const [userAuthToken] = useAtom(userAuthTokenAtom);
 
 	return (
 		<>
-			<EditorNavbar />
-			{userAuthToken ? children : <span>Please log in before using the app</span>}
+			<EditorNavbar isAuthenticated={!!userAuthToken} />
+			{userAuthToken ? children : <NotAuthenticatedLayout />}
 		</>
 	);
 };
