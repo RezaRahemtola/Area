@@ -5,6 +5,7 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { APIRequest } from "../types/request";
 import BulkWorkflowsDto, { BulkToggleWorkflowsDto } from "./dto/bulk-workflows.dto";
 import { Response } from "express";
+import UpdateWorkflowDto from "./dto/update-workflow.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("workflows")
@@ -27,6 +28,17 @@ export class WorkflowsController {
 	@Get(":id")
 	async getWorkflow(@Param("id") workflowId: string, @Req() { user: { id: ownerId } }: APIRequest) {
 		return await this.workspacesService.getWorkflowWithSteps(workflowId, ownerId);
+	}
+
+	@Patch(":id")
+	async updateWorkflow(
+		@Param("id") workflowId: string,
+		@Req() { user: { id: ownerId } }: APIRequest,
+		@Body() updateWorkflowDto: UpdateWorkflowDto,
+		@Res() response: Response,
+	) {
+		const result = await this.workspacesService.updateWorkflow(workflowId, updateWorkflowDto, ownerId);
+		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).send();
 	}
 
 	@Patch("/toggle/bulk")
