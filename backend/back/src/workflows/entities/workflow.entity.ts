@@ -10,7 +10,7 @@ import {
 	Unique,
 } from "typeorm";
 import { User } from "../../users/entities/user.entity";
-import WorkflowStep from "./workflow-step.entity";
+import WorkflowArea from "./workflow-area.entity";
 
 @Entity()
 @Unique(["name", "ownerId"])
@@ -30,16 +30,16 @@ export default class Workflow {
 	@Column()
 	active!: boolean;
 
-	@OneToMany(() => WorkflowStep, (step) => step.workflow, { cascade: true, nullable: true })
-	reactions!: WorkflowStep[];
+	@OneToMany(() => WorkflowArea, (reaction) => reaction.workflow, { cascade: true, nullable: true })
+	reactions!: WorkflowArea[];
 
-	@OneToOne(() => WorkflowStep, (entry) => entry.entryOfWorkflow, {
+	@OneToOne(() => WorkflowArea, (action) => action.actionOfWorkflow, {
 		cascade: true,
 		nullable: true,
 		onDelete: "SET NULL",
 	})
 	@JoinColumn()
-	action!: WorkflowStep;
+	action!: WorkflowArea;
 
 	@CreateDateColumn()
 	createdAt!: Date;

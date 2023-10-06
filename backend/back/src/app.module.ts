@@ -15,7 +15,7 @@ import ServiceScope from "./services/entities/service-scope.entity";
 import UserConnection from "./connections/entities/user-connection.entity";
 import Area from "./services/entities/area.entity";
 import Workflow from "./workflows/entities/workflow.entity";
-import WorkflowStep from "./workflows/entities/workflow-step.entity";
+import WorkflowArea from "./workflows/entities/workflow-area.entity";
 
 @Module({
 	imports: [
@@ -33,7 +33,7 @@ import WorkflowStep from "./workflows/entities/workflow-step.entity";
 				username: config.getOrThrow<string>("POSTGRES_USER"),
 				password: config.getOrThrow<string>("POSTGRES_PASSWORD"),
 				database: config.getOrThrow<string>("POSTGRES_DB"),
-				entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowStep],
+				entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea],
 				migrations: [],
 				synchronize: config.getOrThrow<string>("NODE_ENV") === "development",
 			}),

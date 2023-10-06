@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNotEmptyObject, IsUUID } from "class-validator";
 
-export class WorkflowEntryDto {
+export class WorkflowActionDto {
 	@IsUUID(4)
 	id!: string;
 
@@ -15,7 +15,7 @@ export class WorkflowEntryDto {
 	areaServiceId!: string;
 }
 
-export default class WorkflowStepDto extends WorkflowEntryDto {
+export default class WorkflowReactionDto extends WorkflowActionDto {
 	@IsUUID(4)
-	previousStepId!: string;
+	previousAreaId!: string;
 }

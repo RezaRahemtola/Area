@@ -1,20 +1,20 @@
 import { IsBoolean, IsNotEmpty, IsNotEmptyObject, IsOptional, ValidateNested } from "class-validator";
-import WorkflowStepDto, { WorkflowEntryDto } from "./workflow-step.dto";
+import WorkflowReactionDto, { WorkflowActionDto } from "./workflow-reaction.dto";
 import { Type } from "class-transformer";
 
 export default class CreateWorkflowDto {
 	@IsNotEmpty()
 	name!: string;
 
-	@Type(() => WorkflowEntryDto)
+	@Type(() => WorkflowActionDto)
 	@ValidateNested()
 	@IsNotEmptyObject({ nullable: false })
-	entry!: WorkflowEntryDto;
+	entry!: WorkflowActionDto;
 
-	@Type(() => WorkflowStepDto)
+	@Type(() => WorkflowReactionDto)
 	@ValidateNested({ each: true })
 	@IsNotEmptyObject({ nullable: false }, { each: true })
-	steps!: WorkflowStepDto[];
+	steps!: WorkflowReactionDto[];
 
 	@IsBoolean()
 	@IsOptional()
