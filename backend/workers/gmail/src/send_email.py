@@ -53,9 +53,10 @@ def send_email():
         }
         service.users().messages().send(userId="me", body=create_message).execute()
 
-        with grpc.insecure_channel('localhost:50050') as channel:
-            stub = AreaBackServiceStub(channel)
-            response = stub.OnReaction(JobData(name="gmail", identifier="google-send-email"))
+        target = args["target"] if args["target"] else 'localhost:50050'
+
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-send-email"))
 
     except HttpError as error:
         print(F'An error occurred: {error}')

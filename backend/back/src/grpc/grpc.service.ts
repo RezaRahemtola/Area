@@ -2,8 +2,7 @@ import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
 import { GrpcResponse, JobData, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
-import { JobsType } from "../types/jobs";
-import { JobsParams } from "../types/jobParams";
+import { JobsParams, JobsType } from "../types/jobs";
 import { JobsIdentifiers } from "../types/jobIds";
 import "../types/struct";
 
