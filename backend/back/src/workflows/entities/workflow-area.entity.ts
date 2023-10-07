@@ -18,9 +18,9 @@ export default class WorkflowArea {
 	actionOfWorkflow!: Workflow;
 
 	@ManyToOne(() => WorkflowArea, { nullable: true, onDelete: "CASCADE" })
-	previousArea!: WorkflowArea;
-	@OneToMany(() => WorkflowArea, (reactions) => reactions.previousArea, { nullable: true, onDelete: "CASCADE" })
-	nextReactions!: WorkflowArea[];
+	previousWorkflowArea!: WorkflowArea;
+	@OneToMany(() => WorkflowArea, (reactions) => reactions.previousWorkflowArea, { nullable: true, onDelete: "CASCADE" })
+	nextWorkflowReactions!: WorkflowArea[];
 
 	@ApiProperty({
 		type: () => Area,
