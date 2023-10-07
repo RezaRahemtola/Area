@@ -6,26 +6,55 @@ on:
       - main
 
 jobs:
-  deploy-server:
-    runs-on: ubuntu-latest
-    name: Deploy
+  deploy:
+    runs-on: self-hosted
+    name: Deploy to production
     environment: Production
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: SSH Server Deploy
+      - name: Stopping the supervisor & services
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVICES_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.SCP_TARGET }}
+            cd ${{ secrets.SERVICES_PROJECT_PATH }}
+            docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
+
+      - name: Stop the webapp and backend
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.MAIN_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.SCP_TARGET }}
+            docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
+
+      - name: Deploying the new supervisor
         uses: kostya-ten/ssh-server-deploy@v4
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.SERVICES_SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           private_key: ${{ secrets.SSH_KEY }}
           scp_source: .
           scp_target: ${{ secrets.SCP_TARGET }}
-          before_script: |
+          after_script: |
             cd ${{ secrets.SCP_TARGET }}
-            docker compose down --remove-orphans && cd .. && rm -rf ${{ secrets.SCP_TARGET }}
+            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && cd ${{ secrets.SERVICES_PROJECT_PATH }} && docker compose build && docker compose up supervisor --build -d
+
+      - name: Deploying the new webapp and backend
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.MAIN_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_KEY }}
+          scp_source: .
+          scp_target: ${{ secrets.SCP_TARGET }}
           after_script: |
             cd ${{ secrets.SCP_TARGET }}
             INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && docker compose --profile prod up --build -d

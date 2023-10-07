@@ -9,6 +9,10 @@ COPY package.json yarn.lock ./
 # Install dependencies
 RUN yarn install --frozen-lockfile
 
+# Copy protobuf files
+RUN apk add git
+RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
+
 # Copy source (see .dockerignore)
 COPY . .
 
@@ -21,5 +25,6 @@ WORKDIR /app
 
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/proto ./proto
 
 CMD [ "node", "src/main.js" ]

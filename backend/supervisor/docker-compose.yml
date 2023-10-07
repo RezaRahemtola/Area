@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  supervisor:
+    container_name: area_supervisor
+    build: .
+    env_file: .env
+    ports:
+      - "${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}"
+
+  seconds-interval:
+    container_name: seconds-interval
+    build: ../workers/seconds-interval
