@@ -7,7 +7,7 @@ on:
 
 jobs:
   stop-supervisor:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Stop supervisor & services
     environment: Production
     steps:
@@ -26,7 +26,7 @@ jobs:
             docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
 
   stop-server:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Stop main server
     environment: Production
     steps:
@@ -44,7 +44,7 @@ jobs:
             docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
 
   deploy-supervisor:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Deploy supervisor & services
     environment: Production
 
@@ -55,7 +55,7 @@ jobs:
       - name: SSH Server Deploy
         uses: kostya-ten/ssh-server-deploy@v4
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.SERVICES_SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           private_key: ${{ secrets.SSH_KEY }}
           scp_source: .
@@ -68,7 +68,7 @@ jobs:
       - stop-server
 
   deploy-server:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Deploy server
     environment: Production
 
