@@ -3,7 +3,6 @@ import { ServicesService } from "./services.service";
 import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiProduces, ApiTags } from "@nestjs/swagger";
 import ServiceDto from "./dto/service.dto";
 import { AreaDto } from "./dto/area.dto";
-import { UuidParamDto } from "../param-validators.dto";
 
 @ApiTags("Services")
 @ApiProduces("application/json")
@@ -28,11 +27,11 @@ export class ServicesController {
 		description: "The service with the given id does not exist",
 	})
 	@ApiParam({
-		description: "The UUID of the service to get",
-		name: "uuid",
+		description: "The id of the service to get",
+		name: "id",
 	})
-	@Get("/:uuid")
-	async getService(@Param() { uuid: serviceId }: UuidParamDto) {
+	@Get("/:id")
+	async getService(@Param("id") serviceId: string) {
 		const service = await this.servicesService.getService(serviceId, true);
 		if (!service) throw new NotFoundException("Service not found");
 		return service;
@@ -46,11 +45,11 @@ export class ServicesController {
 		description: "The service with the given id does not exist",
 	})
 	@ApiParam({
-		description: "The UUID of the service to get action from",
-		name: "uuid",
+		description: "The id of the service to get action from",
+		name: "id",
 	})
-	@Get("/:uuid/actions")
-	async getActionsForService(@Param() { uuid: serviceId }: UuidParamDto) {
+	@Get("/:id/actions")
+	async getActionsForService(@Param("id") serviceId: string) {
 		const actions = await this.servicesService.getAREAsForService(serviceId, true);
 		if (!actions) throw new NotFoundException("Service not found");
 		return actions;
@@ -64,11 +63,11 @@ export class ServicesController {
 		description: "The service with the given id does not exist",
 	})
 	@ApiParam({
-		description: "The UUID of the service to get reactions from",
-		name: "uuid",
+		description: "The id of the service to get reactions from",
+		name: "id",
 	})
-	@Get("/:uuid/reactions")
-	async getReactionsForService(@Param() { uuid: serviceId }: UuidParamDto) {
+	@Get("/:id/reactions")
+	async getReactionsForService(@Param("id") serviceId: string) {
 		const reactions = await this.servicesService.getAREAsForService(serviceId, false);
 		if (!reactions) throw new NotFoundException("Service not found");
 		return reactions;
