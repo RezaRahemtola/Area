@@ -1,3 +1,4 @@
+import 'package:area_mobile/storage/index.dart';
 import 'package:flutter/material.dart';
 
 class UserHero extends StatelessWidget {
@@ -24,7 +25,7 @@ class UserHero extends StatelessWidget {
             const SizedBox(height: 16.0),
             const CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('assets/user_profile.png'),
+              backgroundImage: AssetImage('../../../assets/user_profile.jpg'),
             ),
             const SizedBox(height: 16.0),
             const ListTile(
@@ -39,7 +40,7 @@ class UserHero extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Log-Out Feature
+                storage.removeAccessToken();
               },
               child: const Text('Se Déconnecter'),
             ),
