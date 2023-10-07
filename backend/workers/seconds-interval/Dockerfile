@@ -2,7 +2,9 @@ FROM archlinux:base-devel as builder
 
 WORKDIR /app
 
-RUN pacman -Sy --noconfirm grpc protobuf protobuf-c cmake
+RUN pacman -Sy --noconfirm grpc protobuf protobuf-c cmake git
+
+RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
 
 COPY . .
 
