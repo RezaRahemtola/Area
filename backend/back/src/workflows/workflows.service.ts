@@ -174,7 +174,7 @@ export class WorkflowsService {
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const action = new WorkflowArea();
 		action.id = id;
-		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
+		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId, isAction });
 		if (!action.area)
 			throw new NotFoundException(`Area ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`);
 		action.parameters = parameters;
