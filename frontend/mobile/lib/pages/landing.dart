@@ -1,7 +1,7 @@
-import 'package:area_mobile/components/app/app_hero.dart';
+import 'package:area_mobile/components/activity/activity_hero.dart';
 import 'package:area_mobile/components/create/create_hero.dart';
-import 'package:area_mobile/components/dashboard/dashboard_hero.dart';
-import 'package:area_mobile/components/home/home_hero.dart';
+import 'package:area_mobile/components/explore/explore_hero.dart';
+import 'package:area_mobile/components/user/user_hero.dart';
 import 'package:area_mobile/components/library/library_hero.dart';
 import 'package:flutter/material.dart';
 
@@ -27,13 +27,13 @@ class _LandingPageState extends State<LandingPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.workspaces_filled),
+            label: 'Library',
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: Icon(Icons.explore),
+            label: 'Explore',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
@@ -42,13 +42,13 @@ class _LandingPageState extends State<LandingPage> {
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'Library',
+            icon: Icon(Icons.local_activity),
+            label: 'Activity',
             backgroundColor: Colors.purple,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.apps),
-            label: 'Apps',
+            icon: Icon(Icons.people),
+            label: 'User',
             backgroundColor: Colors.pink,
           ),
         ],
@@ -60,19 +60,19 @@ class _LandingPageState extends State<LandingPage> {
         index: _selectedIndex,
         children: const <Widget>[
           Center(
-            child: homeHero(),
+            child: libraryHero(),
           ),
           Center(
-            child: dashboardHero(),
+            child: exploreHero(),
           ),
           Center(
             child: createHero(),
           ),
           Center(
-            child: libraryHero(),
+            child: activityHero(),
           ),
           Center(
-            child: appHero(),
+            child: userHero(),
           ),
         ],
       ),
