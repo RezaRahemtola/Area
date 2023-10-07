@@ -3,10 +3,11 @@
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 const EditorSeparator = ({ index }: { index: number }) => {
-	const onClick = () => {
+	const onClick = () => 
 		// TODO Reza: update this
+		 index
 		// setEditorWorkflow((prev) => ({ ...prev, reactions: prev.reactions.toSpliced(index, 0, getEmptyArea()) }));
-	};
+	;
 
 	return (
 		<>

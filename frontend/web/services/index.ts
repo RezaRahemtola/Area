@@ -12,8 +12,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
 	const newConfig = config;
 	const token = localStorage.getItem("areaAuthToken");
+	// Remove useless quotes around the token
+	const parsedToken = JSON.parse(token ?? "");
 
-	newConfig.headers.Authorization = token ? `Bearer ${token}` : "";
+	newConfig.headers.Authorization = token ? `Bearer ${parsedToken}` : "";
 	return newConfig;
 });
 
