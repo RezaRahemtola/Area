@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class exploreHero extends StatelessWidget {
-  const exploreHero({
+class ExploreHero extends StatelessWidget {
+  const ExploreHero({
     super.key,
   });
 

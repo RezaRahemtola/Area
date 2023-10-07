@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class activityHero extends StatelessWidget {
-  const activityHero({
+class ActivityHero extends StatelessWidget {
+  const ActivityHero({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text('Activity Page Content');
+    return const Text('Activity Page Content');
   }
 }

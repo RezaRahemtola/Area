@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class userHero extends StatelessWidget {
-  const userHero({
+class UserHero extends StatelessWidget {
+  const UserHero({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text('User Page Content');
+    return const Text('User Page Content');
   }
 }

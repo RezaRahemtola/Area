@@ -60,19 +60,19 @@ class _LandingPageState extends State<LandingPage> {
         index: _selectedIndex,
         children: const <Widget>[
           Center(
-            child: libraryHero(),
+            child: LibraryHero(),
           ),
           Center(
-            child: exploreHero(),
+            child: ExploreHero(),
           ),
           Center(
-            child: createHero(),
+            child: CreateHero(),
           ),
           Center(
-            child: activityHero(),
+            child: ActivityHero(),
           ),
           Center(
-            child: userHero(),
+            child: UserHero(),
           ),
         ],
       ),

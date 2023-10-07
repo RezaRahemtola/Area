@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class createHero extends StatelessWidget {
-  const createHero({
+class CreateHero extends StatelessWidget {
+  const CreateHero({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text('CREATE Page Content');
+    return const Text('CREATE Page Content');
   }
 }
