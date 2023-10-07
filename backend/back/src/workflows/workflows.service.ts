@@ -54,8 +54,8 @@ export class WorkflowsService {
 	async createWorkflow(
 		name: string,
 		ownerId: string,
-		entry: WorkflowActionDto,
-		steps: WorkflowReactionDto[],
+		action: WorkflowActionDto,
+		reactions: WorkflowReactionDto[],
 		active: boolean = false,
 	) {
 		if (await this.workflowRepository.exist({ where: { name, ownerId } }))
@@ -67,9 +67,9 @@ export class WorkflowsService {
 		const workflow = await this.workflowRepository.save({ name, owner, active });
 		const { id } = workflow;
 
-		const entryToSave = await this.createWorkflowArea(entry, workflow, true);
-		const stepsToSave = await this.createWorkflowReactions(entryToSave, steps, workflow);
-		await this.workflowRepository.save({ ...workflow, action: entryToSave, reactions: stepsToSave });
+		const actionToSave = await this.createWorkflowArea(action, workflow, true);
+		const reactionsToSave = await this.createWorkflowReactions(actionToSave, reactions, workflow);
+		await this.workflowRepository.save({ ...workflow, action: actionToSave, reactions: reactionsToSave });
 		return {
 			id,
 		};
@@ -151,13 +151,15 @@ export class WorkflowsService {
 	}
 
 	private async createWorkflowReactions(action: WorkflowArea, reactions: WorkflowReactionDto[], workflow: Workflow) {
-		const dbReactions = await Promise.all(reactions.map(async (step) => await this.createWorkflowArea(step, workflow)));
-		for (const dbStep of dbReactions) {
-			if (!dbStep.previousArea) {
-				const { previousAreaId } = reactions.find((step) => step.id === dbStep.id);
-				dbStep.previousArea = [action, ...dbReactions].find((step) => step.id === previousAreaId);
-				if (!dbStep.previousArea)
-					throw new NotFoundException(`You not provided a previous step for step ${dbStep.id}.`);
+		const dbReactions = await Promise.all(
+			reactions.map(async (reaction) => await this.createWorkflowArea(reaction, workflow)),
+		);
+		for (const dbReaction of dbReactions) {
+			if (!dbReaction.previousArea) {
+				const { previousAreaId } = reactions.find((reaction) => reaction.id === dbReaction.id);
+				dbReaction.previousArea = [action, ...dbReactions].find((area) => area.id === previousAreaId);
+				if (!dbReaction.previousArea)
+					throw new NotFoundException(`You did not provide a previous area for area ${dbReaction.id}.`);
 			}
 		}
 		return dbReactions;
@@ -169,7 +171,7 @@ export class WorkflowsService {
 		isAction: boolean = false,
 	) {
 		if (await this.workflowAreaRepository.exist({ where: { id } }))
-			throw new ConflictException(`Workflow step ${id} already exists.`);
+			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const action = new WorkflowArea();
 		action.id = id;
 		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId });
