@@ -45,7 +45,8 @@ export class WorkflowsController {
 		description: "A workflow with the same name already exists",
 	})
 	@ApiNotFoundResponse({
-		description: "The user making this request was deleted",
+		description:
+			"The user making this request was deleted, a reaction was not provided a previous area or an area was not found for a specific workflow area",
 	})
 	@ApiBody({
 		description: "The workflow to create",
