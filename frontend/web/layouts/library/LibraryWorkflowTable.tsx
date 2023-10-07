@@ -6,6 +6,7 @@ import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 import "@/styles/customCheckbox.css";
+import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
 
 const workflows: Workflow[] = [
 	{
@@ -44,6 +45,9 @@ const LibraryWorkflowTable = () => {
 
 	const onSelectLine = (workflowId: string, selected: boolean) => {
 		if (selected && !selectedWorkflows.includes(workflowId)) {
+			if (selectedWorkflows.length + 1 === workflows.length) {
+				setGlobalSelect(true);
+			}
 			setSelectedWorkflows((prev) => [...prev, workflowId]);
 		} else {
 			setSelectedWorkflows((prev) => prev.filter((workflow) => workflow !== workflowId));
@@ -66,13 +70,18 @@ const LibraryWorkflowTable = () => {
 	};
 
 	return (
-		<div className="overflow-x-auto">
-			<table className="table">
-				<thead className="text-neutral-content">
-					<tr>
-						<th>
+		<table className="table">
+			<thead className="text-neutral-content">
+				<tr>
+					<th className="table-cell " colSpan={2}>
+						<div className="flex">
 							<label className="custom-checkbox">
-								<input type="checkbox" checked={globalSelect} onChange={onGlobalSelect} />
+								<input
+									type="checkbox"
+									className="global-workflow-selector"
+									checked={globalSelect}
+									onChange={onGlobalSelect}
+								/>
 								{selectedWorkflows.length === 0 ? (
 									<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
 								) : (
@@ -80,25 +89,25 @@ const LibraryWorkflowTable = () => {
 								)}
 								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
 							</label>
-						</th>
-						<th></th>
-						<th>Name</th>
-						<th>Running</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{workflows.map((workflow) => (
-						<LibraryWorkflowLine
-							workflow={workflow}
-							key={workflow.id}
-							selected={selectedWorkflows.includes(workflow.id)}
-							onSelect={onSelectLine}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
+							{selectedWorkflows.length !== 0 ? <LibraryGlobalActions /> : <></>}
+						</div>
+					</th>
+					<th>Name</th>
+					<th>Running</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{workflows.map((workflow) => (
+					<LibraryWorkflowLine
+						workflow={workflow}
+						key={workflow.id}
+						selected={selectedWorkflows.includes(workflow.id)}
+						onSelect={onSelectLine}
+					/>
+				))}
+			</tbody>
+		</table>
 	);
 };
 

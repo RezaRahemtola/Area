@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-
 import Image from "next/image";
+
 import { Area } from "@/types/services";
-import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
 import { EditorElement } from "@/types/workflows";
+import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
+import { EditorCardActions } from "@/types/editor";
 
 const options: Area[] = [
 	{
@@ -20,18 +21,19 @@ const options: Area[] = [
 	},
 ];
 
-const EditorSelectEventAndAccount = ({
-	area,
-	onNextStep,
-}: {
+type EditorSelectEventAndAccountProps = {
 	area: EditorElement;
-	onNextStep: (event: Area, account: boolean) => void;
-}) => {
+	title: string;
+	actions: EditorCardActions;
+	onEvent: (type: "back" | "next", event?: Area, account?: boolean) => void;
+};
+
+const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSelectEventAndAccountProps) => {
 	const [selectedEvent, setSelectedEvent] = useState<string | null>(area.event?.id ?? null);
 	const [selectedAccount, setSelectedAccount] = useState<boolean>(area.account);
 
 	return (
-		<EditorAreaStepCard title="Action">
+		<EditorStepCardWrapper title={title} actions={actions}>
 			<>
 				<div className="form-control w-full max-w-xs">
 					<label className="label">
@@ -66,15 +68,21 @@ const EditorSelectEventAndAccount = ({
 
 				<div className="card-actions">
 					<button
+						className="btn btn-outline btn-neutral text-neutral-content hover:text-neutral-content"
+						onClick={() => onEvent("back")}
+					>
+						Back
+					</button>
+					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
 						disabled={!selectedEvent || !selectedAccount}
-						onClick={() => onNextStep(options.find((option) => option.id === selectedEvent)!, selectedAccount)}
+						onClick={() => onEvent("next", options.find((option) => option.id === selectedEvent)!, selectedAccount)}
 					>
 						Next
 					</button>
 				</div>
 			</>
-		</EditorAreaStepCard>
+		</EditorStepCardWrapper>
 	);
 };
 

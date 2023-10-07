@@ -21,7 +21,7 @@ const EditorSeparator = ({ index }: { index: number }) => {
 
 			<div className="flex w-full justify-center">
 				<button className="btn btn-circle btn-sm" onClick={onClick}>
-					<FontAwesomeIcon icon="plus" svgProps={{ className: "h-6 w-6 ml-1" }} />
+					<FontAwesomeIcon icon="plus" svgProps={{ className: "h-6 w-6" }} />
 				</button>
 			</div>
 

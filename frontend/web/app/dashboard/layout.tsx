@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import DashboardMenu from "@/components/dashboard/menu/DashboardMenu";
 import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
 import { userAuthTokenAtom } from "@/stores/user";
+import NotAuthenticatedLayout from "@/layouts/auth/NotAuthenticatedLayout";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -20,7 +21,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 					{children}
 				</div>
 			) : (
-				<span>Please log in before using the app</span>
+				<NotAuthenticatedLayout />
 			)}
 		</>
 	);
