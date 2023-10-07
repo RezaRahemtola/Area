@@ -11,7 +11,14 @@ WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-root
+RUN poetry install
+
+RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
+
+ENV VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH"
+
+RUN python -m grpc_tools.protoc -I./proto --python_out=proto --pyi_out=proto --grpc_python_out=proto proto/area_back.proto proto/area_types.proto
 
 FROM python:3.11-slim-buster AS runtime
 

@@ -12,9 +12,11 @@ echo Copying protobuf files...
 
 rm -rf $BACK_PROTO_PATH $SUPERVISOR_PROTO_PATH
 rm -rf $GIT_ROOT_PATH/backend/workers/seconds-interval/proto
+rm -rf $GIT_ROOT_PATH/backend/workers/gmail/proto
 
 cp -rf $PROTO_PATH $BACK_PROTO_PATH
 cp -rf $PROTO_PATH $SUPERVISOR_PROTO_PATH
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/seconds-interval/proto
+cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/gmail/proto
 
 echo Protobuf files copied.
