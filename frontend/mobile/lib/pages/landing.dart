@@ -51,6 +51,26 @@ class _LandingPageState extends State<LandingPage> {
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: <Widget>[
+          Center(
+            child: Text('Home Page Content'),
+          ),
+          Center(
+            child: Text('Dashboard Page Content'),
+          ),
+          Center(
+            child: Text('CREATE Page Content'),
+          ),
+          Center(
+            child: Text('Library Page Content'),
+          ),
+          Center(
+            child: Text('Apps Page Content'),
+          ),
+        ],
+      ),
     );
   }
 }
