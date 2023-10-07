@@ -21,7 +21,7 @@ func main() {
 		log.Fatal("Invalid server port", err)
 	}
 
-	callbackUrl := os.Getenv("GRPC_CALLBACK_URL")
+	callbackUrl := os.Getenv("GRPC_CALLBACK_HOST")
 	if callbackUrl == "" {
 		log.Fatal("Invalid callback url", err)
 	}

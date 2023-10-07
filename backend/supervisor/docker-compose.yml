@@ -6,7 +6,7 @@ services:
     build: .
     env_file: .env
     ports:
-      - "50051:50051"
+      - "${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}"
 
   seconds-interval:
     container_name: seconds-interval

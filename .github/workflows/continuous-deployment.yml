@@ -2,13 +2,50 @@ name: Continuous Deployment
 
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
 
 jobs:
-  deploy-server:
-    runs-on: ubuntu-latest
-    name: Deploy
+  stop-supervisor:
+    runs-on: self-hosted
+    name: Stop supervisor & services
+    environment: Production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Execute SSH command
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVICES_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.SCP_TARGET }}
+            cd ${{ secrets.SERVICES_PROJECT_PATH }}
+            docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
+
+  stop-server:
+    runs-on: self-hosted
+    name: Stop main server
+    environment: Production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Execute SSH command
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.MAIN_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.SCP_TARGET }}
+            docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
+
+  deploy-supervisor:
+    runs-on: self-hosted
+    name: Deploy supervisor & services
     environment: Production
 
     steps:
@@ -23,9 +60,32 @@ jobs:
           private_key: ${{ secrets.SSH_KEY }}
           scp_source: .
           scp_target: ${{ secrets.SCP_TARGET }}
-          before_script: |
+          after_script: |
             cd ${{ secrets.SCP_TARGET }}
-            docker compose down --remove-orphans && cd .. && rm -rf ${{ secrets.SCP_TARGET }}
+            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && cd ${{ secrets.SERVICES_PROJECT_PATH }} && docker compose --profile prod up --build -d
+    needs:
+      - stop-supervisor
+      - stop-server
+
+  deploy-server:
+    runs-on: self-hosted
+    name: Deploy server
+    environment: Production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.MAIN_SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          private_key: ${{ secrets.SSH_KEY }}
+          scp_source: .
+          scp_target: ${{ secrets.SCP_TARGET }}
           after_script: |
             cd ${{ secrets.SCP_TARGET }}
             INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && docker compose --profile prod up --build -d
+    needs:
+      - deploy-supervisor

@@ -13,6 +13,7 @@ paths=( \
   "frontend/web/" \
   "frontend/mobile/" \
   "backend/back/" \
+  "backend/supervisor/" \
 )
 file=".env"
 
