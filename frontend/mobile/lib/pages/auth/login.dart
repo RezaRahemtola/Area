@@ -1,7 +1,8 @@
-import 'package:area_mobile/Components/email_field.dart';
+import 'package:area_mobile/components/auth/email_field.dart';
+import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/main.dart';
-import 'package:area_mobile/Components/password_field.dart';
-import 'package:area_mobile/register.dart';
+import 'package:area_mobile/pages/auth/register.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -79,11 +80,13 @@ class LoginButtons extends StatelessWidget {
               ],
             )),
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                if (emailController.text == "azerty@qwerty" &&
-                    passwordController.text == "bepo") {
-                  // validation
+                final result = await services.auth
+                    .login(emailController.text, passwordController.text);
+                if (!context.mounted) return;
+
+                if (result.data != null) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -91,15 +94,11 @@ class LoginButtons extends StatelessWidget {
                               email: emailController.text,
                             )),
                   );
-                } else {
+                } else if (result.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Invalid Credentials')),
+                    SnackBar(content: Text(result.error!)),
                   );
                 }
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Please fill the login form.")),
-                );
               }
             },
             child: const Text("Submit")),
