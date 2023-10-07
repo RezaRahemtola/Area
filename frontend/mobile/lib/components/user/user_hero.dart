@@ -41,7 +41,7 @@ class UserHero extends StatelessWidget {
               onPressed: () {
                 // Log-Out Feature
               },
-              child: Text('Se Déconnecter'),
+              child: const Text('Se Déconnecter'),
             ),
           ],
         ),
