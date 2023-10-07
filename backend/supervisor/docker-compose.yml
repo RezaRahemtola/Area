@@ -11,3 +11,7 @@ services:
   seconds-interval:
     container_name: seconds-interval
     build: ../workers/seconds-interval
+
+  gmail:
+    container_name: gmail
+    build: ../workers/gmail
