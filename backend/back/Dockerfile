@@ -16,8 +16,6 @@ RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
 # Copy source (see .dockerignore)
 COPY . .
 
-RUN yarn migration:run:prod
-
 # Build
 RUN yarn build
 
@@ -28,5 +26,6 @@ WORKDIR /app
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/proto ./proto
+COPY --from=builder /app/entrypoint.sh ./entrypoint.sh
 
-CMD [ "node", "src/main.js" ]
+ENTRYPOINT ["sh", "./entrypoint.sh"]
