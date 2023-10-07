@@ -23,7 +23,7 @@ type Job struct {
 
 var instance *JobManager
 
-func InitJobManager(cli *client.Client, callbackUrl string, callbackPort int8) {
+func InitJobManager(cli *client.Client, callbackUrl string, callbackPort int) {
 	callbackUrl += ":" + fmt.Sprint(callbackPort)
 	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
 }

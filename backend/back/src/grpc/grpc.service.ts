@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
-import { GrpcResponse, JobData } from "./grpc.dto";
+import { GrpcResponse, JobData, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
 import { JobsType } from "../types/jobs";
 import { JobsParams } from "../types/jobParams";
@@ -9,6 +9,9 @@ import "../types/struct";
 
 interface AreaSupervisorService {
 	launchJob(data: JobData): Observable<GrpcResponse>;
+	killJob(job: JobId): Observable<GrpcResponse>;
+	killAllJobs(): Observable<GrpcResponse>;
+	listJobs(): Observable<JobList>;
 }
 
 @Injectable()
@@ -33,5 +36,21 @@ export class GrpcService implements OnModuleInit {
 				params,
 			}),
 		);
+	}
+
+	killJob(identifier: string) {
+		return firstValueFrom(
+			this.areaSupervisorService.killJob({
+				identifier,
+			}),
+		);
+	}
+
+	killAllJobs() {
+		return firstValueFrom(this.areaSupervisorService.killAllJobs());
+	}
+
+	listJobs() {
+		return firstValueFrom(this.areaSupervisorService.listJobs());
 	}
 }
