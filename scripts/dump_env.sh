@@ -7,6 +7,7 @@ if [ -z "$1" ]
     exit 1
 fi
 INFISICAL_ENVIRONMENT=$1
+GIT_ROOT_PATH=$(git rev-parse --show-toplevel)
 
 # Define paths to dump
 paths=( \
@@ -23,7 +24,7 @@ clear='\033[0m'
 INDEX=1
 for path in "${paths[@]}"
   do
-    infisical export --env="$INFISICAL_ENVIRONMENT" --path="$path" > "$path"$file
+    infisical export --env="$INFISICAL_ENVIRONMENT" --path="$path" > "$GIT_ROOT_PATH/$path"$file
     echo -e "${green}Dumped ${path}${file} ($INDEX/${#paths[@]}) ${clear}"
     ((INDEX++))
 done
