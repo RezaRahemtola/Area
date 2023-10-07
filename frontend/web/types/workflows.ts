@@ -1,21 +1,37 @@
-import { Area, Service } from "@/types/services";
+export type WorkflowAction = {
+	id: string;
+	parameters: Record<string, never>;
+	areaId: string;
+	areaServiceId: string;
+};
+
+export type WorkflowReaction = WorkflowAction & {
+	previousAreaId: string;
+};
 
 export type Workflow = {
 	id: string;
 	name: string;
-	pictures: string[];
-	running: boolean;
+	action: WorkflowAction;
+	reactions: WorkflowReaction[];
+	active: boolean;
 };
 
-export type EditorElement = {
+export type EditorWorkflowAction = {
 	id: string;
-	service?: Service;
-	account: boolean;
-	event?: Area;
+	parameters: Record<string, never>;
+	areaId?: string;
+	areaServiceId?: string;
+};
+
+export type EditorWorkflowReaction = EditorWorkflowAction & {
+	previousAreaId: string;
 };
 
 export type EditorWorkflow = {
+	id?: string;
 	name: string;
-	action: EditorElement;
-	reactions: EditorElement[];
+	action: EditorWorkflowAction;
+	reactions: EditorWorkflowReaction[];
+	active: boolean;
 };
