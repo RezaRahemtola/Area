@@ -1,19 +1,17 @@
 import 'package:area_mobile/components/auth/email_field.dart';
 import 'package:area_mobile/components/auth/password_field.dart';
-import 'package:area_mobile/main.dart';
+import 'package:area_mobile/pages/home.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key, required this.title});
-
-  final String title;
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -23,7 +21,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: const Text("Register"),
         ),
         body: Form(
           key: _formKey,
@@ -86,10 +84,7 @@ class RegisterButton extends StatelessWidget {
                 );
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => HomePage(
-                            email: emailController.text,
-                          )),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               } else if (result.error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
