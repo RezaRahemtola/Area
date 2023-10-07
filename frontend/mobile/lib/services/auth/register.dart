@@ -8,7 +8,6 @@ Future<ServiceReturn<String>> register(String email, String password) async {
       '/auth/register',
       data: {"email": email, "password": password},
     );
-
     await storage.setAccessToken(response.data["accessToken"]);
     return ServiceReturn(data: response.data["accessToken"]);
   } catch (e) {

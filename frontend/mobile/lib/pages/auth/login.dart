@@ -83,8 +83,9 @@ class LoginButtons extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 final result = await services.auth
                     .login(emailController.text, passwordController.text);
-                if (!context.mounted) return;
-
+                if (!context.mounted) {
+                  return;
+                }
                 if (result.data != null) {
                   onSuccess();
                 } else if (result.error != null) {
