@@ -1,6 +1,7 @@
 import { forwardRef, useState } from "react";
 import Modal from "@/components/Modal";
 import { Workflow } from "@/types/workflows";
+import services from "@/services";
 
 type RenameWorkflowModalProps = {
 	workflow: Workflow;
@@ -10,7 +11,7 @@ const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalPro
 	const [newName, setNewName] = useState(workflow.name);
 
 	const onSubmit = async () => {
-		// TODO Reza: API call
+		await services.workflows.update({ name: newName });
 		onSuccess();
 	};
 

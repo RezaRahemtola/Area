@@ -1,47 +1,29 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useAtom } from "jotai";
+
 import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
-import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
+import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
+import { workflowsAtom } from "@/stores";
 
 import "@/styles/customCheckbox.css";
-import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
-
-const workflows: Workflow[] = [
-	{
-		id: "1",
-		name: "Zemlak, Daniel and Leannon",
-		pictures: [
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-		],
-		running: true,
-	},
-	{
-		id: "2",
-		name: "Carroll Group",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-3@56w.png"],
-		running: false,
-	},
-	{
-		id: "3",
-		name: "Rowe-Schoen",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-4@56w.png"],
-		running: false,
-	},
-	{
-		id: "4",
-		name: "Wyman-Ledner",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-5@56w.png"],
-		running: false,
-	},
-];
+import services from "@/services";
 
 const LibraryWorkflowTable = () => {
+	const [workflows, setWorkflows] = useAtom(workflowsAtom);
 	const [selectedWorkflows, setSelectedWorkflows] = useState<string[]>([]);
 	const [globalSelect, setGlobalSelect] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			const fetchedWorkflows = await services.workflows.getAll();
+			if (fetchedWorkflows.data !== null) {
+				setWorkflows(fetchedWorkflows.data);
+			}
+		})();
+	}, []);
 
 	const onSelectLine = (workflowId: string, selected: boolean) => {
 		if (selected && !selectedWorkflows.includes(workflowId)) {

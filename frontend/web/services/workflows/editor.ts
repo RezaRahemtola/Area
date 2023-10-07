@@ -15,7 +15,7 @@ export const create = async (workflow: EditorWorkflow): Promise<ServiceReturn<Cr
 	}
 };
 
-export const update = async (workflow: EditorWorkflow): Promise<ServiceReturn<CreateWorkflowReturn>> => {
+export const update = async (workflow: Partial<EditorWorkflow>): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
 		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${workflow.id}`, { data: workflow });
 		return { data: response.data, error: undefined };
