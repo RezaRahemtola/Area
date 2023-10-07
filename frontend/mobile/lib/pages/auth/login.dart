@@ -1,20 +1,18 @@
 import 'package:area_mobile/components/auth/email_field.dart';
 import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/pages/auth/register.dart';
-import 'package:area_mobile/pages/landing.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key, required this.title});
-
-  final String title;
+class LoginPage extends StatefulWidget {
+  final Function() onSuccess;
+  const LoginPage({super.key, required this.onSuccess});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -23,7 +21,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: const Text("Login"),
         ),
         body: Form(
           key: _formKey,
@@ -33,9 +31,11 @@ class _LoginState extends State<Login> {
               EmailField(emailController: emailController),
               PasswordField(passwordController: passwordController),
               LoginButtons(
-                  formKey: _formKey,
-                  emailController: emailController,
-                  passwordController: passwordController)
+                formKey: _formKey,
+                emailController: emailController,
+                passwordController: passwordController,
+                onSuccess: widget.onSuccess,
+              )
             ],
           ),
         ));
@@ -43,16 +43,18 @@ class _LoginState extends State<Login> {
 }
 
 class LoginButtons extends StatelessWidget {
-  const LoginButtons({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required this.emailController,
-    required this.passwordController,
-  }) : _formKey = formKey;
-
   final GlobalKey<FormState> _formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final Function() onSuccess;
+
+  const LoginButtons(
+      {super.key,
+      required GlobalKey<FormState> formKey,
+      required this.emailController,
+      required this.passwordController,
+      required this.onSuccess})
+      : _formKey = formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +66,7 @@ class LoginButtons extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const Register(
-                          title: 'Register',
-                        )),
+                MaterialPageRoute(builder: (context) => const RegisterPage()),
               );
             },
             child: const Row(
@@ -84,14 +83,11 @@ class LoginButtons extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 final result = await services.auth
                     .login(emailController.text, passwordController.text);
-                if (!context.mounted) return;
-
+                if (!context.mounted) {
+                  return;
+                }
                 if (result.data != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LandingPage()),
-                  );
+                  onSuccess();
                 } else if (result.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(result.error!)),

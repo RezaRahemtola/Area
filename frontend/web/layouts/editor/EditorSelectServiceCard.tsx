@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Service } from "@/types/services";
-import { splitArrayInChunks } from "@/utils/arrays";
-import EditorAreaStepCard from "@/layouts/editor/EditorAreaStepCard";
+import ServicesList from "@/components/editor/ServicesList";
+import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
+import { EditorCardActions } from "@/types/editor";
 
 const services: Service[] = [
 	{
@@ -31,7 +32,7 @@ const services: Service[] = [
 	},
 ];
 
-const ActionServiceElement = ({
+const ServiceElement = ({
 	service,
 	onClick,
 	selected,
@@ -51,31 +52,24 @@ const ActionServiceElement = ({
 		</div>
 	</button>
 );
-const EditorSelectServiceCard = ({
-	currentService,
-	onNextStep,
-}: {
+
+type EditorSelectServiceCardProps = {
+	title: string;
+	actions: EditorCardActions;
 	currentService?: Service;
 	onNextStep: (service: Service) => void;
-}) => {
+};
+const EditorSelectServiceCard = ({ title, actions, currentService, onNextStep }: EditorSelectServiceCardProps) => {
 	const [selectedService, setSelectedService] = useState<Service | undefined>(currentService);
 
-	const servicesChunks = splitArrayInChunks(services, 3);
-
 	return (
-		<EditorAreaStepCard title="Action">
-			{servicesChunks.map((chunk, index) => (
-				<div className="flex w-full justify-around my-2" key={index}>
-					{chunk.map((service) => (
-						<ActionServiceElement
-							service={service}
-							onClick={() => setSelectedService(service)}
-							key={service.id}
-							selected={selectedService?.id === service.id}
-						/>
-					))}
-				</div>
-			))}
+		<EditorStepCardWrapper title={title} actions={actions}>
+			<ServicesList
+				services={services}
+				nbPerLine={3}
+				selectedServiceId={selectedService?.id}
+				setSelectedService={setSelectedService}
+			/>
 
 			<div className="card-actions">
 				<button
@@ -86,7 +80,7 @@ const EditorSelectServiceCard = ({
 					Next
 				</button>
 			</div>
-		</EditorAreaStepCard>
+		</EditorStepCardWrapper>
 	);
 };
 
