@@ -1,3 +1,5 @@
+"https://github.com/login/oauth/authorize?client_id=65dcec401c9605f26efb&redirect_uri=http://localhost:6969&scope=user";
+
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
@@ -7,6 +9,7 @@ import WorkflowReactionDto, { WorkflowActionDto } from "./dto/workflow-reaction.
 import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
+import UserConnection from "../connections/entities/user-connection.entity";
 
 @Injectable()
 export class WorkflowsService {
@@ -227,14 +230,38 @@ export class WorkflowsService {
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const action = new WorkflowArea();
 		action.id = id;
-		action.area = await queryRunner.manager.findOneBy(Area, { id: areaId, serviceId: areaServiceId, isAction });
+		action.area = await queryRunner.manager.findOne(Area, {
+			where: {
+				id: areaId,
+				serviceId: areaServiceId,
+				isAction,
+			},
+			relations: {
+				serviceScopesNeeded: true,
+			},
+		});
 		if (!action.area)
 			throw new NotFoundException(
 				`${
 					isAction ? "Action" : "Reaction"
 				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
 			);
-		action.parameters = parameters;
+		const serviceUserConnection = await queryRunner.manager.findOne(UserConnection, {
+			where: {
+				serviceId: areaServiceId,
+			},
+			relations: {
+				scopes: true,
+			},
+		});
+		if (!serviceUserConnection) throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
+		const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);
+		const areaNeededScopeIds = action.area.serviceScopesNeeded.map(({ id }) => id);
+		if (!areaNeededScopeIds.every((id) => scopeIds.includes(id)))
+			throw new NotFoundException(
+				`Workflow area ${id} misses scopes ${areaNeededScopeIds.filter((id) => !scopeIds.includes(id)).join(", ")}.`,
+			);
+		if (action.area.serviceScopesNeeded) action.parameters = parameters;
 		if (isAction) action.actionOfWorkflow = workflow;
 		else action.workflow = workflow;
 		return action;
