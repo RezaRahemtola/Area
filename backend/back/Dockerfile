@@ -16,6 +16,8 @@ RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
 # Copy source (see .dockerignore)
 COPY . .
 
+RUN yarn migration:run:prod
+
 # Build
 RUN yarn build
 
