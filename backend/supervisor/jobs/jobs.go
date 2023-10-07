@@ -12,6 +12,7 @@ import (
 type JobManager struct {
 	dockerClient *client.Client
 	jobs         map[string]Job
+	callbackUrl  string
 }
 
 type Job struct {
@@ -22,8 +23,9 @@ type Job struct {
 
 var instance *JobManager
 
-func InitJobManager(cli *client.Client) {
-	instance = &JobManager{cli, map[string]Job{}}
+func InitJobManager(cli *client.Client, callbackUrl string, callbackPort int8) {
+	callbackUrl += ":" + fmt.Sprint(callbackPort)
+	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
 }
 
 func GetJobManager() *JobManager {
@@ -37,6 +39,8 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 	}
 
 	var args []string
+	args = append(args, "--target")
+	args = append(args, jm.callbackUrl)
 	for key, value := range params {
 		args = append(args, "--"+key)
 		args = append(args, fmt.Sprint(value))

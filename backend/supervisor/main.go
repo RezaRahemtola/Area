@@ -21,6 +21,16 @@ func main() {
 		log.Fatal("Invalid server port", err)
 	}
 
+	callbackUrl, err := os.Getenv("GRPC_CALLBACK_URL")
+	if err != nil {
+	    log.Fatal("Invalid callback url", err)
+	}
+
+	callbackPort, err := GetEnvNumber("GRPC_CALLBACK_PORT")
+	if err != nil {
+	    log.Fatal("Invalid callback port", err)
+	}
+
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Fatal("Cannot create docker client: ", err)

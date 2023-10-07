@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  server:
+  supervisor:
     container_name: area_supervisor
     build: .
     env_file: .env
