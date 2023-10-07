@@ -62,7 +62,7 @@ jobs:
           scp_target: ${{ secrets.SCP_TARGET }}
           after_script: |
             cd ${{ secrets.SCP_TARGET }}
-            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && cd ${{ secrets.SERVICES_PROJECT_PATH }} && docker compose --profile prod up --build -d
+            INFISICAL_TOKEN=${{ secrets.INFISICAL_TOKEN }} ./scripts/dump_env.sh prod && cd ${{ secrets.SERVICES_PROJECT_PATH }} && docker compose up --build -d
     needs:
       - stop-supervisor
       - stop-server
