@@ -41,6 +41,9 @@ export default class Workflow {
 		example: [
 			{
 				id: "string",
+				previousAreaId: "string",
+				areaId: "string",
+				areaServiceId: "string",
 				parameters: {},
 			},
 		],
@@ -51,6 +54,9 @@ export default class Workflow {
 	@ApiProperty({
 		example: {
 			id: "string",
+			previousAreaId: "string",
+			areaId: "string",
+			areaServiceId: "string",
 			parameters: {},
 		},
 	})
