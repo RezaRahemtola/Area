@@ -13,7 +13,6 @@
     "start:debug": "infisical run --path=/backend/back -- nest start --debug --watch",
     "migration:create": "typeorm-ts-node-esm migration:create",
     "migration:run": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:run -d src/database.ts",
-    "migration:run:prod": "infisical run --env=prod --path=/backend/back -- yarn typeorm-ts-node-esm migration:run -d src/database.ts",
     "migration:generate": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:generate -d src/database.ts",
     "migration:show": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:show -d src/database.ts",
     "migration:revert": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:revert -d src/database.ts",
