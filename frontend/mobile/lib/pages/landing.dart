@@ -1,3 +1,8 @@
+import 'package:area_mobile/components/app/app_hero.dart';
+import 'package:area_mobile/components/create/create_hero.dart';
+import 'package:area_mobile/components/dashboard/dashboard_hero.dart';
+import 'package:area_mobile/components/home/home_hero.dart';
+import 'package:area_mobile/components/library/library_hero.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatefulWidget {
@@ -53,21 +58,21 @@ class _LandingPageState extends State<LandingPage> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: <Widget>[
+        children: const <Widget>[
           Center(
-            child: Text('Home Page Content'),
+            child: homeHero(),
           ),
           Center(
-            child: Text('Dashboard Page Content'),
+            child: dashboardHero(),
           ),
           Center(
-            child: Text('CREATE Page Content'),
+            child: createHero(),
           ),
           Center(
-            child: Text('Library Page Content'),
+            child: libraryHero(),
           ),
           Center(
-            child: Text('Apps Page Content'),
+            child: appHero(),
           ),
         ],
       ),
