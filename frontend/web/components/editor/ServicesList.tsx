@@ -18,7 +18,7 @@ const ServiceElement = ({
 					<Image src={service.imageUrl} alt="Service logo" width={500} height={500} />
 				</div>
 			</div>
-			<p className="text-xl font-semibold ml-2">{service.name}</p>
+			<p className="text-xl font-semibold ml-2">{service.id}</p>
 		</div>
 	</button>
 );
@@ -27,7 +27,7 @@ type ServicesListProps = {
 	services: Service[];
 	nbPerLine: number;
 	selectedServiceId: string | undefined;
-	setSelectedService: (service: Service) => void;
+	setSelectedService: (serviceId: string) => void;
 };
 const ServicesList = ({ services, nbPerLine, selectedServiceId, setSelectedService }: ServicesListProps) => {
 	const servicesChunks = splitArrayInChunks(services, nbPerLine);
@@ -39,7 +39,7 @@ const ServicesList = ({ services, nbPerLine, selectedServiceId, setSelectedServi
 					{chunk.map((service) => (
 						<ServiceElement
 							service={service}
-							onClick={() => setSelectedService(service)}
+							onClick={() => setSelectedService(service.id)}
 							key={service.id}
 							selected={selectedServiceId === service.id}
 						/>

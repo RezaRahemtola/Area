@@ -17,11 +17,20 @@ export type Workflow = {
 	active: boolean;
 };
 
+export type EditorWorkflowElementArea = {
+	id: string;
+};
+
+export type EditorWorkflowElementService = {
+	id: string;
+	imageUrl: string;
+};
+
 export type EditorWorkflowAction = {
 	id: string;
 	parameters: Record<string, never>;
-	areaId?: string;
-	areaServiceId?: string;
+	area?: EditorWorkflowElementArea;
+	areaService?: EditorWorkflowElementService;
 };
 
 export type EditorWorkflowReaction = EditorWorkflowAction & {

@@ -5,9 +5,9 @@ import { useState } from "react";
 
 import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
-import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
+import { Area, Service } from "@/types/services";
 
 enum Step {
 	SUMMARY = 0,
@@ -29,15 +29,15 @@ const ActionCard = () => {
 	const onSelectServiceClick = (service: Service) => {
 		setWorkflow((prev) => ({
 			...prev,
-			action: { ...prev.action, service, event: undefined },
+			action: { ...prev.action, areaId: undefined, areaService: service },
 		}));
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
 
-	const onSelectEventAndAccount = (type: "back" | "next", event?: Area, account: boolean = false) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
 		setWorkflow((prev) => ({
 			...prev,
-			action: { ...prev.action, event, account },
+			action: { ...prev.action, area },
 		}));
 
 		if (type === "next") {
@@ -51,10 +51,10 @@ const ActionCard = () => {
 		return (
 			<EditorSummaryCard
 				title="Action"
-				description={action.event ? action.event.name : "An event that starts your workflow"}
+				description={action.area ? action.area.id : "An event that starts your workflow"}
 				icon="bolt"
 				onClick={onSummaryClick}
-				service={action.service}
+				service={action.areaService}
 			/>
 		);
 	}
@@ -63,7 +63,7 @@ const ActionCard = () => {
 			<EditorSelectServiceCard
 				title="Action"
 				actions={{ enabled: false }}
-				currentService={action.service}
+				currentService={action.areaService}
 				onNextStep={onSelectServiceClick}
 			/>
 		);

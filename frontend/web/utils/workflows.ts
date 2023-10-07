@@ -1,11 +1,21 @@
-import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from "uuid";
 
-import { EditorElement, EditorWorkflow } from "@/types/workflows";
+import { EditorWorkflow, EditorWorkflowAction, EditorWorkflowReaction } from "@/types/workflows";
 
-export const getEmptyArea = (): EditorElement => ({ id: nanoid(), account: false });
-
-export const getEmptyWorkflow = (): EditorWorkflow => ({
-	name: "Untitled workflow",
-	action: getEmptyArea(),
-	reactions: [getEmptyArea()],
+export const getEmptyEditorAction = (id: string): EditorWorkflowAction => ({ id, parameters: {} });
+export const getEmptyEditorReaction = (previousId: string): EditorWorkflowReaction => ({
+	id: uuidv4(),
+	parameters: {},
+	previousAreaId: previousId,
 });
+
+export const getEmptyEditorWorkflow = (): EditorWorkflow => {
+	const actionId = uuidv4();
+
+	return {
+		name: "Untitled workflow",
+		action: getEmptyEditorAction(actionId),
+		reactions: [getEmptyEditorReaction(actionId)],
+		active: false,
+	};
+};
