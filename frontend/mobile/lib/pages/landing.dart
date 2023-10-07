@@ -4,6 +4,7 @@ import 'package:area_mobile/components/create/create_hero.dart';
 import 'package:area_mobile/components/explore/explore_hero.dart';
 import 'package:area_mobile/components/user/user_hero.dart';
 import 'package:area_mobile/components/library/library_hero.dart';
+import 'package:area_mobile/pages/home.dart';
 import 'package:area_mobile/storage/index.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +80,7 @@ class _LandingPageState extends State<LandingPage> {
         index: _selectedIndex,
         children: const <Widget>[
           Center(
-            child: LibraryHero(),
+            child: HomePage(),
           ),
           Center(
             child: ExploreHero(),

@@ -1,9 +1,10 @@
-    print("coucou");
 import 'dart:ffi';
 
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/services/dio.dart';
+import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,14 +42,7 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             title: const Text('Home Page'),
           ),
-          body: const Center(
-            child: Column(
-              children: [
-                Text("Welcome!"),
-                ExistingWorkflows(),
-              ],
-            ),
-          )),
+          body: const Center(child: ExistingWorkflows())),
       onWillPop: () async {
         final shouldPop = await showDialog<bool>(
           context: context,
@@ -83,22 +77,78 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class ExistingWorkflows extends StatelessWidget {
-  const ExistingWorkflows({
-    super.key,
-  });
+Widget buildPosts(List<Workflow>? workflows) {
+  if (workflows == null) {
+    return (Text("no area"));
+  }
+  return ListView.builder(
+    itemCount: workflows.length,
+    itemBuilder: (context, index) {
+      final workflow = workflows[index];
+      return Container(
+        color: Colors.grey.shade300,
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        height: 100,
+        width: double.maxFinite,
+        child: Row(
+          children: [
+            Text(workflow.name!),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+class ExistingWorkflows extends StatefulWidget {
+  const ExistingWorkflows({super.key});
 
   @override
+  State<ExistingWorkflows> createState() => _ExistingWorkflowsState();
+}
+
+class _ExistingWorkflowsState extends State<ExistingWorkflows> {
+  Future<ServiceReturn<List<Workflow>>> workflowsFuture =
+      services.services.getAll();
+  @override
   Widget build(BuildContext context) {
-    print(await services.services.getAll());
-    return const Column(
-      children: [
-        Text("test"),
-        Text("test"),
-        Text("test"),
-        Text("test"),
-        Text("test"),
-      ],
+    return Scaffold(
+      body: FutureBuilder<ServiceReturn<List<Workflow>>>(
+        future: workflowsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // until data is fetched, show loader
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasData) {
+            // once data is fetched, display it on screen (call buildPosts())
+            final workflows = snapshot.data!;
+            return buildPosts(workflows.data);
+          } else {
+            // if no data, show simple Text
+            return const Text("No data available");
+          }
+        },
+      ),
     );
+  }
+
+  Widget buildWorkflows(List<Workflow> workflows) {
+    return ListView.builder(
+        itemCount: workflows.length,
+        itemBuilder: (context, index) {
+          final workflow = workflows[index];
+          return Container(
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              height: 100,
+              width: double.maxFinite,
+              child: Row(
+                children: [
+                  Expanded(flex: 3, child: Text(workflow.name!)),
+                ],
+              ));
+        });
   }
 }
