@@ -24,7 +24,7 @@ export class WorkflowsService {
 	async getWorkflowWithAreas(id: string, ownerId: string) {
 		const workflow = await this.workflowRepository.findOne({
 			where: { id, ownerId },
-			relations: { action: true, reactions: true },
+			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const { name, active, reactions, action } = workflow;
@@ -33,21 +33,47 @@ export class WorkflowsService {
 			name,
 			active,
 			action,
-			reactions,
+			reactions: reactions.map(
+				({
+					id,
+					parameters,
+					previousWorkflowArea: { id: previousWorkflowAreaId },
+					area: { id: areaId, serviceId: areaServiceId },
+				}) => ({
+					id,
+					previousWorkflowAreaId,
+					areaId,
+					areaServiceId,
+					parameters,
+				}),
+			),
 		};
 	}
 
 	async getWorkflowsWithAreas(ownerId: string) {
 		const workflows = await this.workflowRepository.find({
 			where: { ownerId },
-			relations: { action: true, reactions: true },
+			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
 		});
 		return workflows.map(({ id, name, active, action, reactions }) => ({
 			id,
 			name,
 			active,
 			action,
-			reactions,
+			reactions: reactions.map(
+				({
+					id,
+					parameters,
+					previousWorkflowArea: { id: previousWorkflowAreaId },
+					area: { id: areaId, serviceId: areaServiceId },
+				}) => ({
+					id,
+					previousWorkflowAreaId,
+					areaId,
+					areaServiceId,
+					parameters,
+				}),
+			),
 		}));
 	}
 
@@ -155,10 +181,10 @@ export class WorkflowsService {
 			reactions.map(async (reaction) => await this.createWorkflowArea(reaction, workflow)),
 		);
 		for (const dbReaction of dbReactions) {
-			if (!dbReaction.previousArea) {
+			if (!dbReaction.previousWorkflowArea) {
 				const { previousAreaId } = reactions.find((reaction) => reaction.id === dbReaction.id);
-				dbReaction.previousArea = [action, ...dbReactions].find((area) => area.id === previousAreaId);
-				if (!dbReaction.previousArea)
+				dbReaction.previousWorkflowArea = [action, ...dbReactions].find((area) => area.id === previousAreaId);
+				if (!dbReaction.previousWorkflowArea)
 					throw new NotFoundException(`You did not provide a previous area for area ${dbReaction.id}.`);
 			}
 		}
