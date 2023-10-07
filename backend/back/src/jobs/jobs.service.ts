@@ -1,8 +1,7 @@
 import { BadRequestException, HttpException, Injectable } from "@nestjs/common";
 import { GrpcService } from "../grpc/grpc.service";
 import { LaunchJobDto } from "./jobs.dto";
-import { JobsType } from "../types/jobs";
-import { JobParamsClasses, JobsParams } from "../types/jobParams";
+import { JobParamsClasses, JobsParams, JobsType } from "../types/jobs";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
 
@@ -14,7 +13,7 @@ export class JobsService {
 		job: JobsType,
 		params: unknown,
 	): Promise<JobsParams["mappings"][TJobs]> => {
-		const data = plainToInstance<JobsParams["mappings"][TJobs], unknown>(JobParamsClasses[job], params);
+		const data = plainToInstance<object, unknown>(JobParamsClasses[job], params);
 		let errors = [];
 
 		try {
@@ -32,7 +31,7 @@ export class JobsService {
 			const message = Object.values(errors[0].constraints)[0];
 			throw new BadRequestException(`Invalid job parameters: ${message}`);
 		}
-		return data;
+		return data as JobsParams["mappings"][TJobs];
 	};
 
 	async launchJob(job: LaunchJobDto): Promise<void> {

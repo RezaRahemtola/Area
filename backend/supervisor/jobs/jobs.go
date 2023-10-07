@@ -47,7 +47,7 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 	}
 
 	cont, err := jm.dockerClient.ContainerCreate(context.Background(), &container.Config{
-		Image: name,
+		Image: JobToImage[name],
 		Cmd:   args,
 	}, &container.HostConfig{
 		NetworkMode: "host",

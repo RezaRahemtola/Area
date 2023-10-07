@@ -1,5 +1,4 @@
-import { JobsParams } from "./jobParams";
-import { JobsType } from "./jobs";
+import { JobsParams, JobsType } from "./jobs";
 
 type JobsIdentifiers = {
 	[key in JobsType]: (obj: JobsParams["mappings"][key]) => string;
@@ -7,4 +6,5 @@ type JobsIdentifiers = {
 
 export const JobsIdentifiers: JobsIdentifiers = {
 	"seconds-interval": ({ workflowStepId }) => `seconds-interval-${workflowStepId}`,
+	"google-send-email": ({ workflowStepId }) => `google-send-email-${workflowStepId}`,
 };

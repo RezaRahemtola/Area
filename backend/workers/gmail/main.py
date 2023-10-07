@@ -7,7 +7,7 @@ dotenv.load_dotenv()
 
 
 def main():
-    if len(sys.argv) < 1:
+    if len(sys.argv) < 2:
         print("Error: No job specified")
         exit(1)
 
