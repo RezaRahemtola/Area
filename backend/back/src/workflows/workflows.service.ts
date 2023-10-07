@@ -176,7 +176,11 @@ export class WorkflowsService {
 		action.id = id;
 		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId, isAction });
 		if (!action.area)
-			throw new NotFoundException(`Area ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`);
+			throw new NotFoundException(
+				`${
+					isAction ? "Action" : "Reaction"
+				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
+			);
 		action.parameters = parameters;
 		if (isAction) action.actionOfWorkflow = workflow;
 		else action.workflow = workflow;
