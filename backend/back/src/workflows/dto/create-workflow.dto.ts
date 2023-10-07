@@ -12,7 +12,7 @@ export default class CreateWorkflowDto {
 	@Type(() => WorkflowActionDto)
 	@ValidateNested()
 	@IsNotEmptyObject({ nullable: false })
-	entry!: WorkflowActionDto;
+	action!: WorkflowActionDto;
 
 	@ApiProperty({
 		type: [WorkflowReactionDto],
@@ -20,7 +20,7 @@ export default class CreateWorkflowDto {
 	@Type(() => WorkflowReactionDto)
 	@ValidateNested({ each: true })
 	@IsNotEmptyObject({ nullable: false }, { each: true })
-	steps!: WorkflowReactionDto[];
+	reactions!: WorkflowReactionDto[];
 
 	@ApiPropertyOptional()
 	@IsBoolean()
