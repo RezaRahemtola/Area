@@ -4,12 +4,12 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 
 import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
-import { EditorElement } from "@/types/workflows";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
 import { EditorCardActions } from "@/types/editor";
+import { EditorWorkflowReaction } from "@/types/workflows";
 
 enum Step {
 	SUMMARY = 0,
@@ -17,7 +17,7 @@ enum Step {
 	SELECT_EVENT_AND_ACCOUNT = 2,
 }
 
-type ReactionCardProps = { reaction: EditorElement };
+type ReactionCardProps = { reaction: EditorWorkflowReaction };
 const EditorCard = ({ reaction }: ReactionCardProps) => {
 	const [, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
@@ -33,22 +33,21 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 		setWorkflow((prev) => ({
 			...prev,
 			reactions: prev.reactions.map((r) => {
-				if (r.id === reaction.id) return { ...r, service, event: undefined };
+				if (r.id === reaction.id) return { ...r, areaService: service, area: undefined };
 				return r;
 			}),
 		}));
 
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
-	const onSelectEventAndAccount = (type: "back" | "next", event?: Area, account: boolean = false) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
 		setWorkflow((prev) => ({
 			...prev,
 			reactions: prev.reactions.map((r) => {
 				if (r.id === reaction.id)
 					return {
 						...r,
-						event,
-						account,
+						area,
 					};
 				return r;
 			}),
@@ -72,10 +71,10 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 		return (
 			<EditorSummaryCard
 				title="Reaction"
-				description={reaction.event ? reaction.event.name : "An event a workflow performs after it start"}
+				description={reaction.area ? reaction.area.id : "An event a workflow performs after it start"}
 				icon="bolt"
 				onClick={onSummaryClick}
-				service={reaction.service}
+				service={reaction.areaService}
 			/>
 		);
 	}
@@ -84,7 +83,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 			<EditorSelectServiceCard
 				title="Reaction"
 				actions={actions}
-				currentService={reaction.service}
+				currentService={reaction.areaService}
 				onNextStep={onSelectServiceClick}
 			/>
 		);
