@@ -53,7 +53,7 @@ def send_email():
         }
         service.users().messages().send(userId="me", body=create_message).execute()
 
-        target = args["target"] if args["target"] else 'localhost:50050'
+        target = args["target"] if args["target"] else TARGET
 
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-send-email"))
