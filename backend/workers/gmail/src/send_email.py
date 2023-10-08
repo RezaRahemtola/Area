@@ -13,7 +13,7 @@ from googleapiclient.errors import HttpError
 from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
-SCOPES = ['https://mail.google.com/']
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 TARGET = "localhost:50050"
 
 def send_email():
@@ -52,17 +52,17 @@ def send_email():
         create_message = {
             'raw': encoded_message
         }
-        id = service.users().messages().send(userId="me", body=create_message).execute()
+        email = service.users().messages().send(userId="me", body=create_message).execute()
 
-        target = args["target"] if args["target"] else TARGET
+        target = args["target"] if args.keys().__contains__("target") else TARGET
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
-                "emailId": id,
+                "emailId": email["id"]
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-send-email"), params=params)
+            AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-send-email", params=params))
 
     except HttpError as error:
         print(F'An error occurred: {error}')

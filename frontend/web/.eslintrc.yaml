@@ -17,3 +17,5 @@ rules:
   "import/extensions": [ "error", "ignorePackages", { "": "never", } ]
 
   react/jsx-filename-extension: off
+
+  "@typescript-eslint/no-loop-func": off

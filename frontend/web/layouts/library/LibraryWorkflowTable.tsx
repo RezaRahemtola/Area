@@ -1,47 +1,29 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useAtom } from "jotai";
+
 import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
-import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
+import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
+import { workflowsAtom } from "@/stores";
+import services from "@/services";
 
 import "@/styles/customCheckbox.css";
-import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
-
-const workflows: Workflow[] = [
-	{
-		id: "1",
-		name: "Zemlak, Daniel and Leannon",
-		pictures: [
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-			"https://daisyui.com/tailwind-css-component-profile-2@56w.png",
-		],
-		running: true,
-	},
-	{
-		id: "2",
-		name: "Carroll Group",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-3@56w.png"],
-		running: false,
-	},
-	{
-		id: "3",
-		name: "Rowe-Schoen",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-4@56w.png"],
-		running: false,
-	},
-	{
-		id: "4",
-		name: "Wyman-Ledner",
-		pictures: ["https://daisyui.com/tailwind-css-component-profile-5@56w.png"],
-		running: false,
-	},
-];
 
 const LibraryWorkflowTable = () => {
+	const [workflows, setWorkflows] = useAtom(workflowsAtom);
 	const [selectedWorkflows, setSelectedWorkflows] = useState<string[]>([]);
 	const [globalSelect, setGlobalSelect] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			const fetchedWorkflows = await services.workflows.getAll();
+			if (fetchedWorkflows.data !== null) {
+				setWorkflows(fetchedWorkflows.data);
+			}
+		})();
+	}, []);
 
 	const onSelectLine = (workflowId: string, selected: boolean) => {
 		if (selected && !selectedWorkflows.includes(workflowId)) {
@@ -69,6 +51,14 @@ const LibraryWorkflowTable = () => {
 		}
 	};
 
+	const onToggleAll = async (status: boolean) => {
+		await services.workflows.toggleBulk(selectedWorkflows, status);
+	};
+
+	const onDeleteAll = async () => {
+		await services.workflows.deleteBulk(selectedWorkflows);
+	};
+
 	return (
 		<table className="table">
 			<thead className="text-neutral-content">
@@ -89,7 +79,13 @@ const LibraryWorkflowTable = () => {
 								)}
 								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
 							</label>
-							{selectedWorkflows.length !== 0 ? <LibraryGlobalActions /> : <></>}
+							{selectedWorkflows.length !== 0 && (
+								<LibraryGlobalActions
+									onToggleOn={() => onToggleAll(true)}
+									onToggleOff={() => onToggleAll(false)}
+									onDelete={onDeleteAll}
+								/>
+							)}
 						</div>
 					</th>
 					<th>Name</th>

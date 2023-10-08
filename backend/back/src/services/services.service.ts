@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import ServiceDto from "./dto/service.dto";
 import Area from "./entities/area.entity";
 import { AreaDto } from "./dto/area.dto";
+import { ServiceHasFilter } from "./dto/service-query-filter.dto";
 
 @Injectable()
 export class ServicesService {
@@ -15,15 +16,21 @@ export class ServicesService {
 		private readonly areaRepository: Repository<Area>,
 	) {}
 
-	async getServices(withScopes: boolean = false): Promise<ServiceDto[] | Service[]> {
-		const services = await this.serviceRepository.find({
-			relations: {
-				scopes: withScopes,
-			},
-		});
-		if (withScopes)
-			return services.map(({ scopes, ...service }) => ({ ...service, scopes: scopes.map(({ id }) => id) }));
-		return services;
+	async getServices(withScopes: boolean = false, has?: ServiceHasFilter) {
+		const services = (
+			await this.serviceRepository.find({
+				relations: {
+					scopes: withScopes,
+					areas: true,
+				},
+			})
+		).map(({ scopes, ...service }) => ({ ...service, scopes: scopes?.map(({ id }) => id) }));
+		return (
+			services
+				.filter(({ areas }) => !has || areas.some(({ isAction }) => (has === "actions" ? isAction : !isAction)))
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				.map(({ areas, ...service }) => ({ ...service }))
+		);
 	}
 
 	async getService(id: string, withScopes: boolean = false): Promise<ServiceDto | Service | null> {
