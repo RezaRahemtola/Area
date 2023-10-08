@@ -42,7 +42,7 @@ const ActionCard = () => {
 	const onSelectServiceClick = (service: Service) => {
 		setWorkflow((prev) => ({
 			...prev,
-			action: { ...prev.action, areaId: undefined, areaService: service },
+			action: { ...prev.action, area: undefined, areaService: service },
 		}));
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
