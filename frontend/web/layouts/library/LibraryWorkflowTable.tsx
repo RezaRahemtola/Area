@@ -10,6 +10,7 @@ import { workflowsAtom } from "@/stores";
 import services from "@/services";
 
 import "@/styles/customCheckbox.css";
+import Link from "next/link";
 
 const LibraryWorkflowTable = () => {
 	const [workflows, setWorkflows] = useAtom(workflowsAtom);
@@ -60,50 +61,61 @@ const LibraryWorkflowTable = () => {
 	};
 
 	return (
-		<table className="table">
-			<thead className="text-neutral-content">
-				<tr>
-					<th className="table-cell " colSpan={2}>
-						<div className="flex">
-							<label className="custom-checkbox">
-								<input
-									type="checkbox"
-									className="global-workflow-selector"
-									checked={globalSelect}
-									onChange={onGlobalSelect}
-								/>
-								{selectedWorkflows.length === 0 ? (
-									<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
-								) : (
-									<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
-								)}
-								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
-							</label>
-							{selectedWorkflows.length !== 0 && (
-								<LibraryGlobalActions
-									onToggleOn={() => onToggleAll(true)}
-									onToggleOff={() => onToggleAll(false)}
-									onDelete={onDeleteAll}
-								/>
-							)}
-						</div>
-					</th>
-					<th>Name</th>
-					<th>Running</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				{workflows.map((workflow) => (
-					<LibraryWorkflowLine
-						workflow={workflow}
-						key={workflow.id}
-						selected={selectedWorkflows.includes(workflow.id)}
-						onSelect={onSelectLine}
-					/>
-				))}
-			</tbody>
-		</table>
+		<>
+			{workflows.length === 0 ? (
+				<div className="w-fit ml-4">
+					<p className="text-center">You don't have any workflow</p>
+					<Link href="/editor">
+						<button className="btn btn-primary btn-outline btn-wide">Create one</button>
+					</Link>
+				</div>
+			) : (
+				<table className="table">
+					<thead className="text-neutral-content">
+						<tr>
+							<th className="table-cell " colSpan={2}>
+								<div className="flex">
+									<label className="custom-checkbox">
+										<input
+											type="checkbox"
+											className="global-workflow-selector"
+											checked={globalSelect}
+											onChange={onGlobalSelect}
+										/>
+										{selectedWorkflows.length === 0 ? (
+											<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
+										) : (
+											<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
+										)}
+										<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
+									</label>
+									{selectedWorkflows.length !== 0 && (
+										<LibraryGlobalActions
+											onToggleOn={() => onToggleAll(true)}
+											onToggleOff={() => onToggleAll(false)}
+											onDelete={onDeleteAll}
+										/>
+									)}
+								</div>
+							</th>
+							<th>Name</th>
+							<th>Running</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{workflows.map((workflow) => (
+							<LibraryWorkflowLine
+								workflow={workflow}
+								key={workflow.id}
+								selected={selectedWorkflows.includes(workflow.id)}
+								onSelect={onSelectLine}
+							/>
+						))}
+					</tbody>
+				</table>
+			)}
+		</>
 	);
 };
 
