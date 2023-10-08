@@ -23,9 +23,15 @@ type Job struct {
 
 var instance *JobManager
 
-func InitJobManager(cli *client.Client, callbackUrl string, callbackPort int) {
-	callbackUrl += ":" + fmt.Sprint(callbackPort)
+func InitJobManager(cli *client.Client, callbackUrl string, env string) {
 	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
+
+	if env == "production" {
+		err := instance.cleanContainers()
+		if err != nil {
+			log.Fatal("Couldn't clean docker environment: ", err)
+		}
+	}
 }
 
 func GetJobManager() *JobManager {
@@ -93,4 +99,24 @@ func (jm *JobManager) ListJobs() map[string]Job {
 
 func (jm *JobManager) cleanContainer(containerID string) error {
 	return jm.dockerClient.ContainerRemove(context.Background(), containerID, types.ContainerRemoveOptions{})
+}
+
+func (jm *JobManager) cleanContainers() error {
+	containers, err := jm.dockerClient.ContainerList(context.Background(), types.ContainerListOptions{})
+
+	if err != nil {
+		log.Fatal("Couldn't synchronize: ", err)
+	}
+
+	for _, cont := range containers {
+		if cont.Names[0] != "area_supervisor" {
+			err = jm.dockerClient.ContainerStop(context.Background(), cont.ID, container.StopOptions{})
+			if err != nil {
+				return err
+			}
+			err = jm.dockerClient.ContainerRemove(context.Background(), cont.ID, types.ContainerRemoveOptions{})
+			return err
+		}
+	}
+	return nil
 }
