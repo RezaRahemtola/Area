@@ -3,8 +3,6 @@ import { GoogleSendEmailParams, SecondIntervalParams } from "./jobParams";
 export enum Jobs {
 	"seconds-interval" = "seconds-interval",
 	"google-send-email" = "google-send-email",
-	"github-on-push" = "github-on-push",
-	"github-commit" = "github-commit",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -16,13 +14,9 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 export const JobParamsClasses = {
 	"seconds-interval": SecondIntervalParams,
 	"google-send-email": GoogleSendEmailParams,
-	"github-on-push": GoogleSendEmailParams,
-	"github-commit": GoogleSendEmailParams,
 };
 
 export type JobsParams = Mapper<{
 	"seconds-interval": SecondIntervalParams;
 	"google-send-email": GoogleSendEmailParams;
-	"github-on-push": GoogleSendEmailParams;
-	"github-commit": GoogleSendEmailParams;
 }>;
