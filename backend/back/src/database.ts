@@ -12,6 +12,7 @@ import { Seeding1696697017387 } from "./migrations/1696697017387-Seeding";
 import { CreateServices1696697379896 } from "./services/seed/1696697379896-CreateServices";
 import { CreateServiceScopes1696697647435 } from "./services/seed/1696697647435-CreateServiceScopes";
 import { WorkflowAreaJobId1696791202100 } from "./migrations/1696791202100-WorkflowAreaJobId";
+import { BasicWorkflowAreas1696798385766 } from "./migrations/1696798385766-BasicWorkflowAreas";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateServices1696697379896,
 		CreateServiceScopes1696697647435,
 		WorkflowAreaJobId1696791202100,
+		BasicWorkflowAreas1696798385766,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

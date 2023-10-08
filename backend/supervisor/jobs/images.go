@@ -1,6 +1,6 @@
 package jobs
 
 var JobToImage = map[string]string{
-	"seconds-interval":  "seconds-interval",
-	"google-send-email": "gmail",
+	"timer-seconds-interval": "supervisor-seconds-interval",
+	"google-send-email":      "supervisor-gmail",
 }

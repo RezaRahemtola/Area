@@ -1,8 +1,9 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { GrpcController } from "./grpc.controller";
 import { GrpcService } from "./grpc.service";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JobsModule } from "../jobs/jobs.module";
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 				}),
 			},
 		]),
+		forwardRef(() => JobsModule),
 	],
 	controllers: [GrpcController],
 	providers: [GrpcService],

@@ -102,20 +102,24 @@ func (jm *JobManager) cleanContainer(containerID string) error {
 }
 
 func (jm *JobManager) cleanContainers() error {
-	containers, err := jm.dockerClient.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := jm.dockerClient.ContainerList(context.Background(), types.ContainerListOptions{
+		All: true,
+	})
 
 	if err != nil {
-		log.Fatal("Couldn't synchronize: ", err)
+		log.Fatal("Couldn't list containers: ", err)
 	}
-
 	for _, cont := range containers {
-		if cont.Names[0] != "area_supervisor" {
+		if cont.Image != "area_supervisor" {
 			err = jm.dockerClient.ContainerStop(context.Background(), cont.ID, container.StopOptions{})
 			if err != nil {
 				return err
 			}
+
 			err = jm.dockerClient.ContainerRemove(context.Background(), cont.ID, types.ContainerRemoveOptions{})
-			return err
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil

@@ -14,7 +14,7 @@ ServiceParams::ServiceParams(): seconds(0), workflowStepId("") {
 }
 
 SecondsIntervalService::SecondsIntervalService(const std::string &target, ServiceParams params): _grpcChannel(grpc::CreateChannel(target, grpc::InsecureChannelCredentials())), _stub(area_back::AreaBackService::NewStub(this->_grpcChannel)), _params(params) {
-    std::string id = "seconds-interval-";
+    std::string id = "timer-seconds-interval-";
 
     id.append(this->_params.workflowStepId);
     this->_jobId = id;
@@ -33,7 +33,7 @@ void SecondsIntervalService::runService() {
     params->mutable_fields()->insert({"seconds", *secondsVal});
     params->mutable_fields()->insert({"workflowStepId", *workflowStepVal});
 
-    data.set_name("seconds-interval");
+    data.set_name("timer-seconds-interval");
     data.set_identifier(this->_jobId);
     data.set_allocated_params(params.get());
 

@@ -5,6 +5,6 @@ type JobsIdentifiers = {
 };
 
 export const JobsIdentifiers: JobsIdentifiers = {
-	"seconds-interval": ({ workflowStepId }) => `seconds-interval-${workflowStepId}`,
+	"timer-seconds-interval": ({ workflowStepId }) => `timer-seconds-interval-${workflowStepId}`,
 	"google-send-email": ({ workflowStepId }) => `google-send-email-${workflowStepId}`,
 };

@@ -5,7 +5,7 @@ class UniqueJobParams {
 	workflowStepId: string;
 }
 
-export class SecondIntervalParams extends UniqueJobParams {
+export class TimerSecondIntervalParams extends UniqueJobParams {
 	@IsNumber()
 	seconds: number;
 }
