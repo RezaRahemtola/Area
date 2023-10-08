@@ -13,11 +13,12 @@ const EditorCards = () => {
 	return (
 		<div className="bg-neutral">
 			<ActionCard />
-			<EditorSeparator index={0} />
-			{workflow.reactions.map((reaction, index) => (
+			<EditorSeparator previousId={workflow.action.id} />
+			{/* TODO Reza: Display this using previousId order */}
+			{workflow.reactions.map((reaction) => (
 				<div key={reaction.id}>
 					<ReactionCard reaction={reaction} />
-					<EditorSeparator index={index + 1} />
+					<EditorSeparator previousId={reaction.id} />
 				</div>
 			))}
 		</div>
