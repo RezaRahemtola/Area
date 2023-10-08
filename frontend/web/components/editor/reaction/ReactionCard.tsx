@@ -3,7 +3,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
-import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
+import { editorReactionServices, editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
@@ -24,6 +24,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
 	const [availableReactions, setAvailableReactions] = useState<Area[]>([]);
+	const [availableServices, setAvailableServices] = useAtom(editorReactionServices);
 
 	useEffect(() => {
 		(async () => {
@@ -35,6 +36,16 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 			setAvailableReactions(fetchedActions.data ?? []);
 		})();
 	}, [reaction.areaService]);
+
+	useEffect(() => {
+		(async () => {
+			if (availableServices.length !== 0) {
+				return;
+			}
+			const fetchedServices = await services.services.getAll("reactions");
+			setAvailableServices(fetchedServices.data ?? []);
+		})();
+	}, []);
 
 	const onSummaryClick = () => {
 		if (step === Step.SUMMARY) {
@@ -97,6 +108,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 				title="Reaction"
 				actions={actions}
 				currentService={reaction.areaService}
+				serviceChoices={availableServices}
 				onNextStep={onSelectServiceClick}
 			/>
 		);
