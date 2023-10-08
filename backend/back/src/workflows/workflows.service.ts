@@ -23,11 +23,27 @@ export class WorkflowsService {
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const { name, active, reactions, action } = workflow;
+		const {
+			name,
+			active,
+			reactions,
+			action: {
+				id: actionId,
+				parameters: actionParameters,
+				area: { id: actionAreaId, serviceId: actionAreaServiceId },
+			},
+		} = workflow;
 		return {
 			id,
 			name,
 			active,
 			action,
+			action: {
+				id: actionId,
+				areaId: actionAreaId,
+				areaServiceId: actionAreaServiceId,
+				parameters: actionParameters,
+			},
 			reactions: reactions.map(
 				({
 					id,
