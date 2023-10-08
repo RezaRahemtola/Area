@@ -13,6 +13,7 @@ type JobManager struct {
 	dockerClient *client.Client
 	jobs         map[string]Job
 	callbackUrl  string
+	env          string
 }
 
 type Job struct {
@@ -24,13 +25,11 @@ type Job struct {
 var instance *JobManager
 
 func InitJobManager(cli *client.Client, callbackUrl string, env string) {
-	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
+	instance = &JobManager{cli, map[string]Job{}, callbackUrl, env}
 
-	if env == "production" {
-		err := instance.cleanContainers()
-		if err != nil {
-			log.Fatal("Couldn't clean docker environment: ", err)
-		}
+	err := instance.cleanContainers()
+	if err != nil {
+		log.Fatal("Couldn't clean docker environment: ", err)
 	}
 }
 
@@ -39,12 +38,22 @@ func GetJobManager() *JobManager {
 }
 
 func (jm *JobManager) LaunchJob(name string, identifier string, params map[string]interface{}) error {
-	_, exists := jm.jobs[name]
+	_, exists := jm.jobs[identifier]
 	if exists {
-		return nil
+		_, err := jm.dockerClient.ContainerInspect(context.Background(), jm.jobs[name].containerID)
+
+		if err != nil {
+			delete(jm.jobs, identifier)
+		} else {
+			return nil
+		}
 	}
 
 	var args []string
+	optarg := OptArgument[name]
+	if optarg != "" {
+		args = append(args, optarg)
+	}
 	args = append(args, "--target")
 	args = append(args, jm.callbackUrl)
 	for key, value := range params {
@@ -57,13 +66,19 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		Cmd:   args,
 	}, &container.HostConfig{
 		NetworkMode: "host",
+		//AutoRemove:  true,
 	}, nil, nil, identifier)
 
 	if err != nil {
 		log.Printf("%v", err)
 		return err
 	}
+
 	err = jm.dockerClient.ContainerStart(context.Background(), cont.ID, types.ContainerStartOptions{})
+	if err != nil {
+		log.Printf("%v", err)
+		return err
+	}
 
 	jm.jobs[identifier] = Job{
 		Name:        name,
@@ -110,7 +125,7 @@ func (jm *JobManager) cleanContainers() error {
 		log.Fatal("Couldn't list containers: ", err)
 	}
 	for _, cont := range containers {
-		if cont.Image != "area_supervisor" {
+		if cont.Image != "area_supervisor" && (jm.env == "production" || isSupervisorContainer(cont.Image)) {
 			err = jm.dockerClient.ContainerStop(context.Background(), cont.ID, container.StopOptions{})
 			if err != nil {
 				return err
@@ -123,4 +138,13 @@ func (jm *JobManager) cleanContainers() error {
 		}
 	}
 	return nil
+}
+
+func isSupervisorContainer(image string) bool {
+	for _, a := range GetImages() {
+		if a == image {
+			return true
+		}
+	}
+	return false
 }
