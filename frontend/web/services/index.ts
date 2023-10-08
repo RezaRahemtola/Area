@@ -4,6 +4,7 @@ import { API_URL } from "@/config/environment";
 import authService from "@/services/auth";
 import servicesService from "@/services/services";
 import workflowsService from "@/services/workflows";
+import connectionsService from "@/services/connections";
 
 const axiosInstance = axios.create({
 	baseURL: API_URL,
@@ -23,6 +24,7 @@ const services = {
 	auth: authService,
 	services: servicesService,
 	workflows: workflowsService,
+	connections: connectionsService,
 };
 
 export default services;
