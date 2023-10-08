@@ -1,8 +1,9 @@
-import { Controller, Get, NotFoundException, Param } from "@nestjs/common";
+import { Controller, Get, NotFoundException, Param, Query } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiProduces, ApiTags } from "@nestjs/swagger";
 import ServiceDto from "./dto/service.dto";
 import { AreaDto } from "./dto/area.dto";
+import ServiceQueryFilterDto from "./dto/service-query-filter.dto";
 
 @ApiTags("Services")
 @ApiProduces("application/json")
@@ -15,8 +16,8 @@ export class ServicesController {
 		type: [ServiceDto],
 	})
 	@Get()
-	async getServices() {
-		return this.servicesService.getServices(true);
+	async getServices(@Query() { has }: ServiceQueryFilterDto) {
+		return this.servicesService.getServices(true, has);
 	}
 
 	@ApiOkResponse({

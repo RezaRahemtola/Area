@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsDataURI, IsString } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsDataURI, IsOptional, IsString } from "class-validator";
 
 export default class ServiceDto {
 	@ApiProperty({
@@ -14,9 +14,10 @@ export default class ServiceDto {
 	@IsDataURI()
 	imageUrl!: string;
 
-	@ApiProperty({
+	@ApiPropertyOptional({
 		description: "The scopes of the service",
 	})
 	@IsString({ each: true })
-	scopes!: string[];
+	@IsOptional()
+	scopes?: string[];
 }
