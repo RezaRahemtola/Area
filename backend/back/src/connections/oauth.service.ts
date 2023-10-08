@@ -62,5 +62,5 @@ export class OauthService {
 	}
 
 	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory = (service) =>
-		`${this.configService.getOrThrow<string>("BACKEND_URL")}/connections/oauth/${service}/callback`;
+		`${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/${service}/callback`;
 }

@@ -15,6 +15,6 @@ export class OauthController {
 	async githubCallback(@Query() { code, userId }: OauthCallbackDto, @Res() response: Response) {
 		const connection = await this.oauthService.createGitHubConnection(userId, code);
 		if (!connection) throw new InternalServerErrorException("Failed to create connection");
-		return response.redirect(this.configService.getOrThrow<string>("FRONTEND_SUCCESS_OAUTH_URL"));
+		return response.redirect(this.configService.getOrThrow<string>("FRONT_BASE_URL"));
 	}
 }
