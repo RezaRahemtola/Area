@@ -11,6 +11,7 @@ import * as dotenv from "dotenv";
 import { Seeding1696697017387 } from "./migrations/1696697017387-Seeding";
 import { CreateServices1696697379896 } from "./services/seed/1696697379896-CreateServices";
 import { CreateServiceScopes1696697647435 } from "./services/seed/1696697647435-CreateServiceScopes";
+import { WorkflowAreaJobId1696791202100 } from "./migrations/1696791202100-WorkflowAreaJobId";
 
 dotenv.config();
 
@@ -23,7 +24,12 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
 	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea],
-	migrations: [Seeding1696697017387, CreateServices1696697379896, CreateServiceScopes1696697647435],
+	migrations: [
+		Seeding1696697017387,
+		CreateServices1696697379896,
+		CreateServiceScopes1696697647435,
+		WorkflowAreaJobId1696791202100,
+	],
 	synchronize: process.env.NODE_ENV === "development",
 };
 export default new DataSource(DATA_SOURCE_OPTIONS);

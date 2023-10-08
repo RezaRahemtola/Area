@@ -32,4 +32,8 @@ export default class WorkflowArea {
 	@Column({ type: "jsonb" })
 	// eslint-disable-next-line
 	parameters!: Record<string, any>;
+
+	@ApiProperty()
+	@Column()
+	jobId!: string;
 }
