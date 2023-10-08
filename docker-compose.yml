@@ -40,8 +40,6 @@ services:
     image: postgres:16.0-alpine3.18
     restart: always
     env_file: backend/back/.env
-    ports:
-      - "5432:5432"
     volumes:
       - database_volume:/var/lib/postgresql/data
     networks:
