@@ -47,29 +47,46 @@ export class WorkflowsService {
 
 	async getWorkflowsWithAreas(ownerId: string) {
 		const workflows = await this.workflowRepository.find({
-			where: { ownerId },
-			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
+			where: { ownerId, active },
+			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
-		return workflows.map(({ id, name, active, action, reactions }) => ({
-			id,
-			name,
-			active,
-			action,
-			reactions: reactions.map(
-				({
-					id,
-					parameters,
-					previousWorkflowArea: { id: previousWorkflowAreaId },
+		return workflows.map(
+			({
+				id,
+				name,
+				active,
+				action: {
+					id: actionId,
+					parameters: actionParamaters,
 					area: { id: areaId, serviceId: areaServiceId },
-				}) => ({
-					id,
-					previousWorkflowAreaId,
+				},
+				reactions,
+			}) => ({
+				id,
+				name,
+				active,
+				action: {
+					id: actionId,
 					areaId,
 					areaServiceId,
-					parameters,
-				}),
-			),
-		}));
+					parameters: actionParamaters,
+				},
+				reactions: reactions.map(
+					({
+						id,
+						parameters,
+						previousWorkflowArea: { id: previousWorkflowAreaId },
+						area: { id: areaId, serviceId: areaServiceId },
+					}) => ({
+						id,
+						previousWorkflowAreaId,
+						areaId,
+						areaServiceId,
+						parameters,
+					}),
+				),
+			}),
+		);
 	}
 
 	async createWorkflow(
