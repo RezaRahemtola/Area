@@ -13,11 +13,16 @@ const LibraryGlobalAction = ({ tip, icon, onClick }: LibraryGlobalActionProps) =
 	</div>
 );
 
-const LibraryGlobalActions = () => (
+type LibraryGlobalActionsProps = {
+	onToggleOn: () => void;
+	onToggleOff: () => void;
+	onDelete: () => void;
+};
+const LibraryGlobalActions = ({ onToggleOn, onToggleOff, onDelete }: LibraryGlobalActionsProps) => (
 	<div className="flex w-2/3 justify-around mx-8">
-		<LibraryGlobalAction tip="Turn on" icon="solid-bolt" onClick={() => {}} />
-		<LibraryGlobalAction tip="Turn off" icon="solid-bolt-slash" onClick={() => {}} />
-		<LibraryGlobalAction tip="Delete" icon="trash" onClick={() => {}} />
+		<LibraryGlobalAction tip="Turn on" icon="solid-bolt" onClick={onToggleOn} />
+		<LibraryGlobalAction tip="Turn off" icon="solid-bolt-slash" onClick={onToggleOff} />
+		<LibraryGlobalAction tip="Delete" icon="trash" onClick={onDelete} />
 	</div>
 );
 
