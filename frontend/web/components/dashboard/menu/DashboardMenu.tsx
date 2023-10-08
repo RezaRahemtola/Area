@@ -11,7 +11,7 @@ const DashboardMenu = ({ isFull }: DashboardMenuProps) => (
 		</li>
 		<DashboardMenuLink icon="objects-column" title="Dashboard" href="/dashboard" isFull={isFull} />
 		<DashboardMenuLink icon="bolt" title="Library" href="/dashboard/library" isFull={isFull} />
-		<DashboardMenuLink icon="grid-2-plus" title="Apps" href="/dashboard/services" isFull={isFull} />
+		<DashboardMenuLink icon="grid-2-plus" title="Services" href="/dashboard/services" isFull={isFull} />
 	</ul>
 );
 

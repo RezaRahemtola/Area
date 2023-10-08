@@ -26,8 +26,8 @@ const ServiceElement = ({
 type ServicesListProps = {
 	services: Service[];
 	nbPerLine: number;
-	selectedServiceId: string | undefined;
-	setSelectedService: (serviceId: string) => void;
+	selectedServiceId?: string;
+	setSelectedService?: (serviceId: string) => void;
 };
 const ServicesList = ({ services, nbPerLine, selectedServiceId, setSelectedService }: ServicesListProps) => {
 	const servicesChunks = splitArrayInChunks(services, nbPerLine);
@@ -39,7 +39,9 @@ const ServicesList = ({ services, nbPerLine, selectedServiceId, setSelectedServi
 					{chunk.map((service) => (
 						<ServiceElement
 							service={service}
-							onClick={() => setSelectedService(service.id)}
+							onClick={() => {
+								if (setSelectedService) setSelectedService(service.id);
+							}}
 							key={service.id}
 							selected={selectedServiceId === service.id}
 						/>
