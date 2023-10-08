@@ -1,4 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+	BadRequestException,
+	ConflictException,
+	forwardRef,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
 import { In, QueryRunner, Repository } from "typeorm";
@@ -8,12 +15,17 @@ import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
 import UserConnection from "../connections/entities/user-connection.entity";
+import { JobsIdentifiers } from "../types/jobIds";
+import { JobsService } from "../jobs/jobs.service";
+import { JobsType } from "../types/jobs";
 
 @Injectable()
 export class WorkflowsService {
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
+		@Inject(forwardRef(() => JobsService))
+		private readonly jobsService: JobsService,
 	) {}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string) {
@@ -22,7 +34,6 @@ export class WorkflowsService {
 			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
-		const { name, active, reactions, action } = workflow;
 		const {
 			name,
 			active,
@@ -31,18 +42,19 @@ export class WorkflowsService {
 				id: actionId,
 				parameters: actionParameters,
 				area: { id: actionAreaId, serviceId: actionAreaServiceId },
+				jobId,
 			},
 		} = workflow;
 		return {
 			id,
 			name,
 			active,
-			action,
 			action: {
 				id: actionId,
 				areaId: actionAreaId,
 				areaServiceId: actionAreaServiceId,
 				parameters: actionParameters,
+				jobId,
 			},
 			reactions: reactions.map(
 				({
@@ -50,11 +62,13 @@ export class WorkflowsService {
 					parameters,
 					previousWorkflowArea: { id: previousWorkflowAreaId },
 					area: { id: areaId, serviceId: areaServiceId },
+					jobId,
 				}) => ({
 					id,
 					previousWorkflowAreaId,
 					areaId,
 					areaServiceId,
+					jobId,
 					parameters,
 				}),
 			),
@@ -75,6 +89,7 @@ export class WorkflowsService {
 					id: actionId,
 					parameters: actionParamaters,
 					area: { id: areaId, serviceId: areaServiceId },
+					jobId,
 				},
 				reactions,
 			}) => ({
@@ -86,6 +101,7 @@ export class WorkflowsService {
 					areaId,
 					areaServiceId,
 					parameters: actionParamaters,
+					jobId,
 				},
 				reactions: reactions.map(
 					({
@@ -93,12 +109,14 @@ export class WorkflowsService {
 						parameters,
 						previousWorkflowArea: { id: previousWorkflowAreaId },
 						area: { id: areaId, serviceId: areaServiceId },
+						jobId,
 					}) => ({
 						id,
 						previousWorkflowAreaId,
 						areaId,
 						areaServiceId,
 						parameters,
+						jobId,
 					}),
 				),
 			}),
@@ -175,11 +193,19 @@ export class WorkflowsService {
 						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
 					);
 				}
+				const jobType = `${areaServiceId}-${areaId}`;
+				parameters.workflowStepId = id;
 				result ||=
 					(
 						await queryRunner.manager.update(WorkflowArea, id, {
 							area: { id: areaId, serviceId: areaServiceId },
-							parameters,
+							jobId: JobsIdentifiers[jobType](parameters),
+							parameters: (await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
+								throw new BadRequestException(
+									`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`,
+								);
+								// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							})) as Record<string, any>,
 						})
 					).affected > 0;
 			}
@@ -292,9 +318,14 @@ export class WorkflowsService {
 			throw new NotFoundException(
 				`Workflow area ${id} misses scopes ${areaNeededScopeIds.filter((id) => !scopeIds.includes(id)).join(", ")}.`,
 			);
-		if (action.area.serviceScopesNeeded) action.parameters = parameters;
+		const jobType = `${areaServiceId}-${areaId}`;
+		parameters.workflowStepId = id;
+		action.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
+			throw new BadRequestException(`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`);
+		});
 		if (isAction) action.actionOfWorkflow = workflow;
 		else action.workflow = workflow;
+		action.jobId = JobsIdentifiers[jobType](parameters);
 		return action;
 	}
 }
