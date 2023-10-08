@@ -6,10 +6,12 @@ import UserConnection from "./entities/user-connection.entity";
 import ServiceScope from "../services/entities/service-scope.entity";
 import { ServicesModule } from "../services/services.module";
 import { HttpModule } from "@nestjs/axios";
+import { OauthController } from "./oauth.controller";
+import { OauthService } from "./oauth.service";
 
 @Module({
 	imports: [TypeOrmModule.forFeature([UserConnection, ServiceScope]), ServicesModule, HttpModule],
-	controllers: [ConnectionsController],
-	providers: [ConnectionsService],
+	controllers: [ConnectionsController, OauthController],
+	providers: [ConnectionsService, OauthService],
 })
 export class ConnectionsModule {}
