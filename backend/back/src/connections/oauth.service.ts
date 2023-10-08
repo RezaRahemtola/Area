@@ -10,7 +10,7 @@ type GithubOAuthResponse = {
 	token_type: string;
 };
 
-type OAuthCallbackUrlFactory = (service: string) => `/connections/oauth/${string}/callback`;
+type OAuthCallbackUrlFactory = (service: string) => `${string}/connections/oauth/${string}/callback`;
 type ServiceOAuthUrlFactory = (
 	baseUrl: string,
 	userId: string,
@@ -62,5 +62,5 @@ export class OauthService {
 	}
 
 	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory = (service) =>
-		`/connections/oauth/${service}/callback`;
+		`${this.configService.getOrThrow<string>("BACKEND_URL")}/connections/oauth/${service}/callback`;
 }
