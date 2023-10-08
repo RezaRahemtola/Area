@@ -1,5 +1,3 @@
-"https://github.com/login/oauth/authorize?client_id=65dcec401c9605f26efb&redirect_uri=http://localhost:6969&scope=user";
-
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
