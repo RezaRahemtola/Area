@@ -5,9 +5,7 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "daisyui.com",
-				port: "",
-				pathname: "/**",
+				hostname: "**",
 			},
 		],
 	},
