@@ -1,5 +1,6 @@
 import {
 	Body,
+	ConflictException,
 	Controller,
 	Delete,
 	Get,
@@ -14,7 +15,6 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { APIRequest } from "../types/request";
 import {
 	ApiBearerAuth,
-	ApiBody,
 	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiParam,
@@ -22,8 +22,8 @@ import {
 	ApiTags,
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import GithubOAuthDto from "./dto/github-oauth.dto";
-import { UuidParamDto } from "../param-validators.dto";
+import ConnectDto from "./dto/oauth.dto";
+import { OauthService } from "./oauth.service";
 
 @ApiBearerAuth()
 @ApiTags("OAuth Connections")
@@ -34,7 +34,10 @@ import { UuidParamDto } from "../param-validators.dto";
 @UseGuards(JwtAuthGuard)
 @Controller("connections")
 export class ConnectionsController {
-	constructor(private readonly connectionsService: ConnectionsService) {}
+	constructor(
+		private readonly connectionsService: ConnectionsService,
+		private readonly oauthService: OauthService,
+	) {}
 
 	@ApiOkResponse({
 		description: "Returns the available connections for the current user",
@@ -48,6 +51,25 @@ export class ConnectionsController {
 		return this.connectionsService.getAvailableConnections(userId);
 	}
 
+	@Post("/:serviceId/connect")
+	async connect(
+		@Req()
+		{ user: { id: userId } }: APIRequest,
+		@Param("serviceId")
+		serviceId: string,
+		@Body()
+		{ scopes }: ConnectDto,
+	) {
+		scopes = [...new Set(scopes)];
+		const missingScopes = await this.connectionsService.getNewScopesForConnection(userId, serviceId, scopes);
+		if (missingScopes.length === 0)
+			throw new ConflictException("You already have a connection that satisfies these scopes");
+		else
+			return {
+				oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes(userId, serviceId, missingScopes),
+			};
+	}
+
 	@ApiOkResponse({
 		description: "The user connection was successfully deleted",
 	})
@@ -55,22 +77,12 @@ export class ConnectionsController {
 		description: "The user is not connected to this service",
 	})
 	@ApiParam({
-		description: "The UUID of the user connection to delete",
-		name: "uuid",
+		description: "The service of the user connection to delete",
+		name: "serviceId",
 	})
-	@Delete("/:uuid")
-	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { uuid: serviceId }: UuidParamDto) {
+	@Delete("/:serviceId")
+	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param("serviceId") serviceId: string) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
 			throw new InternalServerErrorException("An unknown error occurred while deleting the connection");
-	}
-
-	@ApiBody({ type: GithubOAuthDto })
-	@Post("/github")
-	async createGithubConnection(
-		@Req()
-		{ user: { id: userId } }: APIRequest,
-		@Body() { code, scopes }: GithubOAuthDto,
-	) {
-		return this.connectionsService.createGitHubConnection(userId, scopes, code);
 	}
 }

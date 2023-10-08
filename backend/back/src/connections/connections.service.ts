@@ -1,16 +1,9 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import UserConnection from "./entities/user-connection.entity";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { ServicesService } from "../services/services.service";
-import { HttpService } from "@nestjs/axios";
-import { ConfigService } from "@nestjs/config";
-
-type GithubOAuthResponse = {
-	access_token: string;
-	scope: string;
-	token_type: string;
-};
+import ServiceScope from "../services/entities/service-scope.entity";
 
 @Injectable()
 export class ConnectionsService {
@@ -18,52 +11,45 @@ export class ConnectionsService {
 		@InjectRepository(UserConnection)
 		private readonly userConnectionRepository: Repository<UserConnection>,
 		private readonly servicesService: ServicesService,
-		private readonly httpService: HttpService,
-		private readonly configService: ConfigService,
+		@InjectRepository(ServiceScope)
+		private readonly serviceScopesRepository: Repository<ServiceScope>,
 	) {}
 
-	async createUserConnection(userId: string, serviceId: string, scopes: string[], token: string) {
-		if (await this.userConnectionRepository.exist({ where: { userId, serviceId } }))
-			throw new ConflictException("User is already connected to this service");
+	async getNewScopesForConnection(userId: string, serviceId: string, scopes: string[]): Promise<string[]> {
+		if ((await this.serviceScopesRepository.count({ where: { serviceId, id: In(scopes) } })) !== scopes.length)
+			throw new NotFoundException("One or more scopes are invalid");
+		const connection = await this.userConnectionRepository.findOne({
+			where: { userId, serviceId },
+			relations: { scopes: true },
+		});
+		if (!connection) return scopes;
+		const connectionScopes = connection.scopes.map(({ id }) => id);
+		if (scopes.every((scope) => connectionScopes.includes(scope))) return [];
+		return [...new Set([...scopes, ...connectionScopes])];
+	}
+
+	async createUserConnection(userId: string, serviceId: string, scopes: string[], data: unknown) {
 		const userConnection = this.userConnectionRepository.create({
 			userId,
 			serviceId,
-			token,
+			data,
 			scopes: scopes.map((scope) => ({ serviceId, id: scope })),
 		});
 		return await this.userConnectionRepository.save(userConnection);
 	}
 
-	// TODO: Clean this mess
-	async createGitHubConnection(userId: string, scopes: string[], code: string) {
-		const {
-			data: { access_token: token },
-		} = await this.httpService.axiosRef.post<GithubOAuthResponse>(
-			"https://github.com/login/oauth/access_token",
-			{
-				client_id: this.configService.getOrThrow<string>("GITHUB_CLIENT_ID"),
-				client_secret: this.configService.getOrThrow<string>("GITHUB_CLIENT_SECRET"),
-				code,
-			},
-			{
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
+	async getUserConnections(userId: string) {
+		return (
+			await this.userConnectionRepository.find({
+				where: { userId },
+				relations: { scopes: true },
+				select: {
+					serviceId: true,
+					scopes: true,
+					createdAt: true,
 				},
-			},
-		);
-		return this.createUserConnection(userId, "github", scopes, token);
-	}
-
-	getUserConnections(userId: string) {
-		return this.userConnectionRepository.find({
-			where: { userId },
-			relations: { scopes: true },
-			select: {
-				serviceId: true,
-				token: true,
-			},
-		});
+			})
+		).map(({ serviceId, scopes, createdAt }) => ({ serviceId, scopes: scopes.map(({ id }) => id), createdAt }));
 	}
 
 	async getAvailableConnections(userId: string): Promise<string[]> {

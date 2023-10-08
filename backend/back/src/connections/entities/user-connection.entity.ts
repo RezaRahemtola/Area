@@ -19,8 +19,8 @@ export default class UserConnection {
 	@JoinTable()
 	scopes!: ServiceScope[];
 
-	@Column()
-	token!: string;
+	@Column({ type: "jsonb" })
+	data!: unknown;
 
 	@CreateDateColumn()
 	createdAt!: Date;
