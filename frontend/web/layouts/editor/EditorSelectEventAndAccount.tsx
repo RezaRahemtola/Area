@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { Area } from "@/types/services";
 import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
 import { EditorCardActions } from "@/types/editor";
 import { EditorWorkflowAction, EditorWorkflowReaction } from "@/types/workflows";
+import services from "@/services";
 
 type EditorSelectEventAndAccountProps = {
 	workflowArea: EditorWorkflowAction | EditorWorkflowReaction;
@@ -24,7 +25,44 @@ const EditorSelectEventAndAccount = ({
 	onEvent,
 }: EditorSelectEventAndAccountProps) => {
 	const [selectedEventId, setSelectedEventId] = useState<string | undefined>(workflowArea.area?.id);
-	const [selectedAccount, setSelectedAccount] = useState<boolean>(false);
+	const [connectAccountUrl, setConnectAccountUrl] = useState<string | null>(null);
+	const [accountConnectionInProgress, setAccountConnectionInProgress] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			if (selectedEventId !== undefined) {
+				const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
+				const connectService = await services.connections.checkConnection(
+					workflowArea.areaService!.id,
+					chosenArea.serviceScopesNeeded,
+				);
+				setConnectAccountUrl(connectService.data ? connectService.data.oauthUrl : null);
+			}
+		})();
+	}, [selectedEventId]);
+
+	useEffect(() => {
+		const accountConnectionCheck = setInterval(() => {
+			(async () => {
+				if (accountConnectionInProgress) {
+					const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
+					const connectService = await services.connections.checkConnection(
+						workflowArea.areaService!.id,
+						chosenArea.serviceScopesNeeded,
+					);
+
+					if (connectService.data && connectService.data.oauthUrl === null) {
+						setConnectAccountUrl(null);
+						setAccountConnectionInProgress(false);
+					}
+				}
+			})();
+		}, 1000);
+
+		return () => {
+			clearInterval(accountConnectionCheck);
+		};
+	}, []);
 
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
@@ -49,16 +87,26 @@ const EditorSelectEventAndAccount = ({
 					</select>
 				</div>
 
-				<label className="label">
-					<span className="label-text text-neutral-content">Choose your account</span>
-				</label>
-				<button className="btn btn-ghost w-16 h-16">
-					<div className="avatar m-auto" onClick={() => setSelectedAccount(true)}>
-						<div className="mask mask-squircle w-16 h-16">
-							<Image src={workflowArea.areaService!.imageUrl} alt="Service logo" width={300} height={300} />
-						</div>
-					</div>
-				</button>
+				{selectedEventId && (
+					<>
+						<label className="label">
+							<span className="label-text text-neutral-content">Connect your your account</span>
+						</label>
+						{connectAccountUrl ? (
+							<button className="btn btn-ghost w-16 h-16">
+								<a href={connectAccountUrl} target="_blank" onClick={() => setAccountConnectionInProgress(true)}>
+									<div className="avatar m-auto">
+										<div className="mask mask-squircle w-16 h-16">
+											<Image src={workflowArea.areaService!.imageUrl} alt="Service logo" width={300} height={300} />
+										</div>
+									</div>
+								</a>
+							</button>
+						) : (
+							<span>Account already connected</span>
+						)}
+					</>
+				)}
 
 				<div className="card-actions">
 					<button
@@ -69,7 +117,7 @@ const EditorSelectEventAndAccount = ({
 					</button>
 					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
-						disabled={!selectedEventId || !selectedAccount}
+						disabled={!selectedEventId}
 						onClick={() =>
 							onEvent(
 								"next",
