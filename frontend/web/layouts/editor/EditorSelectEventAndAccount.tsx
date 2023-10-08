@@ -8,26 +8,22 @@ import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
 import { EditorCardActions } from "@/types/editor";
 import { EditorWorkflowAction, EditorWorkflowReaction } from "@/types/workflows";
 
-const options: Area[] = [
-	{
-		id: "New message received",
-		serviceScopesNeeded: [],
-	},
-	{
-		id: "New calendar event received",
-		serviceScopesNeeded: [],
-	},
-];
-
 type EditorSelectEventAndAccountProps = {
-	area: EditorWorkflowAction | EditorWorkflowReaction;
+	workflowArea: EditorWorkflowAction | EditorWorkflowReaction;
+	areaChoices: Area[];
 	title: string;
 	actions: EditorCardActions;
 	onEvent: (type: "back" | "next", area?: Area) => void;
 };
 
-const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSelectEventAndAccountProps) => {
-	const [selectedEventId, setSelectedEventId] = useState<string | undefined>(area.area?.id);
+const EditorSelectEventAndAccount = ({
+	workflowArea,
+	areaChoices,
+	title,
+	actions,
+	onEvent,
+}: EditorSelectEventAndAccountProps) => {
+	const [selectedEventId, setSelectedEventId] = useState<string | undefined>(workflowArea.area?.id);
 	const [selectedAccount, setSelectedAccount] = useState<boolean>(false);
 
 	return (
@@ -45,9 +41,9 @@ const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSe
 						<option value={undefined} hidden>
 							Pick one
 						</option>
-						{options.map((event) => (
-							<option value={event.id} key={event.id}>
-								{event.id}
+						{areaChoices.map((choice) => (
+							<option value={choice.id} key={choice.id}>
+								{choice.id}
 							</option>
 						))}
 					</select>
@@ -59,7 +55,7 @@ const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSe
 				<button className="btn btn-ghost w-16 h-16">
 					<div className="avatar m-auto" onClick={() => setSelectedAccount(true)}>
 						<div className="mask mask-squircle w-16 h-16">
-							<Image src={area.areaService!.imageUrl} alt="Service logo" width={300} height={300} />
+							<Image src={workflowArea.areaService!.imageUrl} alt="Service logo" width={300} height={300} />
 						</div>
 					</div>
 				</button>
@@ -77,7 +73,7 @@ const EditorSelectEventAndAccount = ({ area, title, actions, onEvent }: EditorSe
 						onClick={() =>
 							onEvent(
 								"next",
-								options.find((o) => o.id === selectedEventId)
+								areaChoices.find((c) => c.id === selectedEventId),
 							)
 						}
 					>
