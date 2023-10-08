@@ -7,9 +7,9 @@ import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
 import { workflowsAtom } from "@/stores";
+import services from "@/services";
 
 import "@/styles/customCheckbox.css";
-import services from "@/services";
 
 const LibraryWorkflowTable = () => {
 	const [workflows, setWorkflows] = useAtom(workflowsAtom);
@@ -51,6 +51,14 @@ const LibraryWorkflowTable = () => {
 		}
 	};
 
+	const onToggleAll = async (status: boolean) => {
+		await services.workflows.toggleBulk(selectedWorkflows, status);
+	};
+
+	const onDeleteAll = async () => {
+		await services.workflows.deleteBulk(selectedWorkflows);
+	};
+
 	return (
 		<table className="table">
 			<thead className="text-neutral-content">
@@ -71,7 +79,13 @@ const LibraryWorkflowTable = () => {
 								)}
 								<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
 							</label>
-							{selectedWorkflows.length !== 0 ? <LibraryGlobalActions /> : <></>}
+							{selectedWorkflows.length !== 0 && (
+								<LibraryGlobalActions
+									onToggleOn={() => onToggleAll(true)}
+									onToggleOff={() => onToggleAll(false)}
+									onDelete={onDeleteAll}
+								/>
+							)}
 						</div>
 					</th>
 					<th>Name</th>
