@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
 
 Widget buildPosts(List<Workflow>? workflows) {
   if (workflows == null) {
-    return (Text("no area"));
+    return (const Text("no area"));
   }
   return ListView.builder(
     itemCount: workflows.length,
@@ -137,8 +137,8 @@ class _ExistingWorkflowsState extends State<ExistingWorkflows> {
           final workflow = workflows[index];
           return Container(
               color: Colors.grey.shade300,
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               height: 100,
               width: double.maxFinite,
               child: Row(
