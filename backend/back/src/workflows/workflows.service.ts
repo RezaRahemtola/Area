@@ -16,7 +16,7 @@ export class WorkflowsService {
 		private readonly workflowRepository: Repository<Workflow>,
 	) {}
 
-	async getWorkflowWithAreas(id: string, ownerId: string) {
+	async getWorkflowWithAreas(id: string, ownerId?: string) {
 		const workflow = await this.workflowRepository.findOne({
 			where: { id, ownerId },
 			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
@@ -45,7 +45,7 @@ export class WorkflowsService {
 		};
 	}
 
-	async getWorkflowsWithAreas(ownerId: string) {
+	async getWorkflowsWithAreas(ownerId?: string, active?: boolean) {
 		const workflows = await this.workflowRepository.find({
 			where: { ownerId, active },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
