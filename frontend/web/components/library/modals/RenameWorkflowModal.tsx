@@ -11,7 +11,7 @@ const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalPro
 	const [newName, setNewName] = useState(workflow.name);
 
 	const onSubmit = async () => {
-		await services.workflows.update({ name: newName });
+		await services.workflows.update({ id: workflow.id, name: newName });
 		onSuccess();
 	};
 
