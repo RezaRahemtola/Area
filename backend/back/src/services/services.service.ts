@@ -27,7 +27,7 @@ export class ServicesService {
 		).map(({ scopes, ...service }) => ({ ...service, scopes: scopes?.map(({ id }) => id) }));
 		return (
 			services
-				.filter(({ areas }) => areas.some(({ isAction }) => (!has || has === "actions" ? isAction : !isAction)))
+				.filter(({ areas }) => !has || areas.some(({ isAction }) => (has === "actions" ? isAction : !isAction)))
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				.map(({ areas, ...service }) => ({ ...service }))
 		);
