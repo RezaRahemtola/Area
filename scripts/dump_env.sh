@@ -15,6 +15,7 @@ paths=( \
   "frontend/mobile/" \
   "backend/back/" \
   "backend/supervisor/" \
+  "backend/workers/gmail/" \
 )
 file=".env"
 
