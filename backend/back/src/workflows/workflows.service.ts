@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
-import { In, Repository } from "typeorm";
+import { In, QueryRunner, Repository } from "typeorm";
 import WorkflowArea from "./entities/workflow-area.entity";
 import WorkflowReactionDto, { WorkflowActionDto } from "./dto/workflow-reaction.dto";
 import Area from "../services/entities/area.entity";
@@ -13,12 +13,6 @@ export class WorkflowsService {
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
-		@InjectRepository(WorkflowArea)
-		private readonly workflowAreaRepository: Repository<WorkflowArea>,
-		@InjectRepository(Area)
-		private readonly areaRepository: Repository<Area>,
-		@InjectRepository(User)
-		private readonly userRepository: Repository<User>,
 	) {}
 
 	async getWorkflowWithAreas(id: string, ownerId: string) {
@@ -84,21 +78,34 @@ export class WorkflowsService {
 		reactions: WorkflowReactionDto[],
 		active: boolean = false,
 	) {
-		if (await this.workflowRepository.exist({ where: { name, ownerId } }))
-			throw new ConflictException(`Workflow ${name} already exists.`);
+		let exception: unknown = null;
+		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
+		await queryRunner.connect();
+		await queryRunner.startTransaction();
+		try {
+			if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId } }))
+				throw new ConflictException(`Workflow ${name} already exists.`);
 
-		const owner = await this.userRepository.findOneBy({ id: ownerId });
-		if (!owner) throw new NotFoundException(`User ${ownerId} not found.`);
+			const owner = await queryRunner.manager.findOneBy(User, { id: ownerId });
+			if (!owner) throw new NotFoundException(`User ${ownerId} not found.`);
 
-		const workflow = await this.workflowRepository.save({ name, owner, active });
-		const { id } = workflow;
+			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
+			const { id } = workflow;
 
-		const actionToSave = await this.createWorkflowArea(action, workflow, true);
-		const reactionsToSave = await this.createWorkflowReactions(actionToSave, reactions, workflow);
-		await this.workflowRepository.save({ ...workflow, action: actionToSave, reactions: reactionsToSave });
-		return {
-			id,
-		};
+			const actionToSave = await this.createWorkflowArea(action, workflow, queryRunner, true);
+			const reactionsToSave = await this.createWorkflowReactions(actionToSave, reactions, workflow, queryRunner);
+			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
+			await queryRunner.commitTransaction();
+			return {
+				id,
+			};
+		} catch (_exception) {
+			await queryRunner.rollbackTransaction();
+			exception = _exception;
+		} finally {
+			await queryRunner.release();
+			if (exception) throw exception;
+		}
 	}
 
 	async updateWorkflow(workflowId: string, { name, reactions, action }: UpdateWorkflowDto, ownerId: string) {
@@ -114,36 +121,50 @@ export class WorkflowsService {
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		if (!name && !action && !reactions) return false;
 		let result = false;
+		let exception: unknown = null;
+		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 
-		if (name) {
-			if (await this.workflowRepository.exist({ where: { name, ownerId: ownerId } }))
-				throw new ConflictException(`Workflow ${name} already exists.`);
-			result ||= (await this.workflowRepository.update(workflowId, { name })).affected > 0;
-		}
+		await queryRunner.connect();
+		await queryRunner.startTransaction();
 
-		if (action) {
-			const { id, areaId, areaServiceId, parameters } = action;
-			if (id !== workflow.action.id) {
-				throw new ConflictException(
-					`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
-				);
+		try {
+			if (name) {
+				if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId: ownerId } }))
+					throw new ConflictException(`Workflow ${name} already exists.`);
+				result ||= (await queryRunner.manager.update(Workflow, workflowId, { name })).affected > 0;
 			}
-			result ||=
-				(
-					await this.workflowAreaRepository.update(id, {
-						area: { id: areaId, serviceId: areaServiceId },
-						parameters,
-					})
-				).affected > 0;
-		}
 
-		if (reactions) {
-			await this.workflowAreaRepository.delete({ id: In(workflow.reactions.map((reaction) => reaction.id)) });
-			const reactionsToSave = await this.createWorkflowReactions(workflow.action, reactions, workflow);
-			result ||= (await this.workflowRepository.update(workflowId, { reactions: reactionsToSave })).affected > 0;
-		}
+			if (action) {
+				const { id, areaId, areaServiceId, parameters } = action;
+				if (id !== workflow.action.id) {
+					throw new ConflictException(
+						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
+					);
+				}
+				result ||=
+					(
+						await queryRunner.manager.update(WorkflowArea, id, {
+							area: { id: areaId, serviceId: areaServiceId },
+							parameters,
+						})
+					).affected > 0;
+			}
 
-		return result;
+			if (reactions) {
+				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
+				const reactionsToSave = await this.createWorkflowReactions(workflow.action, reactions, workflow, queryRunner);
+				result ||=
+					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
+			}
+
+			return result;
+		} catch (_exception) {
+			await queryRunner.rollbackTransaction();
+			exception = _exception;
+		} finally {
+			await queryRunner.release();
+			if (exception) throw exception;
+		}
 	}
 
 	async toggleWorkflows(workflows: string[], newState: boolean, ownerId: string) {
@@ -176,9 +197,14 @@ export class WorkflowsService {
 		return affected === 1;
 	}
 
-	private async createWorkflowReactions(action: WorkflowArea, reactions: WorkflowReactionDto[], workflow: Workflow) {
+	private async createWorkflowReactions(
+		action: WorkflowArea,
+		reactions: WorkflowReactionDto[],
+		workflow: Workflow,
+		queryRunner: QueryRunner,
+	) {
 		const dbReactions = await Promise.all(
-			reactions.map(async (reaction) => await this.createWorkflowArea(reaction, workflow)),
+			reactions.map(async (reaction) => await this.createWorkflowArea(reaction, workflow, queryRunner)),
 		);
 		for (const dbReaction of dbReactions) {
 			if (!dbReaction.previousWorkflowArea) {
@@ -194,13 +220,14 @@ export class WorkflowsService {
 	private async createWorkflowArea(
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
 		workflow: Workflow,
+		queryRunner: QueryRunner,
 		isAction: boolean = false,
 	) {
-		if (await this.workflowAreaRepository.exist({ where: { id } }))
+		if (await queryRunner.manager.exists(Workflow, { where: { id } }))
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const action = new WorkflowArea();
 		action.id = id;
-		action.area = await this.areaRepository.findOneBy({ id: areaId, serviceId: areaServiceId, isAction });
+		action.area = await queryRunner.manager.findOneBy(Area, { id: areaId, serviceId: areaServiceId, isAction });
 		if (!action.area)
 			throw new NotFoundException(
 				`${
