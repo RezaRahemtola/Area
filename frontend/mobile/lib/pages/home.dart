@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/services/dio.dart';
-import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/storage/index.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +107,7 @@ class ExistingWorkflows extends StatefulWidget {
 
 class _ExistingWorkflowsState extends State<ExistingWorkflows> {
   Future<ServiceReturn<List<Workflow>>> workflowsFuture =
-      services.services.getAll();
+      services.services.getAllWorkflows();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

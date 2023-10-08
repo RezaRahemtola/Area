@@ -32,3 +32,17 @@ class Area {
       required this.name,
       required this.serviceScopesNeeded});
 }
+
+class Workflow {
+  int? id;
+  String? name;
+  bool? active;
+
+  Workflow({this.id, this.name, this.active});
+
+  Workflow.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    active = json['active'];
+  }
+}
