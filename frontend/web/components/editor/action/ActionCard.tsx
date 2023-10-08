@@ -1,13 +1,14 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
 import { Area, Service } from "@/types/services";
+import services from "@/services";
 
 enum Step {
 	SUMMARY = 0,
@@ -19,6 +20,18 @@ const ActionCard = () => {
 	const [{ action }, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
+	const [availableActions, setAvailableActions] = useState<Area[]>([]);
+
+	useEffect(() => {
+		(async () => {
+			if (action.areaService === undefined) {
+				setAvailableActions([]);
+				return;
+			}
+			const fetchedActions = await services.services.getServiceActions(action.areaService.id);
+			setAvailableActions(fetchedActions.data ?? []);
+		})();
+	}, [action.areaService]);
 
 	const onSummaryClick = () => {
 		if (step === Step.SUMMARY) {
@@ -72,7 +85,8 @@ const ActionCard = () => {
 			<EditorSelectEventAndAccount
 				title="Action"
 				actions={{ enabled: false }}
-				area={action}
+				workflowArea={action}
+				areaChoices={availableActions}
 				onEvent={onSelectEventAndAccount}
 			/>
 		);

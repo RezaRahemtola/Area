@@ -4,17 +4,17 @@ import { useEffect } from "react";
 import { useAtom } from "jotai";
 
 import EditorCards from "@/layouts/editor/EditorCards";
-import { editorServicesAtom } from "@/stores/editor";
+import { servicesAtom } from "@/stores";
 import services from "@/services";
 
 const EditorPage = () => {
-	const [, setEditorServices] = useAtom(editorServicesAtom);
+	const [, setServices] = useAtom(servicesAtom);
 
 	useEffect(() => {
 		(async () => {
-			const editorServices = await services.services.getAll();
-			if (editorServices.data != null) {
-				setEditorServices(editorServices.data);
+			const fetchedServices = await services.services.getAll();
+			if (fetchedServices.data != null) {
+				setServices(fetchedServices.data);
 			}
 		})();
 	}, []);
