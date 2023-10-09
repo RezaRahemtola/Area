@@ -28,10 +28,10 @@ export class WorkflowsService {
 		private readonly jobsService: JobsService,
 	) {}
 
-	async getWorkflowWithAreas(id: string, ownerId?: string) {
+	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
 		const workflow = await this.workflowRepository.findOne({
-			where: { id, ownerId },
-			relations: { action: true, reactions: { previousWorkflowArea: true, area: true } },
+			where: { id, ownerId, active: isActive },
+			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const {
@@ -148,6 +148,10 @@ export class WorkflowsService {
 			const reactionsToSave = await this.createWorkflowReactions(actionToSave, reactions, workflow, queryRunner);
 			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
 			await queryRunner.commitTransaction();
+
+			if (workflow.active) {
+				await this.jobsService.launchWorkflowAction(workflow.id);
+			}
 			return {
 				id,
 			};
@@ -236,6 +240,9 @@ export class WorkflowsService {
 			},
 			{ active: () => `${newState}` },
 		);
+		if (newState) {
+			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId)));
+		}
 		return affected > 0;
 	}
 
@@ -244,6 +251,9 @@ export class WorkflowsService {
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		const { active } = workflow;
 		await this.workflowRepository.update(workflowId, { active: !active });
+		if (!active) {
+			await this.jobsService.launchWorkflowAction(workflowId);
+		}
 		return { newState: !active };
 	}
 

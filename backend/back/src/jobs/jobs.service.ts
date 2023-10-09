@@ -83,6 +83,16 @@ export class JobsService {
 		await this.launchJobs(jobs);
 	}
 
+	async launchWorkflowAction(workflowId?: string) {
+		const { action } = await this.workflowsService.getWorkflowWithAreas(workflowId, undefined, true);
+		const job: JobData = {
+			name: `${action.areaServiceId}-${action.areaId}`,
+			identifier: action.jobId,
+			params: action.parameters,
+		};
+		await this.launchJobs([job]);
+	}
+
 	async synchronizeJobs(): Promise<void> {
 		const jobs = await this.getActionJobsToStart();
 
