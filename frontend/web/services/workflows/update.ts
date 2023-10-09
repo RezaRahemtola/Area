@@ -8,7 +8,7 @@ type ToggleWorkflowReturn = {
 export const toggleOne = async (workflowId: string, active: boolean): Promise<ServiceReturn<ToggleWorkflowReturn>> => {
 	try {
 		const response = await axiosInstance.patch<ToggleWorkflowReturn>(`/workflows/toggle/${workflowId}`, {
-			data: { newState: active },
+			newState: active,
 		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
@@ -18,11 +18,9 @@ export const toggleOne = async (workflowId: string, active: boolean): Promise<Se
 
 export const toggleBulk = async (workflowIds: string[], active: boolean): Promise<ServiceReturn<void>> => {
 	try {
-		const response = await axiosInstance.patch<void>(`/workflows/toggle/bulk}`, {
-			data: {
-				workflows: workflowIds,
-				newState: active,
-			},
+		const response = await axiosInstance.patch<void>(`/workflows/toggle/bulk`, {
+			workflows: workflowIds,
+			newState: active,
 		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
