@@ -7,7 +7,7 @@ export class CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes169681431
 			{
 				id: "send-email",
 				serviceId: "google",
-				serviceScopesNeeded: [{ id: "https://www.googleapis.com/auth/gmail.send" }],
+				serviceScopesNeeded: [{ id: "https://www.googleapis.com/auth/gmail.send", serviceId: "google" }],
 				isAction: false,
 			},
 			{
