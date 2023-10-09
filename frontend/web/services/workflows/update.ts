@@ -2,9 +2,14 @@ import { ServiceReturn } from "@/types/api";
 import { axiosInstance } from "@/services";
 import { SERVICE_ERROR_UNKNOWN } from "@/config/services";
 
-export const toggleOne = async (workflowId: string, active: boolean): Promise<ServiceReturn<void>> => {
+type ToggleWorkflowReturn = {
+	newState: boolean;
+};
+export const toggleOne = async (workflowId: string, active: boolean): Promise<ServiceReturn<ToggleWorkflowReturn>> => {
 	try {
-		const response = await axiosInstance.patch<void>(`/workflows/toggle/${workflowId}`, { data: { newState: active } });
+		const response = await axiosInstance.patch<ToggleWorkflowReturn>(`/workflows/toggle/${workflowId}`, {
+			data: { newState: active },
+		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
