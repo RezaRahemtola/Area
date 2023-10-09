@@ -34,10 +34,13 @@ export const create = async (workflow: EditorWorkflow): Promise<ServiceReturn<Cr
 };
 
 export const update = async (
-	workflow: Partial<EditorWorkflow> & { id: string },
+	workflow: Partial<EditorWorkflow> & {
+		id: string;
+	},
 ): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
-		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${workflow.id}`, { data: workflow });
+		const { id, ...workflowData } = workflow;
+		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${id}`, { ...workflowData });
 		return { data: response.data, error: undefined };
 	} catch (error) {
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
