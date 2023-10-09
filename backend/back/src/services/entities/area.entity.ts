@@ -18,7 +18,7 @@ export default class Area {
 	@Column()
 	isAction!: boolean;
 
-	@ManyToMany(() => ServiceScope, { onDelete: "SET NULL" })
+	@ManyToMany(() => ServiceScope, { onDelete: "CASCADE" })
 	@JoinTable()
 	serviceScopesNeeded!: ServiceScope[];
 }
