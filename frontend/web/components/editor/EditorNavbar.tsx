@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
+import services from "@/services";
 
 type EditorNavbarProps = {
 	isAuthenticated: boolean;
@@ -12,8 +13,12 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const router = useRouter();
 
-	const onSaveWorkflow = () => {
-		router.push("/dashboard");
+	const onSaveWorkflow = async () => {
+		const response = await services.workflows.create(workflow);
+
+		if (!response.error) {
+			router.push("/dashboard");
+		}
 	};
 
 	return (
