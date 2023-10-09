@@ -11,13 +11,11 @@ export class GrpcController {
 
 	@GrpcMethod("AreaBackService", "OnAction")
 	async onAction(data: JobData): Promise<void> {
-		console.log("OnAction", data);
 		await this.jobsService.launchNextJob(data);
 	}
 
 	@GrpcMethod("AreaBackService", "OnReaction")
 	async onReaction(data: JobData): Promise<void> {
-		console.log("OnReaction", data);
 		await this.jobsService.launchNextJob(data);
 	}
 }

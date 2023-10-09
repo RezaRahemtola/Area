@@ -66,7 +66,7 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		Cmd:   args,
 	}, &container.HostConfig{
 		NetworkMode: "host",
-		//AutoRemove:  true,
+		AutoRemove:  true,
 	}, nil, nil, identifier)
 
 	if err != nil {
@@ -94,7 +94,13 @@ func (jm *JobManager) KillJob(identifier string) error {
 		return nil
 	}
 
-	err := jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{})
+	_, err := jm.dockerClient.ContainerInspect(context.Background(), job.containerID)
+	if err != nil {
+        delete(jm.jobs, identifier)
+        return nil
+    }
+
+	err = jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{})
 	if err != nil {
 		return err
 	}

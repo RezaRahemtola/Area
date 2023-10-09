@@ -34,8 +34,6 @@ export class JobsService {
 			relations: { nextWorkflowReactions: { area: true } },
 		});
 
-		console.log(jobs);
-
 		return jobs.flatMap(({ nextWorkflowReactions }) =>
 			nextWorkflowReactions.map(({ jobId: identifier, parameters: params, area }) => ({
 				name: `${area.serviceId}-${area.id}`,
@@ -72,7 +70,6 @@ export class JobsService {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType as JobsType, job.params);
 			const response = await this.grpcService.launchJob(jobType, params);
-			console.log("Launching job", job.identifier);
 
 			if (response.error) {
 				// TODO: Error handling in db & front
