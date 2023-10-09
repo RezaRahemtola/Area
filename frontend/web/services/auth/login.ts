@@ -1,14 +1,14 @@
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { StatusCodes } from "http-status-codes";
 
-import { axiosInstance } from "@/services";
 import { AuthResult, Credentials } from "@/types/user";
 import { ServiceReturn } from "@/types/api";
 import { SERVICE_ERROR_UNKNOWN } from "@/config/services";
+import { API_URL } from "@/config/environment";
 
 const login = async ({ email, password }: Credentials): Promise<ServiceReturn<string>> => {
 	try {
-		const response = await axiosInstance.post<AuthResult>("/auth/login", { email, password });
+		const response = await axios.post<AuthResult>(`${API_URL}/auth/login`, { email, password });
 		return { data: response.data.accessToken, error: undefined };
 	} catch (error) {
 		if (!isAxiosError(error)) return { data: null, error: SERVICE_ERROR_UNKNOWN };
