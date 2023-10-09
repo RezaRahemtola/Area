@@ -75,7 +75,7 @@ export class OauthService {
 				client_secret: this.configService.getOrThrow<string>("GOOGLE_CLIENT_SECRET"),
 				code,
 				grant_type: "authorization_code",
-				redirect_uri: "http://localhost:3000/connections/oauth/google/callback",
+				redirect_uri: `${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/google/callback`,
 			},
 			{
 				headers: {

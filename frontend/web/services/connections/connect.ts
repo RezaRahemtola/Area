@@ -10,7 +10,7 @@ type CheckConnectionReturn = {
 const checkConnection = async (serviceId: string, scopes: string[]): Promise<ServiceReturn<CheckConnectionReturn>> => {
 	try {
 		const response = await axiosInstance.post<CheckConnectionReturn>(`/connections/${serviceId}/connect`, {
-			data: { scopes },
+			scopes,
 		});
 
 		return { data: response.data, error: undefined };

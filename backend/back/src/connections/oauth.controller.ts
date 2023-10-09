@@ -3,7 +3,9 @@ import { OauthService } from "./oauth.service";
 import { GoogleOauthCallbackDto, OauthCallbackDto } from "./dto/oauth.dto";
 import { Response } from "express";
 import { ConfigService } from "@nestjs/config";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("OAuth Callbacks")
 @Controller("connections/oauth")
 export class OauthController {
 	constructor(
@@ -15,13 +17,13 @@ export class OauthController {
 	async githubCallback(@Query() { code, state: userId }: OauthCallbackDto, @Res() response: Response) {
 		const connection = await this.oauthService.createGitHubConnection(userId, code);
 		if (!connection) throw new InternalServerErrorException("Failed to create connection");
-		return response.redirect(this.configService.getOrThrow<string>("FRONT_BASE_URL"));
+		return response.redirect(this.configService.getOrThrow<string>("FRONT_OAUTH_REDIRECTION_URL"));
 	}
 
 	@Get("/google/callback")
 	async googleCallback(@Query() { code, state: userId }: GoogleOauthCallbackDto, @Res() response: Response) {
 		const connection = await this.oauthService.createGoogleConnection(userId, code);
 		if (!connection) throw new InternalServerErrorException("Failed to create connection");
-		return response.redirect(this.configService.getOrThrow<string>("FRONT_BASE_URL"));
+		return response.redirect(this.configService.getOrThrow<string>("FRONT_OAUTH_REDIRECTION_URL"));
 	}
 }
