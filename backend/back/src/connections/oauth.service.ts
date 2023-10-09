@@ -68,27 +68,22 @@ export class OauthService {
 	async createGoogleConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef
-			.post<unknown & { scope: string }>(
-				"https://www.googleapis.com/oauth2/v4/token",
-				{
-					client_id: this.configService.getOrThrow<string>("GOOGLE_CLIENT_ID"),
-					client_secret: this.configService.getOrThrow<string>("GOOGLE_CLIENT_SECRET"),
-					code,
-					grant_type: "authorization_code",
-					redirect_uri: "http://localhost:3000/connections/oauth/google/callback",
+		} = await this.httpService.axiosRef.post<unknown & { scope: string }>(
+			"https://www.googleapis.com/oauth2/v4/token",
+			{
+				client_id: this.configService.getOrThrow<string>("GOOGLE_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("GOOGLE_CLIENT_SECRET"),
+				code,
+				grant_type: "authorization_code",
+				redirect_uri: "http://localhost:3000/connections/oauth/google/callback",
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
 				},
-				{
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-				},
-			)
-			.catch((e) => {
-				console.error(e);
-				throw e;
-			});
+			},
+		);
 		return this.connectionsService.createUserConnection(userId, "google", scope.split(" "), connectionData);
 	}
 
