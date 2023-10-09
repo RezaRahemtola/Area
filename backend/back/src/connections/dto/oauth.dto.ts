@@ -20,8 +20,17 @@ export class OauthCallbackDto {
 	code!: string;
 
 	@ApiProperty({
-		description: "The user identifier to connect",
+		description: "The user identifier to connect (stored in oauth state)",
 	})
 	@IsUUID(4)
-	userId!: string;
+	state!: string;
+}
+
+export class GoogleOauthCallbackDto extends OauthCallbackDto {
+	@ApiProperty({
+		description: "The OAuth scopes validated by the user",
+		type: String,
+	})
+	@IsString()
+	scope!: string;
 }
