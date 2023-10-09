@@ -32,7 +32,6 @@ def send_email():
         print(F"Error: Missing required keys: {missing}")
         exit(1)
 
-    print(os.getenv("GOOGLE_TOKEN_URI"))
     creds = Credentials.from_authorized_user_info(info={
         "refresh_token": args["refreshToken"],
         "token_uri": os.getenv("GOOGLE_TOKEN_URI"),
