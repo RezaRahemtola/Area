@@ -1,7 +1,7 @@
 import { In, MigrationInterface, QueryRunner } from "typeorm";
 import Area from "../../services/entities/area.entity";
 
-export class CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696814310879 implements MigrationInterface {
+export class CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.manager.getRepository(Area).save([
 			{
