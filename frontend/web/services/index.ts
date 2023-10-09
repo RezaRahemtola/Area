@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { StatusCodes } from "http-status-codes";
 import { API_URL } from "@/config/environment";
 import authService from "@/services/auth";
 import servicesService from "@/services/services";
@@ -19,6 +19,19 @@ axiosInstance.interceptors.request.use((config) => {
 	newConfig.headers.Authorization = token ? `Bearer ${parsedToken}` : "";
 	return newConfig;
 });
+
+axiosInstance.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response.status === StatusCodes.UNAUTHORIZED) {
+			localStorage.removeItem("areaAuthToken");
+			if (typeof window !== "undefined") {
+				window.location.href = "/";
+			}
+		}
+		throw error;
+	},
+);
 
 const services = {
 	auth: authService,

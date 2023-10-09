@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAtom } from "jotai";
 
@@ -10,7 +11,6 @@ import { workflowsAtom } from "@/stores";
 import services from "@/services";
 
 import "@/styles/customCheckbox.css";
-import Link from "next/link";
 
 const LibraryWorkflowTable = () => {
 	const [workflows, setWorkflows] = useAtom(workflowsAtom);
