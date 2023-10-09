@@ -60,6 +60,24 @@ const LibraryWorkflowTable = () => {
 		await services.workflows.deleteBulk(selectedWorkflows);
 	};
 
+	const onWorkflowChange = async (workflowId: string) => {
+		const fetchedWorkflow = await services.workflows.getOne(workflowId);
+
+		if (fetchedWorkflow.error) {
+			setWorkflows((prev) => prev.filter((w) => w.id !== workflowId));
+			setSelectedWorkflows((prev) => prev.filter((wId) => wId !== workflowId));
+		} else if (fetchedWorkflow.data) {
+			setWorkflows((prev) =>
+				prev.map((workflow) => {
+					if (workflow.id === workflowId) {
+						return fetchedWorkflow.data;
+					}
+					return workflow;
+				}),
+			);
+		}
+	};
+
 	return (
 		<>
 			{workflows.length === 0 ? (
@@ -110,6 +128,7 @@ const LibraryWorkflowTable = () => {
 								key={workflow.id}
 								selected={selectedWorkflows.includes(workflow.id)}
 								onSelect={onSelectLine}
+								onWorkflowChange={onWorkflowChange}
 							/>
 						))}
 					</tbody>

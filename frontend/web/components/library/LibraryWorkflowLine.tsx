@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 
 import { Workflow } from "@/types/workflows";
@@ -19,10 +19,13 @@ const ServiceLogo = ({ serviceId }: { serviceId: string }) => {
 		(async () => {
 			const service = cachedServices.find((s) => s.id === serviceId);
 			if (service !== undefined) {
-				setServicePicture(service.id);
+				setServicePicture(service.imageUrl);
 			} else {
 				const fetchedService = await services.services.getOne(serviceId);
-				if (fetchedService.data !== null) setCachedServices((prev) => [...prev, fetchedService.data]);
+				if (fetchedService.data !== null) {
+					setCachedServices((prev) => [...prev, fetchedService.data]);
+					setServicePicture(fetchedService.data.imageUrl);
+				}
 			}
 		})();
 	}, []);
@@ -40,8 +43,9 @@ type LibraryWorkflowLineProps = {
 	workflow: Workflow;
 	selected: boolean;
 	onSelect: (workflowId: string, selected: boolean) => void;
+	onWorkflowChange: (workflowId: string) => void;
 };
-const LibraryWorkflowLine = ({ workflow, selected, onSelect }: LibraryWorkflowLineProps) => {
+const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }: LibraryWorkflowLineProps) => {
 	const [openedWorkflowOptions, setOpenedWorkflowOptions] = useAtom(libraryOpenedWorkflowOptionsAtom);
 	const renameModalRef = useRef<HTMLDialogElement>(null);
 
@@ -62,6 +66,11 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect }: LibraryWorkflowLi
 		renameModalRef.current?.close();
 	};
 
+	const onToggle = async (e: ChangeEvent<HTMLInputElement>) => {
+		await services.workflows.toggleOne(workflow.id, e.target.checked);
+		onWorkflowChange(workflow.id);
+	};
+
 	return (
 		<tr>
 			<th>
@@ -79,7 +88,6 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect }: LibraryWorkflowLi
 				<div className="flex items-center space-x-3">
 					<ServiceLogo serviceId={workflow.action.areaServiceId} />
 
-					{workflow.action.areaServiceId}
 					{workflow.reactions.map((reaction) => (
 						<ServiceLogo serviceId={reaction.areaServiceId} key={reaction.id} />
 					))}
@@ -91,7 +99,8 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect }: LibraryWorkflowLi
 					type="checkbox"
 					name="workflow-running"
 					className="toggle toggle-success"
-					defaultChecked={workflow.active}
+					checked={workflow.active}
+					onChange={onToggle}
 				/>
 			</td>
 			<th>
