@@ -13,7 +13,6 @@ type JobManager struct {
 	dockerClient *client.Client
 	jobs         map[string]Job
 	callbackUrl  string
-	env          string
 }
 
 type Job struct {
@@ -24,8 +23,8 @@ type Job struct {
 
 var instance *JobManager
 
-func InitJobManager(cli *client.Client, callbackUrl string, env string) {
-	instance = &JobManager{cli, map[string]Job{}, callbackUrl, env}
+func InitJobManager(cli *client.Client, callbackUrl string) {
+	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
 
 	err := instance.cleanContainers()
 	if err != nil {
@@ -131,7 +130,7 @@ func (jm *JobManager) cleanContainers() error {
 		log.Fatal("Couldn't list containers: ", err)
 	}
 	for _, cont := range containers {
-		if cont.Image != "area_supervisor" && (jm.env == "production" || isSupervisorContainer(cont.Image)) {
+		if cont.Image != "area_supervisor" && isSupervisorContainer(cont.Image) {
 			err = jm.dockerClient.ContainerStop(context.Background(), cont.ID, container.StopOptions{})
 			if err != nil {
 				return err

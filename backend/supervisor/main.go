@@ -22,10 +22,9 @@ func main() {
 		log.Fatal("Cannot create docker client: ", err)
 	}
 
-	env := os.Getenv("GO_ENV")
 	url := getCallbackUrl()
 
-	jobs.InitJobManager(cli, url, env)
+	jobs.InitJobManager(cli, url)
 	grpc.InitGrpcServer(port)
 }
 
