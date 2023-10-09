@@ -313,6 +313,7 @@ export class WorkflowsService {
 					isAction ? "Action" : "Reaction"
 				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
 			);
+		// TODO Dorian: Clean this
 		let serviceUserConnection: {
 			scopes: any[];
 		} = await queryRunner.manager.findOne(UserConnection, {
@@ -323,6 +324,7 @@ export class WorkflowsService {
 				scopes: true,
 			},
 		});
+		// TODO Dorian: Remove next line
 		if (!serviceUserConnection && areaServiceId === "timer") serviceUserConnection = { scopes: [] };
 		if (!serviceUserConnection) throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
 		const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);

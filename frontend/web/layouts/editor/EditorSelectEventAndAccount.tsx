@@ -42,19 +42,18 @@ const EditorSelectEventAndAccount = ({
 	}, [selectedEventId]);
 
 	useEffect(() => {
+		if (!accountConnectionInProgress) return () => {};
 		const accountConnectionCheck = setInterval(() => {
 			(async () => {
-				if (accountConnectionInProgress) {
-					const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
-					const connectService = await services.connections.connect(
-						workflowArea.areaService!.id,
-						chosenArea.serviceScopesNeeded,
-					);
+				const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
+				const connectService = await services.connections.connect(
+					workflowArea.areaService!.id,
+					chosenArea.serviceScopesNeeded,
+				);
 
-					if (connectService.data && connectService.data.oauthUrl === null) {
-						setConnectAccountUrl(null);
-						setAccountConnectionInProgress(false);
-					}
+				if (connectService.data && connectService.data.oauthUrl === null) {
+					setConnectAccountUrl(null);
+					setAccountConnectionInProgress(false);
 				}
 			})();
 		}, 1000);
@@ -62,7 +61,7 @@ const EditorSelectEventAndAccount = ({
 		return () => {
 			clearInterval(accountConnectionCheck);
 		};
-	}, []);
+	}, [accountConnectionInProgress]);
 
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
