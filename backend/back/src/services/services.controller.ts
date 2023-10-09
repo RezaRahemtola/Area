@@ -46,7 +46,7 @@ export class ServicesController {
 		description: "The service with the given id does not exist",
 	})
 	@ApiParam({
-		description: "The id of the service to get action from",
+		description: "The id of the service to get actions from",
 		name: "id",
 	})
 	@Get("/:id/actions")
