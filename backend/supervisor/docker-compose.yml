@@ -7,6 +7,8 @@ services:
     env_file: .env
     ports:
       - "${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   seconds-interval:
     container_name: seconds-interval
