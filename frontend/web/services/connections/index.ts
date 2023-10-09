@@ -1,7 +1,7 @@
-import { checkConnection } from "@/services/connections/connect";
+import { connect } from "@/services/connections/connect";
 
 const connectionsService = {
-	checkConnection,
+	connect,
 };
 
 export default connectionsService;

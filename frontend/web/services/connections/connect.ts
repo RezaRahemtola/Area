@@ -7,7 +7,7 @@ import { ServiceReturn } from "@/types/api";
 type CheckConnectionReturn = {
 	oauthUrl: string | null;
 };
-const checkConnection = async (serviceId: string, scopes: string[]): Promise<ServiceReturn<CheckConnectionReturn>> => {
+const connect = async (serviceId: string, scopes: string[]): Promise<ServiceReturn<CheckConnectionReturn>> => {
 	try {
 		const response = await axiosInstance.post<CheckConnectionReturn>(`/connections/${serviceId}/connect`, {
 			scopes,
@@ -24,4 +24,4 @@ const checkConnection = async (serviceId: string, scopes: string[]): Promise<Ser
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { checkConnection };
+export { connect };

@@ -32,7 +32,7 @@ const EditorSelectEventAndAccount = ({
 		(async () => {
 			if (selectedEventId !== undefined) {
 				const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
-				const connectService = await services.connections.checkConnection(
+				const connectService = await services.connections.connect(
 					workflowArea.areaService!.id,
 					chosenArea.serviceScopesNeeded,
 				);
@@ -46,7 +46,7 @@ const EditorSelectEventAndAccount = ({
 			(async () => {
 				if (accountConnectionInProgress) {
 					const chosenArea = areaChoices.find((area) => area.id === selectedEventId)!;
-					const connectService = await services.connections.checkConnection(
+					const connectService = await services.connections.connect(
 						workflowArea.areaService!.id,
 						chosenArea.serviceScopesNeeded,
 					);
@@ -90,7 +90,7 @@ const EditorSelectEventAndAccount = ({
 				{selectedEventId && (
 					<>
 						<label className="label">
-							<span className="label-text text-neutral-content">Connect your your account</span>
+							<span className="label-text text-neutral-content">Connect your account</span>
 						</label>
 						{connectAccountUrl ? (
 							<button className="btn btn-ghost w-16 h-16">
