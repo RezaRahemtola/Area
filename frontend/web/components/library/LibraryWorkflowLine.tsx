@@ -62,8 +62,8 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 		renameModalRef.current?.showModal();
 	};
 	const onRenameSuccess = () => {
-		// TODO Reza: update state
 		renameModalRef.current?.close();
+		onWorkflowChange(workflow.id);
 	};
 
 	const onToggle = async (e: ChangeEvent<HTMLInputElement>) => {
