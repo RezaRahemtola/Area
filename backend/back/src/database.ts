@@ -13,6 +13,8 @@ import { CreateGithubService1696697379896 } from "./services/seed/1696697379896-
 import { CreateGithubServiceScopes1696697647435 } from "./services/seed/1696697647435-CreateGithubServiceScopes";
 import { WorkflowAreaJobId1696791202100 } from "./migrations/1696791202100-WorkflowAreaJobId";
 import { CreateGoogleServiceWithScopes1696808587273 } from "./services/seed/1696808587273-CreateGoogleServiceWithScopes";
+import { CreateTimerService1696814128392 } from "./services/seed/1696814128392-CreateTimerService";
+import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696814310879 } from "./workflows/seed/1696814310879-CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes";
 
 dotenv.config();
 
@@ -31,6 +33,8 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGithubServiceScopes1696697647435,
 		WorkflowAreaJobId1696791202100,
 		CreateGoogleServiceWithScopes1696808587273,
+		CreateTimerService1696814128392,
+		CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696814310879,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
