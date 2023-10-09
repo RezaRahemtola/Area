@@ -13,7 +13,7 @@ export const deleteOne = async (workflowId: string): Promise<ServiceReturn<void>
 
 export const deleteBulk = async (workflowIds: string[]): Promise<ServiceReturn<void>> => {
 	try {
-		const response = await axiosInstance.delete<void>(`/workflows/bulk}`, { data: { workflows: workflowIds } });
+		const response = await axiosInstance.delete<void>(`/workflows/bulk`, { data: { workflows: workflowIds } });
 		return { data: response.data, error: undefined };
 	} catch (error) {
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };

@@ -52,12 +52,24 @@ const LibraryWorkflowTable = () => {
 		}
 	};
 
+	const updateAllWorkflows = async () => {
+		const fetchedWorkflows = await services.workflows.getAll();
+		if (fetchedWorkflows.error || fetchedWorkflows.data === null) return;
+
+		setWorkflows(fetchedWorkflows.data);
+
+		const fetchedWorkflowIds = fetchedWorkflows.data.map((workflow) => workflow.id);
+		setSelectedWorkflows((prev) => prev.filter((workflowId) => fetchedWorkflowIds.includes(workflowId)));
+	};
+
 	const onToggleAll = async (status: boolean) => {
 		await services.workflows.toggleBulk(selectedWorkflows, status);
+		await updateAllWorkflows();
 	};
 
 	const onDeleteAll = async () => {
 		await services.workflows.deleteBulk(selectedWorkflows);
+		await updateAllWorkflows();
 	};
 
 	const onWorkflowChange = async (workflowId: string) => {
