@@ -313,7 +313,9 @@ export class WorkflowsService {
 					isAction ? "Action" : "Reaction"
 				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
 			);
-		const serviceUserConnection = await queryRunner.manager.findOne(UserConnection, {
+		let serviceUserConnection: {
+			scopes: any[];
+		} = await queryRunner.manager.findOne(UserConnection, {
 			where: {
 				serviceId: areaServiceId,
 			},
@@ -321,6 +323,7 @@ export class WorkflowsService {
 				scopes: true,
 			},
 		});
+		if (!serviceUserConnection && areaServiceId === "timer") serviceUserConnection = { scopes: [] };
 		if (!serviceUserConnection) throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
 		const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);
 		const areaNeededScopeIds = action.area.serviceScopesNeeded.map(({ id }) => id);
