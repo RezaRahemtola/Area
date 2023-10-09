@@ -11,7 +11,7 @@ export class CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes169681550
 				isAction: false,
 			},
 			{
-				id: "second-interval",
+				id: "seconds-interval",
 				serviceId: "timer",
 				serviceScopesNeeded: [],
 				isAction: true,
@@ -21,7 +21,7 @@ export class CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes169681550
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.manager.getRepository(Area).delete({
-			id: In(["send-email", "second-interval"]),
+			id: In(["send-email", "seconds-interval"]),
 			serviceId: In(["google", "timer"]),
 		});
 	}
