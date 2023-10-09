@@ -1,7 +1,7 @@
-import { GoogleSendEmailParams, SecondIntervalParams } from "./jobParams";
+import { GoogleSendEmailParams, TimerSecondIntervalParams } from "./jobParams";
 
 export enum Jobs {
-	"seconds-interval" = "seconds-interval",
+	"timer-seconds-interval" = "timer-seconds-interval",
 	"google-send-email" = "google-send-email",
 }
 
@@ -12,11 +12,11 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 }
 
 export const JobParamsClasses = {
-	"seconds-interval": SecondIntervalParams,
+	"timer-seconds-interval": TimerSecondIntervalParams,
 	"google-send-email": GoogleSendEmailParams,
 };
 
 export type JobsParams = Mapper<{
-	"seconds-interval": SecondIntervalParams;
+	"timer-seconds-interval": TimerSecondIntervalParams;
 	"google-send-email": GoogleSendEmailParams;
 }>;

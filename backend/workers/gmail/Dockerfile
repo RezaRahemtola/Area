@@ -18,14 +18,24 @@ RUN git clone https://github.com/RezaRahemtola/area-proto.git proto
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 
-RUN python -m grpc_tools.protoc -I./proto --python_out=proto --pyi_out=proto --grpc_python_out=proto proto/area_back.proto proto/area_types.proto
+RUN python -m grpc_tools.protoc -I./proto --python_out=. --pyi_out=. --grpc_python_out=. proto/area_back.proto proto/area_types.proto
 
 FROM python:3.11-slim-buster AS runtime
+
+WORKDIR /app
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+ARG GOOGLE_TOKEN_URI
+ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+ENV GOOGLE_TOKEN_URI=$GOOGLE_TOKEN_URI
+
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=builder /app/area_*.py* ./
 
 COPY . .
 

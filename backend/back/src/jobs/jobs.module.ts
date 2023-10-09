@@ -6,7 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import WorkflowArea from "../workflows/entities/workflow-area.entity";
 
 @Module({
-	imports: [GrpcModule, WorkflowsModule, TypeOrmModule.forFeature([WorkflowArea]), forwardRef(() => WorkflowsModule)],
+	imports: [TypeOrmModule.forFeature([WorkflowArea]), forwardRef(() => WorkflowsModule), forwardRef(() => GrpcModule)],
 	controllers: [],
 	providers: [JobsService],
 	exports: [JobsService],

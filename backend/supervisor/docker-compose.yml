@@ -14,4 +14,9 @@ services:
 
   gmail:
     container_name: gmail
-    build: ../workers/gmail
+    build:
+      context: ../workers/gmail
+      args:
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - GOOGLE_TOKEN_URI=${GOOGLE_TOKEN_URI}

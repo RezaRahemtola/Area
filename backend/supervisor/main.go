@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/docker/docker/client"
 	_ "github.com/joho/godotenv/autoload"
 	"log"
@@ -10,25 +11,10 @@ import (
 	"supervisor/jobs"
 )
 
-func GetEnvNumber(env string) (int, error) {
-	value := os.Getenv(env)
-	return strconv.Atoi(value)
-}
-
 func main() {
-	port, err := GetEnvNumber("GRPC_SERVER_PORT")
+	port, err := getEnvNumber("GRPC_SERVER_PORT")
 	if err != nil {
 		log.Fatal("Invalid server port", err)
-	}
-
-	callbackUrl := os.Getenv("GRPC_CALLBACK_HOST")
-	if callbackUrl == "" {
-		log.Fatal("Invalid callback url", err)
-	}
-
-	callbackPort, err := GetEnvNumber("GRPC_CALLBACK_PORT")
-	if err != nil {
-		log.Fatal("Invalid callback port", err)
 	}
 
 	cli, err := client.NewClientWithOpts(client.FromEnv)
@@ -36,6 +22,29 @@ func main() {
 		log.Fatal("Cannot create docker client: ", err)
 	}
 
-	jobs.InitJobManager(cli, callbackUrl, callbackPort)
+	env := os.Getenv("GO_ENV")
+	url := getCallbackUrl()
+
+	jobs.InitJobManager(cli, url, env)
 	grpc.InitGrpcServer(port)
+}
+
+func getEnvNumber(env string) (int, error) {
+	value := os.Getenv(env)
+	return strconv.Atoi(value)
+}
+
+func getCallbackUrl() string {
+	callbackUrl := os.Getenv("GRPC_CALLBACK_HOST")
+	if callbackUrl == "" {
+		callbackUrl = "localhost"
+	}
+
+	callbackPort, err := getEnvNumber("GRPC_CALLBACK_PORT")
+	if err != nil {
+		fmt.Println("Invalid callback port, defaulting to 50050")
+		callbackPort = 50050
+	}
+
+	return callbackUrl + ":" + fmt.Sprint(callbackPort)
 }

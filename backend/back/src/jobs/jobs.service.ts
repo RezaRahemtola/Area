@@ -1,6 +1,5 @@
-import { BadRequestException, HttpException, Injectable } from "@nestjs/common";
+import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GrpcService } from "../grpc/grpc.service";
-import { LaunchJobDto } from "./jobs.dto";
 import { JobParamsClasses, JobsParams, JobsType } from "../types/jobs";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
@@ -8,29 +7,40 @@ import { WorkflowsService } from "../workflows/workflows.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import WorkflowArea from "../workflows/entities/workflow-area.entity";
 import { Repository } from "typeorm";
+import { JobData } from "../grpc/grpc.dto";
+import { RuntimeException } from "@nestjs/core/errors/exceptions";
 
 @Injectable()
 export class JobsService {
 	constructor(
-		private readonly grpcService: GrpcService,
-		private readonly workflowsService: WorkflowsService,
-		@InjectRepository(WorkflowArea)
-		private readonly workflowAreaRepository: Repository<WorkflowArea>,
+		@Inject(forwardRef(() => GrpcService)) private readonly grpcService: GrpcService,
+		@Inject(forwardRef(() => WorkflowsService)) private readonly workflowsService: WorkflowsService,
+		@InjectRepository(WorkflowArea) private readonly workflowAreaRepository: Repository<WorkflowArea>,
 	) {}
 
-	async getActionJobsToStart() {
+	async getActionJobsToStart(): Promise<JobData[]> {
 		return (await this.workflowsService.getWorkflowsWithAreas(undefined, true)).map(
-			({ action: { jobId, parameters } }) => ({ jobId, params: parameters }),
+			({ action: { areaId, areaServiceId, jobId: identifier, parameters: params } }) => ({
+				name: `${areaServiceId}-${areaId}`,
+				identifier,
+				params,
+			}),
 		);
 	}
 
-	async getReactionsForJob(jobId: string) {
-		return (
-			await this.workflowAreaRepository.find({
-				where: { jobId },
-				relations: { nextWorkflowReactions: true },
-			})
-		).map(({ nextWorkflowReactions }) => nextWorkflowReactions.map(({ jobId, parameters }) => ({ jobId, parameters })));
+	async getReactionsForJob(jobId: string): Promise<JobData[]> {
+		const jobs = await this.workflowAreaRepository.find({
+			where: { jobId },
+			relations: { nextWorkflowReactions: { area: true } },
+		});
+
+		return jobs.flatMap(({ nextWorkflowReactions }) =>
+			nextWorkflowReactions.map(({ jobId: identifier, parameters: params, area }) => ({
+				name: `${area.serviceId}-${area.id}`,
+				identifier,
+				params,
+			})),
+		);
 	}
 
 	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams["mappings"][TJobs]> {
@@ -55,12 +65,31 @@ export class JobsService {
 		return data as JobsParams["mappings"][TJobs];
 	}
 
-	async launchJob(job: LaunchJobDto): Promise<void> {
-		const params = await this.convertParams(job.job, job.params);
-		const response = await this.grpcService.launchJob(job.job, params);
+	async launchJobs(jobs: JobData[]): Promise<void> {
+		for (const job of jobs) {
+			const jobType: JobsType = job.name as JobsType;
+			const params = await this.convertParams(jobType as JobsType, job.params);
+			const response = await this.grpcService.launchJob(jobType, params);
 
-		if (response.error) {
-			throw new HttpException(response.error.message, response.error.code);
+			if (response.error) {
+				// TODO: Error handling in db & front
+				throw new RuntimeException(`Error while launching job: ${response.error.message}`);
+			}
 		}
+	}
+
+	async launchNextJob(data: JobData): Promise<void> {
+		const jobs = await this.getReactionsForJob(data.identifier);
+		await this.launchJobs(jobs);
+	}
+
+	async synchronizeJobs(): Promise<void> {
+		const jobs = await this.getActionJobsToStart();
+
+		const res = await this.grpcService.killAllJobs();
+		if (res.error) {
+			throw new RuntimeException(`Error while synchronizing: ${res.error.message}`);
+		}
+		await this.launchJobs(jobs);
 	}
 }
