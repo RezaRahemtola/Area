@@ -178,7 +178,7 @@ export class WorkflowsController {
 	})
 	@Delete(":uuid")
 	async deleteWorkflow(
-		@Param("id") workflowId: string,
+		@Param() { uuid: workflowId }: UuidParamDto,
 		@Req() { user: { id: ownerId } }: APIRequest,
 		@Res() response: Response,
 	) {
