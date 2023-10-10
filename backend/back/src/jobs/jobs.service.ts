@@ -25,13 +25,13 @@ export class JobsService {
 
 		return Promise.all(
 			workflows.map(async ({ ownerId, action: { areaId, areaServiceId, jobId: identifier, parameters: params } }) => {
-				const credentials = await this.connectionsService.getUserConnectionForService(ownerId, areaServiceId);
+				const connection = await this.connectionsService.getUserConnectionForService(ownerId, areaServiceId);
 
 				return {
 					name: `${areaServiceId}-${areaId}`,
 					identifier,
 					params,
-					auth: credentials?.data ?? {},
+					auth: connection?.data ?? {},
 				};
 			}),
 		);
@@ -47,13 +47,13 @@ export class JobsService {
 				return Promise.all(
 					job.nextWorkflowReactions.map(async ({ jobId: identifier, parameters: params, area }) => {
 						const ownerId = job.actionOfWorkflow?.ownerId ?? job.workflow.ownerId;
-						const credentials = await this.connectionsService.getUserConnectionForService(ownerId, area.serviceId);
+						const connection = await this.connectionsService.getUserConnectionForService(ownerId, area.serviceId);
 
 						return {
 							name: `${area.serviceId}-${area.id}`,
 							identifier,
 							params,
-							auth: credentials?.data ?? {},
+							auth: connection?.data ?? {},
 						};
 					}),
 				);
@@ -105,13 +105,13 @@ export class JobsService {
 
 	async launchWorkflowAction(workflowId: string, ownerId: string) {
 		const { action } = await this.workflowsService.getWorkflowWithAreas(workflowId, undefined, true);
-		const credentials = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
+		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
 
 		const job: AuthenticatedJobData = {
 			name: `${action.areaServiceId}-${action.areaId}`,
 			identifier: action.jobId,
 			params: action.parameters,
-			auth: credentials?.data ?? {},
+			auth: connection?.data ?? {},
 		};
 		await this.launchJobs([job]);
 	}
