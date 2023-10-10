@@ -1,6 +1,6 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GrpcService } from "../grpc/grpc.service";
-import { JobParamsClasses, JobsParams, JobsType } from "../types/jobs";
+import {JobParamsClasses, Jobs, JobsParams, JobsType} from "../types/jobs";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
 import { WorkflowsService } from "../workflows/workflows.service";
@@ -20,6 +20,10 @@ export class JobsService {
 		@InjectRepository(WorkflowArea) private readonly workflowAreaRepository: Repository<WorkflowArea>,
 	) {}
 
+	getJobName(areaServiceId: string, areaId: string): JobsType {
+		return `${areaServiceId}-${areaId}` as JobsType;
+	}
+
 	async getActionJobsToStart(): Promise<AuthenticatedJobData[]> {
 		const workflows = await this.workflowsService.getWorkflowsWithAreas(undefined, true);
 
@@ -28,7 +32,7 @@ export class JobsService {
 				const connection = await this.connectionsService.getUserConnectionForService(ownerId, areaServiceId);
 
 				return {
-					name: `${areaServiceId}-${areaId}`,
+					name: this.getJobName(areaServiceId, areaId),
 					identifier,
 					params,
 					auth: connection?.data ?? {},
@@ -50,7 +54,7 @@ export class JobsService {
 						const connection = await this.connectionsService.getUserConnectionForService(ownerId, area.serviceId);
 
 						return {
-							name: `${area.serviceId}-${area.id}`,
+							name: this.getJobName(area.serviceId, area.id),
 							identifier,
 							params,
 							auth: connection?.data ?? {},
@@ -108,7 +112,7 @@ export class JobsService {
 		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
 
 		const job: AuthenticatedJobData = {
-			name: `${action.areaServiceId}-${action.areaId}`,
+			name: this.getJobName(action.areaServiceId, action.areaId),
 			identifier: action.jobId,
 			params: action.parameters,
 			auth: connection?.data ?? {},
