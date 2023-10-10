@@ -4,6 +4,13 @@ export class JobData {
 	params: unknown;
 }
 
+export class AuthenticatedJobData {
+	name: string;
+	identifier: string;
+	params: unknown;
+	auth: unknown;
+}
+
 export class JobListData {
 	name: string;
 	identifier: string;

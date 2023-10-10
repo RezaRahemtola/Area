@@ -3,13 +3,19 @@ package grpc
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"supervisor/jobs"
 	supervisor "supervisor/proto"
 )
 
-func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobData) (*supervisor.Response, error) {
+func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.AuthenticatedJobData) (*supervisor.Response, error) {
 	obj, err := in.GetParams().MarshalJSON()
+	if err != nil {
+		return newServerError(err), nil
+	}
+
+	creds, err := in.GetAuth().MarshalJSON()
 	if err != nil {
 		return newServerError(err), nil
 	}
@@ -20,7 +26,7 @@ func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.JobDa
 		return newServerError(err), nil
 	}
 
-	err = jobs.GetJobManager().LaunchJob(in.GetName(), in.GetIdentifier(), objMap)
+	err = jobs.GetJobManager().LaunchJob(in.GetName(), in.GetIdentifier(), objMap, creds)
 	if err != nil {
 		return newServerError(err), nil
 	}

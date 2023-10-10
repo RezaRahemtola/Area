@@ -1,4 +1,5 @@
 import base64
+import json
 import os
 import sys
 
@@ -26,14 +27,16 @@ def send_email():
             args[sys.argv[i][2:]] = sys.argv[i + 1]
             i += 1
 
-    keys_needed = {"refreshToken", "to", "subject", "content", "workflowStepId"}
+    keys_needed = {"auth", "to", "subject", "content", "workflowStepId"}
     missing = keys_needed.difference(args.keys())
     if missing:
         print(F"Error: Missing required keys: {missing}")
         exit(1)
 
+    credentials = json.loads(args["auth"])
+
     creds = Credentials.from_authorized_user_info(info={
-        "refresh_token": args["refreshToken"],
+        "refresh_token": credentials["refresh_token"],
         "token_uri": os.getenv("GOOGLE_TOKEN_URI"),
         "client_id": os.getenv("GOOGLE_CLIENT_ID"),
         "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),

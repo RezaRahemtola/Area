@@ -13,8 +13,9 @@
 
 bool ParseArguments(int argc, char *argv[], std::string &target, ServiceParams &params) {
     int opt = 0;
-    const char* const short_opts = "s:t:w:h";
+    const char* const short_opts = "a:s:t:w:h";
     const option long_opts[] = {
+            {"auth", required_argument, nullptr, 'a'},
             {"seconds", required_argument, nullptr, 's'},
             {"target", required_argument, nullptr, 't'},
             {"workflowStepId", required_argument, nullptr, 'w'},
@@ -30,6 +31,9 @@ bool ParseArguments(int argc, char *argv[], std::string &target, ServiceParams &
         }
 
         switch (opt) {
+            case 'a':
+                break;
+
             case 's':
                 for (char const &ch : std::string(optarg)) {
                     if (!std::isdigit(ch)) {
