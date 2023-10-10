@@ -18,6 +18,7 @@ import UserConnection from "../connections/entities/user-connection.entity";
 import { JobsIdentifiers } from "../types/jobIds";
 import { JobsService } from "../jobs/jobs.service";
 import { JobsType } from "../types/jobs";
+import Service from "../services/entities/service.entity";
 
 @Injectable()
 export class WorkflowsService {
@@ -144,8 +145,14 @@ export class WorkflowsService {
 			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
 
-			const actionToSave = await this.createWorkflowArea(action, workflow, queryRunner, true);
-			const reactionsToSave = await this.createWorkflowReactions(actionToSave, reactions, workflow, queryRunner);
+			const actionToSave = await this.createWorkflowArea(ownerId, action, workflow, queryRunner, true);
+			const reactionsToSave = await this.createWorkflowReactions(
+				ownerId,
+				actionToSave,
+				reactions,
+				workflow,
+				queryRunner,
+			);
 			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
 			await queryRunner.commitTransaction();
 
@@ -216,7 +223,13 @@ export class WorkflowsService {
 
 			if (reactions) {
 				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
-				const reactionsToSave = await this.createWorkflowReactions(workflow.action, reactions, workflow, queryRunner);
+				const reactionsToSave = await this.createWorkflowReactions(
+					ownerId,
+					workflow.action,
+					reactions,
+					workflow,
+					queryRunner,
+				);
 				result ||=
 					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
 			}
@@ -268,13 +281,14 @@ export class WorkflowsService {
 	}
 
 	private async createWorkflowReactions(
+		ownerId: string,
 		action: WorkflowArea,
 		reactions: WorkflowReactionDto[],
 		workflow: Workflow,
 		queryRunner: QueryRunner,
 	) {
 		const dbReactions = await Promise.all(
-			reactions.map(async (reaction) => await this.createWorkflowArea(reaction, workflow, queryRunner)),
+			reactions.map(async (reaction) => await this.createWorkflowArea(ownerId, reaction, workflow, queryRunner)),
 		);
 		for (const dbReaction of dbReactions) {
 			if (!dbReaction.previousWorkflowArea) {
@@ -288,6 +302,7 @@ export class WorkflowsService {
 	}
 
 	private async createWorkflowArea(
+		userId: string,
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
 		workflow: Workflow,
 		queryRunner: QueryRunner,
@@ -313,26 +328,30 @@ export class WorkflowsService {
 					isAction ? "Action" : "Reaction"
 				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
 			);
-		// TODO Dorian: Clean this
-		let serviceUserConnection: {
-			scopes: any[];
-		} = await queryRunner.manager.findOne(UserConnection, {
+		const service = await queryRunner.manager.findOne(Service, {
+			where: {
+				id: areaServiceId,
+			},
+		});
+		const serviceUserConnection = await queryRunner.manager.findOne(UserConnection, {
 			where: {
 				serviceId: areaServiceId,
+				userId,
 			},
 			relations: {
 				scopes: true,
 			},
 		});
-		// TODO Dorian: Remove next line
-		if (!serviceUserConnection && areaServiceId === "timer") serviceUserConnection = { scopes: [] };
-		if (!serviceUserConnection) throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
-		const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);
-		const areaNeededScopeIds = action.area.serviceScopesNeeded.map(({ id }) => id);
-		if (!areaNeededScopeIds.every((id) => scopeIds.includes(id)))
-			throw new NotFoundException(
-				`Workflow area ${id} misses scopes ${areaNeededScopeIds.filter((id) => !scopeIds.includes(id)).join(", ")}.`,
-			);
+		if (service.needConnection)
+			if (serviceUserConnection) {
+				const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);
+				const areaNeededScopeIds = action.area.serviceScopesNeeded.map(({ id }) => id);
+				if (!areaNeededScopeIds.every((id) => scopeIds.includes(id)))
+					throw new NotFoundException(
+						`Workflow area ${id} misses scopes ` +
+							`${areaNeededScopeIds.filter((id) => !scopeIds.includes(id)).join(", ")}.`,
+					);
+			} else throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
 		const jobType = `${areaServiceId}-${areaId}`;
 		parameters.workflowStepId = id;
 		action.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
