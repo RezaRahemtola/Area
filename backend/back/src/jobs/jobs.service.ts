@@ -1,6 +1,6 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GrpcService } from "../grpc/grpc.service";
-import {JobParamsClasses, Jobs, JobsParams, JobsType} from "../types/jobs";
+import { JobParamsClasses, JobsParams, JobsType } from "../types/jobs";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
 import { WorkflowsService } from "../workflows/workflows.service";
