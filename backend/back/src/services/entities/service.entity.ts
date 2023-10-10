@@ -18,4 +18,7 @@ export default class Service {
 
 	@OneToMany(() => Area, (area) => area.service)
 	areas!: Area[];
+
+	@Column({ default: true, nullable: false })
+	needConnection!: boolean;
 }
