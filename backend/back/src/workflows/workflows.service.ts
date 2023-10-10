@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
-import { In, QueryRunner, Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import WorkflowArea from "./entities/workflow-area.entity";
 import WorkflowReactionDto, { WorkflowActionDto } from "./dto/workflow-reaction.dto";
 import Area from "../services/entities/area.entity";
@@ -149,14 +149,8 @@ export class WorkflowsService {
 			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
 
-			const actionToSave = await this.createWorkflowArea(ownerId, action, workflow, queryRunner, true);
-			const reactionsToSave = await this.createWorkflowReactions(
-				ownerId,
-				actionToSave,
-				reactions,
-				workflow,
-				queryRunner,
-			);
+			const actionToSave = await this.createWorkflowArea(ownerId, action, workflow, true);
+			const reactionsToSave = await this.createWorkflowReactions(ownerId, actionToSave, reactions, workflow);
 			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
 			await queryRunner.commitTransaction();
 
@@ -202,48 +196,18 @@ export class WorkflowsService {
 			}
 
 			if (action) {
-				const { id, areaId, areaServiceId, parameters } = action;
-				if (id !== workflow.action.id) {
+				if (action.id !== workflow.action.id) {
 					throw new ConflictException(
 						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
 					);
 				}
-				const area = await this.getAreaWithNeededScopes(areaId, areaServiceId, true);
-				const neededScopes = await this.getNeededNewScopes(
-					ownerId,
-					areaServiceId,
-					area.serviceScopesNeeded.map(({ id }) => id),
-				);
-				if (neededScopes.length > 0)
-					throw new BadRequestException(
-						`You need to connect to ${areaServiceId} with scopes ${neededScopes.join(", ")}.`,
-					);
-				const jobType = `${areaServiceId}-${areaId}`;
-				parameters.workflowStepId = id;
-				result ||=
-					(
-						await queryRunner.manager.update(WorkflowArea, id, {
-							area: { id: areaId, serviceId: areaServiceId },
-							jobId: JobsIdentifiers[jobType](parameters),
-							parameters: (await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
-								throw new BadRequestException(
-									`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`,
-								);
-								// eslint-disable-next-line @typescript-eslint/no-explicit-any
-							})) as Record<string, any>,
-						})
-					).affected > 0;
+				const updatedWorkflowAction = await this.createWorkflowArea(ownerId, action, workflow, true, false);
+				result ||= (await queryRunner.manager.update(WorkflowArea, action.id, updatedWorkflowAction)).affected > 0;
 			}
 
 			if (reactions) {
 				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
-				const reactionsToSave = await this.createWorkflowReactions(
-					ownerId,
-					workflow.action,
-					reactions,
-					workflow,
-					queryRunner,
-				);
+				const reactionsToSave = await this.createWorkflowReactions(ownerId, workflow.action, reactions, workflow);
 				result ||=
 					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
 			}
@@ -299,10 +263,9 @@ export class WorkflowsService {
 		action: WorkflowArea,
 		reactions: WorkflowReactionDto[],
 		workflow: Workflow,
-		queryRunner: QueryRunner,
 	) {
 		const dbReactions = await Promise.all(
-			reactions.map(async (reaction) => await this.createWorkflowArea(ownerId, reaction, workflow, queryRunner)),
+			reactions.map(async (reaction) => await this.createWorkflowArea(ownerId, reaction, workflow, false)),
 		);
 		for (const dbReaction of dbReactions) {
 			if (!dbReaction.previousWorkflowArea) {
@@ -351,32 +314,34 @@ export class WorkflowsService {
 		userId: string,
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
 		workflow: Workflow,
-		queryRunner: QueryRunner,
 		isAction: boolean = false,
+		checkExist: boolean = true,
 	) {
-		if (await queryRunner.manager.exists(Workflow, { where: { id } }))
+		if (checkExist && (await this.workflowRepository.exist({ where: { id } })))
 			throw new ConflictException(`Workflow area ${id} already exists.`);
-		const action = new WorkflowArea();
-		action.id = id;
-		action.area = await this.getAreaWithNeededScopes(areaId, areaServiceId, isAction);
+		const workflowArea = new WorkflowArea();
+		workflowArea.id = id;
+		workflowArea.area = await this.getAreaWithNeededScopes(areaId, areaServiceId, isAction);
 		const neededNewScopes = await this.getNeededNewScopes(
 			userId,
 			areaServiceId,
-			action.area.serviceScopesNeeded.map(({ id }) => id),
+			workflowArea.area.serviceScopesNeeded.map(({ id }) => id),
 		);
 		if (neededNewScopes.length > 0) {
 			throw new BadRequestException(
 				`You need to connect to ${areaServiceId} with scopes ${neededNewScopes.join(", ")}.`,
 			);
 		}
+		const connection = await this.connectionsService.getUserConnectionForService(userId, areaServiceId);
+		if (connection) parameters.refreshToken = connection.data.refresh_token;
 		const jobType = `${areaServiceId}-${areaId}`;
 		parameters.workflowStepId = id;
-		action.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
+		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
 			throw new BadRequestException(`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`);
 		});
-		if (isAction) action.actionOfWorkflow = workflow;
-		else action.workflow = workflow;
-		action.jobId = JobsIdentifiers[jobType](parameters);
-		return action;
+		if (isAction) workflowArea.actionOfWorkflow = workflow;
+		else workflowArea.workflow = workflow;
+		workflowArea.jobId = JobsIdentifiers[jobType](parameters);
+		return workflowArea;
 	}
 }

@@ -52,6 +52,10 @@ export class ConnectionsService {
 		).map(({ serviceId, scopes, createdAt }) => ({ serviceId, scopes: scopes.map(({ id }) => id), createdAt }));
 	}
 
+	async getUserConnectionForService(userId: string, serviceId: string) {
+		return this.userConnectionRepository.findOne({ where: { userId, serviceId }, relations: { scopes: true } });
+	}
+
 	async getAvailableConnections(userId: string): Promise<string[]> {
 		const services = await this.servicesService.getServices();
 		const userConnections = await this.getUserConnections(userId);
