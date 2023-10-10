@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/frontend/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+    reviewers:
+      - "RezaRahemtola"
+
+  - package-ecosystem: "npm"
+    directory: "/backend/back"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+    reviewers:
+      - "Croos3r"
+
+  - package-ecosystem: "gomod"
+    directory: "/backend/supervisor"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+    reviewers:
+      - "EdenComp"
