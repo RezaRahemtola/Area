@@ -66,6 +66,11 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 		onWorkflowChange(workflow.id);
 	};
 
+	const onClickDelete = async () => {
+		await services.workflows.deleteOne(workflow.id);
+		onWorkflowChange(workflow.id);
+	};
+
 	const onToggle = async (e: ChangeEvent<HTMLInputElement>) => {
 		await services.workflows.toggleOne(workflow.id, e.target.checked);
 		onWorkflowChange(workflow.id);
@@ -117,8 +122,7 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 							</a>
 						</li>
 						<li>
-							{/* TODO Reza: Delete */}
-							<a className="hover:text-neutral-content">
+							<a className="hover:text-neutral-content" onClick={onClickDelete}>
 								<FontAwesomeIcon icon="trash" />
 								Delete
 							</a>
