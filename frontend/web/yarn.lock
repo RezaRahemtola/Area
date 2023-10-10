@@ -212,23 +212,14 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.7.tgz#f9361f7b87fd5d8188b2c998db0a1f47e9fb391a"
   integrity sha512-FbtmBWCcSa2J4zL781Zf1p5YUBXQomPEcep9QZCfRfQgTxz3pJWiDFLebohZ9fFntX5ibzOkSsrJ0TEew8cAog==
 
-"@types/react-dom@^18.2.11":
-  version "18.2.11"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.11.tgz#4332c315544698a0875dfdb6e320dda59e1b3d58"
-  integrity sha512-zq6Dy0EiCuF9pWFW6I6k6W2LdpUixLE4P6XjXU1QHLfak3GPACQfLwEuHzY5pOYa4hzj1d0GxX/P141aFjZsyg==
+"@types/react-dom@^18.2.13":
+  version "18.2.13"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.13.tgz#89cd7f9ec8b28c8b6f0392b9591671fb4a9e96b7"
+  integrity sha512-eJIUv7rPP+EC45uNYp/ThhSpE16k22VJUknt5OLoH9tbXoi8bMhwLf5xRuWMywamNbWzhrSmU7IBJfPup1+3fw==
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "18.2.23"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.23.tgz#60ad6cf4895e93bed858db0e03bcc4ff97d0410e"
-  integrity sha512-qHLW6n1q2+7KyBEYnrZpcsAmU/iiCh9WGCKgXvMxx89+TYdJWRjZohVIo9XTcoLhfX3+/hP0Pbulu3bCZQ9PSA==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@^18.2.25":
+"@types/react@*", "@types/react@^18.2.25":
   version "18.2.25"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.25.tgz#99fa44154132979e870ff409dc5b6e67f06f0199"
   integrity sha512-24xqse6+VByVLIr+xWaQ9muX1B4bXJKXBbjszbld/UEDslGLY53+ZucF44HCmLbMPejTzGG9XgR+3m2/Wqu1kw==
