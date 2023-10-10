@@ -9,23 +9,25 @@ type CreateWorkflowReturn = {
 export const create = async (workflow: EditorWorkflow): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
 		const response = await axiosInstance.post<CreateWorkflowReturn>(`/workflows`, {
-			data: {
-				name: workflow.name,
-				active: workflow.active,
-				action: {
-					id: workflow.action.id,
-					parameters: workflow.action.parameters,
-					areaId: workflow.action.area?.id,
-					areaServiceId: workflow.action.areaService?.id,
-				},
-				reactions: workflow.reactions.map((reaction) => ({
-					id: reaction.id,
-					parameters: reaction.parameters,
-					areaId: reaction.area?.id,
-					areaServiceId: reaction.areaService?.id,
-					previousAreaId: reaction.previousAreaId,
-				})),
+			name: workflow.name,
+			active: workflow.active,
+			action: {
+				id: workflow.action.id,
+				parameters: { seconds: 20 },
+				areaId: workflow.action.area?.id,
+				areaServiceId: workflow.action.areaService?.id,
 			},
+			reactions: workflow.reactions.map((reaction) => ({
+				id: reaction.id,
+				parameters: {
+					to: "rahemtola.reza@protonmail.com",
+					content: "Some body",
+					subject: "From web",
+				},
+				areaId: reaction.area?.id,
+				areaServiceId: reaction.areaService?.id,
+				previousAreaId: reaction.previousAreaId,
+			})),
 		});
 		return { data: response.data, error: undefined };
 	} catch (error) {

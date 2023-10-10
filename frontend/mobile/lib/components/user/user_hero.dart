@@ -25,7 +25,7 @@ class UserHero extends StatelessWidget {
             const SizedBox(height: 16.0),
             const CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('../../../assets/user_profile.jpg'),
+              backgroundImage: AssetImage('assets/user_profile.jpg'),
             ),
             const SizedBox(height: 16.0),
             const ListTile(
