@@ -90,6 +90,7 @@ export class WorkflowsService {
 				id,
 				name,
 				active,
+				ownerId,
 				action: {
 					id: actionId,
 					parameters: actionParamaters,
@@ -101,6 +102,7 @@ export class WorkflowsService {
 				id,
 				name,
 				active,
+				ownerId,
 				action: {
 					id: actionId,
 					areaId,
@@ -155,7 +157,7 @@ export class WorkflowsService {
 			await queryRunner.commitTransaction();
 
 			if (workflow.active) {
-				await this.jobsService.launchWorkflowAction(workflow.id);
+				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
 			}
 			return {
 				id,
@@ -232,7 +234,7 @@ export class WorkflowsService {
 			{ active: () => `${newState}` },
 		);
 		if (newState) {
-			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId)));
+			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId, ownerId)));
 		}
 		return affected > 0;
 	}
@@ -243,7 +245,7 @@ export class WorkflowsService {
 		const { active } = workflow;
 		await this.workflowRepository.update(workflowId, { active: !active });
 		if (!active) {
-			await this.jobsService.launchWorkflowAction(workflowId);
+			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
 		}
 		return { newState: !active };
 	}
@@ -332,8 +334,6 @@ export class WorkflowsService {
 				`You need to connect to ${areaServiceId} with scopes ${neededNewScopes.join(", ")}.`,
 			);
 		}
-		const connection = await this.connectionsService.getUserConnectionForService(userId, areaServiceId);
-		if (connection) parameters.refreshToken = connection.data.refresh_token;
 		const jobType = `${areaServiceId}-${areaId}`;
 		parameters.workflowStepId = id;
 		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {

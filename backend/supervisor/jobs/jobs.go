@@ -36,7 +36,7 @@ func GetJobManager() *JobManager {
 	return instance
 }
 
-func (jm *JobManager) LaunchJob(name string, identifier string, params map[string]interface{}) error {
+func (jm *JobManager) LaunchJob(name string, identifier string, params map[string]interface{}, auth []byte) error {
 	_, exists := jm.jobs[identifier]
 	if exists {
 		_, err := jm.dockerClient.ContainerInspect(context.Background(), jm.jobs[name].containerID)
@@ -55,6 +55,8 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 	}
 	args = append(args, "--target")
 	args = append(args, jm.callbackUrl)
+	args = append(args, "--auth")
+	args = append(args, string(auth))
 	for key, value := range params {
 		args = append(args, "--"+key)
 		args = append(args, fmt.Sprint(value))
@@ -95,16 +97,16 @@ func (jm *JobManager) KillJob(identifier string) error {
 
 	_, err := jm.dockerClient.ContainerInspect(context.Background(), job.containerID)
 	if err != nil {
-        delete(jm.jobs, identifier)
-        return nil
-    }
+		delete(jm.jobs, identifier)
+		return nil
+	}
 
 	err = jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{})
 	if err != nil {
 		return err
 	}
 
-	err = jm.cleanContainer(job.containerID)
+	err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{})
 	if err != nil {
 		return err
 	}
@@ -117,17 +119,13 @@ func (jm *JobManager) ListJobs() map[string]Job {
 	return jm.jobs
 }
 
-func (jm *JobManager) cleanContainer(containerID string) error {
-	return jm.dockerClient.ContainerRemove(context.Background(), containerID, types.ContainerRemoveOptions{})
-}
-
 func (jm *JobManager) cleanContainers() error {
 	containers, err := jm.dockerClient.ContainerList(context.Background(), types.ContainerListOptions{
 		All: true,
 	})
 
 	if err != nil {
-		log.Fatal("Couldn't list containers: ", err)
+		return err
 	}
 	for _, cont := range containers {
 		if cont.Image != "area_supervisor" && isSupervisorContainer(cont.Image) {

@@ -19,7 +19,4 @@ export class GoogleSendEmailParams extends UniqueJobParams {
 
 	@IsString()
 	content: string;
-
-	@IsString()
-	refreshToken: string;
 }

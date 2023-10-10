@@ -7,40 +7,60 @@ import { WorkflowsService } from "../workflows/workflows.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import WorkflowArea from "../workflows/entities/workflow-area.entity";
 import { Repository } from "typeorm";
-import { JobData } from "../grpc/grpc.dto";
+import { AuthenticatedJobData, JobData } from "../grpc/grpc.dto";
 import { RuntimeException } from "@nestjs/core/errors/exceptions";
+import { ConnectionsService } from "../connections/connections.service";
 
 @Injectable()
 export class JobsService {
 	constructor(
+		private readonly connectionsService: ConnectionsService,
 		@Inject(forwardRef(() => GrpcService)) private readonly grpcService: GrpcService,
 		@Inject(forwardRef(() => WorkflowsService)) private readonly workflowsService: WorkflowsService,
 		@InjectRepository(WorkflowArea) private readonly workflowAreaRepository: Repository<WorkflowArea>,
 	) {}
 
-	async getActionJobsToStart(): Promise<JobData[]> {
-		return (await this.workflowsService.getWorkflowsWithAreas(undefined, true)).map(
-			({ action: { areaId, areaServiceId, jobId: identifier, parameters: params } }) => ({
-				name: `${areaServiceId}-${areaId}`,
-				identifier,
-				params,
+	async getActionJobsToStart(): Promise<AuthenticatedJobData[]> {
+		const workflows = await this.workflowsService.getWorkflowsWithAreas(undefined, true);
+
+		return Promise.all(
+			workflows.map(async ({ ownerId, action: { areaId, areaServiceId, jobId: identifier, parameters: params } }) => {
+				const credentials = await this.connectionsService.getUserConnectionForService(ownerId, areaServiceId);
+
+				return {
+					name: `${areaServiceId}-${areaId}`,
+					identifier,
+					params,
+					auth: credentials?.data ?? {},
+				};
 			}),
 		);
 	}
 
-	async getReactionsForJob(jobId: string): Promise<JobData[]> {
+	async getReactionsForJob(jobId: string): Promise<AuthenticatedJobData[]> {
 		const jobs = await this.workflowAreaRepository.find({
 			where: { jobId },
-			relations: { nextWorkflowReactions: { area: true } },
+			relations: { nextWorkflowReactions: { area: true }, workflow: true, actionOfWorkflow: true },
 		});
+		const nextJobs = await Promise.all(
+			jobs.flatMap(async (job) => {
+				return Promise.all(
+					job.nextWorkflowReactions.map(async ({ jobId: identifier, parameters: params, area }) => {
+						const ownerId = job.actionOfWorkflow?.ownerId ?? job.workflow.ownerId;
+						const credentials = await this.connectionsService.getUserConnectionForService(ownerId, area.serviceId);
 
-		return jobs.flatMap(({ nextWorkflowReactions }) =>
-			nextWorkflowReactions.map(({ jobId: identifier, parameters: params, area }) => ({
-				name: `${area.serviceId}-${area.id}`,
-				identifier,
-				params,
-			})),
+						return {
+							name: `${area.serviceId}-${area.id}`,
+							identifier,
+							params,
+							auth: credentials?.data ?? {},
+						};
+					}),
+				);
+			}),
 		);
+
+		return nextJobs.flat();
 	}
 
 	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams["mappings"][TJobs]> {
@@ -65,11 +85,11 @@ export class JobsService {
 		return data as JobsParams["mappings"][TJobs];
 	}
 
-	async launchJobs(jobs: JobData[]): Promise<void> {
+	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
 		for (const job of jobs) {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType as JobsType, job.params);
-			const response = await this.grpcService.launchJob(jobType, params);
+			const response = await this.grpcService.launchJob(jobType, params, job.auth);
 
 			if (response.error) {
 				// TODO: Error handling in db & front
@@ -83,12 +103,15 @@ export class JobsService {
 		await this.launchJobs(jobs);
 	}
 
-	async launchWorkflowAction(workflowId?: string) {
+	async launchWorkflowAction(workflowId: string, ownerId: string) {
 		const { action } = await this.workflowsService.getWorkflowWithAreas(workflowId, undefined, true);
-		const job: JobData = {
+		const credentials = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
+
+		const job: AuthenticatedJobData = {
 			name: `${action.areaServiceId}-${action.areaId}`,
 			identifier: action.jobId,
 			params: action.parameters,
+			auth: credentials?.data ?? {},
 		};
 		await this.launchJobs([job]);
 	}
