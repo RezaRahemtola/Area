@@ -187,6 +187,9 @@ export class Seeding1696697017387 implements MigrationInterface {
         ALTER TABLE "area_service_scopes_needed_service_scope"
             ADD CONSTRAINT "FK_919ac3ee77f37b6c6d3d24fa916" FOREIGN KEY ("service_scope_id", "service_scope_service_id") REFERENCES "service_scope" ("id", "service_id") ON DELETE CASCADE ON UPDATE CASCADE
     `);
+
+		await queryRunner.query(`ALTER TABLE "service"
+        ADD "need_connection" boolean NOT NULL DEFAULT true`);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
@@ -285,5 +288,7 @@ export class Seeding1696697017387 implements MigrationInterface {
 		await queryRunner.query(`
         DROP TABLE "user"
     `);
+		await queryRunner.query(`ALTER TABLE "service"
+        DROP COLUMN "need_connection"`);
 	}
 }
