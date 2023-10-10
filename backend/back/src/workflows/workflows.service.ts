@@ -19,14 +19,18 @@ import { JobsIdentifiers } from "../types/jobIds";
 import { JobsService } from "../jobs/jobs.service";
 import { JobsType } from "../types/jobs";
 import Service from "../services/entities/service.entity";
+import { ConnectionsService } from "../connections/connections.service";
 
 @Injectable()
 export class WorkflowsService {
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
+		@InjectRepository(Area)
+		private readonly areaRepository: Repository<Area>,
 		@Inject(forwardRef(() => JobsService))
 		private readonly jobsService: JobsService,
+		private readonly connectionsService: ConnectionsService,
 	) {}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
@@ -204,6 +208,16 @@ export class WorkflowsService {
 						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
 					);
 				}
+				const area = await this.getAreaWithNeededScopes(areaId, areaServiceId, true);
+				const neededScopes = await this.getNeededNewScopes(
+					ownerId,
+					areaServiceId,
+					area.serviceScopesNeeded.map(({ id }) => id),
+				);
+				if (neededScopes.length > 0)
+					throw new BadRequestException(
+						`You need to connect to ${areaServiceId} with scopes ${neededScopes.join(", ")}.`,
+					);
 				const jobType = `${areaServiceId}-${areaId}`;
 				parameters.workflowStepId = id;
 				result ||=
@@ -301,6 +315,38 @@ export class WorkflowsService {
 		return dbReactions;
 	}
 
+	private async getNeededNewScopes(userId: string, serviceId: string, neededScopeIds: string[]) {
+		const service = await this.workflowRepository.manager.findOneBy(Service, { id: serviceId });
+		if (!service) throw new NotFoundException(`Service ${serviceId} not found.`);
+		if (!service.needConnection) return [];
+		const userConnection = await this.workflowRepository.manager.findOne(UserConnection, {
+			where: {
+				userId,
+				serviceId,
+			},
+			relations: {
+				scopes: true,
+			},
+		});
+		if (!userConnection) return neededScopeIds;
+		return this.connectionsService.getNewScopesForConnection(
+			userId,
+			serviceId,
+			userConnection.scopes.map(({ id }) => id),
+		);
+	}
+
+	private async getAreaWithNeededScopes(id: string, serviceId: string, isAction: boolean) {
+		const result = await this.areaRepository.findOne({
+			where: { id, serviceId, isAction },
+			relations: {
+				serviceScopesNeeded: true,
+			},
+		});
+		if (!result) throw new NotFoundException(`Area ${id} for service ${serviceId} not found.`);
+		return result;
+	}
+
 	private async createWorkflowArea(
 		userId: string,
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
@@ -312,46 +358,17 @@ export class WorkflowsService {
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const action = new WorkflowArea();
 		action.id = id;
-		action.area = await queryRunner.manager.findOne(Area, {
-			where: {
-				id: areaId,
-				serviceId: areaServiceId,
-				isAction,
-			},
-			relations: {
-				serviceScopesNeeded: true,
-			},
-		});
-		if (!action.area)
-			throw new NotFoundException(
-				`${
-					isAction ? "Action" : "Reaction"
-				} ${areaId} with service ${areaServiceId} not found for workflow area ${id}.`,
+		action.area = await this.getAreaWithNeededScopes(areaId, areaServiceId, isAction);
+		const neededNewScopes = await this.getNeededNewScopes(
+			userId,
+			areaServiceId,
+			action.area.serviceScopesNeeded.map(({ id }) => id),
+		);
+		if (neededNewScopes.length > 0) {
+			throw new BadRequestException(
+				`You need to connect to ${areaServiceId} with scopes ${neededNewScopes.join(", ")}.`,
 			);
-		const service = await queryRunner.manager.findOne(Service, {
-			where: {
-				id: areaServiceId,
-			},
-		});
-		const serviceUserConnection = await queryRunner.manager.findOne(UserConnection, {
-			where: {
-				serviceId: areaServiceId,
-				userId,
-			},
-			relations: {
-				scopes: true,
-			},
-		});
-		if (service.needConnection)
-			if (serviceUserConnection) {
-				const scopeIds = serviceUserConnection.scopes.map(({ id }) => id);
-				const areaNeededScopeIds = action.area.serviceScopesNeeded.map(({ id }) => id);
-				if (!areaNeededScopeIds.every((id) => scopeIds.includes(id)))
-					throw new NotFoundException(
-						`Workflow area ${id} misses scopes ` +
-							`${areaNeededScopeIds.filter((id) => !scopeIds.includes(id)).join(", ")}.`,
-					);
-			} else throw new NotFoundException(`User connection for ${areaServiceId} not found.`);
+		}
 		const jobType = `${areaServiceId}-${areaId}`;
 		parameters.workflowStepId = id;
 		action.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {

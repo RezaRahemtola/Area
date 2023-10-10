@@ -13,5 +13,6 @@ import { OauthService } from "./oauth.service";
 	imports: [TypeOrmModule.forFeature([UserConnection, ServiceScope]), ServicesModule, HttpModule],
 	controllers: [ConnectionsController, OauthController],
 	providers: [ConnectionsService, OauthService],
+	exports: [ConnectionsService],
 })
 export class ConnectionsModule {}
