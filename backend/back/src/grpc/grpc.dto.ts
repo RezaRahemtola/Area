@@ -4,10 +4,7 @@ export class JobData {
 	params: unknown;
 }
 
-export class AuthenticatedJobData {
-	name: string;
-	identifier: string;
-	params: unknown;
+export class AuthenticatedJobData extends JobData {
 	auth: unknown;
 }
 
