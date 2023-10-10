@@ -9,6 +9,7 @@ type CreateWorkflowReturn = {
 export const create = async (workflow: EditorWorkflow): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
 		const response = await axiosInstance.post<CreateWorkflowReturn>(`/workflows`, {
+			// TODO Reza: Remove hardcoded values
 			name: workflow.name,
 			active: workflow.active,
 			action: {
