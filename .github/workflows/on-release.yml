@@ -49,6 +49,8 @@ jobs:
   documentation-changelog:
     runs-on: ubuntu-latest
     name: "Generate documentation changelog"
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
