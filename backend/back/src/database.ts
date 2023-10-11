@@ -17,6 +17,7 @@ import { CreateTimerService1696814128392 } from "./services/seed/1696814128392-C
 import { AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696815504752 } from "./migrations/1696815504752-AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData";
 import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760 } from "./workflows/seed/1696815504760-CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
+import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./services/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696815504752,
 		CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760,
 		AreaParametersFlowAndDescription1697044261933,
+		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
