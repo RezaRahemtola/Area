@@ -2,21 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 
 import Service from "./service.entity";
 import ServiceScope from "./service-scope.entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-type ParametersFormFlowFieldType =
-	| "email"
-	| "short-text"
-	| "long-text"
-	| "integer"
-	| "float"
-	| "date"
-	| "datetime"
-	| "time";
-type ParametersFormFlowField = {
-	for: string;
-	type: ParametersFormFlowFieldType;
-	required: boolean;
-};
+import { ParametersFormFlowFieldDto } from "../dto/area.dto";
 
 @Entity()
 export default class Area {
@@ -39,7 +25,7 @@ export default class Area {
 
 	@ApiProperty()
 	@Column({ type: "jsonb", default: [] })
-	parametersFormFlow!: Array<ParametersFormFlowField>;
+	parametersFormFlow!: ParametersFormFlowFieldDto[];
 
 	@ApiProperty()
 	@Column({ default: "An area description" })
