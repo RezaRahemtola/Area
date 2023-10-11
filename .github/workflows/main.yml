@@ -6,6 +6,34 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-PAR-5-1-area-reza.rahemtola.git"
 
 jobs:
+  build-supervisor:
+    name: "Build: Supervisor"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/supervisor/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "backend/supervisor/go.mod"
+          cache-dependency-path: "backend/supervisor/go.sum"
+      - name: Install dependencies
+        run: go mod download
+      - name: Install protobuf & protoc-gen-go
+        run: |
+          sudo apt-get install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
+      - name: Fetch protobuf files
+        run: git clone https://github.com/RezaRahemtola/area-proto.git proto
+      - name: Generate protobuf go files
+        run: protoc --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
+      - name: Run build
+        run: go build
+
   eslint-backend:
     name: "ESLint: Backend"
     runs-on: ubuntu-latest
@@ -32,34 +60,6 @@ jobs:
           name: eslint-back-results
           path: backend/back/eslint-results
           retention-days: 5
-
-  format-supervisor:
-    name: "Build: Supervisor"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend/supervisor/
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup go
-        uses: actions/setup-go@v4
-        with:
-          go-version-file: "backend/supervisor/go.mod"
-          cache-dependency-path: "backend/supervisor/go.sum"
-      - name: Install dependencies
-        run: go mod download
-      - name: Install protobuf & protoc-gen-go
-        run: |
-          apt install -y protobuf-compiler
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
-      - name: Fetch protobuf files
-        run: git clone https://github.com/RezaRahemtola/area-proto.git proto
-      - name: Generate protobuf go files
-        run: protoc --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
-      - name: Run build
-        run: go build
 
   unit-tests-backend:
     name: "Unit tests: Backend"
@@ -161,6 +161,7 @@ jobs:
           ssh_private_key:
             ${{ secrets.SSH_KEY }}
     needs:
+      - build-supervisor
       - eslint-backend
       - unit-tests-backend
       - eslint-web
