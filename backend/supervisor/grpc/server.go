@@ -3,7 +3,6 @@ package grpc
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"supervisor/jobs"
 	supervisor "supervisor/proto"
