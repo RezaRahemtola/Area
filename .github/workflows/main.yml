@@ -33,6 +33,25 @@ jobs:
           path: backend/back/eslint-results
           retention-days: 5
 
+  format-supervisor:
+    name: "Build: Supervisor"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/supervisor/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "backend/supervisor/go.mod"
+          cache-dependency-path: "backend/supervisor/go.sum"
+      - name: Install dependencies
+        run: go mod download
+      - name: Run build
+        run: go build
+
   unit-tests-backend:
     name: "Unit tests: Backend"
     runs-on: ubuntu-latest
