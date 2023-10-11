@@ -49,6 +49,15 @@ jobs:
           cache-dependency-path: "backend/supervisor/go.sum"
       - name: Install dependencies
         run: go mod download
+      - name: Install protobuf & protoc-gen-go
+        run: |
+          apt install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
+      - name: Fetch protobuf files
+        run: git clone https://github.com/RezaRahemtola/area-proto.git proto
+      - name: Generate protobuf go files
+        run: protoc --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
       - name: Run build
         run: go build
 
