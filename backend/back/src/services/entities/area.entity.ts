@@ -3,10 +3,18 @@ import Service from "./service.entity";
 import ServiceScope from "./service-scope.entity";
 import { ApiProperty } from "@nestjs/swagger";
 
-type FormFlowFieldType = "email" | "short-text" | "long-text";
-type FormFlowField = {
+type ParametersFormFlowFieldType =
+	| "email"
+	| "short-text"
+	| "long-text"
+	| "integer"
+	| "float"
+	| "date"
+	| "datetime"
+	| "time";
+type ParametersFormFlowField = {
 	for: string;
-	type: FormFlowFieldType;
+	type: ParametersFormFlowFieldType;
 	required: boolean;
 };
 
@@ -31,7 +39,7 @@ export default class Area {
 
 	@ApiProperty()
 	@Column({ type: "jsonb", default: [] })
-	parametersFormFlow!: Array<FormFlowField>;
+	parametersFormFlow!: Array<ParametersFormFlowField>;
 
 	@ApiProperty()
 	@Column({ default: "An area description" })
