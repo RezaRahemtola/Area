@@ -7,6 +7,7 @@ export class CreateTimerService1696814128392 implements MigrationInterface {
 			id: "timer",
 			imageUrl: "https://cdn-icons-png.flaticon.com/512/1571/1571810.png",
 			oauthUrl: "",
+			needConnection: false,
 		});
 	}
 
