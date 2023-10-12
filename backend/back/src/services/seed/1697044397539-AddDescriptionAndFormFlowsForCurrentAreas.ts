@@ -40,16 +40,24 @@ export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements M
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(Area).save(this.descriptionsAndFormFlows);
+		for (const { id, serviceId, description, parametersFormFlow } of this.descriptionsAndFormFlows) {
+			await queryRunner.query(
+				`UPDATE "area"
+         SET "parameters_form_flow" = $1,
+             "description"          = $2
+         WHERE "id" = $3
+           AND "service_id" = $4`,
+				[JSON.stringify(parametersFormFlow), description, id, serviceId],
+			);
+		}
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(Area).update(
-			this.descriptionsAndFormFlows.map(({ id }) => id),
-			{
-				description: "An area description",
-				parametersFormFlow: [],
-			},
+		await queryRunner.query(
+			`UPDATE "area"
+       SET "parameters_form_flow" = '[]' AND "description" = 'An area description'
+       WHERE "id" IN ('send-email', 'seconds-interval')
+         AND "service_id" IN ('google', 'timer')`,
 		);
 	}
 }
