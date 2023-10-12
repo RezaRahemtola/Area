@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import UserSettings from "./user-settings.entity";
 
 @Entity()
 export class User {
@@ -13,6 +14,9 @@ export class User {
 
 	@Column({ nullable: true })
 	totpSecret?: string;
+
+	@OneToOne(() => UserSettings, (settings) => settings.user, { cascade: true, nullable: false })
+	settings!: UserSettings;
 
 	// TODO: Add plan
 	// @ManyToOne(() => Plan)
