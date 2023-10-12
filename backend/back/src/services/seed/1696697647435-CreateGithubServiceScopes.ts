@@ -1,5 +1,4 @@
-import { In, MigrationInterface, QueryRunner } from "typeorm";
-import ServiceScope from "../entities/service-scope.entity";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateGithubServiceScopes1696697647435 implements MigrationInterface {
 	private readonly GITHUB_SERVICE_SCOPES: Array<string> = [
@@ -39,18 +38,19 @@ export class CreateGithubServiceScopes1696697647435 implements MigrationInterfac
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(ServiceScope).save(
-			this.GITHUB_SERVICE_SCOPES.map((id) => ({
-				id,
-				serviceId: "github",
-			})),
+		await queryRunner.query(
+			`INSERT INTO "service_scope" ("id", "service_id")
+      VALUES
+      ${this.GITHUB_SERVICE_SCOPES.map((scope) => `('${scope}', 'github')`).join(",")}`,
 		);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(ServiceScope).delete({
-			id: In(this.GITHUB_SERVICE_SCOPES),
-			serviceId: "github",
-		});
+		await queryRunner.query(
+			`DELETE
+       FROM "service_scope"
+       WHERE "service_id" = 'github'
+         AND "id" IN (${this.GITHUB_SERVICE_SCOPES.join(",")}`,
+		);
 	}
 }
