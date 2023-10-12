@@ -18,7 +18,7 @@ export class ParametersFormFlowFieldDto {
 		description: "The name of the parameter",
 	})
 	@IsString()
-	for!: string;
+	name!: string;
 
 	@ApiProperty({
 		description: "The type of the parameter",
