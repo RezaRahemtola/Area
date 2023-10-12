@@ -9,17 +9,17 @@ export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements M
 			description: "Send an email with Google GMAIL",
 			parametersFormFlow: [
 				{
-					for: "to",
+					name: "to",
 					type: "email",
 					required: true,
 				},
 				{
-					for: "subject",
+					name: "subject",
 					type: "short-text",
 					required: true,
 				},
 				{
-					for: "body",
+					name: "body",
 					type: "long-text",
 					required: true,
 				},
@@ -31,7 +31,7 @@ export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements M
 			description: "Trigger every X seconds",
 			parametersFormFlow: [
 				{
-					for: "seconds",
+					name: "seconds",
 					type: "integer",
 					required: true,
 				},
