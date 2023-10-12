@@ -10,9 +10,9 @@ export default class UserSettings {
 	@JoinColumn({ name: "user_id" })
 	user!: User;
 
-	@Column({ enum: LANGUAGES, default: "en" })
+	@Column({ enum: LANGUAGES, type: "enum", default: "en" })
 	language!: Language;
 
-	@Column({ enum: THEMES, default: "auto" })
+	@Column({ enum: THEMES, type: "enum", default: "auto" })
 	theme!: Theme;
 }

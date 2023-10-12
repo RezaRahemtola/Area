@@ -17,7 +17,7 @@ import { CreateTimerService1696814128392 } from "./services/seed/1696814128392-C
 import { AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696815504752 } from "./migrations/1696815504752-AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData";
 import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760 } from "./workflows/seed/1696815504760-CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes";
 import UserSettings from "./users/entities/user-settings.entity";
-import { CreateUserSettingsTable1697118595345 } from "./migrations/1697118595345-CreateUserSettingsTable";
+import { CreateUserSettingsTable1697135496860 } from "./migrations/1697135496860-CreateUserSettingsTable";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
 import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./services/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 
@@ -41,9 +41,9 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateTimerService1696814128392,
 		AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696815504752,
 		CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760,
+		CreateUserSettingsTable1697135496860,
 		AreaParametersFlowAndDescription1697044261933,
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
-		CreateUserSettingsTable1697118595345,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
