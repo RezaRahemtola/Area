@@ -35,6 +35,7 @@ export class OauthService {
 			`&access_type=offline` +
 			`&response_type=code` +
 			`&state=${userId}` +
+			`&prompt=consent` +
 			`&redirect_uri=${oauthCallbackUrlFactory("google")}`,
 	};
 
