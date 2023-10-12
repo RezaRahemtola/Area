@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
+import { ChangeEvent } from "react";
 import Navbar from "@/components/Navbar";
 import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
@@ -19,6 +20,10 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 		if (!response.error) {
 			router.push("/dashboard");
 		}
+	};
+
+	const onToggleWorkflow = (e: ChangeEvent<HTMLInputElement>) => {
+		setWorkflow((prev) => ({ ...prev, active: e.target.checked }));
 	};
 
 	return (
@@ -40,9 +45,18 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 			centerContent={<span className="text-xl font-semibold">Area</span>}
 			endContent={
 				isAuthenticated ? (
-					<button className="btn btn-secondary" onClick={onSaveWorkflow}>
-						Save
-					</button>
+					<>
+						<input
+							type="checkbox"
+							name="workflow-running"
+							className="toggle toggle-success mr-6"
+							checked={workflow.active}
+							onChange={onToggleWorkflow}
+						/>
+						<button className="btn btn-secondary" onClick={onSaveWorkflow}>
+							Save
+						</button>
+					</>
 				) : undefined
 			}
 		/>
