@@ -182,6 +182,7 @@ export class WorkflowsService {
 			},
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
+		if (workflow.active) throw new ConflictException(`Workflow ${workflowId} is active, you cannot update it.`);
 		if (!name && !action && !reactions) return false;
 		let result = false;
 		let exception: unknown = null;
