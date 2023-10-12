@@ -4,7 +4,7 @@ Developing a project as important as Area requires a great DevOps to make sure o
 the latest features and improvements, while analyzing and testing automatically the whole project to make 
 sure we reduce as much as possible the bugs & regressions introduced when the product evolves.\
 Other majors points include releases & changelogs to keep an organized trace of the changes, and also providing 
-the best developer experience to ensure time is spent on things that matter.\
+the best developer experience to ensure time is spent on things that matter.
 
 All these things are present in Area and detailed on this page.
 
