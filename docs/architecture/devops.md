@@ -36,6 +36,8 @@ For this, we also have a custom `nginx` configuration to properly route the user
 Finally, we also issues auto-renewed SSL certificates for every domain we are using.
 - Documentation deployment: This documentation is automatically rebuilt and deployed on every change on the `main` branch
 using GitHub Pages.
+- Protobuf file updates: When there's a change in [our public protobuf repository](https://github.com/RezaRahemtola/area-proto),
+we need to rebuild docker images in production (as the Docker cache won't detect changes in it's `git clone` steps).
 
 ## Releases
 
