@@ -1,3 +1,39 @@
+<a name="v0.8.0"></a>
+# [v0.8.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.8.0) - 12 Oct 2023
+
+## Changes
+
+First documentation content, CI checks added and area backend contents created
+
+## 🚀 Features
+
+- Markdown linting CI for documentation [@RezaRahemtola](https://github.com/RezaRahemtola) ([#88](https://github.com/RezaRahemtola/Area/issues/88))
+- Web editor: Add activation option [@RezaRahemtola](https://github.com/RezaRahemtola) ([#84](https://github.com/RezaRahemtola/Area/issues/84))
+- Areas description and parameters flow to the database [@Croos3r](https://github.com/Croos3r) ([#79](https://github.com/RezaRahemtola/Area/issues/79))
+- Timer was needing a connection by default, made it doesn't [@Croos3r](https://github.com/Croos3r) ([#78](https://github.com/RezaRahemtola/Area/issues/78))
+
+## 🐛 Bug Fixes
+
+- Refactor of the seeding migrations into pure SQL [@Croos3r](https://github.com/Croos3r) ([#89](https://github.com/RezaRahemtola/Area/issues/89))
+- Updating is now impossible when the workflow updated is active [@Croos3r](https://github.com/Croos3r) ([#83](https://github.com/RezaRahemtola/Area/issues/83))
+- Added user prompt consent option to initial google oauth url to get the refresh token each time [@Croos3r](https://github.com/Croos3r) ([#86](https://github.com/RezaRahemtola/Area/issues/86))
+
+## 🧰 Maintenance
+
+- Refactor of the seeding migrations into pure SQL [@Croos3r](https://github.com/Croos3r) ([#89](https://github.com/RezaRahemtola/Area/issues/89))
+
+## 📄 Documentation
+
+- New area-proto CI documentation [@RezaRahemtola](https://github.com/RezaRahemtola) ([#90](https://github.com/RezaRahemtola/Area/issues/90))
+- Markdown linting CI for documentation [@RezaRahemtola](https://github.com/RezaRahemtola) ([#88](https://github.com/RezaRahemtola/Area/issues/88))
+- DevOps base documentation [@RezaRahemtola](https://github.com/RezaRahemtola) ([#87](https://github.com/RezaRahemtola/Area/issues/87))
+- Areas description and parameters flow to the database [@Croos3r](https://github.com/Croos3r) ([#79](https://github.com/RezaRahemtola/Area/issues/79))
+- Update changelog for "v0.7.4" [@github-actions](https://github.com/github-actions) ([#82](https://github.com/RezaRahemtola/Area/issues/82))
+
+
+[Changes][v0.8.0]
+
+
 <a name="v0.7.4"></a>
 # [v0.7.4 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.7.4) - 11 Oct 2023
 
@@ -257,6 +293,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v0.8.0]: https://github.com/RezaRahemtola/Area/compare/v0.7.4...v0.8.0
 [v0.7.4]: https://github.com/RezaRahemtola/Area/compare/v0.7.0...v0.7.4
 [v0.7.0]: https://github.com/RezaRahemtola/Area/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/RezaRahemtola/Area/compare/v0.5.2...v0.6.0
