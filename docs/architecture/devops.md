@@ -20,6 +20,8 @@ results on failure
 - Mobile verifications: Checking if everything is formatted correctly, performing static analysis and running tests
 - Web preview: Using Vercel to deploy the web frontend in development environments (excluding the `main` branch)
 to simplify testing and cross-validation of features
+- Documentation linting: Checking that all the files of this documentation (created in `markdown`) are correctly formatted
+and follow the best practices.
 
 ## Continuous Deployment
 
@@ -66,3 +68,5 @@ Other specific details about the technologies we are using:
 - A self-hosted GitHub Actions runner for some of our Action runs (like the Production deployment which can take
 some time) as GitHub free-tier only includes 3000 minutes of workflows runs per month for private repositories (which is currently
 the case) and we need way more than that for all our runs.
+- Branch protection settings are also activated to avoid merges on the production branch if CI runs are not passing or if not
+enough people have validated the changes.
