@@ -1,0 +1,25 @@
+name: Documentation checks
+
+on: [ push ]
+
+jobs:
+  documentation-linting:
+    name: "Documentation: Linting"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'docs/**/[!CHANGELOG]*.md'
+          separator: ","
+      - name: "Run the markdown linting tool"
+        uses: DavidAnson/markdownlint-cli2-action@v13
+        if: steps.changed-files.outputs.any_changed == 'true'
+        with:
+          config: '.github/workflows/config/.markdownlint.jsonc'
+          globs: ${{ steps.changed-files.outputs.all_changed_files }}
+          separator: ","
