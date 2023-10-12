@@ -6,6 +6,7 @@
 - Architecture
     
     - [Supervisor](architecture/supervisor)
+    - [Workers](architecture/workers)
     - [DevOps](architecture/devops)
 
 - [Changelog](/CHANGELOG)
