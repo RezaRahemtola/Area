@@ -16,6 +16,8 @@ import { CreateGoogleServiceWithScopes1696808587273 } from "./services/seed/1696
 import { CreateTimerService1696814128392 } from "./services/seed/1696814128392-CreateTimerService";
 import { AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696815504752 } from "./migrations/1696815504752-AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData";
 import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760 } from "./workflows/seed/1696815504760-CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes";
+import UserSettings from "./users/entities/user-settings.entity";
+import { CreateUserSettingsTable1697118595345 } from "./migrations/1697118595345-CreateUserSettingsTable";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
 import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./services/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 
@@ -29,7 +31,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 	username: process.env.POSTGRES_USER,
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
-	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea],
+	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea, UserSettings],
 	migrations: [
 		Seeding1696697017387,
 		CreateGithubService1696697379896,
@@ -41,6 +43,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760,
 		AreaParametersFlowAndDescription1697044261933,
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
+		CreateUserSettingsTable1697118595345,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
