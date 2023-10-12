@@ -1,6 +1,4 @@
-import { In, MigrationInterface, QueryRunner } from "typeorm";
-import Service from "../entities/service.entity";
-import ServiceScope from "../entities/service-scope.entity";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateGoogleServiceWithScopes1696808587273 implements MigrationInterface {
 	private readonly GOOGLE_SERVICE_SCOPES: Array<string> = [
@@ -279,25 +277,30 @@ export class CreateGoogleServiceWithScopes1696808587273 implements MigrationInte
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(Service).save({
-			id: "google",
-			imageUrl:
-				"https://lh3.googleusercontent.com/0cDOOJjp8pUGDDFLqHFITEi35uMGZ5wHpZ9KTKridxk71kpR9MfeydpQqG5n8Mvetvkg5iVuZGeL2xMvxgBY_UL-T9p0x_Eo4EAh",
-			oauthUrl: "https://accounts.google.com/o/oauth2/v2/auth",
-		});
-		await queryRunner.manager.getRepository(ServiceScope).save(
-			this.GOOGLE_SERVICE_SCOPES.map((id) => ({
-				id,
-				serviceId: "google",
-			})),
+		await queryRunner.query(
+			`INSERT INTO "service" ("id", "image_url", "oauth_url")
+       VALUES ('google',
+               'https://lh3.googleusercontent.com/0cDOOJjp8pUGDDFLqHFITEi35uMGZ5wHpZ9KTKridxk71kpR9MfeydpQqG5n8Mvetvkg5iVuZGeL2xMvxgBY_UL-T9p0x_Eo4EAh',
+               'https://accounts.google.com/o/oauth2/v2/auth')`,
+		);
+		await queryRunner.query(
+			`INSERT INTO "service_scope" ("id", "service_id")
+      VALUES
+      ${this.GOOGLE_SERVICE_SCOPES.map((scope) => `('${scope}', 'google')`).join(",")}`,
 		);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.manager.getRepository(Service).delete({ id: "google" });
-		await queryRunner.manager.getRepository(ServiceScope).delete({
-			serviceId: "google",
-			id: In(this.GOOGLE_SERVICE_SCOPES),
-		});
+		await queryRunner.query(
+			`DELETE
+       FROM "service"
+       WHERE "id" = 'google'`,
+		);
+		await queryRunner.query(
+			`DELETE
+       FROM "service_scope"
+       WHERE "service_id" = 'google'
+         AND "id" IN (${this.GOOGLE_SERVICE_SCOPES.join(",")}`,
+		);
 	}
 }
