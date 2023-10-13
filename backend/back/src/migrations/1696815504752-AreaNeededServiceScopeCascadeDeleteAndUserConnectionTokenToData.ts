@@ -13,7 +13,7 @@ export class AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696
 		await queryRunner.query(`ALTER TABLE "user_connection"
         DROP COLUMN "data"`);
 		await queryRunner.query(`ALTER TABLE "user_connection"
-        ADD "data" jsonb NOT NULL`);
+        ADD "data" jsonb NOT NULL default '{}'`);
 		await queryRunner.query(`ALTER TABLE "area_service_scopes_needed_service_scope"
         ADD CONSTRAINT "FK_b4dcd444a7d6c283430e9b312f2" FOREIGN KEY ("area_id", "area_service_id") REFERENCES "area" ("id", "service_id") ON DELETE CASCADE ON UPDATE CASCADE`);
 	}
@@ -24,7 +24,7 @@ export class AreaNeededServiceScopeCascadeDeleteAndUserConnectionTokenToData1696
 		await queryRunner.query(`ALTER TABLE "user_connection"
         DROP COLUMN "data"`);
 		await queryRunner.query(`ALTER TABLE "user_connection"
-        ADD "data" character varying NOT NULL`);
+        ADD "data" character varying NOT NULL default 'unknown'`);
 		await queryRunner.query(`ALTER TABLE "user_connection"
         RENAME COLUMN "data" TO "token"`);
 		await queryRunner.query(`ALTER TABLE "area_service_scopes_needed_service_scope"
