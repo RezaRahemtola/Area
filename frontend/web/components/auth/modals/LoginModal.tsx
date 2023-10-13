@@ -1,5 +1,6 @@
 import { forwardRef, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
 import AuthModal from "@/components/auth/modals/AuthModal";
@@ -14,6 +15,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const { t } = useTranslation();
 
 	const onLogin = async () => {
 		const { data: accessToken, error } = await services.auth.login({ email, password });
@@ -54,7 +56,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 				}
 			/>
 			<form method="dialog" className="modal-backdrop">
-				<button onClick={onClose}>Close</button>
+				<button onClick={onClose}>{t("actions.close")}</button>
 			</form>
 		</dialog>
 	);

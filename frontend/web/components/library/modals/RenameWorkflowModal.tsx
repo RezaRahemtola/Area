@@ -1,4 +1,5 @@
 import { forwardRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "@/components/Modal";
 import { Workflow } from "@/types/workflows";
 import services from "@/services";
@@ -9,6 +10,7 @@ type RenameWorkflowModalProps = {
 };
 const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalProps>(({ workflow, onSuccess }, ref) => {
 	const [newName, setNewName] = useState(workflow.name);
+	const { t } = useTranslation();
 
 	const onSubmit = async () => {
 		await services.workflows.update({ id: workflow.id, name: newName });
@@ -26,11 +28,11 @@ const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalPro
 				</div>
 
 				<button className="btn btn-block btn-accent" onClick={onSubmit} disabled={!newName}>
-					Save
+					{t("actions.save")}
 				</button>
 			</Modal>
 			<form method="dialog" className="modal-backdrop">
-				<button>Close</button>
+				<button> {t("actions.close")}</button>
 			</form>
 		</dialog>
 	);

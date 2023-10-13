@@ -1,5 +1,6 @@
 import { forwardRef, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
 import AuthModal from "@/components/auth/modals/AuthModal";
@@ -15,6 +16,7 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 	const [password, setPassword] = useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const { t } = useTranslation();
 
 	const onRegister = async () => {
 		if (password !== passwordConfirmation) {
@@ -65,7 +67,7 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 				}
 			/>
 			<form method="dialog" className="modal-backdrop">
-				<button onClick={onClose}>Close</button>
+				<button onClick={onClose}>{t("actions.close")}</button>
 			</form>
 		</dialog>
 	);
