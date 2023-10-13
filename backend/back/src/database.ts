@@ -20,6 +20,7 @@ import UserSettings from "./users/entities/user-settings.entity";
 import { CreateUserSettingsTable1697135496860 } from "./migrations/1697135496860-CreateUserSettingsTable";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
 import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workflows/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
+import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/1697238715858-CreateTwitterServiceWithScopes";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateUserSettingsTable1697135496860,
 		AreaParametersFlowAndDescription1697044261933,
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
+		CreateTwitterServiceWithScopes1697238715858,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
