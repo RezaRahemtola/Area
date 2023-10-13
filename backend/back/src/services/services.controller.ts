@@ -4,6 +4,7 @@ import { ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiProduces, ApiTags } fr
 import ServiceDto from "./dto/service.dto";
 import { AreaDto } from "./dto/area.dto";
 import ServiceQueryFilterDto from "./dto/service-query-filter.dto";
+import { ServiceIdParamDto } from "../param-validators.dto";
 
 @ApiTags("Services")
 @ApiProduces("application/json")
@@ -29,10 +30,10 @@ export class ServicesController {
 	})
 	@ApiParam({
 		description: "The id of the service to get",
-		name: "id",
+		name: "serviceId",
 	})
-	@Get("/:id")
-	async getService(@Param("id") serviceId: string) {
+	@Get("/:serviceId")
+	async getService(@Param() { serviceId }: ServiceIdParamDto) {
 		const service = await this.servicesService.getService(serviceId, true);
 		if (!service) throw new NotFoundException("Service not found");
 		return service;
@@ -47,10 +48,10 @@ export class ServicesController {
 	})
 	@ApiParam({
 		description: "The id of the service to get actions from",
-		name: "id",
+		name: "serviceId",
 	})
-	@Get("/:id/actions")
-	async getActionsForService(@Param("id") serviceId: string) {
+	@Get("/:serviceId/actions")
+	async getActionsForService(@Param() { serviceId }: ServiceIdParamDto) {
 		const actions = await this.servicesService.getAREAsForService(serviceId, true);
 		if (!actions) throw new NotFoundException("Service not found");
 		return actions;
@@ -65,10 +66,10 @@ export class ServicesController {
 	})
 	@ApiParam({
 		description: "The id of the service to get reactions from",
-		name: "id",
+		name: "serviceId",
 	})
-	@Get("/:id/reactions")
-	async getReactionsForService(@Param("id") serviceId: string) {
+	@Get("/:serviceId/reactions")
+	async getReactionsForService(@Param() { serviceId }: ServiceIdParamDto) {
 		const reactions = await this.servicesService.getAREAsForService(serviceId, false);
 		if (!reactions) throw new NotFoundException("Service not found");
 		return reactions;

@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsNotEmptyObject, IsUUID } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { ServiceName } from "../../services/services.service";
 
 export class WorkflowActionDto {
 	@ApiProperty()
@@ -17,7 +18,7 @@ export class WorkflowActionDto {
 
 	@ApiProperty()
 	@IsNotEmpty()
-	areaServiceId!: string;
+	areaServiceId!: ServiceName;
 }
 
 export default class WorkflowReactionDto extends WorkflowActionDto {

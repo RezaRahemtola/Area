@@ -20,6 +20,7 @@ import { JobsService } from "../jobs/jobs.service";
 import { JobsType } from "../types/jobs";
 import Service from "../services/entities/service.entity";
 import { ConnectionsService } from "../connections/connections.service";
+import { ServiceName } from "../services/services.service";
 
 @Injectable()
 export class WorkflowsService {
@@ -281,7 +282,7 @@ export class WorkflowsService {
 		return dbReactions;
 	}
 
-	private async getNeededNewScopes(userId: string, serviceId: string, neededScopeIds: string[]) {
+	private async getNeededNewScopes(userId: string, serviceId: ServiceName, neededScopeIds: string[]) {
 		const service = await this.workflowRepository.manager.findOneBy(Service, { id: serviceId });
 		if (!service) throw new NotFoundException(`Service ${serviceId} not found.`);
 		if (!service.needConnection) return [];
@@ -302,7 +303,7 @@ export class WorkflowsService {
 		);
 	}
 
-	private async getAreaWithNeededScopes(id: string, serviceId: string, isAction: boolean) {
+	private async getAreaWithNeededScopes(id: string, serviceId: ServiceName, isAction: boolean) {
 		const result = await this.areaRepository.findOne({
 			where: { id, serviceId, isAction },
 			relations: {

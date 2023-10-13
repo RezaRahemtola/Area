@@ -3,6 +3,7 @@ import {
 	ConflictException,
 	Controller,
 	Delete,
+	ForbiddenException,
 	Get,
 	InternalServerErrorException,
 	Param,
@@ -24,6 +25,8 @@ import {
 } from "@nestjs/swagger";
 import ConnectDto from "./dto/oauth.dto";
 import { OauthService } from "./oauth.service";
+import { ServiceIdParamDto } from "../param-validators.dto";
+import { ServicesService } from "src/services/services.service";
 
 @ApiBearerAuth()
 @ApiTags("OAuth Connections")
@@ -37,6 +40,7 @@ export class ConnectionsController {
 	constructor(
 		private readonly connectionsService: ConnectionsService,
 		private readonly oauthService: OauthService,
+		private readonly servicesService: ServicesService,
 	) {}
 
 	@ApiOkResponse({
@@ -55,11 +59,13 @@ export class ConnectionsController {
 	async connect(
 		@Req()
 		{ user: { id: userId } }: APIRequest,
-		@Param("serviceId")
-		serviceId: string,
+		@Param()
+		{ serviceId }: ServiceIdParamDto,
 		@Body()
 		{ scopes }: ConnectDto,
 	) {
+		if (!(await this.servicesService.getService(serviceId)).needConnection)
+			throw new ForbiddenException("This service does not need a connection");
 		scopes = [...new Set(scopes)];
 		const missingScopes = await this.connectionsService.getNewScopesForConnection(userId, serviceId, scopes);
 		if (missingScopes.length === 0)
@@ -81,7 +87,7 @@ export class ConnectionsController {
 		name: "serviceId",
 	})
 	@Delete("/:serviceId")
-	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param("serviceId") serviceId: string) {
+	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { serviceId }: ServiceIdParamDto) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
 			throw new InternalServerErrorException("An unknown error occurred while deleting the connection");
 	}

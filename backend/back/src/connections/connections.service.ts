@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import UserConnection from "./entities/user-connection.entity";
 import { In, Repository } from "typeorm";
-import { ServicesService } from "../services/services.service";
+import { ServiceName, ServicesService } from "../services/services.service";
 import ServiceScope from "../services/entities/service-scope.entity";
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ConnectionsService {
 		private readonly serviceScopesRepository: Repository<ServiceScope>,
 	) {}
 
-	async getNewScopesForConnection(userId: string, serviceId: string, scopes: string[]): Promise<string[]> {
+	async getNewScopesForConnection(userId: string, serviceId: ServiceName, scopes: string[]): Promise<string[]> {
 		if ((await this.serviceScopesRepository.count({ where: { serviceId, id: In(scopes) } })) !== scopes.length)
 			throw new NotFoundException("One or more scopes are invalid");
 		const connection = await this.userConnectionRepository.findOne({
@@ -28,7 +28,7 @@ export class ConnectionsService {
 		return [...new Set([...scopes, ...connectionScopes])];
 	}
 
-	async createUserConnection(userId: string, serviceId: string, scopes: string[], data: unknown) {
+	async createUserConnection(userId: string, serviceId: ServiceName, scopes: string[], data: unknown) {
 		const userConnection = this.userConnectionRepository.create({
 			userId,
 			serviceId,
@@ -52,20 +52,20 @@ export class ConnectionsService {
 		).map(({ serviceId, scopes, createdAt }) => ({ serviceId, scopes: scopes.map(({ id }) => id), createdAt }));
 	}
 
-	async getUserConnectionForService(userId: string, serviceId: string) {
+	async getUserConnectionForService(userId: string, serviceId: ServiceName) {
 		return this.userConnectionRepository.findOne({ where: { userId, serviceId }, relations: { scopes: true } });
 	}
 
 	async getAvailableConnections(userId: string): Promise<string[]> {
 		const services = await this.servicesService.getServices();
 		const userConnections = await this.getUserConnections(userId);
-		const availableServices = services.filter(
-			(service) => !userConnections.some((userConnection) => userConnection.serviceId === service.id),
-		);
+		const availableServices = services
+			.filter((service) => !userConnections.some((userConnection) => userConnection.serviceId === service.id))
+			.filter(({ needConnection }) => needConnection);
 		return availableServices.map((service) => service.id);
 	}
 
-	async deleteUserConnection(userId: string, serviceId: string) {
+	async deleteUserConnection(userId: string, serviceId: ServiceName) {
 		if (!(await this.userConnectionRepository.exist({ where: { userId, serviceId } })))
 			throw new NotFoundException("User is not connected to this service");
 		return this.userConnectionRepository
