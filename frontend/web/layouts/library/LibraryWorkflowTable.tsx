@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 
 import LibraryWorkflowLine from "@/components/library/LibraryWorkflowLine";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
@@ -16,6 +17,7 @@ const LibraryWorkflowTable = () => {
 	const [workflows, setWorkflows] = useAtom(workflowsAtom);
 	const [selectedWorkflows, setSelectedWorkflows] = useState<string[]>([]);
 	const [globalSelect, setGlobalSelect] = useState(false);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -94,9 +96,9 @@ const LibraryWorkflowTable = () => {
 		<>
 			{workflows.length === 0 ? (
 				<div className="w-fit ml-4">
-					<p className="text-center">You don't have any workflow</p>
+					<p className="text-center">{t("library.emptyState.title")}</p>
 					<Link href="/editor">
-						<button className="btn btn-primary btn-outline btn-wide">Create one</button>
+						<button className="btn btn-primary btn-outline btn-wide">{t("library.emptyState.action")}</button>
 					</Link>
 				</div>
 			) : (

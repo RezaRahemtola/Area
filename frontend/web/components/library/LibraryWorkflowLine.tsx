@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 
+import { useTranslation } from "react-i18next";
 import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import RenameWorkflowModal from "@/components/library/modals/RenameWorkflowModal";
@@ -48,6 +49,7 @@ type LibraryWorkflowLineProps = {
 const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }: LibraryWorkflowLineProps) => {
 	const [openedWorkflowOptions, setOpenedWorkflowOptions] = useAtom(libraryOpenedWorkflowOptionsAtom);
 	const renameModalRef = useRef<HTMLDialogElement>(null);
+	const { t } = useTranslation();
 
 	const onOpenOptions: MouseEventHandler<HTMLDetailsElement> = (event) => {
 		event.preventDefault();
@@ -118,13 +120,13 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 						<li>
 							<a className="hover:text-neutral-content" onClick={onClickRename}>
 								<FontAwesomeIcon icon="pen" />
-								Rename
+								{t("actions.rename")}
 							</a>
 						</li>
 						<li>
 							<a className="hover:text-neutral-content" onClick={onClickDelete}>
 								<FontAwesomeIcon icon="trash" />
-								Delete
+								{t("actions.delete")}
 							</a>
 						</li>
 					</ul>
