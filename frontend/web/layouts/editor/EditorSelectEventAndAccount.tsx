@@ -3,18 +3,19 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { Area } from "@/types/services";
+import { Area, AreaParameterWithValue } from "@/types/services";
 import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
 import { EditorCardActions } from "@/types/editor";
-import { EditorWorkflowAction, EditorWorkflowReaction } from "@/types/workflows";
+import { EditorWorkflowAction, EditorWorkflowElementArea, EditorWorkflowReaction } from "@/types/workflows";
 import services from "@/services";
+import EditorAreParameter from "@/layouts/editor/EditorAreParameter";
 
 type EditorSelectEventAndAccountProps = {
 	workflowArea: EditorWorkflowAction | EditorWorkflowReaction;
 	areaChoices: Area[];
 	title: string;
 	actions: EditorCardActions;
-	onEvent: (type: "back" | "next", area?: Area) => void;
+	onEvent: (type: "back" | "next", area?: EditorWorkflowElementArea) => void;
 };
 
 const EditorSelectEventAndAccount = ({
@@ -27,6 +28,7 @@ const EditorSelectEventAndAccount = ({
 	const [selectedEventId, setSelectedEventId] = useState<string | undefined>(workflowArea.area?.id);
 	const [connectAccountUrl, setConnectAccountUrl] = useState<string | null>(null);
 	const [accountConnectionInProgress, setAccountConnectionInProgress] = useState(false);
+	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>([]);
 
 	useEffect(() => {
 		(async () => {
@@ -63,6 +65,15 @@ const EditorSelectEventAndAccount = ({
 		};
 	}, [accountConnectionInProgress]);
 
+	const onParamValueChange = (parameterName: string, value?: never) => {
+		setSelectedParameters((prev) =>
+			prev.map((param) => {
+				if (param.name === parameterName) return { ...param, value };
+				return param;
+			}),
+		);
+	};
+
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
 			<>
@@ -73,7 +84,12 @@ const EditorSelectEventAndAccount = ({
 					<select
 						className="select select-bordered bg-neutral"
 						value={selectedEventId ?? ""}
-						onChange={(e) => setSelectedEventId(e.target.value)}
+						onChange={(e) => {
+							setSelectedEventId(e.target.value);
+							setSelectedParameters(
+								areaChoices.find((choice) => choice.id === e.target.value)?.parametersFormFlow ?? [],
+							);
+						}}
 					>
 						<option value={undefined} hidden>
 							Pick one
@@ -88,6 +104,17 @@ const EditorSelectEventAndAccount = ({
 
 				{selectedEventId && (
 					<>
+						{selectedParameters.length > 0 && (
+							<>
+								<label className="label">
+									<span className="label-text text-neutral-content">Parameters</span>
+								</label>
+								{selectedParameters.map((param) => (
+									<EditorAreParameter key={param.name} parameter={param} onValueChange={onParamValueChange} />
+								))}
+							</>
+						)}
+
 						<label className="label">
 							<span className="label-text text-neutral-content">Connect your account</span>
 						</label>
@@ -117,12 +144,7 @@ const EditorSelectEventAndAccount = ({
 					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
 						disabled={!selectedEventId}
-						onClick={() =>
-							onEvent(
-								"next",
-								areaChoices.find((c) => c.id === selectedEventId),
-							)
-						}
+						onClick={() => onEvent("next", { id: selectedEventId!, parameters: selectedParameters })}
 					>
 						Next
 					</button>

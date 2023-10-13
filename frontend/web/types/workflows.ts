@@ -1,3 +1,5 @@
+import { AreaParameterWithValue } from "@/types/services";
+
 export type WorkflowAction = {
 	id: string;
 	parameters: Record<string, never>;
@@ -19,6 +21,7 @@ export type Workflow = {
 
 export type EditorWorkflowElementArea = {
 	id: string;
+	parameters: AreaParameterWithValue[];
 };
 
 export type EditorWorkflowElementService = {

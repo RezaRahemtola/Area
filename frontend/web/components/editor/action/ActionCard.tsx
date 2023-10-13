@@ -10,6 +10,7 @@ import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
 import { Area, Service } from "@/types/services";
 import services from "@/services";
+import { EditorWorkflowElementArea } from "@/types/workflows";
 
 enum Step {
 	SUMMARY = 0,
@@ -60,7 +61,7 @@ const ActionCard = () => {
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
 
-	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: EditorWorkflowElementArea) => {
 		setWorkflow((prev) => ({
 			...prev,
 			action: { ...prev.action, area },
