@@ -288,7 +288,5 @@ export class Seeding1696697017387 implements MigrationInterface {
 		await queryRunner.query(`
         DROP TABLE "user"
     `);
-		await queryRunner.query(`ALTER TABLE "service"
-        DROP COLUMN "need_connection"`);
 	}
 }
