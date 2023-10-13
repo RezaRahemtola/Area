@@ -1,5 +1,6 @@
 import { Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import Service from "./service.entity";
+import { ServiceName } from "../services.service";
 
 @Entity()
 export default class ServiceScope {
@@ -7,7 +8,7 @@ export default class ServiceScope {
 	id!: string;
 
 	@PrimaryColumn()
-	serviceId!: string;
+	serviceId!: ServiceName;
 	@ManyToOne(() => Service, { onDelete: "CASCADE" })
 	service!: Service;
 }

@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, Pri
 import Service from "../../services/entities/service.entity";
 import { User } from "../../users/entities/user.entity";
 import ServiceScope from "../../services/entities/service-scope.entity";
+import { ServiceName } from "../../services/services.service";
 
 @Entity()
 export default class UserConnection {
@@ -11,7 +12,7 @@ export default class UserConnection {
 	user!: User;
 
 	@PrimaryColumn()
-	serviceId!: string;
+	serviceId!: ServiceName;
 	@ManyToOne(() => Service, { onDelete: "CASCADE" })
 	service!: Service;
 
