@@ -3,6 +3,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { editorActionServices, editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
@@ -22,6 +23,7 @@ const ActionCard = () => {
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
 	const [availableActions, setAvailableActions] = useState<Area[]>([]);
 	const [availableServices, setAvailableServices] = useAtom(editorActionServices);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -74,8 +76,8 @@ const ActionCard = () => {
 	if (step === Step.SUMMARY || selectedArea !== action.id) {
 		return (
 			<EditorSummaryCard
-				title="Action"
-				description={action.area ? action.area.id : "An event that starts your workflow"}
+				title={t("editor.action.title")}
+				description={action.area ? action.area.id : t("editor.action.description")}
 				icon="bolt"
 				onClick={onSummaryClick}
 				service={action.areaService}
@@ -85,7 +87,7 @@ const ActionCard = () => {
 	if (step === Step.SELECT_SERVICE)
 		return (
 			<EditorSelectServiceCard
-				title="Action"
+				title={t("editor.action.title")}
 				actions={{ enabled: false }}
 				currentService={action.areaService}
 				serviceChoices={availableServices}
@@ -95,7 +97,7 @@ const ActionCard = () => {
 	if (step === Step.SELECT_EVENT_AND_ACCOUNT)
 		return (
 			<EditorSelectEventAndAccount
-				title="Action"
+				title={t("editor.action.title")}
 				actions={{ enabled: false }}
 				workflowArea={action}
 				areaChoices={availableActions}
