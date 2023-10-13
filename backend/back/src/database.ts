@@ -19,7 +19,7 @@ import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760
 import UserSettings from "./users/entities/user-settings.entity";
 import { CreateUserSettingsTable1697135496860 } from "./migrations/1697135496860-CreateUserSettingsTable";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
-import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./services/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
+import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workflows/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 
 dotenv.config();
 

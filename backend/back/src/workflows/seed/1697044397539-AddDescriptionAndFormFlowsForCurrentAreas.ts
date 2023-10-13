@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import Area from "../entities/area.entity";
+import Area from "../../services/entities/area.entity";
 
 export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements MigrationInterface {
 	private readonly descriptionsAndFormFlows: Array<Partial<Area>> = [
