@@ -19,10 +19,10 @@ const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalPro
 
 	return (
 		<dialog ref={ref} className="modal">
-			<Modal title="Rename workflow">
+			<Modal title={t("library.actions.rename.title")}>
 				<div className="mt-5 mb-7">
 					<label className="label">
-						<span className="text-base label-text">New name</span>
+						<span className="text-base label-text">{t("library.actions.rename.newName")}</span>
 					</label>
 					<input className="w-full input input-bordered" value={newName} onChange={(e) => setNewName(e.target.value)} />
 				</div>
