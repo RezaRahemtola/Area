@@ -300,7 +300,7 @@ export class CreateGoogleServiceWithScopes1696808587273 implements MigrationInte
 			`DELETE
        FROM "service_scope"
        WHERE "service_id" = 'google'
-         AND "id" IN (${this.GOOGLE_SERVICE_SCOPES.join(",")}`,
+         AND "id" IN (${this.GOOGLE_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
 		);
 	}
 }
