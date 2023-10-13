@@ -20,7 +20,7 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 
 	const onRegister = async () => {
 		if (password !== passwordConfirmation) {
-			setErrorMessage("Passwords don't match");
+			setErrorMessage(t("auth.register.errors.passwordsNotMatching"));
 			return;
 		}
 		const { data: accessToken, error } = await services.auth.register({ email, password });
@@ -38,7 +38,7 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 	return (
 		<dialog ref={ref} className="modal">
 			<AuthModal
-				title="Register"
+				title={t("auth.register.title")}
 				errorMessage={errorMessage}
 				formChildren={
 					<>
@@ -52,16 +52,16 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 						/>
 						<div>
 							<button className="btn btn-block btn-accent" onClick={onRegister}>
-								Register
+								{t("auth.register.action")}
 							</button>
 						</div>
 					</>
 				}
 				otherAuthChildren={
 					<p className="text-center">
-						Already have an account?{" "}
+						{t("auth.register.switchMethodCta")}
 						<a className="link" onClick={onAuthTypeChange}>
-							Login
+							{t("auth.register.switchMethodAction")}
 						</a>
 					</p>
 				}

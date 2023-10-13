@@ -33,7 +33,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	return (
 		<dialog ref={ref} className="modal">
 			<AuthModal
-				title="Login"
+				title={t("auth.login.title")}
 				errorMessage={errorMessage}
 				formChildren={
 					<>
@@ -41,16 +41,16 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 						<AuthPasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
 						<div>
 							<button className="btn btn-block btn-accent" onClick={onLogin}>
-								Login
+								{t("auth.login.action")}
 							</button>
 						</div>
 					</>
 				}
 				otherAuthChildren={
 					<p className="text-center">
-						Don't have an account yet?{" "}
+						{t("auth.login.switchMethodCta")}
 						<a className="link" onClick={onAuthTypeChange}>
-							Create one
+							{t("auth.login.switchMethodAction")}
 						</a>
 					</p>
 				}
