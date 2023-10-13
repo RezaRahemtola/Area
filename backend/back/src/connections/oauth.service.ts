@@ -32,14 +32,14 @@ export class OauthService {
 	public readonly SERVICE_OAUTH_URL_FACTORIES: ServiceOAuthFactories<ServiceName> = {
 		github: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
-				`${baseUrl}?client_id=${this.configService.get("GITHUB_CLIENT_ID")}&scope=${scopes.join(
+				`${baseUrl}?client_id=${this.configService.getOrThrow("GITHUB_CLIENT_ID")}&scope=${scopes.join(
 					",",
 				)}&state=${userId}&redirect_uri=${oauthCallbackUrlFactory("github")}`,
 			connectionFactory: this.createGitHubConnection.bind(this),
 		},
 		google: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
-				`${baseUrl}?client_id=${this.configService.get("GOOGLE_CLIENT_ID")}&scope=${encodeURI(
+				`${baseUrl}?client_id=${this.configService.getOrThrow("GOOGLE_CLIENT_ID")}&scope=${encodeURI(
 					scopes.join(" "),
 				)}&access_type=offline&response_type=code&state=${userId}&prompt=consent&redirect_uri=${oauthCallbackUrlFactory(
 					"google",
@@ -48,7 +48,7 @@ export class OauthService {
 		},
 		twitter: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
-				`${baseUrl}?client_id=${this.configService.get("TWITTER_CLIENT_ID")}&scope=${encodeURI(
+				`${baseUrl}?client_id=${this.configService.getOrThrow("TWITTER_CLIENT_ID")}&scope=${encodeURI(
 					["offline.access", ...scopes].join(" "),
 				)}&response_type=code&state=${userId}&code_challenge=challenge&code_challenge_method=plain&redirect_uri=${oauthCallbackUrlFactory(
 					"twitter",
