@@ -2,6 +2,7 @@ import { EditorWorkflow } from "@/types/workflows";
 import { ServiceReturn } from "@/types/api";
 import { axiosInstance } from "@/services";
 import { SERVICE_ERROR_UNKNOWN } from "@/config/services";
+import { convertAreaParamsToWorkflowPayloadParams } from "@/utils/workflows";
 
 type CreateWorkflowReturn = {
 	id: string;
@@ -9,22 +10,17 @@ type CreateWorkflowReturn = {
 export const create = async (workflow: EditorWorkflow): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
 		const response = await axiosInstance.post<CreateWorkflowReturn>(`/workflows`, {
-			// TODO Reza: Remove hardcoded values
 			name: workflow.name,
 			active: workflow.active,
 			action: {
 				id: workflow.action.id,
-				parameters: { seconds: 20 },
+				parameters: convertAreaParamsToWorkflowPayloadParams(workflow.action.area!.parameters),
 				areaId: workflow.action.area?.id,
 				areaServiceId: workflow.action.areaService?.id,
 			},
 			reactions: workflow.reactions.map((reaction) => ({
 				id: reaction.id,
-				parameters: {
-					to: "rahemtola.reza@protonmail.com",
-					content: "Some body",
-					subject: "From web",
-				},
+				parameters: convertAreaParamsToWorkflowPayloadParams(reaction.area!.parameters),
 				areaId: reaction.area?.id,
 				areaServiceId: reaction.areaService?.id,
 				previousAreaId: reaction.previousAreaId,
