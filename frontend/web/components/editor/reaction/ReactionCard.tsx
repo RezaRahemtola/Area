@@ -10,7 +10,7 @@ import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
 import { EditorCardActions } from "@/types/editor";
-import { EditorWorkflowReaction } from "@/types/workflows";
+import { EditorWorkflowElementArea, EditorWorkflowReaction } from "@/types/workflows";
 import services from "@/services";
 
 enum Step {
@@ -66,7 +66,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
-	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: EditorWorkflowElementArea) => {
 		setWorkflow((prev) => ({
 			...prev,
 			reactions: prev.reactions.map((r) => {
