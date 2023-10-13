@@ -1,5 +1,5 @@
-import { IsArray, IsString, IsUUID } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsOptional, IsString, IsUUID } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export default class OauthDto {
 	@ApiProperty({
@@ -24,13 +24,12 @@ export class OauthCallbackDto {
 	})
 	@IsUUID(4)
 	state!: string;
-}
 
-export class GoogleOauthCallbackDto extends OauthCallbackDto {
-	@ApiProperty({
+	@ApiPropertyOptional({
 		description: "The OAuth scopes validated by the user",
 		type: String,
 	})
+	@IsOptional()
 	@IsString()
 	scope!: string;
 }

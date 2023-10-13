@@ -6,6 +6,9 @@ import Area from "./entities/area.entity";
 import { AreaDto } from "./dto/area.dto";
 import { ServiceHasFilter } from "./dto/service-query-filter.dto";
 
+export const SERVICE_NAMES = ["timer", "github", "google", "twitter"] as const;
+export type ServiceName = (typeof SERVICE_NAMES)[number];
+
 @Injectable()
 export class ServicesService {
 	constructor(
@@ -33,7 +36,7 @@ export class ServicesService {
 	}
 
 	async getService(
-		id: string,
+		id: ServiceName,
 		withScopes: boolean = false,
 	): Promise<
 		| (Omit<Service, "scopes"> & {
@@ -50,10 +53,10 @@ export class ServicesService {
 		return service as Omit<Service, "scopes">;
 	}
 
-	async getAREAsForService(id: string, action: boolean): Promise<AreaDto[] | null> {
-		if (!(await this.serviceRepository.findOne({ where: { id } }))) return null;
+	async getAREAsForService(serviceId: ServiceName, action: boolean): Promise<AreaDto[] | null> {
+		if (!(await this.serviceRepository.findOne({ where: { id: serviceId } }))) return null;
 		const areas = await this.areaRepository.find({
-			where: { serviceId: id, isAction: action },
+			where: { serviceId, isAction: action },
 			relations: { serviceScopesNeeded: true },
 		});
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
