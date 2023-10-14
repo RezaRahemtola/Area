@@ -15,9 +15,15 @@ const connect = async (serviceId: string, scopes: string[]): Promise<ServiceRetu
 
 		return { data: response.data, error: undefined };
 	} catch (error) {
-		if (isAxiosError(error) && error.response?.status === StatusCodes.CONFLICT) {
-			// Account already exists with the necessary permissions
-			return { data: { oauthUrl: null }, error: undefined };
+		if (isAxiosError(error)) {
+			if (error.response?.status === StatusCodes.CONFLICT) {
+				// Account already exists with the necessary permissions
+				return { data: { oauthUrl: null }, error: undefined };
+			}
+			if (error.response?.status === StatusCodes.FORBIDDEN) {
+				// Account doesn't need connection
+				return { data: { oauthUrl: "" }, error: undefined };
+			}
 		}
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
 	}
