@@ -21,7 +21,7 @@ enum Step {
 
 type ReactionCardProps = { reaction: EditorWorkflowReaction };
 const EditorCard = ({ reaction }: ReactionCardProps) => {
-	const [, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
 	const [availableReactions, setAvailableReactions] = useState<Area[]>([]);
@@ -89,7 +89,15 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 	const actions: EditorCardActions = {
 		enabled: true,
 		onDeleteStep: () => {
-			setWorkflow((prev) => ({ ...prev, reactions: prev.reactions.filter((r) => r.id !== reaction.id) }));
+			const pointingToDeleted = workflow.reactions.filter((r) => r.previousAreaId === reaction.id).map((r) => r.id);
+			const newReactions = workflow.reactions
+				.map((r) => {
+					if (pointingToDeleted.includes(r.id)) return { ...r, previousAreaId: reaction.previousAreaId };
+					return r;
+				})
+				.filter((r) => r.id !== reaction.id);
+
+			setWorkflow((prev) => ({ ...prev, reactions: newReactions }));
 		},
 	};
 
