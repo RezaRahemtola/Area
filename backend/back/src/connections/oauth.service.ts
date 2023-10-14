@@ -95,7 +95,7 @@ export class OauthService {
 	async createGoogleConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef.post<unknown & { scope: string }>(
+		} = await this.httpService.axiosRef.post<{ scope: string }>(
 			"https://www.googleapis.com/oauth2/v4/token",
 			{
 				client_id: this.configService.getOrThrow<string>("GOOGLE_CLIENT_ID"),
@@ -117,11 +117,7 @@ export class OauthService {
 	async createTwitterConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef.post<
-			unknown & {
-				scope: string;
-			}
-		>(
+		} = await this.httpService.axiosRef.post<{ scope: string }>(
 			"https://api.twitter.com/2/oauth2/token",
 			{
 				code,
