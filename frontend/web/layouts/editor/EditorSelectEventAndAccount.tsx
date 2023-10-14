@@ -76,6 +76,8 @@ const EditorSelectEventAndAccount = ({
 		);
 	};
 
+	const noAccountMessage = connectAccountUrl === "" ? "No account to connect" : "Account already connected";
+
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
 			<>
@@ -131,7 +133,7 @@ const EditorSelectEventAndAccount = ({
 								</a>
 							</button>
 						) : (
-							<span>Account already connected</span>
+							<span>{noAccountMessage}</span>
 						)}
 					</>
 				)}

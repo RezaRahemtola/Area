@@ -25,7 +25,7 @@ const AuthModal = forwardRef<HTMLDialogElement, AuthModalProps>(
 				<Modal title={title}>
 					<>
 						{errorMessage && (
-							<div className="alert alert-error my-4 whitespace-pre-line" data-cy="auth-error-message">
+							<div className="alert alert-error my-4 whitespace-pre-line opacity-100" data-cy="auth-error-message">
 								<FontAwesomeIcon icon="circle-xmark" />
 								<span>{errorMessage}</span>
 							</div>
