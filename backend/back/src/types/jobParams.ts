@@ -18,5 +18,5 @@ export class GoogleSendEmailParams extends UniqueJobParams {
 	subject: string;
 
 	@IsString()
-	content: string;
+	body: string;
 }

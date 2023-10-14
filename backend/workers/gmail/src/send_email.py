@@ -27,7 +27,7 @@ def send_email():
             args[sys.argv[i][2:]] = sys.argv[i + 1]
             i += 1
 
-    keys_needed = {"auth", "to", "subject", "content", "workflowStepId"}
+    keys_needed = {"auth", "to", "subject", "body", "workflowStepId"}
     missing = keys_needed.difference(args.keys())
     if missing:
         print(F"Error: Missing required keys: {missing}")
@@ -45,7 +45,7 @@ def send_email():
     try:
         service = build('gmail', 'v1', credentials=creds)
         message = EmailMessage()
-        message.set_content(args["content"])
+        message.set_content(args["body"])
 
         message['To'] = args["to"]
         message['Subject'] = args["subject"]
