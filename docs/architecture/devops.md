@@ -22,6 +22,9 @@ results on failure
 to simplify testing and cross-validation of features
 - Documentation linting: Checking that all the files of this documentation (created in `markdown`) are correctly formatted
 and follow the best practices.
+- Sonarqube: A tool used to perform continuous code inspections to help deliver Clean Code, detect security issues 
+and keep high standards to focus on code quality and maintainability. It runs on every push to `main` on a
+self-hosted instance (with subdomain, `nginx` config and SSL certificate).
 
 ## Continuous Deployment
 

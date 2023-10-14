@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-scripts
 
 # Copy protobuf files
 RUN apk add git
@@ -22,6 +22,12 @@ RUN yarn build
 FROM node:18.18.0-alpine3.18 AS runner
 
 WORKDIR /app
+
+# Non-root user
+RUN addgroup -S user \
+    && adduser -S user -G user
+RUN chown -R user:user /app
+USER user
 
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
