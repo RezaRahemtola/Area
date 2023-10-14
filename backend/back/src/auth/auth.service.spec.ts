@@ -49,7 +49,7 @@ describe("AuthService", () => {
 			});
 			const verifyResult = jwtService.verify<JwtPayload>(result.accessToken);
 			expect(verifyResult).not.toBeNull();
-			const { id, iat, exp } = verifyResult!;
+			const { id, iat, exp } = verifyResult;
 			expect(id).toEqual<string>(user.id);
 			expect(iat).toBeGreaterThan(new Date().getTime() / 1000 - 60 * 2); // 2 minutes ago
 			expect(exp).toBeLessThan(new Date().getTime() / 1000 + 60 * 60 * 24 + 60 * 2); // 1 day and 2 minutes from now
@@ -79,7 +79,7 @@ describe("AuthService", () => {
 			});
 			const verifyResult = jwtService.verify<JwtPayload>(result.accessToken);
 			expect(verifyResult).not.toBeNull();
-			const { id, iat, exp } = verifyResult!;
+			const { id, iat, exp } = verifyResult;
 			expect(id).toEqual<string>(user.id);
 			expect(iat).toBeGreaterThan(new Date().getTime() / 1000 - 60 * 2); // 2 minutes ago
 			expect(exp).toBeLessThan(new Date().getTime() / 1000 + 60 * 60 * 24 + 60 * 2); // 1 day and 2 minutes from now
@@ -97,7 +97,7 @@ describe("AuthService", () => {
 		it("should return true as the passed JWT is valid and not expired", async () => {
 			const result = await service.verifyToken(jwtService.sign({ id: user.id }));
 			expect(result).not.toBeNull();
-			const { id, iat, exp } = result!;
+			const { id, iat, exp } = result;
 			expect(id).toEqual<string>(user.id);
 			expect(iat).toBeGreaterThan(new Date().getTime() / 1000 - 60 * 2); // 2 minutes ago
 			expect(exp).toBeLessThan(new Date().getTime() / 1000 + 60 * 60 * 24 + 60 * 2); // 1 day and 2 minutes from now
