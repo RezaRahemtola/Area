@@ -28,7 +28,9 @@ const EditorSelectEventAndAccount = ({
 	const [selectedEventId, setSelectedEventId] = useState<string | undefined>(workflowArea.area?.id);
 	const [connectAccountUrl, setConnectAccountUrl] = useState<string | null>(null);
 	const [accountConnectionInProgress, setAccountConnectionInProgress] = useState(false);
-	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>([]);
+	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>(
+		workflowArea.area?.parameters ?? [],
+	);
 
 	useEffect(() => {
 		(async () => {
