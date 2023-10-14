@@ -15,15 +15,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'backend/back/**/*'
       - name: Setup node
         uses: actions/setup-node@v3
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           node-version: 18
           cache: yarn
           cache-dependency-path: "backend/back/yarn.lock"
       - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn install --frozen-lockfile
       - name: Run eslint
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn lint > eslint-results
       - name: Get eslint results
         uses: actions/upload-artifact@v3
@@ -42,15 +50,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'backend/back/**/*'
       - name: Setup node
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
           cache-dependency-path: "backend/back/yarn.lock"
       - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn install --frozen-lockfile
       - name: Run unit tests
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn test > unit-tests-results
       - name: Get unit tests results
         uses: actions/upload-artifact@v3
@@ -69,15 +85,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'frontend/web/**/*'
       - name: Setup node
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: yarn
           cache-dependency-path: "frontend/web/yarn.lock"
       - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn install --frozen-lockfile
       - name: Run eslint
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn lint > eslint-results
       - name: Get eslint results
         uses: actions/upload-artifact@v3
@@ -96,24 +120,35 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'frontend/mobile/**/*'
       - name: Setup Java
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-java@v3
         with:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Flutter
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.13.4"
           channel: stable
           cache: true
       - name: Create dummy env file
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: touch .env
       - name: Check formatting
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: dart format --set-exit-if-changed .
       - name: Analyze code
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter analyze
       - name: Run tests
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: flutter test
 
   push-to-mirror:

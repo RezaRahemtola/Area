@@ -1,14 +1,15 @@
 import { MouseEventHandler } from "react";
 import Image from "next/image";
+
 import FontAwesomeIcon, { FontAwesomeIconType } from "@/components/FontAwesomeIcon";
-import { Service } from "@/types/services";
+import { EditorWorkflowElementService } from "@/types/workflows";
 
 type EditorSummaryCardProps = {
 	title: string;
 	description: string;
 	onClick: MouseEventHandler;
 	icon: FontAwesomeIconType;
-	service?: Service;
+	service?: EditorWorkflowElementService;
 };
 const EditorSummaryCard = ({ title, description, onClick, icon, service }: EditorSummaryCardProps) => (
 	<div className="card mx-auto w-96 shadow-2xl cursor-pointer" onClick={onClick}>
@@ -32,7 +33,7 @@ const EditorSummaryCard = ({ title, description, onClick, icon, service }: Edito
 				<div className="ml-5">
 					<p className="text-xl">
 						{title}
-						{service ? ` - ${service.name}` : ""}
+						{service ? ` - ${service.id}` : ""}
 					</p>
 					<p className="">{description}</p>
 				</div>

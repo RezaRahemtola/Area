@@ -1,13 +1,22 @@
-import { Jobs } from "./jobs";
+import { IsEmail, IsNumber, IsString, IsUUID } from "class-validator";
 
-interface Mapper<TMappings extends Record<Jobs, object>> {
-	mappings: TMappings;
+class UniqueJobParams {
+	@IsUUID(4)
+	workflowStepId: string;
 }
 
-export type JobsParams = Mapper<{
-	"seconds-interval": TimedJobParams;
-}>;
-
-export type TimedJobParams = {
+export class TimerSecondIntervalParams extends UniqueJobParams {
+	@IsNumber()
 	seconds: number;
-};
+}
+
+export class GoogleSendEmailParams extends UniqueJobParams {
+	@IsEmail()
+	to: string;
+
+	@IsString()
+	subject: string;
+
+	@IsString()
+	body: string;
+}

@@ -1,13 +1,14 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
+import { editorActionServices, editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
-import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
+import { Area, Service } from "@/types/services";
+import services from "@/services";
 
 enum Step {
 	SUMMARY = 0,
@@ -19,6 +20,29 @@ const ActionCard = () => {
 	const [{ action }, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
+	const [availableActions, setAvailableActions] = useState<Area[]>([]);
+	const [availableServices, setAvailableServices] = useAtom(editorActionServices);
+
+	useEffect(() => {
+		(async () => {
+			if (action.areaService === undefined) {
+				setAvailableActions([]);
+				return;
+			}
+			const fetchedActions = await services.services.getServiceActions(action.areaService.id);
+			setAvailableActions(fetchedActions.data ?? []);
+		})();
+	}, [action.areaService]);
+
+	useEffect(() => {
+		(async () => {
+			if (availableServices.length !== 0) {
+				return;
+			}
+			const fetchedServices = await services.services.getAll("actions");
+			setAvailableServices(fetchedServices.data ?? []);
+		})();
+	}, []);
 
 	const onSummaryClick = () => {
 		if (step === Step.SUMMARY) {
@@ -29,15 +53,15 @@ const ActionCard = () => {
 	const onSelectServiceClick = (service: Service) => {
 		setWorkflow((prev) => ({
 			...prev,
-			action: { ...prev.action, service, event: undefined },
+			action: { ...prev.action, area: undefined, areaService: service },
 		}));
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
 
-	const onSelectEventAndAccount = (type: "back" | "next", event?: Area, account: boolean = false) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
 		setWorkflow((prev) => ({
 			...prev,
-			action: { ...prev.action, event, account },
+			action: { ...prev.action, area },
 		}));
 
 		if (type === "next") {
@@ -51,10 +75,10 @@ const ActionCard = () => {
 		return (
 			<EditorSummaryCard
 				title="Action"
-				description={action.event ? action.event.name : "An event that starts your workflow"}
+				description={action.area ? action.area.id : "An event that starts your workflow"}
 				icon="bolt"
 				onClick={onSummaryClick}
-				service={action.service}
+				service={action.areaService}
 			/>
 		);
 	}
@@ -63,7 +87,8 @@ const ActionCard = () => {
 			<EditorSelectServiceCard
 				title="Action"
 				actions={{ enabled: false }}
-				currentService={action.service}
+				currentService={action.areaService}
+				serviceChoices={availableServices}
 				onNextStep={onSelectServiceClick}
 			/>
 		);
@@ -72,7 +97,8 @@ const ActionCard = () => {
 			<EditorSelectEventAndAccount
 				title="Action"
 				actions={{ enabled: false }}
-				area={action}
+				workflowArea={action}
+				areaChoices={availableActions}
 				onEvent={onSelectEventAndAccount}
 			/>
 		);

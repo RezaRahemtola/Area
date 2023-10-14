@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 
 import Service from "./service.entity";
 import ServiceScope from "./service-scope.entity";
 import { ApiProperty } from "@nestjs/swagger";
+import { ParametersFormFlowFieldDto } from "../dto/area.dto";
 
 @Entity()
 export default class Area {
@@ -18,7 +19,15 @@ export default class Area {
 	@Column()
 	isAction!: boolean;
 
-	@ManyToMany(() => ServiceScope, { onDelete: "SET NULL" })
+	@ManyToMany(() => ServiceScope, { onDelete: "CASCADE" })
 	@JoinTable()
 	serviceScopesNeeded!: ServiceScope[];
+
+	@ApiProperty()
+	@Column({ type: "jsonb", default: [] })
+	parametersFormFlow!: ParametersFormFlowFieldDto[];
+
+	@ApiProperty()
+	@Column({ default: "An area description" })
+	description!: string;
 }

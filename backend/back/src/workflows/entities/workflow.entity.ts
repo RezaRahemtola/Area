@@ -38,10 +38,15 @@ export default class Workflow {
 	active!: boolean;
 
 	@ApiProperty({
-		example: {
-			id: "string",
-			parameters: {},
-		},
+		example: [
+			{
+				id: "string",
+				previousAreaId: "string",
+				areaId: "string",
+				areaServiceId: "string",
+				parameters: {},
+			},
+		],
 	})
 	@OneToMany(() => WorkflowArea, (reaction) => reaction.workflow, { cascade: true, nullable: true })
 	reactions!: WorkflowArea[];
@@ -49,6 +54,9 @@ export default class Workflow {
 	@ApiProperty({
 		example: {
 			id: "string",
+			previousAreaId: "string",
+			areaId: "string",
+			areaServiceId: "string",
 			parameters: {},
 		},
 	})

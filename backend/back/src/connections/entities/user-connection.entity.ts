@@ -19,8 +19,9 @@ export default class UserConnection {
 	@JoinTable()
 	scopes!: ServiceScope[];
 
-	@Column()
-	token!: string;
+	@Column({ type: "jsonb" })
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	data!: any;
 
 	@CreateDateColumn()
 	createdAt!: Date;

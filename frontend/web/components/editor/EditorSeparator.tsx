@@ -1,16 +1,25 @@
-"use client";
-
 import { useAtom } from "jotai";
-
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import { editorWorkflowAtom } from "@/stores/editor";
-import { getEmptyArea } from "@/utils/workflows";
+import { getEmptyEditorReaction } from "@/utils/workflows";
 
-const EditorSeparator = ({ index }: { index: number }) => {
-	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
-
+const EditorSeparator = ({ previousId }: { previousId: string }) => {
+	const [editorWorkflow, setEditorWorkflow] = useAtom(editorWorkflowAtom);
 	const onClick = () => {
-		setEditorWorkflow((prev) => ({ ...prev, reactions: prev.reactions.toSpliced(index, 0, getEmptyArea()) }));
+		const newReaction = getEmptyEditorReaction(previousId);
+		let oldPreviousId = previousId;
+		const newPreviousId = newReaction.id;
+		const newReactions = structuredClone(editorWorkflow.reactions);
+
+		let matchingReaction = newReactions.find((r) => r.previousAreaId === oldPreviousId);
+		while (matchingReaction) {
+			oldPreviousId = matchingReaction.id;
+			matchingReaction.previousAreaId = newPreviousId;
+			matchingReaction = newReactions.find((r) => r.previousAreaId === oldPreviousId);
+		}
+		newReactions.push(newReaction);
+
+		setEditorWorkflow((prev) => ({ ...prev, reactions: newReactions }));
 	};
 
 	return (

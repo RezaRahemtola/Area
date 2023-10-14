@@ -1,4 +1,4 @@
-name: Release APK
+name: Release actions
 
 on:
   release:
@@ -6,8 +6,9 @@ on:
       - published
 
 jobs:
-  build:
+  build-apk-release:
     runs-on: ubuntu-latest
+    name: "Build APK & add it to the release"
     defaults:
       run:
         working-directory: ./frontend/mobile
@@ -44,3 +45,19 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: frontend/mobile/build/app/outputs/flutter-apk/app-release.apk
           asset_name: area.apk
+
+  documentation-changelog:
+    runs-on: ubuntu-latest
+    name: "Generate documentation changelog"
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: rhysd/changelog-from-release/action@v3
+        with:
+          file: docs/CHANGELOG.md
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pull_request: true

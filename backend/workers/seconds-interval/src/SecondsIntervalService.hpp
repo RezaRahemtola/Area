@@ -12,15 +12,24 @@
 #include <memory>
 #include "../cmake/build/area_back.grpc.pb.h"
 
+struct ServiceParams {
+    public:
+        int seconds;
+        std::string workflowStepId;
+
+        ServiceParams();
+};
+
 class SecondsIntervalService {
     public:
-        SecondsIntervalService(const std::string &target, int seconds);
+        SecondsIntervalService(const std::string &target, ServiceParams params);
         void runService();
 
     private:
         std::shared_ptr<grpc::Channel> _grpcChannel;
         std::shared_ptr<area_back::AreaBackService::Stub> _stub;
-        int _seconds;
+        const ServiceParams _params;
+        std::string _jobId;
 };
 
 #endif

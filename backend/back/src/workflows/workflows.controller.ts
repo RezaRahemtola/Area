@@ -45,7 +45,8 @@ export class WorkflowsController {
 		description: "A workflow with the same name already exists",
 	})
 	@ApiNotFoundResponse({
-		description: "The user making this request was deleted",
+		description:
+			"The user making this request was deleted, a reaction was not provided a previous area or an area was not found for a specific workflow area",
 	})
 	@ApiBody({
 		description: "The workflow to create",
@@ -54,13 +55,13 @@ export class WorkflowsController {
 	@Post()
 	async createWorkflow(
 		@Req() { user: { id: ownerId } }: APIRequest,
-		@Body() { name, active, entry, steps }: CreateWorkflowDto,
+		@Body() { name, active, action, reactions }: CreateWorkflowDto,
 	) {
-		return await this.workspacesService.createWorkflow(name, ownerId, entry, steps, active);
+		return await this.workspacesService.createWorkflow(name, ownerId, action, reactions, active);
 	}
 
 	@ApiOkResponse({
-		description: "The workflow was successfully retrieved",
+		description: "The workflows was successfully retrieved",
 		type: [PickType(Workflow, ["id", "name", "active", "action", "reactions"])],
 	})
 	@ApiNotFoundResponse({
@@ -72,7 +73,7 @@ export class WorkflowsController {
 	}
 
 	@ApiOkResponse({
-		description: "The workflows were successfully retrieved",
+		description: "The workflow were successfully retrieved",
 		type: PickType(Workflow, ["id", "name", "active", "action", "reactions"]),
 	})
 	@ApiParam({
@@ -177,7 +178,7 @@ export class WorkflowsController {
 	})
 	@Delete(":uuid")
 	async deleteWorkflow(
-		@Param("id") workflowId: string,
+		@Param() { uuid: workflowId }: UuidParamDto,
 		@Req() { user: { id: ownerId } }: APIRequest,
 		@Res() response: Response,
 	) {
