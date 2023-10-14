@@ -24,6 +24,12 @@ FROM python:3.11-slim-buster AS runtime
 
 WORKDIR /app
 
+# Non-root user
+RUN addgroup -S user \
+    && adduser -S user -G user
+RUN chown -R user:user /app
+USER user
+
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 

@@ -56,6 +56,12 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
 
 WORKDIR /app
 
+# Non-root user
+RUN addgroup -S user \
+    && adduser -S user -G user
+RUN chown -R user:user /app
+USER user
+
 COPY . .
 
 RUN flutter pub get
