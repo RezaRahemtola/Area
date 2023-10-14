@@ -8,6 +8,7 @@ const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
 	const server = express();
+	server.disable("x-powered-by");
 
 	server.use("/apk", express.static(`${__dirname}/apk`));
 
