@@ -189,7 +189,6 @@ export class WorkflowsService {
 		if (workflow.active) throw new ConflictException(`Workflow ${workflowId} is active, you cannot update it.`);
 		if (!name && !action && !reactions) return false;
 		let result = false;
-		const exception: unknown = null;
 		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 
 		await queryRunner.connect();

@@ -83,7 +83,7 @@ export class JobsService {
 			throw new BadRequestException("Invalid job parameters");
 		}
 		if (errors.length > 0) {
-			const message = Object.values(errors[0].constraints)[0];
+			const message = Object.values(errors[0].constraints)[0] as string;
 			throw new BadRequestException(`Invalid job parameters: ${message}`);
 		}
 		return data as JobsParams["mappings"][TJobs];
