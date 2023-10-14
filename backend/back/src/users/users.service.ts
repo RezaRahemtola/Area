@@ -33,15 +33,16 @@ export class UsersService {
 		if (!user) throw new NotFoundException(`User ${"id" in options ? options.id : options.email} not found.`);
 		if (Object.keys(update).length == 0 && !theme && !language) return false;
 		let result = false;
-		let exception: unknown = null;
 		const queryRunner = this.userRepository.manager.connection.createQueryRunner();
 
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
 
 		try {
-			if (update.email && (await queryRunner.manager.exists(User, { where: { email: update.email } })))
+			if (update.email && (await queryRunner.manager.exists(User, { where: { email: update.email } }))) {
+				// noinspection ExceptionCaughtLocallyJS
 				throw new ConflictException(`User ${update.email} already exists.`);
+			}
 			if (Object.keys(update).length > 0)
 				result ||= (await queryRunner.manager.update(User, { id: user.id }, { ...update })).affected > 0;
 
@@ -60,12 +61,11 @@ export class UsersService {
 			}
 
 			return result;
-		} catch (_exception) {
+		} catch (exception) {
 			await queryRunner.rollbackTransaction();
-			exception = _exception;
+			throw exception;
 		} finally {
 			await queryRunner.release();
-			if (exception) throw exception;
 		}
 	}
 
