@@ -12,7 +12,7 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 				type="number"
 				className="input bg-neutral input-accent"
 				value={parameter.value ?? 0}
-				onChange={(e) => onValueChange(parameter.name, parseInt(e.target.value, 10) as never)}
+				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
 			/>
 		);
 	}
