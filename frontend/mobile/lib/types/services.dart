@@ -22,6 +22,29 @@ class Service {
   });
 }
 
+/* essai pour résoudre l'erreur
+class Service {
+  String? id;
+  String? name;
+  String? imageUrl;
+  List<String>? scopes;
+
+  Service({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.scopes,
+  });
+
+  Service.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    imageUrl = json['active'];
+    scopes = json['scopes'];
+  }
+}
+*/
+
 class Area {
   final String id;
   final String name;

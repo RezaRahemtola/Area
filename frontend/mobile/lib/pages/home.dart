@@ -74,14 +74,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget buildPosts(List<Workflow>? workflows) {
-  if (workflows == null) {
+Widget buildPosts(List<Service>? services) {
+  if (services == null) {
     return (const Text("no area"));
   }
   return ListView.builder(
-    itemCount: workflows.length,
+    itemCount: services.length,
     itemBuilder: (context, index) {
-      final workflow = workflows[index];
+      final service = services[index];
       return Container(
         color: Colors.grey.shade300,
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -90,7 +90,7 @@ Widget buildPosts(List<Workflow>? workflows) {
         width: double.maxFinite,
         child: Row(
           children: [
-            Text(workflow.name!),
+            Text(service.name!),
           ],
         ),
       );
@@ -106,12 +106,12 @@ class ExistingWorkflows extends StatefulWidget {
 }
 
 class _ExistingWorkflowsState extends State<ExistingWorkflows> {
-  Future<ServiceReturn<List<Workflow>>> workflowsFuture =
-      services.services.getAllWorkflows();
+  Future<ServiceReturn<List<Service>>> workflowsFuture =
+      services.services.getAll();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<ServiceReturn<List<Workflow>>>(
+      body: FutureBuilder<ServiceReturn<List<Service>>>(
         future: workflowsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -119,8 +119,10 @@ class _ExistingWorkflowsState extends State<ExistingWorkflows> {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
             // once data is fetched, display it on screen (call buildPosts())
-            final workflows = snapshot.data!;
-            return buildPosts(workflows.data);
+            print("snapshot data is");
+            print(snapshot.data?.data);
+            final services = snapshot.data!;
+            return buildPosts(services.data);
           } else {
             // if no data, show simple Text
             return const Text("No data available");
@@ -130,22 +132,22 @@ class _ExistingWorkflowsState extends State<ExistingWorkflows> {
     );
   }
 
-  Widget buildWorkflows(List<Workflow> workflows) {
-    return ListView.builder(
-        itemCount: workflows.length,
-        itemBuilder: (context, index) {
-          final workflow = workflows[index];
-          return Container(
-              color: Colors.grey.shade300,
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              height: 100,
-              width: double.maxFinite,
-              child: Row(
-                children: [
-                  Expanded(flex: 3, child: Text(workflow.name!)),
-                ],
-              ));
-        });
-  }
+  // Widget buildServices(List<Service> services) {
+  //   return ListView.builder(
+  //       itemCount: services.length,
+  //       itemBuilder: (context, index) {
+  //         final workflow = services[index];
+  //         return Container(
+  //             color: Colors.grey.shade300,
+  //             margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+  //             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+  //             height: 100,
+  //             width: double.maxFinite,
+  //             child: Row(
+  //               children: [
+  //                 Expanded(flex: 3, child: Text(workflow.name!)),
+  //               ],
+  //             ));
+  //       });
+  // }
 }
