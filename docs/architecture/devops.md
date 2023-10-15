@@ -1,16 +1,21 @@
 # DevOps
 
+<<<<<<< HEAD
 Developing a project as important as Area requires a great DevOps structure to make sure our users are always using 
 the latest features and improvements, while analyzing and testing automatically the whole project to make 
+=======
+Developing a project as important as Area requires a great DevOps to make sure our users are always using
+the latest features and improvements, while analyzing and testing automatically the whole project to make
+>>>>>>> 0be663c (docs: Fixing trailing spaces)
 sure we reduce as much as possible the bugs & regressions introduced when the product evolves.\
-Other majors points include releases & changelogs to keep an organized trace of the changes, and also providing 
+Other majors points include releases & changelogs to keep an organized trace of the changes, and also providing
 the best developer experience to ensure time is spent on things that matter.
 
 All these things are present in Area and detailed on this page.
 
 ## Continuous Integration
 
-Keeping the code clean and bug-free is one of our priorities. As such, we have implemented the following 
+Keeping the code clean and bug-free is one of our priorities. As such, we have implemented the following
 checks, launched automatically on every code change (`commit`):
 
 - [ESLint](https://eslint.org/) backend: Static code analysis to identify problematic patterns in the backend
@@ -24,7 +29,7 @@ on failure)
 to simplify testing and cross-validation of features
 - Documentation linting: Checking that all the files of this documentation (created in `markdown`) are correctly formatted
 and follow the best practices.
-- [SonarQube](https://www.sonarsource.com/products/sonarqube/): A tool used to perform continuous code inspections to help deliver Clean Code, detect security issues 
+- [SonarQube](https://www.sonarsource.com/products/sonarqube/): A tool used to perform continuous code inspections to help deliver Clean Code, detect security issues
 and keep high standards to focus on code quality and maintainability. It runs on every push to `main` on a
 self-hosted instance (with subdomain, `nginx` config and SSL certificate). It will also run the backend unit tests and
 cypress web tests with coverage options to display it in the SonarQube dashboard.
@@ -70,7 +75,7 @@ That's why we are using [Infisical](https://infisical.com/) to manage our secret
 or for specific parts in development, like [workers](workers.md))
 - Integrations with GitHub (secrets used for CI and CD runs) and Vercel (used for the web preview deployments)
 
-## Miscellaneous 
+## Miscellaneous
 
 Other specific details about the technologies we are using:
 - A [self-hosted GitHub Actions runner](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)
