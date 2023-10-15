@@ -12,7 +12,7 @@ const AuthModal = ({ title, formChildren, otherAuthChildren, errorMessage }: Aut
 	<Modal title={title}>
 		<>
 			{errorMessage ? (
-				<div className="alert alert-error my-4">
+				<div className="alert alert-error my-4 whitespace-pre-line" data-cy="auth-error-message">
 					<FontAwesomeIcon icon="circle-xmark" />
 					<span>{errorMessage}</span>
 				</div>
