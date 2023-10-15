@@ -1,11 +1,18 @@
-from __future__ import print_function
-
 import base64
+import json
+import os
+import sys
+
 from email.message import EmailMessage
 
-import google.auth
+import grpc
+from google.oauth2.credentials import Credentials
+from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
+from area_back_pb2_grpc import AreaBackServiceStub
+from area_types_pb2 import JobData
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.compose']
 TARGET = "localhost:50050"
@@ -35,7 +42,7 @@ def create_draft():
         "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
     }, scopes=SCOPES)
 
-     try:
+    try:
         service = build('gmail', 'v1', credentials=creds)
         message = EmailMessage()
         message.set_content(args["body"])
@@ -46,7 +53,9 @@ def create_draft():
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
         create_message = {
-            'raw': encoded_message
+            'message': {
+                'raw': encoded_message
+            }
         }
         draft = service.users().drafts().create(userId="me",
                                                 body=create_message).execute()

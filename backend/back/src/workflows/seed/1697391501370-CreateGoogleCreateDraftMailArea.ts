@@ -24,7 +24,7 @@ export class CreateGoogleCreateDraftMailArea1697391501370 implements MigrationIn
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow")
-       VALUES ('create-draft-email', 'google', false, "Create a draft email with Gmail", $1)`,
+       VALUES ('create-draft-email', 'google', false, 'Create a draft email with Gmail', $1)`,
 			[JSON.stringify(this.parametersFormFlow)],
 		);
 		await queryRunner.query(

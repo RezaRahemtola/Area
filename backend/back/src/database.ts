@@ -21,6 +21,7 @@ import { CreateUserSettingsTable1697135496860 } from "./migrations/1697135496860
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
 import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workflows/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/1697238715858-CreateTwitterServiceWithScopes";
+import { CreateGoogleCreateDraftMailArea1697391501370 } from "./workflows/seed/1697391501370-CreateGoogleCreateDraftMailArea";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		AreaParametersFlowAndDescription1697044261933,
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
 		CreateTwitterServiceWithScopes1697238715858,
+		CreateGoogleCreateDraftMailArea1697391501370,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
