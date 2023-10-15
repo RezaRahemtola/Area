@@ -25,8 +25,7 @@ FROM python:3.11-slim-buster AS runtime
 WORKDIR /app
 
 # Non-root user
-RUN addgroup -S user \
-    && adduser -S user -G user
+RUN useradd -u 8877 user
 RUN chown -R user:user /app
 USER user
 

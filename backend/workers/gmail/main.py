@@ -2,6 +2,7 @@ import dotenv
 import sys
 
 from src.send_email import send_email
+from src.create_draft import create_draft
 
 dotenv.load_dotenv()
 
@@ -14,6 +15,8 @@ def main():
     match sys.argv[1]:
         case "send-email":
             send_email()
+        case "create-draft-email":
+            create_draft()
         case _:
             print("Error: Invalid job")
             exit(1)
