@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "youtube"
+version = "1.0.0"
+description = "YouTube worker"
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+google-api-python-client = "^2.102.0"
+google-auth-httplib2 = "^0.1.1"
+google-auth-oauthlib = "^1.1.0"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+grpcio-tools = "^1.59.0"
+grpcio = "^1.59.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -24,6 +24,7 @@ import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/169
 import { CreateGoogleCreateDraftMailArea1697391501370 } from "./workflows/seed/1697391501370-CreateGoogleCreateDraftMailArea";
 import { CreateGoogleUpdateSignatureEmailArea1697402750753 } from "./workflows/seed/1697402750753-CreateGoogleUpdateSignatureEmailArea";
 import { CreateLinkedInServiceAndScopes1697410039086 } from "./services/seed/1697410039086-CreateLinkedInServiceAndScopes";
+import { CreateGoogleYoutubeCreateCommentArea } from "./workflows/seed/1697407782601CreateGoogleYoutubeCreateCommentArea";
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleCreateDraftMailArea1697391501370,
 		CreateGoogleUpdateSignatureEmailArea1697402750753,
 		CreateLinkedInServiceAndScopes1697410039086,
+		CreateGoogleYoutubeCreateCommentArea,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

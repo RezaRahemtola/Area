@@ -9,4 +9,5 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-send-email": ({ workflowStepId }) => `google-send-email-${workflowStepId}`,
 	"google-create-draft-email": ({ workflowStepId }) => `google-create-draft-email-${workflowStepId}`,
 	"google-update-signature-email": ({ workflowStepId }) => `google-update-signature-email-${workflowStepId}`,
+	"google-create-comment-youtube": ({ workflowStepId }) => `google-create-comment-youtube-${workflowStepId}`,
 };
