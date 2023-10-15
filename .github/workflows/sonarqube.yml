@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -27,6 +28,17 @@ jobs:
       - name: Run backend tests with coverage
         working-directory: ./backend/back/
         run: yarn test:cov
+
+      - name: Run web cypress tests
+        uses: cypress-io/github-action@v5
+        env:
+          CYPRESS_HOST: ${{ secrets.FRONTEND_API_URL }}
+        with:
+          working-directory: ./frontend/web
+          build: yarn build
+          start: yarn start
+          wait-on: "http://localhost:3000"
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:

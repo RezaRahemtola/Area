@@ -42,16 +42,21 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 				errorMessage={errorMessage}
 				formChildren={
 					<>
-						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} />
-						<AuthPasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
+						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="register-email-input" />
+						<AuthPasswordField
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							data-cy="register-password-input"
+						/>
 						<AuthPasswordField
 							value={passwordConfirmation}
 							onChange={(e) => setPasswordConfirmation(e.target.value)}
 							placeholder="Enter password confirmation"
 							label="Confirm password"
+							data-cy="register-confirm-password-input"
 						/>
 						<div>
-							<button className="btn btn-block btn-accent" onClick={onRegister}>
+							<button className="btn btn-block btn-accent" onClick={onRegister} data-cy="register-action-btn">
 								{t("auth.register.action")}
 							</button>
 						</div>

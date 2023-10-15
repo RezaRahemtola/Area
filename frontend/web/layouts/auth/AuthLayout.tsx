@@ -71,7 +71,7 @@ const AuthLayout = () => {
 						Login
 					</a>
 					<RegisterModal ref={registerModalRef} onAuthTypeChange={switchAuthToLogin} onAuthSuccess={onAuthSuccess} />
-					<a className="btn btn-secondary mr-2" onClick={switchAuthToRegister}>
+					<a className="btn btn-secondary mr-2" onClick={switchAuthToRegister} data-cy="register-open-modal">
 						Register
 					</a>
 				</>
