@@ -5,6 +5,7 @@ import { AuthResult, Credentials } from "@/types/user";
 import { ServiceReturn } from "@/types/api";
 import { SERVICE_ERROR_UNKNOWN } from "@/config/services";
 import { API_URL } from "@/config/environment";
+import formatApiErrorMessage from "@/utils/api";
 
 const register = async ({ email, password }: Credentials): Promise<ServiceReturn<string>> => {
 	try {
@@ -14,7 +15,7 @@ const register = async ({ email, password }: Credentials): Promise<ServiceReturn
 		if (!isAxiosError(error)) return { data: null, error: SERVICE_ERROR_UNKNOWN };
 
 		if (error.response?.status === StatusCodes.BAD_REQUEST) {
-			return { data: null, error: error.response.data?.message.join("\n") };
+			return { data: null, error: formatApiErrorMessage(error.response.data?.message) };
 		}
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
 	}
