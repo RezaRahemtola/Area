@@ -18,7 +18,9 @@ jobs:
         uses: tj-actions/changed-files@v39
         id: changed-worker-files
         with:
-          files: 'backend/supervisor/**/*,backend/workers/**/*'
+          files: |
+            'backend/supervisor/**/*'
+            'backend/workers/**/*'
           separator: ','
 
       - name: Stopping the supervisor & workers

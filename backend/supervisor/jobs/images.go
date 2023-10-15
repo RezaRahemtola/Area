@@ -1,15 +1,17 @@
 package jobs
 
 var JobToImage = map[string]string{
-	"timer-seconds-interval": "supervisor-seconds-interval",
-	"google-send-email":      "supervisor-gmail",
-	"google-create-draft-email":      "supervisor-gmail",
+	"timer-seconds-interval":        "supervisor-seconds-interval",
+	"google-send-email":             "supervisor-gmail",
+	"google-create-draft-email":     "supervisor-gmail",
+	"google-update-signature-email": "supervisor-gmail",
 }
 
 var OptArgument = map[string]string{
-	"timer-seconds-interval": "",
-	"google-send-email":      "send-email",
-	"google-create-draft-email":      "create-draft-email",
+	"timer-seconds-interval":        "",
+	"google-send-email":             "send-email",
+	"google-create-draft-email":     "create-draft-email",
+	"google-update-signature-email": "update-signature-email",
 }
 
 func GetImages() []string {

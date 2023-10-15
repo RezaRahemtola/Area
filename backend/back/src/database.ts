@@ -22,6 +22,7 @@ import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697
 import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workflows/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
 import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/1697238715858-CreateTwitterServiceWithScopes";
 import { CreateGoogleCreateDraftMailArea1697391501370 } from "./workflows/seed/1697391501370-CreateGoogleCreateDraftMailArea";
+import { CreateGoogleUpdateSignatureEmailArea1697402750753 } from "./workflows/seed/1697402750753-CreateGoogleUpdateSignatureEmailArea";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
 		CreateTwitterServiceWithScopes1697238715858,
 		CreateGoogleCreateDraftMailArea1697391501370,
+		CreateGoogleUpdateSignatureEmailArea1697402750753,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
