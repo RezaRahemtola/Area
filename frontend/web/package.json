@@ -9,7 +9,9 @@
     "start": "node server.js",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "format": "prettier **/**/*.{ts,tsx} --write"
+    "format": "prettier **/**/*.{ts,tsx} --write",
+    "cypress:open": "infisical run --path=/frontend/web -- cypress open",
+    "cypress:run": "infisical run --path=/frontend/web -- cypress run"
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
@@ -28,12 +30,14 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.12.3",
     "@types/node": "^20.8.3",
     "@types/react": "^18.2.25",
     "@types/react-dom": "^18.2.11",
     "@types/uuid": "^9.0.5",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "cypress": "^13.3.1",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -44,6 +48,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.3",
+    "swc-plugin-coverage-instrument": "^0.0.20",
     "typescript": "^5.2.2"
   }
 }
