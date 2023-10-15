@@ -10,7 +10,7 @@ export class TimerSecondIntervalParams extends UniqueJobParams {
 	seconds: number;
 }
 
-export class GoogleSendEmailParams extends UniqueJobParams {
+export class GoogleEmailParams extends UniqueJobParams {
 	@IsEmail()
 	to: string;
 
@@ -19,4 +19,9 @@ export class GoogleSendEmailParams extends UniqueJobParams {
 
 	@IsString()
 	body: string;
+}
+
+export class GoogleEmailSignatureUpdateParams extends UniqueJobParams {
+	@IsString()
+	signature: string;
 }
