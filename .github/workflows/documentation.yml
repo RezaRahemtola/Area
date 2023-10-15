@@ -14,9 +14,10 @@ jobs:
         uses: tj-actions/changed-files@v39
         id: changed-files
         with:
-          files: 'docs/**/[!CHANGELOG]*.md'
+          files: 'docs/**/*.md'
+          files_ignore: 'docs/CHANGELOG.md'
           separator: ","
-      - name: "Run the markdown linting tool"
+      - name: Run the markdown linting tool
         uses: DavidAnson/markdownlint-cli2-action@v13
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
