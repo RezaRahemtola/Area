@@ -164,7 +164,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_HOST: ${{ secrets.FRONTEND_API_URL }}
+          CYPRESS_API_URL: ${{ secrets.FRONTEND_API_URL }}
         with:
           working-directory: ./frontend/web
           build: yarn build

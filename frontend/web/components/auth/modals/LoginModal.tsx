@@ -1,8 +1,8 @@
 import { forwardRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
+import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthModal from "@/components/auth/modals/AuthModal";
 import services from "@/services";
 
@@ -37,10 +37,14 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 				errorMessage={errorMessage}
 				formChildren={
 					<>
-						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} />
-						<AuthPasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
+						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="login-email-input" />
+						<AuthPasswordField
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							data-cy="login-password-input"
+						/>
 						<div>
-							<button className="btn btn-block btn-accent" onClick={onLogin}>
+							<button className="btn btn-block btn-accent" onClick={onLogin} data-cy="login-action-btn">
 								{t("auth.login.action")}
 							</button>
 						</div>

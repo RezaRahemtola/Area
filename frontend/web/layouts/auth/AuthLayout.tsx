@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
 import { useAtom } from "jotai";
-import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useRef } from "react";
 
+import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import LoginModal from "@/components/auth/modals/LoginModal";
 import RegisterModal from "@/components/auth/modals/RegisterModal";
 import { userAuthTokenAtom } from "@/stores/user";
-import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 const AuthLayout = () => {
 	const loginModalRef = useRef<HTMLDialogElement>(null);
@@ -67,7 +67,7 @@ const AuthLayout = () => {
 			) : (
 				<>
 					<LoginModal ref={loginModalRef} onAuthTypeChange={switchAuthToRegister} onAuthSuccess={onAuthSuccess} />
-					<a className="btn btn-ghost mr-2" onClick={switchAuthToLogin}>
+					<a className="btn btn-ghost mr-2" onClick={switchAuthToLogin} data-cy="login-open-modal">
 						Login
 					</a>
 					<RegisterModal ref={registerModalRef} onAuthTypeChange={switchAuthToLogin} onAuthSuccess={onAuthSuccess} />
