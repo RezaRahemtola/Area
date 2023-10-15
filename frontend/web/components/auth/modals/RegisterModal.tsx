@@ -36,49 +36,41 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 	};
 
 	return (
-		<dialog ref={ref} className="modal">
-			<AuthModal
-				title={t("auth.register.title")}
-				errorMessage={errorMessage}
-				formChildren={
-					<>
-						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="register-email-input" />
-						<AuthPasswordField
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							data-cy="register-password-input"
-						/>
-						<AuthPasswordField
-							value={passwordConfirmation}
-							onChange={(e) => setPasswordConfirmation(e.target.value)}
-							placeholder="Enter password confirmation"
-							label="Confirm password"
-							data-cy="register-confirm-password-input"
-						/>
-						<div>
-							<button
-								className="btn btn-block btn-accent pointer-events-auto"
-								onClick={onRegister}
-								data-cy="register-action-btn"
-							>
-								{t("auth.register.action")}
-							</button>
-						</div>
-					</>
-				}
-				otherAuthChildren={
-					<p className="text-center">
-						{t("auth.register.switchMethodCta")}
-						<a className="link" onClick={onAuthTypeChange}>
-							{t("auth.register.switchMethodAction")}
-						</a>
-					</p>
-				}
-			/>
-			<form method="dialog" className="modal-backdrop">
-				<button onClick={onClose}>{t("actions.close")}</button>
-			</form>
-		</dialog>
+		<AuthModal
+			title={t("auth.register.title")}
+			errorMessage={errorMessage}
+			ref={ref}
+			formChildren={
+				<>
+					<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="register-email-input" />
+					<AuthPasswordField
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						data-cy="register-password-input"
+					/>
+					<AuthPasswordField
+						value={passwordConfirmation}
+						onChange={(e) => setPasswordConfirmation(e.target.value)}
+						placeholder="Enter password confirmation"
+						label="Confirm password"
+						data-cy="register-confirm-password-input"
+					/>
+					<div>
+						<button
+							className="btn btn-block btn-accent pointer-events-auto"
+							onClick={onRegister}
+							data-cy="register-action-btn"
+						>
+							{t("auth.register.action")}
+						</button>
+					</div>
+				</>
+			}
+			switchMethodCtaText={t("auth.register.switchMethodCta")}
+			switchMethodActionText={t("auth.register.switchMethodAction")}
+			onAuthTypeChange={onAuthTypeChange}
+			onClose={onClose}
+		/>
 	);
 });
 
