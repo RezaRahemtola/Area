@@ -11,12 +11,7 @@ const AuthPasswordField = (props: DetailedHTMLProps<InputHTMLAttributes<HTMLInpu
 			<label className="label">
 				<span className="text-base label-text">{t("auth.fields.email")}</span>
 			</label>
-			<input
-				type="text"
-				placeholder="john.doe@example.com"
-				className="w-full input input-bordered pointer-events-auto"
-				{...props}
-			/>
+			<input type="text" placeholder="john.doe@example.com" className="w-full input input-bordered" {...props} />
 		</div>
 	);
 };

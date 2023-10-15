@@ -16,7 +16,7 @@ const AuthPasswordField = ({ label, ...props }: AuthPasswordFieldProps) => {
 			<input
 				type="password"
 				placeholder={t("auth.fields.passwordPlaceholder")}
-				className="w-full input input-bordered pointer-events-auto"
+				className="w-full input input-bordered"
 				{...props}
 			/>
 		</div>

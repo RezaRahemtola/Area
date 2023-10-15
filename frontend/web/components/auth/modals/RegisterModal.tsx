@@ -56,11 +56,7 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 						data-cy="register-confirm-password-input"
 					/>
 					<div>
-						<button
-							className="btn btn-block btn-accent pointer-events-auto"
-							onClick={onRegister}
-							data-cy="register-action-btn"
-						>
+						<button className="btn btn-block btn-accent " onClick={onRegister} data-cy="register-action-btn">
 							{t("auth.register.action")}
 						</button>
 					</div>
