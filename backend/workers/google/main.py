@@ -1,12 +1,14 @@
 import dotenv
 import sys
 
-from src.send_email import send_email
-from src.create_draft import create_draft
-from src.update_signature import update_signature
+from src.gmail.send_email import send_email
+from src.gmail.create_draft import create_draft
+from src.gmail.update_signature import update_signature
+
+from src.youtube.create_comment import create_comment
+
 
 dotenv.load_dotenv()
-
 
 def main():
     if len(sys.argv) < 2:
@@ -14,12 +16,18 @@ def main():
         exit(1)
 
     match sys.argv[1]:
+        # GMail
         case "send-email":
             send_email()
         case "create-draft-email":
             create_draft()
         case "update-signature-email":
             update_signature()
+
+        # YouTube
+        case "create-comment-youtube":
+            create_comment()
+
         case _:
             print("Error: Invalid job")
             exit(1)
