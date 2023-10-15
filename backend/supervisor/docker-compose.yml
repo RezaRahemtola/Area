@@ -22,3 +22,12 @@ services:
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
         - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
         - GOOGLE_TOKEN_URI=${GOOGLE_TOKEN_URI}
+
+  youtube:
+    container_name: youtube
+    build:
+      context: ../workers/youtube
+      args:
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - GOOGLE_TOKEN_URI=${GOOGLE_TOKEN_URI}
