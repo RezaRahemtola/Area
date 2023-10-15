@@ -31,42 +31,34 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	};
 
 	return (
-		<dialog ref={ref} className="modal">
-			<AuthModal
-				title={t("auth.login.title")}
-				errorMessage={errorMessage}
-				formChildren={
-					<>
-						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="login-email-input" />
-						<AuthPasswordField
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							data-cy="login-password-input"
-						/>
-						<div>
-							<button
-								className="btn btn-block btn-accent  pointer-events-auto"
-								onClick={onLogin}
-								data-cy="login-action-btn"
-							>
-								{t("auth.login.action")}
-							</button>
-						</div>
-					</>
-				}
-				otherAuthChildren={
-					<p className="text-center">
-						{t("auth.login.switchMethodCta")}
-						<a className="link" onClick={onAuthTypeChange}>
-							{t("auth.login.switchMethodAction")}
-						</a>
-					</p>
-				}
-			/>
-			<form method="dialog" className="modal-backdrop">
-				<button onClick={onClose}>{t("actions.close")}</button>
-			</form>
-		</dialog>
+		<AuthModal
+			title={t("auth.login.title")}
+			errorMessage={errorMessage}
+			ref={ref}
+			formChildren={
+				<>
+					<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="login-email-input" />
+					<AuthPasswordField
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						data-cy="login-password-input"
+					/>
+					<div>
+						<button
+							className="btn btn-block btn-accent pointer-events-auto"
+							onClick={onLogin}
+							data-cy="login-action-btn"
+						>
+							{t("auth.login.action")}
+						</button>
+					</div>
+				</>
+			}
+			switchMethodCtaText={t("auth.login.switchMethodCta")}
+			switchMethodActionText={t("auth.login.switchMethodAction")}
+			onAuthTypeChange={onAuthTypeChange}
+			onClose={onClose}
+		/>
 	);
 });
 
