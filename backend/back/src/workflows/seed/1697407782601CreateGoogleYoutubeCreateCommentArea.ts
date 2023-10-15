@@ -2,7 +2,7 @@ import { In, MigrationInterface, QueryRunner } from "typeorm";
 import { ParametersFormFlowFieldDto } from "../../services/dto/area.dto";
 import Area from "../../services/entities/area.entity";
 
-export class CreateGoogleYoutubeCreateCommentArea implements MigrationInterface {
+export class CreateGoogleYoutubeCreateCommentArea1697407782601 implements MigrationInterface {
 	private readonly parametersFormFlow: ParametersFormFlowFieldDto[] = [
 		{
 			name: "videoId",

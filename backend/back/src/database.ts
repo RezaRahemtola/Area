@@ -23,8 +23,8 @@ import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workfl
 import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/1697238715858-CreateTwitterServiceWithScopes";
 import { CreateGoogleCreateDraftMailArea1697391501370 } from "./workflows/seed/1697391501370-CreateGoogleCreateDraftMailArea";
 import { CreateGoogleUpdateSignatureEmailArea1697402750753 } from "./workflows/seed/1697402750753-CreateGoogleUpdateSignatureEmailArea";
+import { CreateGoogleYoutubeCreateCommentArea1697407782601 } from "./workflows/seed/1697407782601CreateGoogleYoutubeCreateCommentArea";
 import { CreateLinkedInServiceAndScopes1697410039086 } from "./services/seed/1697410039086-CreateLinkedInServiceAndScopes";
-import { CreateGoogleYoutubeCreateCommentArea } from "./workflows/seed/1697407782601CreateGoogleYoutubeCreateCommentArea";
 
 dotenv.config();
 
@@ -52,8 +52,8 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateTwitterServiceWithScopes1697238715858,
 		CreateGoogleCreateDraftMailArea1697391501370,
 		CreateGoogleUpdateSignatureEmailArea1697402750753,
+		CreateGoogleYoutubeCreateCommentArea1697407782601,
 		CreateLinkedInServiceAndScopes1697410039086,
-		CreateGoogleYoutubeCreateCommentArea,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
