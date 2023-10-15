@@ -44,11 +44,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 						data-cy="login-password-input"
 					/>
 					<div>
-						<button
-							className="btn btn-block btn-accent pointer-events-auto"
-							onClick={onLogin}
-							data-cy="login-action-btn"
-						>
+						<button className="btn btn-block btn-accent" onClick={onLogin} data-cy="login-action-btn">
 							{t("auth.login.action")}
 						</button>
 					</div>

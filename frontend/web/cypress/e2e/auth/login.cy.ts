@@ -8,10 +8,7 @@ describe("Login flow", () => {
 	it("should allow a user to login with an account", () => {
 		cy.intercept("POST", `${Cypress.env("API_URL")}/auth/login`, { accessToken: "123" }).as("login");
 
-		cy.get("[data-cy=login-open-modal]").click();
-		cy.get("[data-cy=login-email-input]").type("test@example.com");
-		cy.get("[data-cy=login-password-input]").type("password");
-		cy.get("[data-cy=login-action-btn]").click();
+		cy.login("test@example.com", "password");
 
 		cy.wait("@login").then((interception) => {
 			const requestBody = interception.request.body;
@@ -27,10 +24,7 @@ describe("Login flow", () => {
 			body: { message: ["Login failed", "Other error"] },
 		}).as("login");
 
-		cy.get("[data-cy=login-open-modal]").click();
-		cy.get("[data-cy=login-email-input]").type("test@example.com");
-		cy.get("[data-cy=login-password-input]").type("password");
-		cy.get("[data-cy=login-action-btn]").click();
+		cy.login("test@example.com", "password");
 
 		cy.wait("@login").then(() => {
 			cy.get("[data-cy=auth-error-message]").should("contain", "Login failed");
@@ -44,10 +38,7 @@ describe("Login flow", () => {
 			body: { message: "Invalid email and/or password" },
 		}).as("login");
 
-		cy.get("[data-cy=login-open-modal]").click();
-		cy.get("[data-cy=login-email-input]").type("test@example.com");
-		cy.get("[data-cy=login-password-input]").type("password");
-		cy.get("[data-cy=login-action-btn]").click();
+		cy.login("test@example.com", "password");
 
 		cy.wait("@login").then(() => {
 			cy.get("[data-cy=auth-error-message]").should("exist");
