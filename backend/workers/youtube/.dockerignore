@@ -1,5 +1,0 @@
-.env*
-credentials.json
-token.json
-proto/
-venv/

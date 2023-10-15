@@ -14,19 +14,10 @@ services:
     container_name: seconds-interval
     build: ../workers/seconds-interval
 
-  gmail:
-    container_name: gmail
+  google:
+    container_name: google
     build:
-      context: ../workers/gmail
-      args:
-        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-        - GOOGLE_TOKEN_URI=${GOOGLE_TOKEN_URI}
-
-  youtube:
-    container_name: youtube
-    build:
-      context: ../workers/youtube
+      context: ../workers/google
       args:
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
         - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}

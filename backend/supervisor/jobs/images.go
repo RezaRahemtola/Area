@@ -2,10 +2,10 @@ package jobs
 
 var JobToImage = map[string]string{
 	"timer-seconds-interval":        "supervisor-seconds-interval",
-	"google-send-email":             "supervisor-gmail",
-	"google-create-draft-email":     "supervisor-gmail",
-	"google-update-signature-email": "supervisor-gmail",
-	"google-create-comment-youtube": "supervisor-youtube",
+	"google-send-email":             "supervisor-google",
+	"google-create-draft-email":     "supervisor-google",
+	"google-update-signature-email": "supervisor-google",
+	"google-create-comment-youtube": "supervisor-google",
 }
 
 var OptArgument = map[string]string{

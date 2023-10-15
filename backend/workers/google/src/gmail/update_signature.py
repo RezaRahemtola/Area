@@ -1,9 +1,6 @@
-import base64
 import json
 import os
 import sys
-
-from email.message import EmailMessage
 
 import grpc
 from google.oauth2.credentials import Credentials
