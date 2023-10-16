@@ -15,7 +15,7 @@ from area_types_pb2 import JobData
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 TARGET = "localhost:50050"
 
-def create_document():
+def create_spreadsheet():
     args = get_arguments({"auth", "name", "workflowStepId"})
 
     credentials = json.loads(args["auth"])
@@ -29,7 +29,7 @@ def create_document():
                 'title': args["name"]
             }
         }
-        spreadsheet = service.spreadsheets().create(body=spreadsheet, fields='spreadsheetId').execute()
+        spreadsheet = service.spreadsheets().create(body=body, fields='spreadsheetId').execute()
 
         target = args["target"] if args.keys().__contains__("target") else TARGET
 
