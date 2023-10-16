@@ -20,9 +20,8 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.compose']
 TARGET = "localhost:50050"
 
 def create_draft():
-    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId"})
+    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId", "identifier"})
     target = args["target"] if args.keys().__contains__("target") else TARGET
-    identifier = F"google-create-draft-email-{args['workflowStepId']}"
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
@@ -50,14 +49,14 @@ def create_draft():
                 "workflowStepId": args["workflowStepId"],
                 "emailId": draft["id"]
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-draft-email", identifier=identifier, params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-draft-email", identifier=args["identifier"], params=params))
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:
-            AreaBackServiceStub(channel).OnError(JobError(identifier=identifier, error=str(error), isAuthError=True))
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
         exit(1)
     except:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(
-                JobError(identifier=identifier, error=str(sys.exc_info()[0]), isAuthError=False))
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
         exit(1)

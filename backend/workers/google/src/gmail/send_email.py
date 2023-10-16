@@ -8,7 +8,6 @@ import grpc
 from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 from area_back_pb2 import JobError
 from area_back_pb2_grpc import AreaBackServiceStub
@@ -22,9 +21,8 @@ TARGET = "localhost:50050"
 
 
 def send_email():
-    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId"})
+    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId", "identifier"})
     target = args["target"] if args.keys().__contains__("target") else TARGET
-    identifier = F"google-send-email-{args['workflowStepId']}"
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
@@ -51,14 +49,14 @@ def send_email():
                 "emailId": email["id"]
             })
             AreaBackServiceStub(channel).OnReaction(
-                JobData(name="google-send-email", identifier=identifier, params=params))
+                JobData(name="google-send-email", identifier=args["identifier"], params=params))
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:
-            AreaBackServiceStub(channel).OnError(JobError(identifier=identifier, error=str(error), isAuthError=True))
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
         exit(1)
     except:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(
-                JobError(identifier=identifier, error=str(sys.exc_info()[0]), isAuthError=False))
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
         exit(1)
