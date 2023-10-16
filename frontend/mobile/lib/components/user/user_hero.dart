@@ -1,5 +1,6 @@
-import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/components/user/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:area_mobile/storage/index.dart';
 
 class UserHero extends StatelessWidget {
   const UserHero({Key? key}) : super(key: key);
@@ -8,6 +9,17 @@ class UserHero extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
         title: const Text('Compte Utilisateur'),
       ),
       body: Padding(
