@@ -14,6 +14,7 @@ export enum Jobs {
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-document-docs" = "google-create-document-docs",
 	"google-create-presentation-slides" = "google-create-presentation-slides",
+	"google-create-spreadsheet" = "google-create-spreadsheet",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -30,6 +31,7 @@ export const JobParamsClasses = {
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
 	"google-create-document-docs": GoogleCreateDocumentParams,
 	"google-create-presentation-slides": GoogleCreateDocumentParams,
+	"google-create-spreadsheet": GoogleCreateDocumentParams,
 };
 
 export type JobsParams = Mapper<{
@@ -40,4 +42,5 @@ export type JobsParams = Mapper<{
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
 	"google-create-document-docs": GoogleCreateDocumentParams;
 	"google-create-presentation-slides": GoogleCreateDocumentParams;
+	"google-create-spreadsheet": GoogleCreateDocumentParams;
 }>;

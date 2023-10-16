@@ -12,4 +12,5 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-comment-youtube": ({ workflowStepId }) => `google-create-comment-youtube-${workflowStepId}`,
 	"google-create-document-docs": ({ workflowStepId }) => `google-create-document-docs-${workflowStepId}`,
 	"google-create-presentation-slides": ({ workflowStepId }) => `google-create-presentation-slides-${workflowStepId}`,
+	"google-create-spreadsheet": ({ workflowStepId }) => `google-create-spreadsheet-${workflowStepId}`,
 };

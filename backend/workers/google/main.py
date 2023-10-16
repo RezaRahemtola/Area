@@ -11,6 +11,8 @@ from src.docs.create_document import create_document
 
 from src.slides.create_slide import create_slide
 
+from src.spreadsheets.create_spreadsheet import create_spreadsheet
+
 
 dotenv.load_dotenv()
 
@@ -39,6 +41,10 @@ def main():
         # Slides
         case "create-presentation-slides":
             create_slide()
+
+        # Spreadsheets
+        case "create-spreadsheet":
+            create_spreadsheet()
 
         case _:
             print("Error: Invalid job")
