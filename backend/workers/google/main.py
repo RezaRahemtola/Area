@@ -2,6 +2,7 @@ import dotenv
 import sys
 
 from src.contacts.create_contact import create_contact
+from src.drive.empty_trash import empty_trash
 from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
@@ -49,8 +50,12 @@ def main():
             create_form()
 
         # Contacts
-        case "create_contact":
+        case "create-contact":
             create_contact()
+
+        # Drive
+        case "empty-drive-trash":
+            empty_trash()
 
         case _:
             print("Error: Invalid job")

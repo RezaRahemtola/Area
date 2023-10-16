@@ -15,4 +15,5 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-spreadsheet": ({ workflowStepId }) => `google-create-spreadsheet-${workflowStepId}`,
 	"google-create-form": ({ workflowStepId }) => `google-create-form-${workflowStepId}`,
 	"google-create-contact": ({ workflowStepId }) => `google-create-contact-${workflowStepId}`,
+	"google-empty-drive-trash": ({ workflowStepId }) => `google-empty-drive-trash-${workflowStepId}`,
 };
