@@ -33,6 +33,8 @@ jobs:
         run: protoc --experimental_allow_proto3_optional --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
       - name: Run build
         run: go build
+      - name: Run format
+        run: go fmt && git diff --exit-code
 
   eslint-backend:
     name: "ESLint: Backend"
