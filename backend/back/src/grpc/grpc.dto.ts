@@ -8,6 +8,12 @@ export class AuthenticatedJobData extends JobData {
 	auth: unknown;
 }
 
+export class JobError {
+	identifier: string;
+	error: string;
+	isAuthError: boolean;
+}
+
 export class JobListData {
 	name: string;
 	identifier: string;

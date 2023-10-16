@@ -18,4 +18,9 @@ export class GrpcController {
 	async onReaction(data: JobData): Promise<void> {
 		await this.jobsService.launchNextJob(data);
 	}
+
+	@GrpcMethod("AreaBackService", "OnError")
+	async onError(data: JobData): Promise<void> {
+		console.log("Job error", data)
+	}
 }

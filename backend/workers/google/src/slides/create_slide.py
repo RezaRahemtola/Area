@@ -36,7 +36,7 @@ def create_slide():
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
-                "presentationId": presentation.get('presentationId'))
+                "presentationId": presentation.get('presentationId')
             })
             AreaBackServiceStub(channel).OnReaction(JobData(name="slides", identifier="google-create-presentation-slides", params=params))
 

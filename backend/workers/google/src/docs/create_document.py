@@ -27,8 +27,7 @@ def create_document():
         body = {
             'title': args["name"]
         }
-        document = service.documents() \
-            .create(body=body).execute()
+        document = service.documents().create(body=body).execute()
 
         target = args["target"] if args.keys().__contains__("target") else TARGET
 
