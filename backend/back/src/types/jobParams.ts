@@ -1,6 +1,6 @@
 import { IsEmail, IsNumber, IsString, IsUUID } from "class-validator";
 
-class UniqueJobParams {
+export class UniqueJobParams {
 	@IsUUID(4)
 	workflowStepId: string;
 }
