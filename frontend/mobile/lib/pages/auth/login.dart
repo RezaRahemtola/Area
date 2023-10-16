@@ -21,31 +21,38 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const FlutterLogo(size: 100),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              "Welcome to AREA!",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          EmailField(emailController: emailController),
-          PasswordField(passwordController: passwordController),
-          LoginButtons(
-            formKey: _formKey,
-            emailController: emailController,
-            passwordController: passwordController,
-            onSuccess: widget.onSuccess,
-          )
-        ],
-      ),
-    ));
+            key: _formKey,
+            child: Center(
+                child: Card(
+                    elevation: 8,
+                    child: Container(
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 600),
+                      padding: const EdgeInsets.all(32.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const FlutterLogo(size: 100),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              "Welcome to AREA!",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          ),
+                          EmailField(emailController: emailController),
+                          PasswordField(passwordController: passwordController),
+                          LoginButtons(
+                            formKey: _formKey,
+                            emailController: emailController,
+                            passwordController: passwordController,
+                            onSuccess: widget.onSuccess,
+                          )
+                        ],
+                      ),
+                    )))));
   }
 }
 
