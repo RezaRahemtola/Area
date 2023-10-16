@@ -6,6 +6,7 @@ var JobToImage = map[string]string{
 	"google-create-draft-email":     "supervisor-google",
 	"google-update-signature-email": "supervisor-google",
 	"google-create-comment-youtube": "supervisor-google",
+	"google-create-document-docs":   "supervisor-google",
 }
 
 var OptArgument = map[string]string{
@@ -14,6 +15,7 @@ var OptArgument = map[string]string{
 	"google-create-draft-email":     "create-draft-email",
 	"google-update-signature-email": "update-signature-email",
 	"google-create-comment-youtube": "create-comment-youtube",
+	"google-create-document-docs":   "create-document-docs",
 }
 
 func GetImages() []string {

@@ -7,6 +7,8 @@ from src.gmail.update_signature import update_signature
 
 from src.youtube.create_comment import create_comment
 
+from src.docs.create_document import create_document
+
 
 dotenv.load_dotenv()
 
@@ -27,6 +29,10 @@ def main():
         # YouTube
         case "create-comment-youtube":
             create_comment()
+
+        # Docs
+        case "create-document-docs":
+            create_document()
 
         case _:
             print("Error: Invalid job")
