@@ -38,3 +38,11 @@ export class GoogleCreateDocumentParams extends UniqueJobParams {
 	@IsString()
 	name: string;
 }
+
+export class GoogleCreateContactParams extends UniqueJobParams {
+	@IsString()
+	firstName: string;
+
+	@IsString()
+	lastName: string;
+}
