@@ -20,25 +20,32 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Login"),
-        ),
         body: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              EmailField(emailController: emailController),
-              PasswordField(passwordController: passwordController),
-              LoginButtons(
-                formKey: _formKey,
-                emailController: emailController,
-                passwordController: passwordController,
-                onSuccess: widget.onSuccess,
-              )
-            ],
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const FlutterLogo(size: 100),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Welcome to AREA!",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
-        ));
+          EmailField(emailController: emailController),
+          PasswordField(passwordController: passwordController),
+          LoginButtons(
+            formKey: _formKey,
+            emailController: emailController,
+            passwordController: passwordController,
+            onSuccess: widget.onSuccess,
+          )
+        ],
+      ),
+    ));
   }
 }
 
