@@ -28,6 +28,8 @@ import { CreateLinkedInServiceAndScopes1697410039086 } from "./services/seed/169
 import { CreateGoogleDocsCreateDocumentArea1697417929723 } from "./workflows/seed/1697417929723-CreateGoogleDocsCreateDocumentArea";
 import { CreateGoogleSlidesPresentationArea1697441436959 } from "./workflows/seed/1697441436959-CreateGoogleSlidesPresentationArea";
 import { CreateGoogleSpreadsheetArea1697442335135 } from "./workflows/seed/1697442335135-CreateGoogleSpreadsheetArea";
+import { CreateGoogleCreateFormArea1697476339491 } from "./workflows/seed/1697476339491-CreateGoogleCreateFormArea";
+import { UpdateGoogleServiceFormsScopes1697460124931 } from "./services/seed/1697460124931-UpdateGoogleServiceFormsScopes-seed";
 
 dotenv.config();
 
@@ -60,6 +62,8 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleDocsCreateDocumentArea1697417929723,
 		CreateGoogleSlidesPresentationArea1697441436959,
 		CreateGoogleSpreadsheetArea1697442335135,
+		UpdateGoogleServiceFormsScopes1697460124931,
+		CreateGoogleCreateFormArea1697476339491,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
