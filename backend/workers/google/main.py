@@ -9,6 +9,8 @@ from src.youtube.create_comment import create_comment
 
 from src.docs.create_document import create_document
 
+from src.slides.create_slide import create_slide
+
 
 dotenv.load_dotenv()
 
@@ -33,6 +35,10 @@ def main():
         # Docs
         case "create-document-docs":
             create_document()
+
+        # Slides
+        case "create-presentation-slides":
+            create_slide()
 
         case _:
             print("Error: Invalid job")

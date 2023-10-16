@@ -26,6 +26,7 @@ import { CreateGoogleUpdateSignatureEmailArea1697402750753 } from "./workflows/s
 import { CreateGoogleYoutubeCreateCommentArea1697407782601 } from "./workflows/seed/1697407782601CreateGoogleYoutubeCreateCommentArea";
 import { CreateLinkedInServiceAndScopes1697410039086 } from "./services/seed/1697410039086-CreateLinkedInServiceAndScopes";
 import { CreateGoogleDocsCreateDocumentArea1697417929723 } from "./workflows/seed/1697417929723-CreateGoogleDocsCreateDocumentArea";
+import { CreateGoogleSlidesPresentationArea1697441436959 } from "./workflows/seed/1697441436959-CreateGoogleSlidesPresentationArea";
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleYoutubeCreateCommentArea1697407782601,
 		CreateLinkedInServiceAndScopes1697410039086,
 		CreateGoogleDocsCreateDocumentArea1697417929723,
+		CreateGoogleSlidesPresentationArea1697441436959,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
