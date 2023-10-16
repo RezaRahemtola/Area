@@ -20,28 +20,35 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Register"),
-        ),
         body: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              EmailField(emailController: emailController),
-              PasswordField(passwordController: passwordController),
-              PasswordField(
-                  passwordController: passwordReController,
-                  label: "Confirm password",
-                  placeholder: 'Please re-enter your password.'),
-              RegisterButton(
-                  formKey: _formKey,
-                  emailController: emailController,
-                  passwordController: passwordController,
-                  passwordReController: passwordReController)
-            ],
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const FlutterLogo(size: 100),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Welcome to AREA!",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
-        ));
+          EmailField(emailController: emailController),
+          PasswordField(passwordController: passwordController),
+          PasswordField(
+              passwordController: passwordReController,
+              label: "Confirm password",
+              placeholder: 'Please re-enter your password.'),
+          RegisterButton(
+              formKey: _formKey,
+              emailController: emailController,
+              passwordController: passwordController,
+              passwordReController: passwordReController)
+        ],
+      ),
+    ));
   }
 }
 
@@ -61,43 +68,65 @@ class RegisterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            if (passwordController.text != passwordReController.text) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Passwords don't match.")),
-              );
-            } else if (emailController.text.isEmpty) {
-              // actually impossible, but will insert here the email validation condition
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Invalid email.")),
-              );
-            } else {
-              final result = await services.auth
-                  .register(emailController.text, passwordController.text);
-              if (!context.mounted) return;
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LandingPage()));
+            },
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                Text("Login"),
+              ],
+            )),
+        ElevatedButton(
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                if (passwordController.text != passwordReController.text) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Passwords don't match.")),
+                  );
+                } else if (emailController.text.isEmpty) {
+                  // actually impossible, but will insert here the email validation condition
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Invalid email.")),
+                  );
+                } else {
+                  final result = await services.auth
+                      .register(emailController.text, passwordController.text);
+                  if (!context.mounted) return;
 
-              if (result.data != null) {
+                  if (result.data != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Registered")),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LandingPage()),
+                    );
+                  } else if (result.error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(result.error!)),
+                    );
+                  }
+                }
+              } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Registered")),
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LandingPage()),
-                );
-              } else if (result.error != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(result.error!)),
+                  const SnackBar(
+                      content: Text("Please fill the register form.")),
                 );
               }
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please fill the register form.")),
-            );
-          }
-        },
-        child: const Text("Submit"));
+            },
+            child: const Text("Submit"))
+      ],
+    );
   }
 }
