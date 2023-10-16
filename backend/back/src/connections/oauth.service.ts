@@ -1,14 +1,16 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConnectionsService } from "./connections.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ServiceName, ServicesService } from "../services/services.service";
 import UserConnection from "./entities/user-connection.entity";
 
-type GithubOAuthResponse = {
+type OAuthResponse = {
 	access_token: string;
 	scope: string;
-	token_type: string;
+	token_type?: string;
+	expires_in?: number;
+	refresh_token?: string;
 };
 
 type OAuthCallbackUrlFactory<TWantedService extends string> = <TActualService extends TWantedService>(
@@ -29,7 +31,7 @@ type ServiceOAuthFactories<TServices extends string> = {
 
 @Injectable()
 export class OauthService {
-	public readonly SERVICE_OAUTH_URL_FACTORIES: ServiceOAuthFactories<ServiceName> = {
+	public readonly SERVICE_OAUTH_FACTORIES: ServiceOAuthFactories<ServiceName> = {
 		github: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
 				`${baseUrl}?client_id=${this.configService.getOrThrow("GITHUB_CLIENT_ID")}&scope=${scopes.join(
@@ -57,11 +59,18 @@ export class OauthService {
 		},
 		timer: {
 			urlFactory: () => {
-				throw new BadRequestException("Cannot create OAuth URL for timer service");
+				throw new Error("Cannot create OAuth URL for timer service");
 			},
 			connectionFactory: () => {
-				throw new BadRequestException("Cannot create OAuth connection for timer service");
+				throw new Error("Cannot create OAuth connection for timer service");
 			},
+		},
+		linkedin: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?client_id=${this.configService.getOrThrow("LINKEDIN_CLIENT_ID")}&scope=${encodeURI(
+					[...scopes].join(" "),
+				)}&state=${userId}&response_type=code&redirect_uri=${oauthCallbackUrlFactory("linkedin")}`,
+			connectionFactory: this.createLinkedInConnection.bind(this),
 		},
 	};
 
@@ -75,7 +84,7 @@ export class OauthService {
 	async createGitHubConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef.post<GithubOAuthResponse>(
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
 			"https://github.com/login/oauth/access_token",
 			{
 				client_id: this.configService.getOrThrow<string>("GITHUB_CLIENT_ID"),
@@ -95,14 +104,14 @@ export class OauthService {
 	async createGoogleConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef.post<{ scope: string }>(
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
 			"https://www.googleapis.com/oauth2/v4/token",
 			{
 				client_id: this.configService.getOrThrow<string>("GOOGLE_CLIENT_ID"),
 				client_secret: this.configService.getOrThrow<string>("GOOGLE_CLIENT_SECRET"),
 				code,
 				grant_type: "authorization_code",
-				redirect_uri: `${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/google/callback`,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("google"),
 			},
 			{
 				headers: {
@@ -117,16 +126,17 @@ export class OauthService {
 	async createTwitterConnection(userId: string, code: string) {
 		const {
 			data: { scope, ...connectionData },
-		} = await this.httpService.axiosRef.post<{ scope: string }>(
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
 			"https://api.twitter.com/2/oauth2/token",
 			{
 				code,
 				grant_type: "authorization_code",
-				redirect_uri: `${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/twitter/callback`,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("twitter"),
 				code_verifier: "challenge",
 			},
 			{
 				headers: {
+					Accept: "application/json",
 					"Content-Type": "application/x-www-form-urlencoded",
 					Authorization: `Basic ${Buffer.from(
 						`${this.configService.getOrThrow<string>("TWITTER_CLIENT_ID")}:${this.configService.getOrThrow<string>(
@@ -139,9 +149,31 @@ export class OauthService {
 		return this.connectionsService.createUserConnection(userId, "twitter", scope.split(" "), connectionData);
 	}
 
+	async createLinkedInConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://www.linkedin.com/oauth/v2/accessToken",
+			{
+				client_id: this.configService.getOrThrow<string>("LINKEDIN_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("LINKEDIN_CLIENT_SECRET"),
+				code,
+				grant_type: "authorization_code",
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("linkedin"),
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(" "), connectionData);
+	}
+
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
 		const { oauthUrl } = await this.servicesService.getService(serviceId);
-		return this.SERVICE_OAUTH_URL_FACTORIES[serviceId].urlFactory(
+		return this.SERVICE_OAUTH_FACTORIES[serviceId].urlFactory(
 			oauthUrl,
 			userId,
 			scopes,

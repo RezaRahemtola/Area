@@ -6,7 +6,7 @@ import Area from "./entities/area.entity";
 import { AreaDto } from "./dto/area.dto";
 import { ServiceHasFilter } from "./dto/service-query-filter.dto";
 
-export const SERVICE_NAMES = ["timer", "github", "google", "twitter"] as const;
+export const SERVICE_NAMES = ["timer", "github", "google", "twitter", "linkedin"] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 
 @Injectable()
