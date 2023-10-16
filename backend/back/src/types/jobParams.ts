@@ -34,7 +34,7 @@ export class GoogleYoutubeCreateCommentParams extends UniqueJobParams {
 	content: string;
 }
 
-export class GoogleDocsCreateDocumentParams extends UniqueJobParams {
+export class GoogleCreateDocumentParams extends UniqueJobParams {
 	@IsString()
 	name: string;
 }
