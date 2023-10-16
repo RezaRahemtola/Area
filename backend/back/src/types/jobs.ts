@@ -1,10 +1,20 @@
-import { GoogleEmailParams, GoogleEmailSignatureUpdateParams, TimerSecondIntervalParams } from "./jobParams";
+import {
+	GoogleCreateDocumentParams,
+	GoogleEmailParams,
+	GoogleEmailSignatureUpdateParams,
+	GoogleYoutubeCreateCommentParams,
+	TimerSecondIntervalParams,
+} from "./jobParams";
 
 export enum Jobs {
 	"timer-seconds-interval" = "timer-seconds-interval",
 	"google-send-email" = "google-send-email",
 	"google-create-draft-email" = "google-create-draft-email",
 	"google-update-signature-email" = "google-update-signature-email",
+	"google-create-comment-youtube" = "google-create-comment-youtube",
+	"google-create-document-docs" = "google-create-document-docs",
+	"google-create-presentation-slides" = "google-create-presentation-slides",
+	"google-create-spreadsheet" = "google-create-spreadsheet",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -18,6 +28,10 @@ export const JobParamsClasses = {
 	"google-send-email": GoogleEmailParams,
 	"google-create-draft-email": GoogleEmailParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
+	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
+	"google-create-document-docs": GoogleCreateDocumentParams,
+	"google-create-presentation-slides": GoogleCreateDocumentParams,
+	"google-create-spreadsheet": GoogleCreateDocumentParams,
 };
 
 export type JobsParams = Mapper<{
@@ -25,4 +39,8 @@ export type JobsParams = Mapper<{
 	"google-send-email": GoogleEmailParams;
 	"google-create-draft-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
+	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
+	"google-create-document-docs": GoogleCreateDocumentParams;
+	"google-create-presentation-slides": GoogleCreateDocumentParams;
+	"google-create-spreadsheet": GoogleCreateDocumentParams;
 }>;

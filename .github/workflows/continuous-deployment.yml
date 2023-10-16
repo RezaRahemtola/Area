@@ -14,17 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get changed supervisor/workers files
-        uses: tj-actions/changed-files@v39
-        id: changed-worker-files
-        with:
-          files: |
-            'backend/supervisor/**/*'
-            'backend/workers/**/*'
-          separator: ','
-
       - name: Stopping the supervisor & workers
-        if: steps.changed-worker-files.outputs.any_changed == 'true'
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVICES_SSH_HOST }}
@@ -46,7 +36,6 @@ jobs:
             docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
 
       - name: Deploying the new supervisor & workers
-        if: steps.changed-worker-files.outputs.any_changed == 'true'
         uses: kostya-ten/ssh-server-deploy@v4
         with:
           host: ${{ secrets.SERVICES_SSH_HOST }}

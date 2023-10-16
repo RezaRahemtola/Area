@@ -23,7 +23,7 @@ export class OauthController {
 		@Res()
 		response: Response,
 	) {
-		const connection = await this.oauthService.SERVICE_OAUTH_URL_FACTORIES[serviceId].connectionFactory(userId, code);
+		const connection = await this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId].connectionFactory(userId, code);
 		if (!connection) throw new InternalServerErrorException("Failed to create connection");
 		return response.redirect(this.configService.getOrThrow<string>("FRONT_OAUTH_REDIRECTION_URL"));
 	}

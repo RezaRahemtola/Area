@@ -1,12 +1,7 @@
 # DevOps
 
-<<<<<<< HEAD
-Developing a project as important as Area requires a great DevOps structure to make sure our users are always using 
-the latest features and improvements, while analyzing and testing automatically the whole project to make 
-=======
-Developing a project as important as Area requires a great DevOps to make sure our users are always using
+Developing a project as important as Area requires a great DevOps structure to make sure our users are always using
 the latest features and improvements, while analyzing and testing automatically the whole project to make
->>>>>>> 0be663c (docs: Fixing trailing spaces)
 sure we reduce as much as possible the bugs & regressions introduced when the product evolves.\
 Other majors points include releases & changelogs to keep an organized trace of the changes, and also providing
 the best developer experience to ensure time is spent on things that matter.
