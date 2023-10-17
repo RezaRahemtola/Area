@@ -46,3 +46,11 @@ export class GoogleCreateContactParams extends UniqueJobParams {
 	@IsString()
 	lastName: string;
 }
+
+export class GoogleCreateDriveFileParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	description: string;
+}
