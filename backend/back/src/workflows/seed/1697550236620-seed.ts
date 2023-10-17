@@ -25,7 +25,7 @@ export class CreateGoogleCreateDriveFileArea1697550236620 implements MigrationIn
 		await queryRunner.query(
 			`INSERT INTO "area_service_scopes_needed_service_scope"
        ("area_id", "area_service_id", "service_scope_id", "service_scope_service_id")
-       VALUES ('create-drive-file', 'google', 'https://www.googleapis.com/auth/drive.appdata', 'google')`,
+       VALUES ('create-drive-file', 'google', 'https://www.googleapis.com/auth/docs', 'google')`,
 		);
 	}
 
