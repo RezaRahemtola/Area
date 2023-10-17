@@ -2,8 +2,8 @@
 
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-
 import { useTranslation } from "react-i18next";
+
 import { editorReactionServices, editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import { Area, Service } from "@/types/services";
@@ -23,7 +23,7 @@ type ReactionCardProps = { reaction: EditorWorkflowReaction };
 const EditorCard = ({ reaction }: ReactionCardProps) => {
 	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
-	const [step, setStep] = useState<Step>(Step.SUMMARY);
+	const [step, setStep] = useState<Step>(workflow.id ? Step.SELECT_EVENT_AND_ACCOUNT : Step.SUMMARY);
 	const [availableReactions, setAvailableReactions] = useState<Area[]>([]);
 	const [availableServices, setAvailableServices] = useAtom(editorReactionServices);
 	const { t } = useTranslation();
