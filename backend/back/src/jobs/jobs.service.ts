@@ -24,6 +24,19 @@ export class JobsService {
 		return `${areaServiceId}-${areaId}` as JobsType;
 	}
 
+	async getWorkflowAreasForJobId(jobId: string, isWorkflowActive: boolean = true) {
+		const areas = await this.workflowAreaRepository.find({
+			where: { jobId },
+			relations: { workflow: true, actionOfWorkflow: true },
+		});
+
+		return areas.filter(
+			({ workflow, actionOfWorkflow }) =>
+				(workflow && workflow.active === isWorkflowActive) ||
+				(actionOfWorkflow && actionOfWorkflow.active === isWorkflowActive),
+		);
+	}
+
 	async getActionJobsToStart(): Promise<AuthenticatedJobData[]> {
 		const workflows = await this.workflowsService.getWorkflowsWithAreas(undefined, true);
 
@@ -118,6 +131,26 @@ export class JobsService {
 			auth: connection?.data ?? {},
 		};
 		await this.launchJobs([job]);
+	}
+
+	async stopWorkflowActionIfNecessary(workflowId: string) {
+		const workflowAction = await this.workflowAreaRepository.findOne({
+			where: { actionOfWorkflow: { id: workflowId } },
+			relations: { actionOfWorkflow: true },
+		});
+
+		return this.stopJobIdIfNecessary(workflowAction.jobId);
+	}
+
+	async stopJobIdIfNecessary(jobId: string) {
+		const actionsWithJobId = await this.getWorkflowAreasForJobId(jobId);
+
+		if (actionsWithJobId.length === 0) {
+			const res = await this.grpcService.killJob(jobId);
+			if (res.error) {
+				throw new RuntimeException(`Error while stopping job: ${res.error.message}`);
+			}
+		}
 	}
 
 	async synchronizeJobs(): Promise<void> {
