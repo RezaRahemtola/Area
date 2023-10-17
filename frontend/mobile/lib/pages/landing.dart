@@ -48,27 +48,27 @@ class _LandingPageState extends State<LandingPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.workspaces_filled),
             label: 'Library',
-            backgroundColor: Colors.red,
+            backgroundColor: Color(0xFF516079),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
             label: 'Explore',
-            backgroundColor: Colors.green,
+            backgroundColor: Color(0xFF516079),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
             label: 'CREATE',
-            backgroundColor: Colors.blue,
+            backgroundColor: Color(0xFF516079),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_activity),
             label: 'Activity',
-            backgroundColor: Colors.purple,
+            backgroundColor: Color(0xFF516079),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: 'User',
-            backgroundColor: Colors.pink,
+            backgroundColor: Color(0xFF516079),
           ),
         ],
         currentIndex: _selectedIndex,
