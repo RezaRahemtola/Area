@@ -31,47 +31,33 @@ class WorkflowForm extends StatelessWidget {
           ),
           const SizedBox(height: 16.0),
           DropdownButtonFormField(
-            items: const [
-              DropdownMenuItem(
-                value: 'Spotify',
-                child: Text('Spotify'),
-              ),
-              DropdownMenuItem(
-                value: 'Discord',
-                child: Text('Discord'),
-              ),
-              DropdownMenuItem(
-                value: 'YouTube',
-                child: Text('YouTube'),
-              ),
-              DropdownMenuItem(
-                value: 'Gmail',
-                child: Text('Gmail'),
-              ),
-            ],
+            items: [
+              'Spotify',
+              'Discord',
+              'YouTube',
+              'Gmail',
+            ].map((String service) {
+              return DropdownMenuItem<String>(
+                value: service,
+                child: Text(service),
+              );
+            }).toList(),
             onChanged: (selectedService) {},
             decoration:
                 const InputDecoration(labelText: 'Sélectionnez un Service'),
           ),
           DropdownButtonFormField(
-            items: const [
-              DropdownMenuItem(
-                value: 'Spotify',
-                child: Text('Spotify'),
-              ),
-              DropdownMenuItem(
-                value: 'Discord',
-                child: Text('Discord'),
-              ),
-              DropdownMenuItem(
-                value: 'YouTube',
-                child: Text('YouTube'),
-              ),
-              DropdownMenuItem(
-                value: 'Gmail',
-                child: Text('Gmail'),
-              ),
-            ],
+            items: [
+              'Spotify',
+              'Discord',
+              'YouTube',
+              'Gmail',
+            ].map((String service) {
+              return DropdownMenuItem<String>(
+                value: service,
+                child: Text(service),
+              );
+            }).toList(),
             onChanged: (selectedService) {},
             decoration:
                 const InputDecoration(labelText: 'Sélectionnez un Service'),
