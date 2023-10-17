@@ -33,6 +33,7 @@ import { UpdateGoogleServiceFormsScopes1697460124931 } from "./services/seed/169
 import { CreateGoogleCreateContactArea1697484676351 } from "./workflows/seed/1697484676351-CreateGoogleCreateContactArea";
 import { UpdateGoogleServiceDriveScopes1697494974597 } from "./services/seed/1697494974597-UpdateGoogleServiceDriveScopes";
 import { CreateGoogleEmptyDriveTrashArea1697495519213 } from "./workflows/seed/1697495519213-CreateGoogleEmptyDriveTrashArea";
+import { CreateGoogleCreateDriveFileArea1697550236620 } from "./workflows/seed/1697550236620-seed";
 
 dotenv.config();
 
@@ -70,6 +71,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleCreateContactArea1697484676351,
 		UpdateGoogleServiceDriveScopes1697494974597,
 		CreateGoogleEmptyDriveTrashArea1697495519213,
+		CreateGoogleCreateDriveFileArea1697550236620,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
