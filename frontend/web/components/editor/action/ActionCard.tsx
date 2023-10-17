@@ -19,9 +19,9 @@ enum Step {
 }
 
 const ActionCard = () => {
-	const [{ action }, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [{ id: workflowId, action }, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
-	const [step, setStep] = useState<Step>(Step.SUMMARY);
+	const [step, setStep] = useState<Step>(workflowId ? Step.SELECT_EVENT_AND_ACCOUNT : Step.SUMMARY);
 	const [availableActions, setAvailableActions] = useState<Area[]>([]);
 	const [availableServices, setAvailableServices] = useAtom(editorActionServices);
 	const { t } = useTranslation();

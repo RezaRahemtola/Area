@@ -3,14 +3,17 @@
 import Image from "next/image";
 import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
-
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+
 import { Workflow } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import RenameWorkflowModal from "@/components/library/modals/RenameWorkflowModal";
 import { libraryOpenedWorkflowOptionsAtom } from "@/stores/library";
 import { servicesAtom } from "@/stores";
 import services from "@/services";
+import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
+import { convertWorkflowToEditorWorkflow } from "@/utils/workflows";
 
 const ServiceLogo = ({ serviceId }: { serviceId: string }) => {
 	const [servicePicture, setServicePicture] = useState<string | undefined>();
@@ -47,9 +50,12 @@ type LibraryWorkflowLineProps = {
 	onWorkflowChange: (workflowId: string) => void;
 };
 const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }: LibraryWorkflowLineProps) => {
+	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
+	const [, setSelectedEditorArea] = useAtom(selectedEditorAreaAtom);
 	const [openedWorkflowOptions, setOpenedWorkflowOptions] = useAtom(libraryOpenedWorkflowOptionsAtom);
 	const renameModalRef = useRef<HTMLDialogElement>(null);
 	const { t } = useTranslation();
+	const router = useRouter();
 
 	const onOpenOptions: MouseEventHandler<HTMLDetailsElement> = (event) => {
 		event.preventDefault();
@@ -66,6 +72,14 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 	const onRenameSuccess = () => {
 		renameModalRef.current?.close();
 		onWorkflowChange(workflow.id);
+	};
+
+	const onClickEdit = async () => {
+		const editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
+		console.log(editorWorkflow);
+		setEditorWorkflow(editorWorkflow);
+		setSelectedEditorArea(null);
+		router.push("/editor");
 	};
 
 	const onClickDelete = async () => {
@@ -119,8 +133,14 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 					<ul className="dropdown-content z-[1] menu p-2 shadow-xl bg-base-content rounded-box w-52">
 						<li>
 							<a className="hover:text-neutral-content" onClick={onClickRename}>
-								<FontAwesomeIcon icon="pen" />
+								<FontAwesomeIcon icon="input-text" />
 								{t("actions.rename")}
+							</a>
+						</li>
+						<li>
+							<a className="hover:text-neutral-content" onClick={onClickEdit}>
+								<FontAwesomeIcon icon="pen" />
+								{t("actions.edit")}
 							</a>
 						</li>
 						<li>
