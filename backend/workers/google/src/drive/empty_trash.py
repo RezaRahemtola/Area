@@ -12,7 +12,7 @@ from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
 
-SCOPES = ['https://www.googleapis.com/auth/docs']
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
 TARGET = "localhost:50050"
 
 def empty_trash():

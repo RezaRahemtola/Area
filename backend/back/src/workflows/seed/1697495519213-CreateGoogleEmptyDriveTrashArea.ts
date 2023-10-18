@@ -14,7 +14,7 @@ export class CreateGoogleEmptyDriveTrashArea1697495519213 implements MigrationIn
 		await queryRunner.query(
 			`INSERT INTO "area_service_scopes_needed_service_scope"
        ("area_id", "area_service_id", "service_scope_id", "service_scope_service_id")
-       VALUES ('empty-drive-trash', 'google', 'https://www.googleapis.com/auth/docs', 'google')`,
+       VALUES ('empty-drive-trash', 'google', 'https://www.googleapis.com/auth/drive.file', 'google')`,
 		);
 	}
 
