@@ -31,7 +31,7 @@ import { CreateGoogleSpreadsheetArea1697442335135 } from "./workflows/seed/16974
 import { CreateGoogleCreateFormArea1697476339491 } from "./workflows/seed/1697476339491-CreateGoogleCreateFormArea";
 import { UpdateGoogleServiceFormsScopes1697460124931 } from "./services/seed/1697460124931-UpdateGoogleServiceFormsScopes-seed";
 import { CreateGoogleCreateContactArea1697484676351 } from "./workflows/seed/1697484676351-CreateGoogleCreateContactArea";
-import { CreateMicrosoftServiceAndScopes1697423320221 } from "./services/seed/1697423320221-CreateMicrosoftServiceAndScopes";
+import { CreateMicrosoftServiceAndScopes1697423320221 } from "./services/seed/1697665090584-CreateMicrosoftServiceAndScopes";
 
 dotenv.config();
 
