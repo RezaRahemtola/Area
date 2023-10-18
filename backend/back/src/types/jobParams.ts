@@ -1,6 +1,6 @@
 import { IsEmail, IsNumber, IsString, IsUUID } from "class-validator";
 
-class UniqueJobParams {
+export class UniqueJobParams {
 	@IsUUID(4)
 	workflowStepId: string;
 }
@@ -37,4 +37,12 @@ export class GoogleYoutubeCreateCommentParams extends UniqueJobParams {
 export class GoogleCreateDocumentParams extends UniqueJobParams {
 	@IsString()
 	name: string;
+}
+
+export class GoogleCreateContactParams extends UniqueJobParams {
+	@IsString()
+	firstName: string;
+
+	@IsString()
+	lastName: string;
 }

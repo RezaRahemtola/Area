@@ -8,6 +8,7 @@ type DashboardMenuElementProps = {
 	title: string;
 	href: string;
 	isFull: boolean;
+	onClick?: () => void;
 };
 
 const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementProps) => (
@@ -19,8 +20,8 @@ const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementPr
 	</li>
 );
 
-const DashboardMenuButton = ({ icon, title, href, isFull }: DashboardMenuElementProps) => (
-	<Link className="justify-center" href={href}>
+const DashboardMenuButton = ({ icon, title, href, isFull, onClick }: DashboardMenuElementProps) => (
+	<Link className="justify-center" href={href} onClick={onClick}>
 		<button className={`btn btn-secondary ${isFull ? "btn-wide" : ""}`}>
 			<FontAwesomeIcon icon={icon} /> {isFull ? title : ""}
 		</button>

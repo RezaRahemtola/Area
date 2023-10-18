@@ -13,4 +13,6 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-document-docs": ({ workflowStepId }) => `google-create-document-docs-${workflowStepId}`,
 	"google-create-presentation-slides": ({ workflowStepId }) => `google-create-presentation-slides-${workflowStepId}`,
 	"google-create-spreadsheet": ({ workflowStepId }) => `google-create-spreadsheet-${workflowStepId}`,
+	"google-create-form": ({ workflowStepId }) => `google-create-form-${workflowStepId}`,
+	"google-create-contact": ({ workflowStepId }) => `google-create-contact-${workflowStepId}`,
 };

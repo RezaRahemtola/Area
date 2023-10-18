@@ -1,16 +1,14 @@
 import dotenv
 import sys
 
+from src.contacts.create_contact import create_contact
+from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
 from src.gmail.update_signature import update_signature
-
 from src.youtube.create_comment import create_comment
-
 from src.docs.create_document import create_document
-
 from src.slides.create_slide import create_slide
-
 from src.spreadsheets.create_spreadsheet import create_spreadsheet
 
 
@@ -45,6 +43,14 @@ def main():
         # Spreadsheets
         case "create-spreadsheet":
             create_spreadsheet()
+
+        # Forms
+        case "create-form":
+            create_form()
+
+        # Contacts
+        case "create-contact":
+            create_contact()
 
         case _:
             print("Error: Invalid job")

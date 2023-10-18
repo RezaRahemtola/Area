@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNotEmptyObject, IsUUID } from "class-validator";
+import { IsNotEmpty, IsObject, IsUUID } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { ServiceName } from "../../services/services.service";
 
@@ -8,7 +8,7 @@ export class WorkflowActionDto {
 	id!: string;
 
 	@ApiProperty()
-	@IsNotEmptyObject()
+	@IsObject()
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	parameters!: Record<string, any>;
 

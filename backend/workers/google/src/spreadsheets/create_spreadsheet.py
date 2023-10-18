@@ -29,7 +29,7 @@ def create_spreadsheet():
                 'title': args["name"]
             }
         }
-        spreadsheet = service.spreadsheets().create(body=spreadsheet, fields='spreadsheetId').execute()
+        spreadsheet = service.spreadsheets().create(body=body, fields='spreadsheetId').execute()
 
         target = args["target"] if args.keys().__contains__("target") else TARGET
 
