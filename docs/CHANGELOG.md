@@ -1,3 +1,37 @@
+<a name="v0.10.0"></a>
+# [v0.10.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.10.0) - 18 Oct 2023
+
+## Changes
+
+New LinkedIn service, some Google reactions, web improvements and jobs killed when needed
+
+## 🚀 Features
+
+- Web library: Add workflow edition [@RezaRahemtola](https://github.com/RezaRahemtola) ([#111](https://github.com/RezaRahemtola/Area/issues/111))
+- Back error handling on jobs and auto kill [@EdenComp](https://github.com/EdenComp) ([#105](https://github.com/RezaRahemtola/Area/issues/105))
+- Create a Google contact reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#109](https://github.com/RezaRahemtola/Area/issues/109))
+- Create Google form reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#106](https://github.com/RezaRahemtola/Area/issues/106))
+- Create google documents \& post YouTube comment reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#103](https://github.com/RezaRahemtola/Area/issues/103))
+- Added LinkedIn service [@Croos3r](https://github.com/Croos3r) ([#104](https://github.com/RezaRahemtola/Area/issues/104))
+- Update gmail signature reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#102](https://github.com/RezaRahemtola/Area/issues/102))
+- Web editor basic parameters handling [@RezaRahemtola](https://github.com/RezaRahemtola) ([#94](https://github.com/RezaRahemtola/Area/issues/94))
+- Google Drive empty trash & create file reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#110](https://github.com/RezaRahemtola/Area/issues/110))
+- Create draft email reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#101](https://github.com/RezaRahemtola/Area/issues/101))
+
+## 🐛 Bug Fixes
+
+- Back error handling on jobs and auto kill [@EdenComp](https://github.com/EdenComp) ([#105](https://github.com/RezaRahemtola/Area/issues/105))
+
+## 🧰 Maintenance
+
+- chore(deps): bump urllib3 from 2.0.6 to 2.0.7 in /backend/workers/google [@dependabot](https://github.com/dependabot) ([#112](https://github.com/RezaRahemtola/Area/issues/112)
+- Update changelog for "v0.9.0" [@github-actions](https://github.com/github-actions) ([#100](https://github.com/RezaRahemtola/Area/issues/100))
+
+
+
+[Changes][v0.10.0]
+
+
 <a name="v0.9.0"></a>
 # [v0.9.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.9.0) - 15 Oct 2023
 
@@ -326,6 +360,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v0.10.0]: https://github.com/RezaRahemtola/Area/compare/v0.9.0...v0.10.0
 [v0.9.0]: https://github.com/RezaRahemtola/Area/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/RezaRahemtola/Area/compare/v0.7.4...v0.8.0
 [v0.7.4]: https://github.com/RezaRahemtola/Area/compare/v0.7.0...v0.7.4
