@@ -10,6 +10,9 @@ export class CreateMicrosoftServiceAndScopes1697423320221 implements MigrationIn
 		"https://onenote.com/Notes.ReadWrite",
 		"https://onenote.com/Notes.ReadWrite.All",
 		"https://onenote.com/Notes.ReadWrite.CreatedByApp",
+		"profile",
+		"openid",
+		"email",
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
