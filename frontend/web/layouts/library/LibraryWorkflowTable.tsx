@@ -10,6 +10,8 @@ import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import LibraryGlobalActions from "@/components/library/LibraryGlobalActions";
 import { workflowsAtom } from "@/stores";
 import services from "@/services";
+import { editorWorkflowAtom } from "@/stores/editor";
+import { getEmptyEditorWorkflow } from "@/utils/workflows";
 
 import "@/styles/customCheckbox.css";
 
@@ -18,6 +20,7 @@ const LibraryWorkflowTable = () => {
 	const [selectedWorkflows, setSelectedWorkflows] = useState<string[]>([]);
 	const [globalSelect, setGlobalSelect] = useState(false);
 	const { t } = useTranslation();
+	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
 
 	useEffect(() => {
 		(async () => {
@@ -97,7 +100,7 @@ const LibraryWorkflowTable = () => {
 			{workflows.length === 0 ? (
 				<div className="w-fit ml-4">
 					<p className="text-center">{t("library.emptyState.title")}</p>
-					<Link href="/editor">
+					<Link href="/editor" onClick={() => setEditorWorkflow(getEmptyEditorWorkflow())}>
 						<button className="btn btn-primary btn-outline btn-wide">{t("library.emptyState.action")}</button>
 					</Link>
 				</div>

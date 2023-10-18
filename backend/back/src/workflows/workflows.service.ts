@@ -27,6 +27,8 @@ export class WorkflowsService {
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
+		@InjectRepository(WorkflowArea)
+		private readonly workflowAreaRepository: Repository<WorkflowArea>,
 		@InjectRepository(Area)
 		private readonly areaRepository: Repository<Area>,
 		@Inject(forwardRef(() => JobsService))
@@ -241,6 +243,8 @@ export class WorkflowsService {
 		);
 		if (newState) {
 			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId, ownerId)));
+		} else {
+			await Promise.all(workflows.map((workflowId) => this.jobsService.stopWorkflowActionIfNecessary(workflowId)));
 		}
 		return affected > 0;
 	}
@@ -250,19 +254,32 @@ export class WorkflowsService {
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		const { active } = workflow;
 		await this.workflowRepository.update(workflowId, { active: !active });
-		if (!active) {
+		if (active) {
+			await this.jobsService.stopWorkflowActionIfNecessary(workflowId);
+		} else {
 			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
 		}
 		return { newState: !active };
 	}
 
 	async deleteWorkflows(workflows: string[], ownerId: string) {
+		const workflowActions = await this.workflowAreaRepository.find({
+			where: { actionOfWorkflow: { id: In(workflows), ownerId } },
+			relations: { actionOfWorkflow: true },
+		});
+		const jobIds = workflowActions.map((a) => a.jobId);
 		const { affected } = await this.workflowRepository.delete({ id: In(workflows), ownerId });
+		await Promise.all(jobIds.map((jobId) => this.jobsService.stopJobIdIfNecessary(jobId)));
 		return affected > 0;
 	}
 
 	async deleteWorkflow(workflowId: string, ownerId: string) {
+		const { jobId } = await this.workflowAreaRepository.findOne({
+			where: { actionOfWorkflow: { id: workflowId } },
+			relations: { actionOfWorkflow: true },
+		});
 		const { affected } = await this.workflowRepository.delete({ id: workflowId, ownerId });
+		await this.jobsService.stopJobIdIfNecessary(jobId);
 		return affected === 1;
 	}
 

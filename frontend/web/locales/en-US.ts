@@ -23,6 +23,12 @@ const translations = {
 	},
 	dashboard: {
 		title: "Dashboard",
+		menu: {
+			editor: "Create workflow",
+			dashboard: "Dashboard",
+			library: "Library",
+			services: "Services",
+		},
 	},
 	editor: {
 		action: {
@@ -56,6 +62,7 @@ const translations = {
 		delete: "Delete",
 		save: "Save",
 		close: "Close",
+		edit: "Edit",
 	},
 };
 

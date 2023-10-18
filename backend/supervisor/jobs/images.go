@@ -9,6 +9,8 @@ var JobToImage = map[string]string{
 	"google-create-document-docs":   "supervisor-google",
 	"google-create-presentation-slides":   "supervisor-google",
 	"google-create-spreadsheet":   "supervisor-google",
+	"google-create-form":   "supervisor-google",
+	"google-create-contact":   "supervisor-google",
 }
 
 var OptArgument = map[string]string{
@@ -20,6 +22,8 @@ var OptArgument = map[string]string{
 	"google-create-document-docs":   "create-document-docs",
 	"google-create-presentation-slides":   "create-presentation-slides",
 	"google-create-spreadsheet":   "create-spreadsheet",
+	"google-create-form":   "create-form",
+	"google-create-contact":   "create-contact",
 }
 
 func GetImages() []string {

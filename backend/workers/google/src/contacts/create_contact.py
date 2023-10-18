@@ -12,23 +12,28 @@ from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
 
-SCOPES = ['https://www.googleapis.com/auth/presentations']
+SCOPES = ['https://www.googleapis.com/auth/contacts']
 TARGET = "localhost:50050"
 
-def create_slide():
-    args = get_arguments({"auth", "name", "workflowStepId"})
+def create_contact():
+    args = get_arguments({"auth", "firstName", "lastName", "workflowStepId"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
 
     try:
-        service = build('slides', 'v1', credentials=creds)
+        service = build('people', 'v1', credentials=creds)
 
         body = {
-            'title': args["name"]
+            "names": [
+                {
+                    "givenName": args["firstName"],
+                    "familyName": args["lastName"]
+                }
+            ]
         }
-        presentation = service.presentations() \
-            .create(body=body).execute()
+
+        service.people().createContact(body=body).execute()
 
         target = args["target"] if args.keys().__contains__("target") else TARGET
 
@@ -36,9 +41,8 @@ def create_slide():
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
-                "presentationId": presentation.get('presentationId')
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="slides", identifier="google-create-presentation-slides", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="people", identifier="google-create-contact", params=params))
 
     except HttpError as error:
         print(F'An error occurred: {error}')

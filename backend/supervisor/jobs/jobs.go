@@ -13,6 +13,8 @@ type JobManager struct {
 	dockerClient *client.Client
 	jobs         map[string]Job
 	callbackUrl  string
+	production   bool
+	jobsCount    int
 }
 
 type Job struct {
@@ -23,8 +25,8 @@ type Job struct {
 
 var instance *JobManager
 
-func InitJobManager(cli *client.Client, callbackUrl string) {
-	instance = &JobManager{cli, map[string]Job{}, callbackUrl}
+func InitJobManager(cli *client.Client, callbackUrl string, env string) {
+	instance = &JobManager{cli, map[string]Job{}, callbackUrl, env == "production", 0}
 
 	err := instance.cleanContainers()
 	if err != nil {
@@ -44,6 +46,7 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		if err != nil {
 			delete(jm.jobs, identifier)
 		} else {
+			log.Printf("Job %s already running\n", identifier)
 			return nil
 		}
 	}
@@ -67,17 +70,17 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		Cmd:   args,
 	}, &container.HostConfig{
 		NetworkMode: "host",
-		AutoRemove:  true,
-	}, nil, nil, identifier)
+		AutoRemove:  jm.production,
+	}, nil, nil, jm.generateContainerName(identifier))
 
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error when creating job %s: %v\n", identifier, err)
 		return err
 	}
 
 	err = jm.dockerClient.ContainerStart(context.Background(), cont.ID, types.ContainerStartOptions{})
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error when launching job %s: %v\n", identifier, err)
 		return err
 	}
 
@@ -86,32 +89,41 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		Identifier:  identifier,
 		containerID: cont.ID,
 	}
-	return err
+	jm.jobsCount += 1
+	log.Printf("Job %s launched", identifier)
+	return nil
 }
 
 func (jm *JobManager) KillJob(identifier string) error {
 	job, exists := jm.jobs[identifier]
 	if !exists {
+		log.Printf("Job %s not running\n", identifier)
 		return nil
 	}
 
 	_, err := jm.dockerClient.ContainerInspect(context.Background(), job.containerID)
 	if err != nil {
+		log.Printf("Job %s not running\n", identifier)
 		delete(jm.jobs, identifier)
 		return nil
 	}
 
 	err = jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{})
 	if err != nil {
+		log.Printf("Error when stopping job %s: %v\n", identifier, err)
 		return err
 	}
 
-	err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{})
-	if err != nil {
-		return err
+	if jm.production {
+		err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{})
+		if err != nil {
+			log.Printf("Error when removing job %s: %v\n", identifier, err)
+			return err
+		}
 	}
 
 	delete(jm.jobs, identifier)
+	log.Printf("Job %s killed\n", identifier)
 	return nil
 }
 
@@ -125,22 +137,36 @@ func (jm *JobManager) cleanContainers() error {
 	})
 
 	if err != nil {
+		log.Printf("Error when listing containers: %v\n", err)
 		return err
 	}
+
+	errors := make([]error, 0)
 	for _, cont := range containers {
 		if cont.Image != "area_supervisor" && isSupervisorContainer(cont.Image) {
 			err = jm.dockerClient.ContainerStop(context.Background(), cont.ID, container.StopOptions{})
 			if err != nil {
-				return err
+				errors = append(errors, err)
 			}
 
-			err = jm.dockerClient.ContainerRemove(context.Background(), cont.ID, types.ContainerRemoveOptions{})
-			if err != nil {
-				return err
-			}
+			_ = jm.dockerClient.ContainerRemove(context.Background(), cont.ID, types.ContainerRemoveOptions{})
 		}
 	}
+	if len(errors) > 0 {
+		log.Printf("Error: %d containers could not be stopped\n", len(errors))
+		for _, err := range errors {
+			log.Printf("Error: %v\n", err)
+		}
+		return fmt.Errorf("%d containers could not be stopped", len(errors))
+	}
 	return nil
+}
+
+func (jm *JobManager) generateContainerName(identifier string) string {
+	if jm.production {
+		return identifier
+	}
+	return fmt.Sprintf("%s-%d", identifier, jm.jobsCount)
 }
 
 func isSupervisorContainer(image string) bool {

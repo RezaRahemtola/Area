@@ -2,10 +2,15 @@ import { In, MigrationInterface, QueryRunner } from "typeorm";
 import { ParametersFormFlowFieldDto } from "../../services/dto/area.dto";
 import Area from "../../services/entities/area.entity";
 
-export class CreateGoogleSlidesPresentationArea1697441436959 implements MigrationInterface {
+export class CreateGoogleCreateContactArea1697484676351 implements MigrationInterface {
 	private readonly parametersFormFlow: ParametersFormFlowFieldDto[] = [
 		{
-			name: "name",
+			name: "firstName",
+			type: "short-text",
+			required: true,
+		},
+		{
+			name: "lastName",
 			type: "short-text",
 			required: true,
 		},
@@ -14,25 +19,25 @@ export class CreateGoogleSlidesPresentationArea1697441436959 implements Migratio
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow")
-       VALUES ('create-presentation-slides', 'google', false, 'Create a new Google Slides', $1)`,
+       VALUES ('create-contact', 'google', false, 'Create a new Google Contact', $1)`,
 			[JSON.stringify(this.parametersFormFlow)],
 		);
 		await queryRunner.query(
 			`INSERT INTO "area_service_scopes_needed_service_scope"
        ("area_id", "area_service_id", "service_scope_id", "service_scope_service_id")
-       VALUES ('create-presentation-slides', 'google', 'https://www.googleapis.com/auth/presentations', 'google')`,
+       VALUES ('create-contact', 'google', 'https://www.googleapis.com/auth/contacts', 'google')`,
 		);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.manager.getRepository(Area).delete({
-			id: In(["create-presentation-slides"]),
+			id: In(["create-contact"]),
 			serviceId: In(["google"]),
 		});
 		await queryRunner.query(
 			`DELETE
        FROM "area"
-       WHERE "id" = 'create-presentation-slides'
+       WHERE "id" = 'create-contact'
          AND "service_id" = 'google'`,
 		);
 	}
