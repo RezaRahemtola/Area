@@ -1,10 +1,12 @@
 import json
+import sys
 
 import grpc
+from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+from area_back_pb2 import JobError
 from src.utils.auth import forge_credentials
 from src.utils.parsing import get_arguments
 
@@ -27,8 +29,7 @@ def create_document():
         body = {
             'title': args["name"]
         }
-        document = service.documents() \
-            .create(body=body).execute()
+        document = service.documents().create(body=body).execute()
 
         target = args["target"] if args.keys().__contains__("target") else TARGET
 
@@ -38,7 +39,14 @@ def create_document():
                 "workflowStepId": args["workflowStepId"],
                 "docTitle": document.get('title')
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="docs", identifier="google-create-document-docs", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-document-docs", identifier=args["identifier"], params=params))
 
-    except HttpError as error:
-        print(F'An error occurred: {error}')
+    except RefreshError as error:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
+        exit(1)
+    except:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
+        exit(1)

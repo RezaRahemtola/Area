@@ -1,10 +1,12 @@
 import json
+import sys
 
 import grpc
+from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+from area_back_pb2 import JobError
 from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
@@ -49,8 +51,16 @@ def update_signature():
                 "workflowStepId": args["workflowStepId"],
                 "displayName": result.get("displayName")
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-update-signature-email", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-update-signature-email", identifier="google-update-signature-email", params=params))
 
-    except HttpError as error:
-        print(F'An error occurred: {error}')
-        result = None
+
+    except RefreshError as error:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(JobError(identifier=identifier, error=str(error), isAuthError=True))
+        exit(1)
+
+    except:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=identifier, error=str(sys.exc_info()[0]), isAuthError=False))
+        exit(1)

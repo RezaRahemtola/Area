@@ -1,13 +1,15 @@
 import base64
 import json
+import sys
 
 from email.message import EmailMessage
 
 import grpc
+from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+from area_back_pb2 import JobError
 from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
@@ -18,7 +20,8 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.compose']
 TARGET = "localhost:50050"
 
 def create_draft():
-    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId"})
+    args = get_arguments({"auth", "to", "subject", "body", "workflowStepId", "identifier"})
+    target = args["target"] if args.keys().__contains__("target") else TARGET
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
@@ -38,10 +41,7 @@ def create_draft():
                 'raw': encoded_message
             }
         }
-        draft = service.users().drafts().create(userId="me",
-                                                body=create_message).execute()
-
-        target = args["target"] if args.keys().__contains__("target") else TARGET
+        draft = service.users().drafts().create(userId="me", body=create_message).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()
@@ -49,8 +49,14 @@ def create_draft():
                 "workflowStepId": args["workflowStepId"],
                 "emailId": draft["id"]
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="gmail", identifier="google-create-draft-email", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-draft-email", identifier=args["identifier"], params=params))
 
-    except HttpError as error:
-        print(F'An error occurred: {error}')
-        draft = None
+    except RefreshError as error:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
+        exit(1)
+    except:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
+        exit(1)

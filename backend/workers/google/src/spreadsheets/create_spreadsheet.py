@@ -1,10 +1,12 @@
 import json
+import sys
 
 import grpc
+from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+from area_back_pb2 import JobError
 from src.utils.auth import forge_credentials
 from src.utils.parsing import get_arguments
 
@@ -39,7 +41,14 @@ def create_spreadsheet():
                 "workflowStepId": args["workflowStepId"],
                 "spreadsheetId": spreadsheet.get('spreadsheetId')
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="spreadsheets", identifier="google-create-spreadsheet", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-spreadsheet", identifier=args["identifier"], params=params))
 
-    except HttpError as error:
-        print(F'An error occurred: {error}')
+    except RefreshError as error:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
+        exit(1)
+    except:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
+        exit(1)
