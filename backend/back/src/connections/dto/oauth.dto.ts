@@ -32,4 +32,12 @@ export class OauthCallbackDto {
 	@IsOptional()
 	@IsString()
 	scope!: string;
+
+	@ApiPropertyOptional({
+		description: "The opaque session state of the user",
+		type: String,
+	})
+	@IsOptional()
+	@IsString()
+	session_state!: string;
 }

@@ -9,8 +9,9 @@ type OAuthResponse = {
 	access_token: string;
 	scope: string;
 	token_type?: string;
-	expires_in?: number;
 	refresh_token?: string;
+	expires_in?: number;
+	ext_expires_in?: number;
 };
 
 type OAuthCallbackUrlFactory<TWantedService extends ServiceName> = <TActualService extends TWantedService>(
@@ -68,9 +69,18 @@ export class OauthService {
 		linkedin: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
 				`${baseUrl}?client_id=${this.configService.getOrThrow("LINKEDIN_CLIENT_ID")}&scope=${encodeURI(
-					[...scopes].join(" "),
+					scopes.join(" "),
 				)}&state=${userId}&response_type=code&redirect_uri=${oauthCallbackUrlFactory("linkedin")}`,
 			connectionFactory: this.createLinkedInConnection.bind(this),
+		},
+		microsoft: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?client_id=${this.configService.getOrThrow("MICROSOFT_CLIENT_ID")}&scope=${encodeURI(
+					["offline_access", ...scopes].join(" "),
+				)}&prompt=consent&response_mode=query&state=${userId}&response_type=code&redirect_uri=${oauthCallbackUrlFactory(
+					"microsoft",
+				)}`,
+			connectionFactory: this.createMicrosoftConnection.bind(this),
 		},
 	};
 
@@ -169,6 +179,29 @@ export class OauthService {
 			},
 		);
 		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(" "), connectionData);
+	}
+
+	async createMicrosoftConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://login.microsoftonline.com/common/oauth2/v2.0/token",
+			{
+				client_id: this.configService.getOrThrow<string>("MICROSOFT_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("MICROSOFT_CLIENT_SECRET"),
+				code,
+				grant_type: "authorization_code",
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("microsoft"),
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		);
+		console.log(scope);
+		return this.connectionsService.createUserConnection(userId, "microsoft", scope.split(" "), connectionData);
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
