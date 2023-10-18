@@ -1,12 +1,10 @@
 import {
 	GoogleCreateContactParams,
 	GoogleCreateDocumentParams,
-	GoogleCreateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
 	TimerSecondIntervalParams,
-	UniqueJobParams,
 } from "./jobParams";
 
 export enum Jobs {
@@ -20,8 +18,6 @@ export enum Jobs {
 	"google-create-spreadsheet" = "google-create-spreadsheet",
 	"google-create-form" = "google-create-form",
 	"google-create-contact" = "google-create-contact",
-	"google-empty-drive-trash" = "google-empty-drive-trash",
-	"google-create-drive-file" = "google-create-drive-file",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -41,8 +37,6 @@ export const JobParamsClasses = {
 	"google-create-spreadsheet": GoogleCreateDocumentParams,
 	"google-create-form": GoogleCreateDocumentParams,
 	"google-create-contact": GoogleCreateContactParams,
-	"google-empty-drive-trash": UniqueJobParams,
-	"google-create-drive-file": GoogleCreateDriveFileParams,
 };
 
 export type JobsParams = Mapper<{
@@ -56,6 +50,4 @@ export type JobsParams = Mapper<{
 	"google-create-spreadsheet": GoogleCreateDocumentParams;
 	"google-create-form": GoogleCreateDocumentParams;
 	"google-create-contact": GoogleCreateContactParams;
-	"google-empty-drive-trash": UniqueJobParams;
-	"google-create-drive-file": GoogleCreateDriveFileParams;
 }>;
