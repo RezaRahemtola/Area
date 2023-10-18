@@ -15,8 +15,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'backend/supervisor/**/*'
+      - name: Setup go
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "backend/supervisor/go.mod"
+          cache-dependency-path: "backend/supervisor/go.sum"
       - name: Docker compose build
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: docker-compose build
+      - name: Run go format
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: go fmt && git diff --exit-code
 
   eslint-backend:
     name: "ESLint: Backend"
