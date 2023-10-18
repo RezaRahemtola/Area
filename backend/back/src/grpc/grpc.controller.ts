@@ -21,6 +21,6 @@ export class GrpcController {
 
 	@GrpcMethod("AreaBackService", "OnError")
 	async onError(data: JobData): Promise<void> {
-		console.log("Job error", data)
+		console.log("Job error", data);
 	}
 }
