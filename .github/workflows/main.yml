@@ -26,8 +26,9 @@ jobs:
         with:
           go-version-file: "backend/supervisor/go.mod"
           cache-dependency-path: "backend/supervisor/go.sum"
-      - name: Docker compose build
-        run: docker compose build
+      - name: Run go build
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: go build
       - name: Run go format
         if: steps.changed-files.outputs.any_changed == 'true'
         run: go fmt && git diff --exit-code
