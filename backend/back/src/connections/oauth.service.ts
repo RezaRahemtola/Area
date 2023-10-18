@@ -13,16 +13,16 @@ type OAuthResponse = {
 	refresh_token?: string;
 };
 
-type OAuthCallbackUrlFactory<TWantedService extends string> = <TActualService extends TWantedService>(
+type OAuthCallbackUrlFactory<TWantedService extends ServiceName> = <TActualService extends TWantedService>(
 	service: TActualService,
 ) => `${string}/connections/oauth/${TActualService}/callback`;
-type ServiceOAuthUrlFactory<TService extends string> = <TBaseUrl extends string>(
+type ServiceOAuthUrlFactory<TService extends ServiceName> = <TBaseUrl extends string>(
 	baseUrl: TBaseUrl,
 	userId: string,
 	scopes: string[],
 	oauthCallbackUrlFactory: OAuthCallbackUrlFactory<TService>,
 ) => `${TBaseUrl}${string}`;
-type ServiceOAuthFactories<TServices extends string> = {
+type ServiceOAuthFactories<TServices extends ServiceName> = {
 	[TService in TServices]: {
 		urlFactory: ServiceOAuthUrlFactory<TService>;
 		connectionFactory: (userId: string, code: string) => Promise<UserConnection>;
@@ -181,6 +181,6 @@ export class OauthService {
 		);
 	}
 
-	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory<string> = (service) =>
+	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory<ServiceName> = (service) =>
 		`${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/${service}/callback`;
 }
