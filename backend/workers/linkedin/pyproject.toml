@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "linkedin-worker"
+version = "1.0.0"
+description = "LinkedIN worker"
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^1.0.0"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+grpcio-tools = "^1.59.0"
+grpcio = "^1.59.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -46,3 +46,8 @@ export class GoogleCreateContactParams extends UniqueJobParams {
 	@IsString()
 	lastName: string;
 }
+
+export class LinkedinCreatePostParams extends UniqueJobParams {
+	@IsString()
+	content: string;
+}
