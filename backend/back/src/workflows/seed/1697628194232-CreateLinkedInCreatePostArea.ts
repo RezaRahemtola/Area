@@ -9,6 +9,16 @@ export class CreateLinkedInCreatePostArea1697628194232 implements MigrationInter
 			type: "long-text",
 			required: true,
 		},
+		{
+			name: "articleLink",
+			type: "short-text",
+			required: true,
+		},
+		{
+			name: "articleDescription",
+			type: "short-text",
+			required: true,
+		},
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {

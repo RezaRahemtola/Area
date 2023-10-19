@@ -15,7 +15,7 @@ TARGET = "localhost:50050"
 
 
 def create_post():
-    args = get_arguments({"auth", "content", "workflowStepId", "identifier"})
+    args = get_arguments({"auth", "content", "articleLink", "articleDescription", "workflowStepId", "identifier"})
 
     try:
         credentials = json.loads(args["auth"])
@@ -36,9 +36,9 @@ def create_post():
                             {
                                 'status': 'READY',
                                 'description': {
-                                    'text': 'Read our latest blog post about LinkedIn API!',
+                                    'text': args["articleDescription"],
                                 },
-                                'originalUrl': 'https://area.rezar.fr',
+                                'originalUrl': args["articleLink"],
                             },
                         ],
                     },

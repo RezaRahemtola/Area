@@ -50,4 +50,10 @@ export class GoogleCreateContactParams extends UniqueJobParams {
 export class LinkedinCreatePostParams extends UniqueJobParams {
 	@IsString()
 	content: string;
+
+	@IsString()
+	articleLink: string;
+
+	@IsString()
+	articleDescription: string;
 }
