@@ -10,4 +10,8 @@
     - [Workers](architecture/workers)
     - [DevOps](architecture/devops)
 
+- Internal guides
+
+    - [How to test backend features locally?](internal/testing-backend-locally)
+
 - [Changelog](/CHANGELOG)
