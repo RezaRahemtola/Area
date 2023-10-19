@@ -57,3 +57,8 @@ export class LinkedinCreatePostParams extends UniqueJobParams {
 	@IsString()
 	articleDescription: string;
 }
+
+export class GoogleCreateTaskListParams extends UniqueJobParams {
+	@IsString()
+	title: string;
+}
