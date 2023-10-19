@@ -10,16 +10,22 @@ class ServiceReturn<T> {
 
 class Service {
   final String id;
-  final String name;
   final String imageUrl;
   final List<String> scopes;
 
-  const Service({
+  Service({
     required this.id,
-    required this.name,
     required this.imageUrl,
     required this.scopes,
   });
+
+  factory Service.fromJson(Map<String, dynamic> json) {
+    return Service(
+      id: json['id'],
+      imageUrl: json['imageUrl'],
+      scopes: List<String>.from(json['scopes']),
+    );
+  }
 }
 
 class Area {
