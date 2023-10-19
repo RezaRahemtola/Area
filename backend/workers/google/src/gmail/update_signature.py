@@ -56,11 +56,10 @@ def update_signature():
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:
-            AreaBackServiceStub(channel).OnError(JobError(identifier=identifier, error=str(error), isAuthError=True))
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
         exit(1)
-
-    except:
+    except Exception as e:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(
-                JobError(identifier=identifier, error=str(sys.exc_info()[0]), isAuthError=False))
-        exit(1)
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
+        raise e

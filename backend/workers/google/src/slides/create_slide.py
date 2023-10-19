@@ -46,8 +46,8 @@ def create_slide():
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
         exit(1)
-    except:
+    except Exception as e:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(
                 JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
-        exit(1)
+        raise e
