@@ -55,6 +55,13 @@ export class ConnectionsController {
 		return this.connectionsService.getAvailableConnections(userId);
 	}
 
+	@ApiOkResponse({
+		description: "The user connection was successfully created",
+	})
+	@ApiParam({
+		description: "The service of the user connection to create",
+		name: "serviceId",
+	})
 	@Post("/:serviceId/connect")
 	async connect(
 		@Req()
