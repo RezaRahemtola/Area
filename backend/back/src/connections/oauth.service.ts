@@ -178,7 +178,7 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(" "), connectionData);
+		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(","), connectionData);
 	}
 
 	async createMicrosoftConnection(userId: string, code: string) {

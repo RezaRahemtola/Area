@@ -16,6 +16,9 @@ export class CreateLinkedInServiceAndScopes1697410039086 implements MigrationInt
 		"r_member_social",
 		"rw_ads",
 		"rw_organization_admin",
+		"openid",
+		"profile",
+		"email",
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
