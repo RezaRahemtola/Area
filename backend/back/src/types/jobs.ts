@@ -1,6 +1,7 @@
 import {
 	GoogleCreateContactParams,
 	GoogleCreateDocumentParams,
+	GoogleCreateTaskListParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
@@ -20,6 +21,7 @@ export enum Jobs {
 	"google-create-form" = "google-create-form",
 	"google-create-contact" = "google-create-contact",
 	"linkedin-create-post" = "linkedin-create-post",
+	"google-create-task-list" = "google-create-task-list",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -40,6 +42,7 @@ export const JobParamsClasses = {
 	"google-create-form": GoogleCreateDocumentParams,
 	"google-create-contact": GoogleCreateContactParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
+	"google-create-task-list": GoogleCreateTaskListParams,
 };
 
 export type JobsParams = Mapper<{
@@ -54,4 +57,5 @@ export type JobsParams = Mapper<{
 	"google-create-form": GoogleCreateDocumentParams;
 	"google-create-contact": GoogleCreateContactParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
+	"google-create-task-list": GoogleCreateTaskListParams;
 }>;

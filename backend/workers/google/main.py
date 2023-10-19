@@ -6,6 +6,7 @@ from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
 from src.gmail.update_signature import update_signature
+from src.tasks.create_task_list import create_task_list
 from src.youtube.create_comment import create_comment
 from src.docs.create_document import create_document
 from src.slides.create_slide import create_slide
@@ -51,6 +52,10 @@ def main():
         # Contacts
         case "create-contact":
             create_contact()
+
+        # Tasks
+        case "create-task-list":
+            create_task_list()
 
         case _:
             print("Error: Invalid job")
