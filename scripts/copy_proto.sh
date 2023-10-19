@@ -6,6 +6,8 @@ SUPERVISOR_PROTO_PATH=$GIT_ROOT_PATH/backend/supervisor/proto
 if ! [[ -d "$PROTO_PATH" ]]; then
   echo Protobuf files not found! Cloning...
   git clone git@github.com:RezaRahemtola/area-proto.git $PROTO_PATH
+else
+  git -C $PROTO_PATH pull
 fi
 
 echo Copying protobuf files...
