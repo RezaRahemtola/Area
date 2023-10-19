@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/contacts']
 TARGET = "localhost:50050"
 
 def create_contact():
-    args = get_arguments({"auth", "firstName", "lastName", "workflowStepId"})
+    args = get_arguments({"auth", "firstName", "lastName", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)

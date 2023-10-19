@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/documents']
 TARGET = "localhost:50050"
 
 def create_document():
-    args = get_arguments({"auth", "name", "workflowStepId"})
+    args = get_arguments({"auth", "name", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)

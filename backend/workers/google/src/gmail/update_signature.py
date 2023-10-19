@@ -17,7 +17,7 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.settings.basic']
 TARGET = "localhost:50050"
 
 def update_signature():
-    args = get_arguments({"auth", "signature", "workflowStepId"})
+    args = get_arguments({"auth", "signature", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)

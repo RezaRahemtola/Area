@@ -51,8 +51,6 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		}
 	}
 
-    // TODO Reza: remove debug auth
-    log.Printf("auth %s", auth)
 	var args []string
 	optarg := OptArgument[name]
 	if optarg != "" {
