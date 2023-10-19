@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 
 import "@/styles/globals.css";
 
+/* istanbul ignore next */
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

@@ -1,3 +1,36 @@
+<a name="v0.9.0"></a>
+# [v0.9.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.9.0) - 15 Oct 2023
+
+## Changes
+
+Multiple CI improvements, user backend settings
+
+## 🚀 Features
+
+- Sonarqube self-hosted setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#97](https://github.com/RezaRahemtola/Area/issues/97))
+- Add twitter service provider and some fixes [@Croos3r](https://github.com/Croos3r) ([#96](https://github.com/RezaRahemtola/Area/issues/96))
+- Setup i18n in web [@RezaRahemtola](https://github.com/RezaRahemtola) ([#93](https://github.com/RezaRahemtola/Area/issues/93))
+- Optimizing CI runs based on file changes [@RezaRahemtola](https://github.com/RezaRahemtola) ([#91](https://github.com/RezaRahemtola/Area/issues/91))
+- Implemented /me controller to gather information about the user and their settings [@Croos3r](https://github.com/Croos3r) ([#85](https://github.com/RezaRahemtola/Area/issues/85))
+- Complete cypress setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#99](https://github.com/RezaRahemtola/Area/issues/99))
+
+## 🐛 Bug Fixes
+
+- Gmail worker param renamed to match migration [@RezaRahemtola](https://github.com/RezaRahemtola) ([#95](https://github.com/RezaRahemtola/Area/issues/95))
+
+## 🧰 Maintenance
+
+- Fix SonarQube errors and warnings [@RezaRahemtola](https://github.com/RezaRahemtola) ([#98](https://github.com/RezaRahemtola/Area/issues/98))
+
+## 📄 Documentation
+
+- Implemented /me controller to gather information about the user and their settings [@Croos3r](https://github.com/Croos3r) ([#85](https://github.com/RezaRahemtola/Area/issues/85))
+- Update changelog for "v0.8.0" [@github-actions](https://github.com/github-actions) ([#92](https://github.com/RezaRahemtola/Area/issues/92))
+
+
+[Changes][v0.9.0]
+
+
 <a name="v0.8.0"></a>
 # [v0.8.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.8.0) - 12 Oct 2023
 
@@ -293,6 +326,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v0.9.0]: https://github.com/RezaRahemtola/Area/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/RezaRahemtola/Area/compare/v0.7.4...v0.8.0
 [v0.7.4]: https://github.com/RezaRahemtola/Area/compare/v0.7.0...v0.7.4
 [v0.7.0]: https://github.com/RezaRahemtola/Area/compare/v0.6.0...v0.7.0

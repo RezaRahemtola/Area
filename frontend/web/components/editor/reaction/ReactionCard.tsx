@@ -3,13 +3,14 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { editorReactionServices, editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import EditorSummaryCard from "@/components/editor/EditorSummaryCard";
 import { Area, Service } from "@/types/services";
 import EditorSelectServiceCard from "@/layouts/editor/EditorSelectServiceCard";
 import EditorSelectEventAndAccount from "@/layouts/editor/EditorSelectEventAndAccount";
 import { EditorCardActions } from "@/types/editor";
-import { EditorWorkflowReaction } from "@/types/workflows";
+import { EditorWorkflowElementArea, EditorWorkflowReaction } from "@/types/workflows";
 import services from "@/services";
 
 enum Step {
@@ -20,11 +21,12 @@ enum Step {
 
 type ReactionCardProps = { reaction: EditorWorkflowReaction };
 const EditorCard = ({ reaction }: ReactionCardProps) => {
-	const [, setWorkflow] = useAtom(editorWorkflowAtom);
+	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const [selectedArea, setSelectedArea] = useAtom(selectedEditorAreaAtom);
 	const [step, setStep] = useState<Step>(Step.SUMMARY);
 	const [availableReactions, setAvailableReactions] = useState<Area[]>([]);
 	const [availableServices, setAvailableServices] = useAtom(editorReactionServices);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -64,7 +66,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 
 		setStep(Step.SELECT_EVENT_AND_ACCOUNT);
 	};
-	const onSelectEventAndAccount = (type: "back" | "next", area?: Area) => {
+	const onSelectEventAndAccount = (type: "back" | "next", area?: EditorWorkflowElementArea) => {
 		setWorkflow((prev) => ({
 			...prev,
 			reactions: prev.reactions.map((r) => {
@@ -87,15 +89,23 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 	const actions: EditorCardActions = {
 		enabled: true,
 		onDeleteStep: () => {
-			setWorkflow((prev) => ({ ...prev, reactions: prev.reactions.filter((r) => r.id !== reaction.id) }));
+			const pointingToDeleted = workflow.reactions.filter((r) => r.previousAreaId === reaction.id).map((r) => r.id);
+			const newReactions = workflow.reactions
+				.map((r) => {
+					if (pointingToDeleted.includes(r.id)) return { ...r, previousAreaId: reaction.previousAreaId };
+					return r;
+				})
+				.filter((r) => r.id !== reaction.id);
+
+			setWorkflow((prev) => ({ ...prev, reactions: newReactions }));
 		},
 	};
 
 	if (step === Step.SUMMARY || selectedArea !== reaction.id) {
 		return (
 			<EditorSummaryCard
-				title="Reaction"
-				description={reaction.area ? reaction.area.id : "An event a workflow performs after it start"}
+				title={t("editor.reaction.title")}
+				description={reaction.area ? reaction.area.id : t("editor.reaction.description")}
 				icon="bolt"
 				onClick={onSummaryClick}
 				service={reaction.areaService}
@@ -105,7 +115,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 	if (step === Step.SELECT_SERVICE)
 		return (
 			<EditorSelectServiceCard
-				title="Reaction"
+				title={t("editor.reaction.title")}
 				actions={actions}
 				currentService={reaction.areaService}
 				serviceChoices={availableServices}
@@ -115,7 +125,7 @@ const EditorCard = ({ reaction }: ReactionCardProps) => {
 	if (step === Step.SELECT_EVENT_AND_ACCOUNT)
 		return (
 			<EditorSelectEventAndAccount
-				title="Reaction"
+				title={t("editor.reaction.title")}
 				actions={actions}
 				workflowArea={reaction}
 				areaChoices={availableReactions}

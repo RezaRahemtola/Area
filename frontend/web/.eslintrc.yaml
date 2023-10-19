@@ -19,3 +19,4 @@ rules:
   react/jsx-filename-extension: off
 
   "@typescript-eslint/no-loop-func": off
+  "@typescript-eslint/no-namespace": off

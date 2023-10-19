@@ -13,12 +13,18 @@ export class AuthService {
 	) {}
 
 	async logIn(email: string, password: string): Promise<LoginResultDto> {
-		const user = await this.usersService.getUser({ email });
-		if (!user || !(await verifyArgonHash(user.passwordHash, password)))
-			throw new UnauthorizedException("Invalid credentials.");
-		return {
-			accessToken: this.jwtService.sign({ id: user.id }),
-		};
+		try {
+			const user = await this.usersService.getUser({ email });
+			if (!(await verifyArgonHash(user.passwordHash, password))) {
+				// noinspection ExceptionCaughtLocallyJS
+				throw new UnauthorizedException("Invalid password.");
+			}
+			return {
+				accessToken: this.jwtService.sign({ id: user.id }),
+			};
+		} catch (error) {
+			throw new UnauthorizedException("Invalid email/password");
+		}
 	}
 
 	async register(email: string, password: string): Promise<LoginResultDto> {

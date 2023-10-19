@@ -1,11 +1,12 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import ServiceScope from "./service-scope.entity";
 import Area from "./area.entity";
+import { ServiceName } from "../services.service";
 
 @Entity()
 export default class Service {
 	@PrimaryColumn()
-	id!: string;
+	id!: ServiceName;
 
 	@Column()
 	imageUrl!: string;

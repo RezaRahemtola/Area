@@ -3,6 +3,7 @@ import Service from "./service.entity";
 import ServiceScope from "./service-scope.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { ParametersFormFlowFieldDto } from "../dto/area.dto";
+import { ServiceName } from "../services.service";
 
 @Entity()
 export default class Area {
@@ -11,7 +12,7 @@ export default class Area {
 	id!: string;
 
 	@PrimaryColumn()
-	serviceId!: string;
+	serviceId!: ServiceName;
 	@ManyToOne(() => Service, { onDelete: "CASCADE" })
 	service!: Service;
 

@@ -20,6 +20,7 @@ import { JobsService } from "../jobs/jobs.service";
 import { JobsType } from "../types/jobs";
 import Service from "../services/entities/service.entity";
 import { ConnectionsService } from "../connections/connections.service";
+import { ServiceName } from "../services/services.service";
 
 @Injectable()
 export class WorkflowsService {
@@ -137,16 +138,20 @@ export class WorkflowsService {
 		reactions: WorkflowReactionDto[],
 		active: boolean = false,
 	) {
-		let exception: unknown = null;
 		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
 		try {
-			if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId } }))
+			if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId } })) {
+				// noinspection ExceptionCaughtLocallyJS
 				throw new ConflictException(`Workflow ${name} already exists.`);
+			}
 
 			const owner = await queryRunner.manager.findOneBy(User, { id: ownerId });
-			if (!owner) throw new NotFoundException(`User ${ownerId} not found.`);
+			if (!owner) {
+				// noinspection ExceptionCaughtLocallyJS
+				throw new NotFoundException(`User ${ownerId} not found.`);
+			}
 
 			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
@@ -162,12 +167,11 @@ export class WorkflowsService {
 			return {
 				id,
 			};
-		} catch (_exception) {
+		} catch (exception) {
 			await queryRunner.rollbackTransaction();
-			exception = _exception;
+			throw exception;
 		} finally {
 			await queryRunner.release();
-			if (exception) throw exception;
 		}
 	}
 
@@ -185,7 +189,6 @@ export class WorkflowsService {
 		if (workflow.active) throw new ConflictException(`Workflow ${workflowId} is active, you cannot update it.`);
 		if (!name && !action && !reactions) return false;
 		let result = false;
-		let exception: unknown = null;
 		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 
 		await queryRunner.connect();
@@ -193,13 +196,16 @@ export class WorkflowsService {
 
 		try {
 			if (name) {
-				if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId: ownerId } }))
+				if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId: ownerId } })) {
+					// noinspection ExceptionCaughtLocallyJS
 					throw new ConflictException(`Workflow ${name} already exists.`);
+				}
 				result ||= (await queryRunner.manager.update(Workflow, workflowId, { name })).affected > 0;
 			}
 
 			if (action) {
 				if (action.id !== workflow.action.id) {
+					// noinspection ExceptionCaughtLocallyJS
 					throw new ConflictException(
 						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
 					);
@@ -216,12 +222,11 @@ export class WorkflowsService {
 			}
 
 			return result;
-		} catch (_exception) {
+		} catch (exception) {
 			await queryRunner.rollbackTransaction();
-			exception = _exception;
+			throw exception;
 		} finally {
 			await queryRunner.release();
-			if (exception) throw exception;
 		}
 	}
 
@@ -281,7 +286,7 @@ export class WorkflowsService {
 		return dbReactions;
 	}
 
-	private async getNeededNewScopes(userId: string, serviceId: string, neededScopeIds: string[]) {
+	private async getNeededNewScopes(userId: string, serviceId: ServiceName, neededScopeIds: string[]) {
 		const service = await this.workflowRepository.manager.findOneBy(Service, { id: serviceId });
 		if (!service) throw new NotFoundException(`Service ${serviceId} not found.`);
 		if (!service.needConnection) return [];
@@ -302,7 +307,7 @@ export class WorkflowsService {
 		);
 	}
 
-	private async getAreaWithNeededScopes(id: string, serviceId: string, isAction: boolean) {
+	private async getAreaWithNeededScopes(id: string, serviceId: ServiceName, isAction: boolean) {
 		const result = await this.areaRepository.findOne({
 			where: { id, serviceId, isAction },
 			relations: {

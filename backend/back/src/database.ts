@@ -19,7 +19,15 @@ import { CreateGoogleSendEmailAndTimerSecondIntervalAreasWithScopes1696815504760
 import UserSettings from "./users/entities/user-settings.entity";
 import { CreateUserSettingsTable1697135496860 } from "./migrations/1697135496860-CreateUserSettingsTable";
 import { AreaParametersFlowAndDescription1697044261933 } from "./migrations/1697044261933-AreaParametersFlowAndDescription";
-import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./services/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
+import { AddDescriptionAndFormFlowsForCurrentAreas1697044397539 } from "./workflows/seed/1697044397539-AddDescriptionAndFormFlowsForCurrentAreas";
+import { CreateTwitterServiceWithScopes1697238715858 } from "./services/seed/1697238715858-CreateTwitterServiceWithScopes";
+import { CreateGoogleCreateDraftMailArea1697391501370 } from "./workflows/seed/1697391501370-CreateGoogleCreateDraftMailArea";
+import { CreateGoogleUpdateSignatureEmailArea1697402750753 } from "./workflows/seed/1697402750753-CreateGoogleUpdateSignatureEmailArea";
+import { CreateGoogleYoutubeCreateCommentArea1697407782601 } from "./workflows/seed/1697407782601CreateGoogleYoutubeCreateCommentArea";
+import { CreateLinkedInServiceAndScopes1697410039086 } from "./services/seed/1697410039086-CreateLinkedInServiceAndScopes";
+import { CreateGoogleDocsCreateDocumentArea1697417929723 } from "./workflows/seed/1697417929723-CreateGoogleDocsCreateDocumentArea";
+import { CreateGoogleSlidesPresentationArea1697441436959 } from "./workflows/seed/1697441436959-CreateGoogleSlidesPresentationArea";
+import { CreateGoogleSpreadsheetArea1697442335135 } from "./workflows/seed/1697442335135-CreateGoogleSpreadsheetArea";
 
 dotenv.config();
 
@@ -44,6 +52,14 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateUserSettingsTable1697135496860,
 		AreaParametersFlowAndDescription1697044261933,
 		AddDescriptionAndFormFlowsForCurrentAreas1697044397539,
+		CreateTwitterServiceWithScopes1697238715858,
+		CreateGoogleCreateDraftMailArea1697391501370,
+		CreateGoogleUpdateSignatureEmailArea1697402750753,
+		CreateGoogleYoutubeCreateCommentArea1697407782601,
+		CreateLinkedInServiceAndScopes1697410039086,
+		CreateGoogleDocsCreateDocumentArea1697417929723,
+		CreateGoogleSlidesPresentationArea1697441436959,
+		CreateGoogleSpreadsheetArea1697442335135,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

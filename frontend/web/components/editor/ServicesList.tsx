@@ -34,8 +34,8 @@ const ServicesList = ({ services, nbPerLine, selectedServiceId, setSelectedServi
 
 	return (
 		<>
-			{servicesChunks.map((chunk, index) => (
-				<div className="flex w-full justify-around my-2" key={index}>
+			{servicesChunks.map((chunk) => (
+				<div className="flex w-full justify-around my-2" key={JSON.stringify(chunk)}>
 					{chunk.map((service) => (
 						<ServiceElement
 							service={service}

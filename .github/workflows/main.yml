@@ -8,7 +8,7 @@ env:
 jobs:
   eslint-backend:
     name: "ESLint: Backend"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./backend/back/
@@ -29,7 +29,7 @@ jobs:
           cache-dependency-path: "backend/back/yarn.lock"
       - name: Install dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts
       - name: Run eslint
         if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn lint > eslint-results
@@ -78,7 +78,7 @@ jobs:
 
   eslint-web:
     name: "ESLint: Web"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./frontend/web/
@@ -99,7 +99,7 @@ jobs:
           cache-dependency-path: "frontend/web/yarn.lock"
       - name: Install dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts
       - name: Run eslint
         if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn lint > eslint-results
@@ -109,6 +109,52 @@ jobs:
         with:
           name: eslint-web-results
           path: frontend/web/eslint-results
+          retention-days: 5
+
+  end-to-end-tests-web:
+    name: "Cypress E2E: Web"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/web/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'frontend/web/**/*'
+      - name: Setup node
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: "frontend/web/yarn.lock"
+      - name: Run cypress tests
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_HOST: ${{ secrets.CYPRESS_API_URL }}
+        with:
+          working-directory: ./frontend/web
+          build: yarn build
+          start: yarn start
+          wait-on: "http://localhost:3000"
+      - name: Get screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: frontend/web/cypress/screenshots
+          retention-days: 5
+      - name: Get videos
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: frontend/web/cypress/videos
           retention-days: 5
 
   check-mobile:
@@ -153,7 +199,7 @@ jobs:
 
   push-to-mirror:
     name: Push to Epitech repository
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: Epitech repository
     steps:
       - name: Repository checkout
@@ -171,4 +217,5 @@ jobs:
       - eslint-backend
       - unit-tests-backend
       - eslint-web
+      - end-to-end-tests-web
       - check-mobile

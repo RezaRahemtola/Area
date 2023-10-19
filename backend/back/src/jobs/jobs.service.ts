@@ -83,7 +83,7 @@ export class JobsService {
 			throw new BadRequestException("Invalid job parameters");
 		}
 		if (errors.length > 0) {
-			const message = Object.values(errors[0].constraints)[0];
+			const message = Object.values(errors[0].constraints)[0] as string;
 			throw new BadRequestException(`Invalid job parameters: ${message}`);
 		}
 		return data as JobsParams["mappings"][TJobs];
@@ -92,7 +92,7 @@ export class JobsService {
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
 		for (const job of jobs) {
 			const jobType: JobsType = job.name as JobsType;
-			const params = await this.convertParams(jobType as JobsType, job.params);
+			const params = await this.convertParams(jobType, job.params);
 			const response = await this.grpcService.launchJob(jobType, params, job.auth);
 
 			if (response.error) {

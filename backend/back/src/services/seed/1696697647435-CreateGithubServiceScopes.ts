@@ -50,7 +50,7 @@ export class CreateGithubServiceScopes1696697647435 implements MigrationInterfac
 			`DELETE
        FROM "service_scope"
        WHERE "service_id" = 'github'
-         AND "id" IN (${this.GITHUB_SERVICE_SCOPES.join(",")}`,
+         AND "id" IN (${this.GITHUB_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
 		);
 	}
 }

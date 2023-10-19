@@ -62,4 +62,9 @@ RUN flutter pub get
 
 RUN flutter build apk
 
+# Non-root user
+RUN useradd -u 8877 user
+RUN chown -R user:user /app
+USER user
+
 CMD ["ls"]

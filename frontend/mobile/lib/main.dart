@@ -1,22 +1,30 @@
 import 'package:area_mobile/pages/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:area_mobile/colors.dart';
 
 Future main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
   await dotenv.load(fileName: ".env");
 }
 
+ThemeData _buildTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+      colorScheme: base.colorScheme.copyWith(
+    primary: primaryColor,
+    secondary: secondaryColor,
+    onPrimary: accentColor,
+    onSecondary: accentColor,
+  ));
+}
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ThemeData _theme = _buildTheme();
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'AREA',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const LandingPage());
+    return MaterialApp(title: 'AREA', theme: _theme, home: const LandingPage());
   }
 }

@@ -1,7 +1,8 @@
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-
 import { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
+
 import Navbar from "@/components/Navbar";
 import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
@@ -13,6 +14,7 @@ type EditorNavbarProps = {
 const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 	const [workflow, setWorkflow] = useAtom(editorWorkflowAtom);
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const onSaveWorkflow = async () => {
 		const response = await services.workflows.create(workflow);
@@ -54,7 +56,7 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 							onChange={onToggleWorkflow}
 						/>
 						<button className="btn btn-secondary" onClick={onSaveWorkflow}>
-							Save
+							{t("actions.save")}
 						</button>
 					</>
 				) : undefined

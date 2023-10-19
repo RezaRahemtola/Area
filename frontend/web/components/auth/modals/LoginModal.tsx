@@ -1,7 +1,8 @@
 import { forwardRef, useState } from "react";
 
-import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
+import { useTranslation } from "react-i18next";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
+import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
 import AuthModal from "@/components/auth/modals/AuthModal";
 import services from "@/services";
 
@@ -14,6 +15,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const { t } = useTranslation();
 
 	const onLogin = async () => {
 		const { data: accessToken, error } = await services.auth.login({ email, password });
@@ -29,34 +31,30 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	};
 
 	return (
-		<dialog ref={ref} className="modal">
-			<AuthModal
-				title="Login"
-				errorMessage={errorMessage}
-				formChildren={
-					<>
-						<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} />
-						<AuthPasswordField value={password} onChange={(e) => setPassword(e.target.value)} />
-						<div>
-							<button className="btn btn-block btn-accent" onClick={onLogin}>
-								Login
-							</button>
-						</div>
-					</>
-				}
-				otherAuthChildren={
-					<p className="text-center">
-						Don't have an account yet?{" "}
-						<a className="link" onClick={onAuthTypeChange}>
-							Create one
-						</a>
-					</p>
-				}
-			/>
-			<form method="dialog" className="modal-backdrop">
-				<button onClick={onClose}>Close</button>
-			</form>
-		</dialog>
+		<AuthModal
+			title={t("auth.login.title")}
+			errorMessage={errorMessage}
+			ref={ref}
+			formChildren={
+				<>
+					<AuthEmailField value={email} onChange={(e) => setEmail(e.target.value)} data-cy="login-email-input" />
+					<AuthPasswordField
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						data-cy="login-password-input"
+					/>
+					<div>
+						<button className="btn btn-block btn-accent" onClick={onLogin} data-cy="login-action-btn">
+							{t("auth.login.action")}
+						</button>
+					</div>
+				</>
+			}
+			switchMethodCtaText={t("auth.login.switchMethodCta")}
+			switchMethodActionText={t("auth.login.switchMethodAction")}
+			onAuthTypeChange={onAuthTypeChange}
+			onClose={onClose}
+		/>
 	);
 });
 

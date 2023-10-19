@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react";
 import axios, { isAxiosError } from "axios";
 import { StatusCodes } from "http-status-codes";
+import { useTranslation } from "react-i18next";
+
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 
 const ApkDownloadButton = () => {
 	const [isApkAvailable, setIsApkAvailable] = useState(false);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -33,7 +36,8 @@ const ApkDownloadButton = () => {
 				<nav>
 					<a href="/apk/app-release.apk" download>
 						<button className="btn btn-accent">
-							<FontAwesomeIcon icon="android" /> Download APK
+							<FontAwesomeIcon icon="android" />
+							{t("landing.actions.downloadApk")}
 						</button>
 					</a>
 				</nav>

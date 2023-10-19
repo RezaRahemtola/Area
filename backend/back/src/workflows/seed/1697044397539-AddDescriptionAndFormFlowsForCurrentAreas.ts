@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import Area from "../entities/area.entity";
+import Area from "../../services/entities/area.entity";
 
 export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements MigrationInterface {
 	private readonly descriptionsAndFormFlows: Array<Partial<Area>> = [
@@ -55,7 +55,8 @@ export class AddDescriptionAndFormFlowsForCurrentAreas1697044397539 implements M
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`UPDATE "area"
-       SET "parameters_form_flow" = '[]' AND "description" = 'An area description'
+       SET "parameters_form_flow" = '[]',
+           "description"          = 'An area description'
        WHERE "id" IN ('send-email', 'seconds-interval')
          AND "service_id" IN ('google', 'timer')`,
 		);

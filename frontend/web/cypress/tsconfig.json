@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "types": [
+      "cypress",
+      "node"
+    ]
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}
