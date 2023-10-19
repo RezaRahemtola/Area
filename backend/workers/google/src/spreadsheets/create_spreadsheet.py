@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 TARGET = "localhost:50050"
 
 def create_spreadsheet():
-    args = get_arguments({"auth", "name", "workflowStepId"})
+    args = get_arguments({"auth", "name", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)

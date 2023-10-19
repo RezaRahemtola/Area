@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"supervisor/jobs"
-	"log"
 	supervisor "supervisor/proto"
 )
 
@@ -15,8 +14,6 @@ func (s *AreaSupervisorServer) LaunchJob(_ context.Context, in *supervisor.Authe
 		return newServerError(err), nil
 	}
 
-    // TODO: Reza remove debug auth
-    log.Printf("%s", in.GetAuth())
 	creds, err := in.GetAuth().MarshalJSON()
 	if err != nil {
 		return newServerError(err), nil

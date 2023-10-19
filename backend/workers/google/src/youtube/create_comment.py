@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 TARGET = "localhost:50050"
 
 def create_comment():
-    args = get_arguments({"auth", "videoId", "content", "workflowStepId"})
+    args = get_arguments({"auth", "videoId", "content", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
