@@ -17,7 +17,7 @@ class ExploreHero extends StatelessWidget {
             const Card(
               elevation: 8,
               child: ServiceTile(
-                  serviceName: "DEBUT", // Ajoutez une virgule ici
+                  serviceName: "DEBUT",
                   serviceIcon:
                       "https://img.freepik.com/vecteurs-libre/vecteur-degrade-logo-colore-oiseau_343694-1365.jpg?w=826&t=st=1697726566~exp=1697727166~hmac=1437ffdaee7c5348e5035ea99d5a5c9c0e5ecefbd83b72204bfd8c92d5bfa45e"),
             ),
@@ -52,12 +52,11 @@ class ExploreHero extends StatelessWidget {
             const Card(
               elevation: 8,
               child: ServiceTile(
-                  serviceName: "FIN", // Ajoutez une virgule ici
+                  serviceName: "FIN",
                   serviceIcon:
                       "https://img.freepik.com/vecteurs-libre/vecteur-degrade-logo-colore-oiseau_343694-1365.jpg?w=826&t=st=1697726566~exp=1697727166~hmac=1437ffdaee7c5348e5035ea99d5a5c9c0e5ecefbd83b72204bfd8c92d5bfa45e"),
             ),
-          ] // Fin du widget Padding
-              ),
+          ]),
         ));
   }
 }
