@@ -3,8 +3,9 @@ import 'package:area_mobile/types/services.dart';
 
 Future<ServiceReturn<List<Service>>> getAll() async {
   try {
-    final response = await dio.get<List<Service>>('/services');
-    return ServiceReturn(data: response.data);
+    final response = await dio.get<List<dynamic>>('/services');
+    return ServiceReturn(
+        data: response.data!.map((e) => Service.fromJson(e)).toList());
   } catch (e) {
     return ServiceReturn(error: e.toString());
   }
