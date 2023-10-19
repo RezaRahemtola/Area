@@ -13,7 +13,7 @@ class SettingsPage extends StatelessWidget {
       backgroundColor: const Color(0xfff6f6f6),
       body: Center(
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
+          constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
           child: ListView(
             children: [
               _SingleSection(
@@ -128,7 +128,7 @@ class _SingleSection extends StatelessWidget {
           ),
         ),
         Container(
-          width: double.infinity,
+          constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
           color: Colors.white,
           child: Column(
             children: children,

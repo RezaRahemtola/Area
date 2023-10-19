@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+            constraints: const BoxConstraints(maxWidth: 450, maxHeight: 1000),
             color: const Color(0xFF516079),
             child: Form(
                 key: _formKey,
