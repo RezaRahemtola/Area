@@ -1,6 +1,7 @@
 import dotenv
 import sys
 
+from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
 from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
@@ -56,6 +57,10 @@ def main():
         # Tasks
         case "create-task-list":
             create_task_list()
+
+        # Classrooms
+        case "create-course":
+            create_course()
 
         case _:
             print("Error: Invalid job")

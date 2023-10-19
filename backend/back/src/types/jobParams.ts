@@ -62,3 +62,11 @@ export class GoogleCreateTaskListParams extends UniqueJobParams {
 	@IsString()
 	title: string;
 }
+
+export class GoogleCreateCourseParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	description: string;
+}
