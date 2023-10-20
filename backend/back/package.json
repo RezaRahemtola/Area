@@ -16,6 +16,7 @@
     "migration:generate": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:generate -d src/database.ts",
     "migration:show": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:show -d src/database.ts",
     "migration:revert": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:revert -d src/database.ts",
+    "schema:drop": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm schema:drop -d src/database.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
