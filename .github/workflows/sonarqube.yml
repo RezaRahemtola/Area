@@ -8,7 +8,7 @@ on:
 jobs:
   sonarqube:
     name: Sonarqube
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions: read-all
     steps:
       - name: Checkout repository
