@@ -12,7 +12,6 @@ export class CreateFacebookServiceWithScopes1697687427741 implements MigrationIn
 		"email",
 		"groups_show_list",
 		"public_profile",
-		"basic_info",
 	];
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
