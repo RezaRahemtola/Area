@@ -30,13 +30,31 @@ class _EditorState extends State<Editor> {
             maxWidth: 450,
           ),
           color: const Color(0xFFC5C6C6),
-          child: const Padding(
-            padding: EdgeInsets.all(3.0),
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
             child: Card(
-              elevation: 1,
-              child: ListTile(
-                title: Text("test"),
-                tileColor: Color.fromARGB(255, 0, 255, 255),
+              elevation: 5,
+              child: Column(
+                children: [
+                  const ListTile(
+                    title: Text("Your workflow"),
+                    tileColor: Color.fromARGB(255, 0, 255, 255),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            left: BorderSide(
+                                color: Color.fromARGB(255, 100, 100, 100)))),
+                    child: const Column(
+                      children: [
+                        Text("Ben on prie maintenant"),
+                        Text("Ben on prie maintenant"),
+                        Text("Ben on prie maintenant"),
+                        Text("Ben on prie maintenant"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           )),
