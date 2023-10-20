@@ -34,6 +34,22 @@ export class OauthCallbackDto {
 	scope!: string;
 
 	@ApiPropertyOptional({
+		description: "The OAuth granted scopes",
+		type: String,
+	})
+	@IsOptional()
+	@IsString()
+	granted_scopes!: string;
+
+	@ApiPropertyOptional({
+		description: "The OAuth denied scopes",
+		type: String,
+	})
+	@IsOptional()
+	@IsString()
+	denied_scopes!: string;
+
+	@ApiPropertyOptional({
 		description: "The opaque session state of the user",
 		type: String,
 	})

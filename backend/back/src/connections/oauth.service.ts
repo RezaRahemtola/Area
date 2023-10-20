@@ -26,7 +26,7 @@ type ServiceOAuthUrlFactory<TService extends ServiceName> = <TBaseUrl extends st
 type ServiceOAuthFactories<TServices extends ServiceName> = {
 	[TService in TServices]: {
 		urlFactory: ServiceOAuthUrlFactory<TService>;
-		connectionFactory: (userId: string, code: string) => Promise<UserConnection>;
+		connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
 	};
 };
 
@@ -82,8 +82,16 @@ export class OauthService {
 				)}`,
 			connectionFactory: this.createMicrosoftConnection.bind(this),
 		},
+		facebook: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?client_id=${this.configService.getOrThrow("FACEBOOK_CLIENT_ID")}&scope=${encodeURI(
+					scopes.join(","),
+				)}&state=${userId}&response_type=${encodeURI("code granted_scopes")}&redirect_uri=${oauthCallbackUrlFactory(
+					"facebook",
+				)}`,
+			connectionFactory: this.createFacebookConnection.bind(this),
+		},
 	};
-	"https://graph.facebook.com/v18.0/oauth/access_token";
 
 	constructor(
 		private readonly connectionsService: ConnectionsService,
@@ -202,6 +210,27 @@ export class OauthService {
 			},
 		);
 		return this.connectionsService.createUserConnection(userId, "microsoft", scope.split(" "), connectionData);
+	}
+
+	async createFacebookConnection(userId: string, code: string, granted_scopes?: string) {
+		const {
+			data: { ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://graph.facebook.com/v18.0/oauth/access_token",
+			{
+				client_id: this.configService.getOrThrow<string>("FACEBOOK_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("FACEBOOK_CLIENT_SECRET"),
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("facebook"),
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "facebook", granted_scopes.split(","), connectionData);
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {

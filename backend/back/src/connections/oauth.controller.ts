@@ -17,13 +17,17 @@ export class OauthController {
 	@Get("/:serviceId/callback")
 	async callback(
 		@Query()
-		{ code, state: userId }: OauthCallbackDto,
+		{ code, state: userId, granted_scopes, scope }: OauthCallbackDto,
 		@Param()
 		{ serviceId }: ServiceIdParamDto,
 		@Res()
 		response: Response,
 	) {
-		const connection = await this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId].connectionFactory(userId, code);
+		const connection = await this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId].connectionFactory(
+			userId,
+			code,
+			granted_scopes || scope,
+		);
 		if (!connection) throw new InternalServerErrorException("Failed to create connection");
 		return response.redirect(this.configService.getOrThrow<string>("FRONT_OAUTH_REDIRECTION_URL"));
 	}
