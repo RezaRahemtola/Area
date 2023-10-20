@@ -9,7 +9,7 @@ import { ConnectionsModule } from "./connections/connections.module";
 import { ServicesModule } from "./services/services.module";
 import { WorkflowsModule } from "./workflows/workflows.module";
 import { DATA_SOURCE_OPTIONS } from "./database";
-import { AboutModule } from './about/about.module';
+import { AboutModule } from "./about/about.module";
 
 @Module({
 	imports: [
