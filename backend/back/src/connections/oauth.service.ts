@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConnectionsService } from "./connections.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
@@ -104,6 +104,7 @@ export class OauthService {
 			connectionFactory: this.createMiroConnection.bind(this),
 		},
 	};
+	private readonly logger = new Logger(OauthService.name);
 
 	constructor(
 		private readonly connectionsService: ConnectionsService,
@@ -269,6 +270,7 @@ export class OauthService {
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
 		const { oauthUrl } = await this.servicesService.getService(serviceId);
+		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
 		return this.SERVICE_OAUTH_FACTORIES[serviceId].urlFactory(
 			oauthUrl,
 			userId,
