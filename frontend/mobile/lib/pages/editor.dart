@@ -29,33 +29,96 @@ class _EditorState extends State<Editor> {
           constraints: const BoxConstraints(
             maxWidth: 450,
           ),
-          color: const Color(0xFFC5C6C6),
+          color: const Color.fromARGB(255, 255, 255, 255),
           child: Padding(
             padding: const EdgeInsets.all(3.0),
-            child: Card(
-              elevation: 5,
-              child: Column(
-                children: [
-                  const ListTile(
+            child: Column(
+              children: [
+                const Card(
+                  elevation: 3,
+                  child: ListTile(
                     title: Text("Your workflow"),
                     tileColor: Color.fromARGB(255, 0, 255, 255),
                   ),
-                  Container(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Container(
+                    height: 16,
+                    width: double.infinity,
                     decoration: const BoxDecoration(
                         border: Border(
                             left: BorderSide(
                                 color: Color.fromARGB(255, 100, 100, 100)))),
-                    child: const Column(
-                      children: [
-                        Text("Ben on prie maintenant"),
-                        Text("Ben on prie maintenant"),
-                        Text("Ben on prie maintenant"),
-                        Text("Ben on prie maintenant"),
-                      ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            left: BorderSide(
+                                color: Color.fromARGB(255, 100, 100, 100)))),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      left: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)),
+                                      bottom: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)))),
+                              child: const ListTile(
+                                title: Text("Ben on prie maintenant"),
+                              )),
+                          Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      left: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)),
+                                      bottom: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)))),
+                              child: const ListTile(
+                                title: Text("Ben on prie maintenant"),
+                              )),
+                          Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      left: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)),
+                                      bottom: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)))),
+                              child: const ListTile(
+                                title: Text("Ben on prie maintenant"),
+                              )),
+                          Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      left: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)),
+                                      bottom: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 150, 150, 150)))),
+                              child: const ListTile(
+                                title: Text("Ben on prie maintenant"),
+                              )),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           )),
     );
