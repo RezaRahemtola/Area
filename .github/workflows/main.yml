@@ -43,7 +43,7 @@ jobs:
 
   unit-tests-backend:
     name: "Unit tests: Backend"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./backend/back/
@@ -113,7 +113,7 @@ jobs:
 
   end-to-end-tests-web:
     name: "Cypress E2E: Web"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: ./frontend/web/
@@ -199,7 +199,7 @@ jobs:
 
   push-to-mirror:
     name: Push to Epitech repository
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: Epitech repository
     steps:
       - name: Repository checkout

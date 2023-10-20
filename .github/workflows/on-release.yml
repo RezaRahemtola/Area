@@ -47,7 +47,7 @@ jobs:
           asset_name: area.apk
 
   documentation-changelog:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: "Generate documentation changelog"
     permissions:
       contents: write
