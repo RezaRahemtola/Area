@@ -14,6 +14,11 @@ type OAuthResponse = {
 	ext_expires_in?: number;
 };
 
+type MiroOAuthResponse = {
+	team_id: string;
+	user_id: string;
+} & OAuthResponse;
+
 type OAuthCallbackUrlFactory<TWantedService extends ServiceName> = <TActualService extends TWantedService>(
 	service: TActualService,
 ) => `${string}/connections/oauth/${TActualService}/callback`;
@@ -90,6 +95,13 @@ export class OauthService {
 					"facebook",
 				)}`,
 			connectionFactory: this.createFacebookConnection.bind(this),
+		},
+		miro: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"MIRO_CLIENT_ID",
+				)}&redirect_uri=${oauthCallbackUrlFactory("miro")}&state=${userId}`,
+			connectionFactory: this.createMiroConnection.bind(this),
 		},
 	};
 
@@ -231,6 +243,28 @@ export class OauthService {
 			},
 		);
 		return this.connectionsService.createUserConnection(userId, "facebook", granted_scopes.split(","), connectionData);
+	}
+
+	async createMiroConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<MiroOAuthResponse>(
+			"https://api.miro.com/v1/oauth/token",
+			{
+				client_id: this.configService.getOrThrow<string>("MIRO_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("MIRO_CLIENT_SECRET"),
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("miro"),
+				grant_type: "authorization_code",
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "miro", scope.split(" "), connectionData);
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {

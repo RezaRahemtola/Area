@@ -56,4 +56,20 @@ export class OauthCallbackDto {
 	@IsOptional()
 	@IsString()
 	session_state!: string;
+
+	@ApiPropertyOptional({
+		description: "The Miro's team identifier",
+		type: String,
+	})
+	@IsOptional()
+	@IsString()
+	team_id!: string;
+
+	@ApiPropertyOptional({
+		description: "The OAuth client identifier",
+		type: String,
+	})
+	@IsOptional()
+	@IsString()
+	client_id!: string;
 }
