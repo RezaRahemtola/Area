@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
@@ -9,6 +9,8 @@ type UserIdentification = { id: string } | { email: string };
 
 @Injectable()
 export class UsersService {
+	private readonly logger = new Logger(UsersService.name);
+
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: Repository<User>,
@@ -17,13 +19,20 @@ export class UsersService {
 	createUser(email: string, passwordHash: string, isAdmin: boolean = false): Promise<boolean> {
 		return this.userRepository
 			.save({ email, passwordHash, isAdmin, settings: { language: "en", theme: "auto" } })
-			.then(() => true)
-			.catch(() => false);
+			.then(() => {
+				this.logger.log(`Created ${isAdmin ? "admin " : " "}user with ${email}`);
+				return true;
+			})
+			.catch(({ message }) => {
+				this.logger.error(`Failed to create ${isAdmin ? "admin " : ""}user with ${email}: ${message}`);
+				return false;
+			});
 	}
 
 	async getUser(options: UserIdentification) {
 		const user = await this.userRepository.findOne({ where: options, relations: { settings: true } });
 		const identifier = "id" in options ? options.id : options.email;
+		this.logger.log(`Getting user identified by ${identifier}`);
 		if (!user) throw new NotFoundException(`User ${identifier} not found.`);
 		return user;
 	}
@@ -31,22 +40,29 @@ export class UsersService {
 	async updateUser(options: UserIdentification, { theme, language, ...update }: AdminUpdateUserDto): Promise<boolean> {
 		const user = await this.userRepository.findOne({ where: options });
 		if (!user) throw new NotFoundException(`User ${"id" in options ? options.id : options.email} not found.`);
-		if (Object.keys(update).length == 0 && !theme && !language) return false;
+		if (Object.keys(update).length == 0 && !theme && !language) {
+			this.logger.log(`No changes to user ${user.id} requested.`);
+			return false;
+		}
 		let result = false;
 		const queryRunner = this.userRepository.manager.connection.createQueryRunner();
 
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
+		this.logger.log(`Updating user ${user.id} with ${JSON.stringify(update)}...`);
 
 		try {
 			if (update.email && (await queryRunner.manager.exists(User, { where: { email: update.email } }))) {
 				// noinspection ExceptionCaughtLocallyJS
 				throw new ConflictException(`User ${update.email} already exists.`);
 			}
-			if (Object.keys(update).length > 0)
+			if (Object.keys(update).length > 0) {
+				this.logger.log(`Updating user ${user.id} with ${JSON.stringify(update)}...`);
 				result ||= (await queryRunner.manager.update(User, { id: user.id }, { ...update })).affected > 0;
+			}
 
 			if (theme || language) {
+				this.logger.log(`Updating user ${user.id} settings with ${JSON.stringify({ theme, language })}...`);
 				result ||=
 					(
 						await queryRunner.manager.update(
@@ -62,6 +78,7 @@ export class UsersService {
 
 			return result;
 		} catch (exception) {
+			this.logger.error(`Failed to update user ${user.id}: ${exception.message}, rolling back...`);
 			await queryRunner.rollbackTransaction();
 			throw exception;
 		} finally {
