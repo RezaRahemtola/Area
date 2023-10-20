@@ -32,6 +32,7 @@ import { CreateGoogleCreateFormArea1697476339491 } from "./workflows/seed/169747
 import { UpdateGoogleServiceFormsScopes1697460124931 } from "./services/seed/1697460124931-UpdateGoogleServiceFormsScopes-seed";
 import { CreateGoogleCreateContactArea1697484676351 } from "./workflows/seed/1697484676351-CreateGoogleCreateContactArea";
 import { CreateMicrosoftServiceAndScopes1697423320221 } from "./services/seed/1697665090584-CreateMicrosoftServiceAndScopes";
+import { CreateFacebookServiceWithScopes1697687427741 } from "./services/seed/1697687427741-CreateFacebookServiceWithScopes";
 import { CreateLinkedInCreatePostArea1697628194232 } from "./workflows/seed/1697628194232-CreateLinkedInCreatePostArea";
 
 dotenv.config();
@@ -70,6 +71,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleCreateContactArea1697484676351,
 		CreateMicrosoftServiceAndScopes1697423320221,
 		CreateLinkedInCreatePostArea1697628194232,
+		CreateFacebookServiceWithScopes1697687427741,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
