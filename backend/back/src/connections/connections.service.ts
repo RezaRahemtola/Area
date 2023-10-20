@@ -52,7 +52,7 @@ export class ConnectionsService {
 				data,
 				undefined,
 				2,
-			)} and scopes ${scopes.join(", ")}}`,
+			)} and scopes ${scopes.join(", ")}`,
 		);
 		return await this.userConnectionRepository.save(userConnection);
 	}
