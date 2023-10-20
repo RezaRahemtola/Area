@@ -4,6 +4,7 @@ import {
 	forwardRef,
 	Inject,
 	Injectable,
+	Logger,
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -24,6 +25,8 @@ import { ServiceName } from "../services/services.service";
 
 @Injectable()
 export class WorkflowsService {
+	private readonly logger = new Logger(WorkflowsService.name);
+
 	constructor(
 		@InjectRepository(Workflow)
 		private readonly workflowRepository: Repository<Workflow>,
@@ -37,6 +40,9 @@ export class WorkflowsService {
 	) {}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
+		this.logger.log(`Getting workflow ${id}...`);
+		if (ownerId) this.logger.log(`The workflow needs to be owned by user ${ownerId}`);
+		if (isActive != undefined) this.logger.log(`The workflow needs to be ${isActive ? "active" : "inactive"}`);
 		const workflow = await this.workflowRepository.findOne({
 			where: { id, ownerId, active: isActive },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
@@ -53,6 +59,7 @@ export class WorkflowsService {
 				jobId,
 			},
 		} = workflow;
+		this.logger.log(`Got workflow ${id}/${name} with ${reactions.length + 1} areas...`);
 		return {
 			id,
 			name,
@@ -84,10 +91,14 @@ export class WorkflowsService {
 	}
 
 	async getWorkflowsWithAreas(ownerId?: string, active?: boolean) {
+		this.logger.log(`Getting workflows...`);
+		if (ownerId) this.logger.log(`The workflows need to be owned by user ${ownerId}`);
+		if (active !== undefined) this.logger.log(`The workflows need to be ${active ? "active" : "inactive"}`);
 		const workflows = await this.workflowRepository.find({
 			where: { ownerId, active },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
+		this.logger.log(`Got ${workflows.length} workflows...`);
 		return workflows.map(
 			({
 				id,
@@ -140,6 +151,11 @@ export class WorkflowsService {
 		reactions: WorkflowReactionDto[],
 		active: boolean = false,
 	) {
+		this.logger.log(
+			`Creating ${active ? "active" : "inactive"} workflow ${name} owned by ${ownerId} with ${
+				reactions.length + 1
+			} areas...`,
+		);
 		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
@@ -164,12 +180,14 @@ export class WorkflowsService {
 			await queryRunner.commitTransaction();
 
 			if (workflow.active) {
+				this.logger.log(`Launching workflow ${id}'s action...`);
 				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
 			}
 			return {
 				id,
 			};
 		} catch (exception) {
+			this.logger.error(`Failed to create workflow ${name} owned by ${ownerId}: ${exception.message}`);
 			await queryRunner.rollbackTransaction();
 			throw exception;
 		} finally {
@@ -178,6 +196,7 @@ export class WorkflowsService {
 	}
 
 	async updateWorkflow(workflowId: string, { name, reactions, action }: UpdateWorkflowDto, ownerId: string) {
+		this.logger.log(`Updating workflow ${workflowId} owned by ${ownerId}...`);
 		const workflow = await this.workflowRepository.findOne({
 			where: {
 				id: workflowId,
@@ -189,7 +208,10 @@ export class WorkflowsService {
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		if (workflow.active) throw new ConflictException(`Workflow ${workflowId} is active, you cannot update it.`);
-		if (!name && !action && !reactions) return false;
+		if (!name && !action && !reactions) {
+			this.logger.log(`No changes to workflow ${workflowId} requested.`);
+			return false;
+		}
 		let result = false;
 		const queryRunner = this.workflowRepository.manager.connection.createQueryRunner();
 
@@ -202,6 +224,7 @@ export class WorkflowsService {
 					// noinspection ExceptionCaughtLocallyJS
 					throw new ConflictException(`Workflow ${name} already exists.`);
 				}
+				this.logger.log(`Updating workflow ${workflowId} name to ${name}...`);
 				result ||= (await queryRunner.manager.update(Workflow, workflowId, { name })).affected > 0;
 			}
 
@@ -212,19 +235,22 @@ export class WorkflowsService {
 						`You can only change the action ${workflow.action.id} for the workflow ${workflowId}.`,
 					);
 				}
+				this.logger.log(`Updating workflow ${workflowId} action from ${workflow.action.id} to ${action.id}...`);
 				const updatedWorkflowAction = await this.createWorkflowArea(ownerId, action, workflow, true, false);
 				result ||= (await queryRunner.manager.update(WorkflowArea, action.id, updatedWorkflowAction)).affected > 0;
 			}
 
 			if (reactions) {
+				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
 				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
 				const reactionsToSave = await this.createWorkflowReactions(ownerId, workflow.action, reactions, workflow);
 				result ||=
 					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
 			}
-
+			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
 			return result;
 		} catch (exception) {
+			this.logger.error(`Failed to update workflow ${workflowId}: ${exception.message}, rolling back...`);
 			await queryRunner.rollbackTransaction();
 			throw exception;
 		} finally {
@@ -233,6 +259,7 @@ export class WorkflowsService {
 	}
 
 	async toggleWorkflows(workflows: string[], newState: boolean, ownerId: string) {
+		this.logger.log(`Toggling ${workflows.length} workflows to ${newState}`);
 		const { affected } = await this.workflowRepository.update(
 			{
 				id: In(workflows),
@@ -242,43 +269,53 @@ export class WorkflowsService {
 			{ active: () => `${newState}` },
 		);
 		if (newState) {
+			this.logger.log(`Launching ${workflows.length} workflows...`);
 			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId, ownerId)));
 		} else {
+			this.logger.log(`Stopping ${workflows.length} workflows...`);
 			await Promise.all(workflows.map((workflowId) => this.jobsService.stopWorkflowActionIfNecessary(workflowId)));
 		}
 		return affected > 0;
 	}
 
 	async toggleWorkflow(workflowId: string, ownerId: string) {
+		this.logger.log(`Toggling workflow ${workflowId}...`);
 		const workflow = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		const { active } = workflow;
 		await this.workflowRepository.update(workflowId, { active: !active });
 		if (active) {
+			this.logger.log(`Stopping workflow ${workflowId}...`);
 			await this.jobsService.stopWorkflowActionIfNecessary(workflowId);
 		} else {
+			this.logger.log(`Launching workflow ${workflowId}...`);
 			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
 		}
+		this.logger.log(`Toggled workflow ${workflowId} to ${!active}`);
 		return { newState: !active };
 	}
 
 	async deleteWorkflows(workflows: string[], ownerId: string) {
+		this.logger.log(`Deleting ${workflows.length} workflows...`);
 		const workflowActions = await this.workflowAreaRepository.find({
 			where: { actionOfWorkflow: { id: In(workflows), ownerId } },
 			relations: { actionOfWorkflow: true },
 		});
 		const jobIds = workflowActions.map((a) => a.jobId);
 		const { affected } = await this.workflowRepository.delete({ id: In(workflows), ownerId });
+		this.logger.log(`Stopping ${jobIds.length} workflow jobs...`);
 		await Promise.all(jobIds.map((jobId) => this.jobsService.stopJobIdIfNecessary(jobId)));
 		return affected > 0;
 	}
 
 	async deleteWorkflow(workflowId: string, ownerId: string) {
+		this.logger.log(`Deleting workflow ${workflowId}...`);
 		const { jobId } = await this.workflowAreaRepository.findOne({
 			where: { actionOfWorkflow: { id: workflowId } },
 			relations: { actionOfWorkflow: true },
 		});
 		const { affected } = await this.workflowRepository.delete({ id: workflowId, ownerId });
+		this.logger.log(`Stopping workflow ${workflowId} job...`);
 		await this.jobsService.stopJobIdIfNecessary(jobId);
 		return affected === 1;
 	}
