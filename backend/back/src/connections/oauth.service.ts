@@ -83,6 +83,7 @@ export class OauthService {
 			connectionFactory: this.createMicrosoftConnection.bind(this),
 		},
 	};
+	"https://graph.facebook.com/v18.0/oauth/access_token";
 
 	constructor(
 		private readonly connectionsService: ConnectionsService,
@@ -200,7 +201,6 @@ export class OauthService {
 				},
 			},
 		);
-		console.log(scope);
 		return this.connectionsService.createUserConnection(userId, "microsoft", scope.split(" "), connectionData);
 	}
 
