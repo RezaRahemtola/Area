@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, forwardRef, Inject, Injectable, Logger } from "@nestjs/common";
 import { GrpcService } from "../grpc/grpc.service";
 import { JobParamsClasses, JobsParams, JobsType } from "../types/jobs";
 import { validate } from "class-validator";
@@ -13,6 +13,8 @@ import { ConnectionsService } from "../connections/connections.service";
 
 @Injectable()
 export class JobsService {
+	private readonly logger = new Logger(JobsService.name);
+
 	constructor(
 		private readonly connectionsService: ConnectionsService,
 		@Inject(forwardRef(() => GrpcService)) private readonly grpcService: GrpcService,
@@ -30,16 +32,20 @@ export class JobsService {
 			relations: { workflow: true, actionOfWorkflow: true },
 		});
 
-		return areas.filter(
+		const filteredAreas = areas.filter(
 			({ workflow, actionOfWorkflow }) =>
 				(workflow && workflow.active === isWorkflowActive) ||
 				(actionOfWorkflow && actionOfWorkflow.active === isWorkflowActive),
 		);
+		this.logger.log(
+			`Found ${filteredAreas.length} ${isWorkflowActive ? "active " : ""}workflow areas for job ${jobId}`,
+		);
+		return filteredAreas;
 	}
 
 	async getActionJobsToStart(): Promise<AuthenticatedJobData[]> {
 		const workflows = await this.workflowsService.getWorkflowsWithAreas(undefined, true);
-
+		this.logger.log(`Found ${workflows.length} workflows to start`);
 		return Promise.all(
 			workflows.map(async ({ ownerId, action: { areaId, areaServiceId, jobId: identifier, parameters: params } }) => {
 				const connection = await this.connectionsService.getUserConnectionForService(ownerId, areaServiceId);
@@ -77,7 +83,9 @@ export class JobsService {
 			}),
 		);
 
-		return nextJobs.flat();
+		const reactionJobs = nextJobs.flat();
+		this.logger.log(`Found ${reactionJobs.length} reactions for job ${jobId}`);
+		return reactionJobs;
 	}
 
 	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams["mappings"][TJobs]> {
@@ -93,6 +101,7 @@ export class JobsService {
 				stopAtFirstError: true,
 			});
 		} catch (e) {
+			this.logger.error(`Error while validating job parameters: ${e.message}`);
 			throw new BadRequestException("Invalid job parameters");
 		}
 		if (errors.length > 0) {
@@ -103,6 +112,7 @@ export class JobsService {
 	}
 
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
+		this.logger.log(`Launching ${jobs.length} jobs`);
 		for (const job of jobs) {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType, job.params);
@@ -117,6 +127,7 @@ export class JobsService {
 
 	async launchNextJob(data: JobData): Promise<void> {
 		const jobs = await this.getReactionsForJob(data.identifier);
+		this.logger.log(`Launching next ${jobs} jobs for job ${data.identifier}`);
 		await this.launchJobs(jobs);
 	}
 
@@ -130,6 +141,7 @@ export class JobsService {
 			params: action.parameters,
 			auth: connection?.data ?? {},
 		};
+		this.logger.log(`Launching workflow action job ${job.identifier} for workflow ${workflowId}`);
 		await this.launchJobs([job]);
 	}
 
@@ -146,6 +158,7 @@ export class JobsService {
 		const actionsWithJobId = await this.getWorkflowAreasForJobId(jobId);
 
 		if (actionsWithJobId.length === 0) {
+			this.logger.log(`No more active areas for job ${jobId}, stopping it`);
 			const res = await this.grpcService.killJob(jobId);
 			if (res.error) {
 				throw new RuntimeException(`Error while stopping job: ${res.error.message}`);
@@ -156,6 +169,7 @@ export class JobsService {
 	async synchronizeJobs(): Promise<void> {
 		const jobs = await this.getActionJobsToStart();
 
+		this.logger.log(`Found ${jobs.length} jobs to start to synchronize this beau bordel`);
 		const res = await this.grpcService.killAllJobs();
 		if (res.error) {
 			throw new RuntimeException(`Error while synchronizing: ${res.error.message}`);
