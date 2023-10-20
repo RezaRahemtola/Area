@@ -3,10 +3,14 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { ConfigService } from "@nestjs/config";
 import { JwtCustomPayload } from "../types/jwt";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export default class JwtStrategy extends PassportStrategy(Strategy) {
-	constructor(configService: ConfigService) {
+	constructor(
+		configService: ConfigService,
+		private readonly usersService: UsersService,
+	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			ignoreExpiration: false,
@@ -16,6 +20,9 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
 
 	async validate(payload: JwtCustomPayload) {
 		if (!("id" in payload)) throw new UnauthorizedException("Malformed token");
+		await this.usersService.getUser({ id: payload.id }).catch(({ message }) => {
+			throw new UnauthorizedException(message);
+		});
 		return payload;
 	}
 }
