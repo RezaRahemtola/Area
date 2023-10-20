@@ -76,9 +76,8 @@ export class ConnectionsController {
 			this.logger.warn(`User ${userId} already has a connection that satisfies these scopes`);
 			throw new ConflictException("You already have a connection that satisfies these scopes");
 		} else {
-			this.logger.log(
-				`User ${userId} is missing scopes: ${missingScopes.join(", ")}\nCreating a new oauth url for them.`,
-			);
+			this.logger.warn(`User ${userId} is missing scopes: ${missingScopes.join(", ")}`);
+			this.logger.log(`Creating and sending an url for user ${userId} to connect to service ${serviceId}`);
 			return {
 				oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes(userId, serviceId, missingScopes),
 			};

@@ -17,8 +17,10 @@ export class AuthService {
 	async logIn(email: string, password: string): Promise<LoginResultDto> {
 		try {
 			const user = await this.usersService.getUser({ email });
-			// noinspection ExceptionCaughtLocallyJS
-			if (!(await verifyArgonHash(user.passwordHash, password))) throw new UnauthorizedException("Invalid password.");
+			if (!(await verifyArgonHash(user.passwordHash, password))) {
+				// noinspection ExceptionCaughtLocallyJS
+				throw new UnauthorizedException("Invalid password.");
+			}
 			this.logger.log(`Logging in user ${email}`);
 			return {
 				accessToken: this.jwtService.sign({ id: user.id }),
