@@ -37,6 +37,7 @@ import { CreateLinkedInCreatePostArea1697628194232 } from "./workflows/seed/1697
 import { CreateMiroServiceWithScopes1697776146331 } from "./services/seed/1697776146331-CreateMiroServiceWithScopes";
 import { CreateGoogleTaskList1697746992707 } from "./workflows/seed/1697746992707-CreateGoogleTaskList";
 import { CreateGoogleCourseArea1697750743177 } from "./workflows/seed/1697750743177-CreateGoogleCourseArea";
+import { CreateGoogleCalendarArea1697892875843 } from "./workflows/seed/1697892875843-CreateGoogleCalendarArea";
 
 dotenv.config();
 
@@ -78,6 +79,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleTaskList1697746992707,
 		CreateGoogleCourseArea1697750743177,
 		CreateMiroServiceWithScopes1697776146331,
+		CreateGoogleCalendarArea1697892875843,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

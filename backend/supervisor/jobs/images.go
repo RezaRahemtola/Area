@@ -14,6 +14,7 @@ var JobToImage = map[string]string{
 	"linkedin-create-post":              "supervisor-linkedin",
 	"google-create-task-list":           "supervisor-google",
 	"google-create-course":              "supervisor-google",
+	"google-create-calendar":            "supervisor-google",
 }
 
 var OptArgument = map[string]string{
@@ -30,6 +31,7 @@ var OptArgument = map[string]string{
 	"linkedin-create-post":              "create-post",
 	"google-create-task-list":           "create-task-list",
 	"google-create-course":              "create-course",
+	"google-create-calendar":            "create-calendar",
 }
 
 func GetImages() []string {
