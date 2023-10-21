@@ -34,7 +34,7 @@ export class GoogleYoutubeCreateCommentParams extends UniqueJobParams {
 	content: string;
 }
 
-export class GoogleCreateDocumentParams extends UniqueJobParams {
+export class NameParams extends UniqueJobParams {
 	@IsString()
 	name: string;
 }
@@ -58,7 +58,7 @@ export class LinkedinCreatePostParams extends UniqueJobParams {
 	articleDescription: string;
 }
 
-export class GoogleCreateTaskListOrCalendarParams extends UniqueJobParams {
+export class TitleParams extends UniqueJobParams {
 	@IsString()
 	title: string;
 }
