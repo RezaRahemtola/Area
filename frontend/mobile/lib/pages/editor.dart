@@ -23,7 +23,7 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editor'),
+        title: const Text('Workflow Title'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
@@ -32,7 +32,7 @@ class _EditorState extends State<Editor> {
             const Card(
               elevation: 3,
               child: ListTile(
-                title: Text("Your workflow"),
+                title: Text("Action"),
                 tileColor: Color.fromARGB(255, 0, 255, 255),
               ),
             ),
@@ -50,7 +50,7 @@ class _EditorState extends State<Editor> {
                               bottom: BorderSide(
                                   color: Color.fromARGB(255, 150, 150, 150)))),
                       child: const ListTile(
-                        title: Text("Ben on prie maintenant"),
+                        title: Text("Reaction"),
                       )),
                   Container(
                       decoration: const BoxDecoration(
@@ -60,7 +60,7 @@ class _EditorState extends State<Editor> {
                               bottom: BorderSide(
                                   color: Color.fromARGB(255, 150, 150, 150)))),
                       child: const ListTile(
-                        title: Text("Ben on prie maintenant"),
+                        title: Text("Reaction"),
                       )),
                   Container(
                       decoration: const BoxDecoration(
@@ -70,7 +70,7 @@ class _EditorState extends State<Editor> {
                               bottom: BorderSide(
                                   color: Color.fromARGB(255, 150, 150, 150)))),
                       child: const ListTile(
-                        title: Text("Ben on prie maintenant"),
+                        title: Text("Reaction"),
                       )),
                   Container(
                       decoration: const BoxDecoration(
@@ -80,7 +80,7 @@ class _EditorState extends State<Editor> {
                               bottom: BorderSide(
                                   color: Color.fromARGB(255, 150, 150, 150)))),
                       child: const ListTile(
-                        title: Text("Ben on prie maintenant"),
+                        title: Text("Reaction"),
                       )),
                 ],
               ),
