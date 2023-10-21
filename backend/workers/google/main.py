@@ -1,6 +1,7 @@
 import dotenv
 import sys
 
+from src.calendar.create_calendar import create_calendar
 from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
 from src.forms.create_form import create_form
@@ -61,6 +62,10 @@ def main():
         # Classrooms
         case "create-course":
             create_course()
+
+        # Calendar
+        case "create-calendar":
+            create_calendar()
 
         case _:
             print("Error: Invalid job")
