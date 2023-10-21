@@ -1,13 +1,13 @@
 import {
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
-	GoogleCreateDocumentParams,
-	GoogleCreateTaskListOrCalendarParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
 	LinkedinCreatePostParams,
+	NameParams,
 	TimerSecondIntervalParams,
+	TitleParams,
 } from "./jobParams";
 
 export enum Jobs {
@@ -25,6 +25,7 @@ export enum Jobs {
 	"google-create-task-list" = "google-create-task-list",
 	"google-create-course" = "google-create-course",
 	"google-create-calendar" = "google-create-calendar",
+	"google-create-drive-folder" = "google-create-drive-folder",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -39,15 +40,16 @@ export const JobParamsClasses = {
 	"google-create-draft-email": GoogleEmailParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
-	"google-create-document-docs": GoogleCreateDocumentParams,
-	"google-create-presentation-slides": GoogleCreateDocumentParams,
-	"google-create-spreadsheet": GoogleCreateDocumentParams,
-	"google-create-form": GoogleCreateDocumentParams,
+	"google-create-document-docs": NameParams,
+	"google-create-presentation-slides": NameParams,
+	"google-create-spreadsheet": NameParams,
+	"google-create-form": NameParams,
 	"google-create-contact": GoogleCreateContactParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
-	"google-create-task-list": GoogleCreateTaskListOrCalendarParams,
+	"google-create-task-list": TitleParams,
 	"google-create-course": GoogleCreateCourseParams,
-	"google-create-calendar": GoogleCreateTaskListOrCalendarParams,
+	"google-create-calendar": TitleParams,
+	"google-create-drive-folder": NameParams,
 };
 
 export type JobsParams = Mapper<{
@@ -56,13 +58,14 @@ export type JobsParams = Mapper<{
 	"google-create-draft-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
-	"google-create-document-docs": GoogleCreateDocumentParams;
-	"google-create-presentation-slides": GoogleCreateDocumentParams;
-	"google-create-spreadsheet": GoogleCreateDocumentParams;
-	"google-create-form": GoogleCreateDocumentParams;
+	"google-create-document-docs": NameParams;
+	"google-create-presentation-slides": NameParams;
+	"google-create-spreadsheet": NameParams;
+	"google-create-form": NameParams;
 	"google-create-contact": GoogleCreateContactParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
-	"google-create-task-list": GoogleCreateTaskListOrCalendarParams;
+	"google-create-task-list": TitleParams;
 	"google-create-course": GoogleCreateCourseParams;
-	"google-create-calendar": GoogleCreateTaskListOrCalendarParams;
+	"google-create-calendar": TitleParams;
+	"google-create-drive-folder": NameParams;
 }>;
