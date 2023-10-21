@@ -2,7 +2,7 @@
 - General
 
     - [The project](general/project)
-    - [Getting started](/getting-started)
+    - [Getting started](general/getting-started)
 
 - Architecture
 
