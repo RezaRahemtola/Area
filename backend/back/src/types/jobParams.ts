@@ -70,3 +70,11 @@ export class GoogleCreateCourseParams extends UniqueJobParams {
 	@IsString()
 	description: string;
 }
+
+export class GoogleDuplicateDriveFileParams extends UniqueJobParams {
+	@IsString()
+	fileId: string;
+
+	@IsString()
+	name: string;
+}
