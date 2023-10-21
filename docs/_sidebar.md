@@ -1,7 +1,7 @@
 <!-- markdownlint-disable-next-line first-line-h1 -->
 - General
 
-    - [The project](/project)
+    - [The project](general/project)
     - [Getting started](/getting-started)
 
 - Architecture
