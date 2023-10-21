@@ -1,6 +1,7 @@
 import {
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
+	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
@@ -26,6 +27,7 @@ export enum Jobs {
 	"google-create-course" = "google-create-course",
 	"google-create-calendar" = "google-create-calendar",
 	"google-create-drive-folder" = "google-create-drive-folder",
+	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -50,6 +52,7 @@ export const JobParamsClasses = {
 	"google-create-course": GoogleCreateCourseParams,
 	"google-create-calendar": TitleParams,
 	"google-create-drive-folder": NameParams,
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 };
 
 export type JobsParams = Mapper<{
@@ -68,4 +71,5 @@ export type JobsParams = Mapper<{
 	"google-create-course": GoogleCreateCourseParams;
 	"google-create-calendar": TitleParams;
 	"google-create-drive-folder": NameParams;
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 }>;

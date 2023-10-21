@@ -5,6 +5,7 @@ from src.calendar.create_calendar import create_calendar
 from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
 from src.drive.create_folder import create_drive_folder
+from src.drive.duplicate_file import duplicate_drive_file
 from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
@@ -71,6 +72,8 @@ def main():
         # Drive
         case "create-drive-folder":
             create_drive_folder()
+        case "duplicate-drive-file":
+            duplicate_drive_file()
 
         case _:
             print("Error: Invalid job")
