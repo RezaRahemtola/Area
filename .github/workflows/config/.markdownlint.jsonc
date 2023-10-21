@@ -53,5 +53,8 @@
   "MD032": false,
 
   // MD033/no-inline-html - Inline HTML
-  "MD033": false
+  "MD033": false,
+
+  // MD042/no-empty-links - Empty links (like)
+  "MD042": false
 }
