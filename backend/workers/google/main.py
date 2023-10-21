@@ -6,6 +6,7 @@ from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
 from src.drive.create_folder import create_drive_folder
 from src.drive.duplicate_file import duplicate_drive_file
+from src.forms.add_youtube_item import form_add_youtube_item
 from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
@@ -52,6 +53,8 @@ def main():
         # Forms
         case "create-form":
             create_form()
+        case "form-add-youtube-item":
+            form_add_youtube_item()
 
         # Contacts
         case "create-contact":
