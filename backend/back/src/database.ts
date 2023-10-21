@@ -40,6 +40,7 @@ import { CreateGoogleCourseArea1697750743177 } from "./workflows/seed/1697750743
 import { CreateGoogleCalendarArea1697892875843 } from "./workflows/seed/1697892875843-CreateGoogleCalendarArea";
 import { CreateGoogleDriveFolderArea1697900447428 } from "./workflows/seed/1697900447428-CreateGoogleDriveFolderArea";
 import { DuplicateGoogleDriveFileArea1697902627105 } from "./workflows/seed/1697902627105-DuplicateGoogleDriveFileArea";
+import { CreateGoogleFormYoutubeItem1697907107855 } from "./workflows/seed/1697907107855-CreateGoogleFormYoutubeItem";
 
 dotenv.config();
 
@@ -84,6 +85,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleCalendarArea1697892875843,
 		CreateGoogleDriveFolderArea1697900447428,
 		DuplicateGoogleDriveFileArea1697902627105,
+		CreateGoogleFormYoutubeItem1697907107855,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

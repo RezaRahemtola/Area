@@ -1,4 +1,5 @@
 import {
+	GoogleAddFormYoutubeItemParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
 	GoogleDuplicateDriveFileParams,
@@ -28,6 +29,7 @@ export enum Jobs {
 	"google-create-calendar" = "google-create-calendar",
 	"google-create-drive-folder" = "google-create-drive-folder",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
+	"google-form-add-youtube-item" = "google-form-add-youtube-item",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -53,6 +55,7 @@ export const JobParamsClasses = {
 	"google-create-calendar": TitleParams,
 	"google-create-drive-folder": NameParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
+	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
 };
 
 export type JobsParams = Mapper<{
@@ -72,4 +75,5 @@ export type JobsParams = Mapper<{
 	"google-create-calendar": TitleParams;
 	"google-create-drive-folder": NameParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
+	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
 }>;

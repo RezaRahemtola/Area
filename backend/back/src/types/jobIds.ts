@@ -21,4 +21,5 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-calendar": ({ workflowStepId }) => `google-create-calendar-${workflowStepId}`,
 	"google-create-drive-folder": ({ workflowStepId }) => `google-create-drive-folder-${workflowStepId}`,
 	"google-duplicate-drive-file": ({ workflowStepId }) => `google-duplicate-drive-file-${workflowStepId}`,
+	"google-form-add-youtube-item": ({ workflowStepId }) => `google-form-add-youtube-item-${workflowStepId}`,
 };

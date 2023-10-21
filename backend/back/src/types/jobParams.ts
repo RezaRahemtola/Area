@@ -78,3 +78,17 @@ export class GoogleDuplicateDriveFileParams extends UniqueJobParams {
 	@IsString()
 	name: string;
 }
+
+export class GoogleAddFormYoutubeItemParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+
+	@IsString()
+	title: string;
+
+	@IsString()
+	description: string;
+
+	@IsString()
+	youtubeUrl: string;
+}
