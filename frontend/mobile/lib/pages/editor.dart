@@ -21,6 +21,12 @@ class _EditorState extends State<Editor> {
     });
   }
 
+  void removeReaction(String newReaction) {
+    setState(() {
+      reactions.removeWhere((element) => element == newReaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +60,9 @@ class _EditorState extends State<Editor> {
                   child: ListView.builder(
                     itemCount: reactions.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(reactions[index]),
-                      );
+                      return ReactionElement(
+                          title: reactions[index],
+                          removeReaction: removeReaction);
                     },
                   )),
             ),
@@ -67,31 +73,48 @@ class _EditorState extends State<Editor> {
   }
 }
 
-class ReactionElement extends StatelessWidget {
-  final title;
+class ReactionElement extends StatefulWidget {
+  final String title;
+  final Function(String) removeReaction;
 
-  const ReactionElement({super.key, required this.title});
+  const ReactionElement(
+      {Key? key, required this.title, required this.removeReaction})
+      : super(key: key);
 
+  @override
+  State<ReactionElement> createState() => _ReactionElementState();
+}
+
+class _ReactionElementState extends State<ReactionElement> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(
-            border: Border(
-                left: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
-                bottom: BorderSide(color: Color.fromARGB(255, 150, 150, 150)))),
-        child: const ListTile(
-          title: Text("Reaction"),
-        ));
+      decoration: const BoxDecoration(
+        border: Border(
+          left: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
+          bottom: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
+        ),
+      ),
+      child: ListTile(
+        title: Text(widget.title),
+        trailing: ElevatedButton(
+          onPressed: () {
+            widget.removeReaction(widget.title);
+          },
+          child: const Icon(Icons.delete),
+        ),
+      ),
+    );
   }
 }
 
 class ShowAlert extends StatefulWidget {
   final Function(String) updateReactions;
 
-  ShowAlert({super.key, required this.updateReactions});
+  const ShowAlert({super.key, required this.updateReactions});
 
   @override
-  _ShowAlertState createState() => _ShowAlertState();
+  State<ShowAlert> createState() => _ShowAlertState();
 }
 
 class _ShowAlertState extends State<ShowAlert> {
