@@ -11,6 +11,7 @@ const CreateIssueSchema = z.object({
     auth: GithubAuthSchema,
     target: z.string().optional(),
     identifier: z.string(),
+    workflowStepId: z.string(),
     owner: z.string(),
     repo: z.string(),
     title: z.string(),
