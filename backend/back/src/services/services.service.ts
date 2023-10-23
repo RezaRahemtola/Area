@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Service from "./entities/service.entity";
 import { Repository } from "typeorm";
@@ -6,11 +6,22 @@ import Area from "./entities/area.entity";
 import { AreaDto } from "./dto/area.dto";
 import { ServiceHasFilter } from "./dto/service-query-filter.dto";
 
-export const SERVICE_NAMES = ["timer", "github", "google", "twitter", "linkedin", "microsoft"] as const;
+export const SERVICE_NAMES = [
+	"timer",
+	"github",
+	"google",
+	"twitter",
+	"linkedin",
+	"microsoft",
+	"facebook",
+	"miro",
+] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 
 @Injectable()
 export class ServicesService {
+	private readonly logger = new Logger(ServicesService.name);
+
 	constructor(
 		@InjectRepository(Service)
 		private readonly serviceRepository: Repository<Service>,
@@ -27,12 +38,13 @@ export class ServicesService {
 				},
 			})
 		).map(({ scopes, ...service }) => ({ ...service, scopes: scopes?.map(({ id }) => id) }));
-		return (
-			services
-				.filter(({ areas }) => !has || areas.some(({ isAction }) => (has === "actions" ? isAction : !isAction)))
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				.map(({ areas, ...service }) => ({ ...service }))
-		);
+		const servicesToReturn = services
+			.filter(({ areas }) => !has || areas.some(({ isAction }) => (has === "actions" ? isAction : !isAction)))
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			.map(({ areas, ...service }) => ({ ...service }));
+		this.logger.log(`Found ${servicesToReturn.length} services`);
+		if (has) this.logger.log(`Theses services are all ${has}`);
+		return servicesToReturn;
 	}
 
 	async getService(
@@ -59,6 +71,7 @@ export class ServicesService {
 			where: { serviceId, isAction: action },
 			relations: { serviceScopesNeeded: true },
 		});
+		this.logger.log(`Found ${areas.length} ${action ? "actions" : "reactions"} for service ${serviceId}`);
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return areas.map(({ serviceScopesNeeded, isAction, serviceId, ...area }) => ({
 			...area,

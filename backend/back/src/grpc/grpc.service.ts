@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
 import { AuthenticatedJobData, GrpcResponse, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
@@ -9,14 +9,18 @@ import { JobsService } from "../jobs/jobs.service";
 
 interface AreaSupervisorService {
 	launchJob(data: AuthenticatedJobData): Observable<GrpcResponse>;
+
 	killJob(job: JobId): Observable<GrpcResponse>;
+
 	killAllJobs(_: object): Observable<GrpcResponse>;
+
 	listJobs(_: object): Observable<JobList>;
 }
 
 @Injectable()
 export class GrpcService implements OnModuleInit {
 	private areaSupervisorService: AreaSupervisorService;
+	private readonly logger = new Logger(GrpcService.name);
 
 	constructor(
 		@Inject("AREA_SUPERVISOR_PACKAGE") private readonly client: ClientGrpc,
@@ -24,6 +28,7 @@ export class GrpcService implements OnModuleInit {
 	) {}
 
 	async onModuleInit() {
+		this.logger.log("Synchronizing jobs...");
 		this.areaSupervisorService = this.client.getService<AreaSupervisorService>("AreaSupervisorService");
 		await this.jobsService.synchronizeJobs();
 	}
@@ -34,6 +39,11 @@ export class GrpcService implements OnModuleInit {
 		auth: unknown,
 	): Promise<GrpcResponse> {
 		const identifier = JobsIdentifiers[name](params);
+		this.logger.log(
+			`Launching job ${identifier} with name ${name} and params ${JSON.stringify({
+				params,
+			})} and auth params ${JSON.stringify({ auth })}`,
+		);
 		return firstValueFrom(
 			this.areaSupervisorService.launchJob({
 				name,
@@ -45,6 +55,7 @@ export class GrpcService implements OnModuleInit {
 	}
 
 	killJob(identifier: string) {
+		this.logger.log(`Killing job ${identifier}`);
 		return firstValueFrom(
 			this.areaSupervisorService.killJob({
 				identifier,
@@ -53,10 +64,12 @@ export class GrpcService implements OnModuleInit {
 	}
 
 	killAllJobs() {
+		this.logger.log("Killing all jobs");
 		return firstValueFrom(this.areaSupervisorService.killAllJobs({}));
 	}
 
 	listJobs() {
+		this.logger.log("Listing all jobs");
 		return firstValueFrom(this.areaSupervisorService.listJobs({}));
 	}
 }

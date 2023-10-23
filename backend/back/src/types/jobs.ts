@@ -1,11 +1,15 @@
 import {
+	GoogleAddFormYoutubeItemParams,
 	GoogleCreateContactParams,
-	GoogleCreateDocumentParams,
+	GoogleCreateCourseParams,
+	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
 	LinkedinCreatePostParams,
+	NameParams,
 	TimerSecondIntervalParams,
+	TitleParams,
 } from "./jobParams";
 
 export enum Jobs {
@@ -20,6 +24,12 @@ export enum Jobs {
 	"google-create-form" = "google-create-form",
 	"google-create-contact" = "google-create-contact",
 	"linkedin-create-post" = "linkedin-create-post",
+	"google-create-task-list" = "google-create-task-list",
+	"google-create-course" = "google-create-course",
+	"google-create-calendar" = "google-create-calendar",
+	"google-create-drive-folder" = "google-create-drive-folder",
+	"google-duplicate-drive-file" = "google-duplicate-drive-file",
+	"google-form-add-youtube-item" = "google-form-add-youtube-item",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -34,12 +44,18 @@ export const JobParamsClasses = {
 	"google-create-draft-email": GoogleEmailParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
-	"google-create-document-docs": GoogleCreateDocumentParams,
-	"google-create-presentation-slides": GoogleCreateDocumentParams,
-	"google-create-spreadsheet": GoogleCreateDocumentParams,
-	"google-create-form": GoogleCreateDocumentParams,
+	"google-create-document-docs": NameParams,
+	"google-create-presentation-slides": NameParams,
+	"google-create-spreadsheet": NameParams,
+	"google-create-form": NameParams,
 	"google-create-contact": GoogleCreateContactParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
+	"google-create-task-list": TitleParams,
+	"google-create-course": GoogleCreateCourseParams,
+	"google-create-calendar": TitleParams,
+	"google-create-drive-folder": NameParams,
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
+	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
 };
 
 export type JobsParams = Mapper<{
@@ -48,10 +64,16 @@ export type JobsParams = Mapper<{
 	"google-create-draft-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
-	"google-create-document-docs": GoogleCreateDocumentParams;
-	"google-create-presentation-slides": GoogleCreateDocumentParams;
-	"google-create-spreadsheet": GoogleCreateDocumentParams;
-	"google-create-form": GoogleCreateDocumentParams;
+	"google-create-document-docs": NameParams;
+	"google-create-presentation-slides": NameParams;
+	"google-create-spreadsheet": NameParams;
+	"google-create-form": NameParams;
 	"google-create-contact": GoogleCreateContactParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
+	"google-create-task-list": TitleParams;
+	"google-create-course": GoogleCreateCourseParams;
+	"google-create-calendar": TitleParams;
+	"google-create-drive-folder": NameParams;
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
+	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
 }>;

@@ -12,6 +12,12 @@ var JobToImage = map[string]string{
 	"google-create-form":                "supervisor-google",
 	"google-create-contact":             "supervisor-google",
 	"linkedin-create-post":              "supervisor-linkedin",
+	"google-create-task-list":           "supervisor-google",
+	"google-create-course":              "supervisor-google",
+	"google-create-calendar":            "supervisor-google",
+	"google-create-drive-folder":        "supervisor-google",
+	"google-duplicate-drive-file":       "supervisor-google",
+	"google-form-add-youtube-item":      "supervisor-google",
 }
 
 var OptArgument = map[string]string{
@@ -26,6 +32,12 @@ var OptArgument = map[string]string{
 	"google-create-form":                "create-form",
 	"google-create-contact":             "create-contact",
 	"linkedin-create-post":              "create-post",
+	"google-create-task-list":           "create-task-list",
+	"google-create-course":              "create-course",
+	"google-create-calendar":            "create-calendar",
+	"google-create-drive-folder":        "create-drive-folder",
+	"google-duplicate-drive-file":       "duplicate-drive-file",
+	"google-form-add-youtube-item":      "form-add-youtube-item",
 }
 
 func GetImages() []string {

@@ -1,11 +1,17 @@
 import dotenv
 import sys
 
+from src.calendar.create_calendar import create_calendar
+from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
+from src.drive.create_folder import create_drive_folder
+from src.drive.duplicate_file import duplicate_drive_file
+from src.forms.add_youtube_item import form_add_youtube_item
 from src.forms.create_form import create_form
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
 from src.gmail.update_signature import update_signature
+from src.tasks.create_task_list import create_task_list
 from src.youtube.create_comment import create_comment
 from src.docs.create_document import create_document
 from src.slides.create_slide import create_slide
@@ -47,10 +53,30 @@ def main():
         # Forms
         case "create-form":
             create_form()
+        case "form-add-youtube-item":
+            form_add_youtube_item()
 
         # Contacts
         case "create-contact":
             create_contact()
+
+        # Tasks
+        case "create-task-list":
+            create_task_list()
+
+        # Classrooms
+        case "create-course":
+            create_course()
+
+        # Calendar
+        case "create-calendar":
+            create_calendar()
+
+        # Drive
+        case "create-drive-folder":
+            create_drive_folder()
+        case "duplicate-drive-file":
+            duplicate_drive_file()
 
         case _:
             print("Error: Invalid job")

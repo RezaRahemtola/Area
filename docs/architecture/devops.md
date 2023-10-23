@@ -8,7 +8,7 @@ the best developer experience to ensure time is spent on things that matter.
 
 All these things are present in Area and detailed on this page.
 
-## Continuous Integration
+## Continuous Integration 🧪
 
 Keeping the code clean and bug-free is one of our priorities. As such, we have implemented the following
 checks, launched automatically on every code change (`commit`):
@@ -29,7 +29,7 @@ and keep high standards to focus on code quality and maintainability. It runs on
 self-hosted instance (with subdomain, `nginx` config and SSL certificate). It will also run the backend unit tests and
 cypress web tests with coverage options to display it in the SonarQube dashboard.
 
-## Continuous Deployment
+## Continuous Deployment 🚀
 
 Developing features is great, but ensuring users are always using the latest version is better!\
 This is what we are implementing for this
@@ -45,7 +45,7 @@ using [GitHub Pages](https://pages.github.com/).
 - Protobuf file updates: When there's a change in [our public protobuf repository](https://github.com/RezaRahemtola/area-proto),
 we need to rebuild docker images in production (as the Docker cache won't detect changes in it's `git clone` steps).
 
-## Releases
+## Releases 🌈
 
 Deployment continuously is great, but we also need to group features and improvements in releases for more
 stable deployments and project versioning.\
@@ -59,7 +59,7 @@ That's exactly what this action does: building the APK on every release publicat
 features, bugs fixes... made recently in the project. This file is actually automatically generated from the GitHub releases
 when a new one is published!
 
-## Environment variables
+## Environment variables ⚙️
 
 Managing environment variables can become quite a nightmare in a big project: multiple environments, multiple
 teams, deployment instances or external tools (like a GitHub integration)...\
@@ -70,7 +70,7 @@ That's why we are using [Infisical](https://infisical.com/) to manage our secret
 or for specific parts in development, like [workers](workers.md))
 - Integrations with GitHub (secrets used for CI and CD runs) and Vercel (used for the web preview deployments)
 
-## Miscellaneous
+## Miscellaneous 💯
 
 Other specific details about the technologies we are using:
 - A [self-hosted GitHub Actions runner](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)

@@ -6,6 +6,7 @@ import {
 	ForbiddenException,
 	Get,
 	InternalServerErrorException,
+	Logger,
 	Param,
 	Post,
 	Req,
@@ -37,6 +38,8 @@ import { ServicesService } from "src/services/services.service";
 @UseGuards(JwtAuthGuard)
 @Controller("connections")
 export class ConnectionsController {
+	private readonly logger = new Logger(ConnectionsController.name);
+
 	constructor(
 		private readonly connectionsService: ConnectionsService,
 		private readonly oauthService: OauthService,
@@ -74,13 +77,18 @@ export class ConnectionsController {
 		if (!(await this.servicesService.getService(serviceId)).needConnection)
 			throw new ForbiddenException("This service does not need a connection");
 		scopes = [...new Set(scopes)];
+		this.logger.log(`Connecting user ${userId} to service ${serviceId} with scopes: ${scopes.join(", ")}`);
 		const missingScopes = await this.connectionsService.getNewScopesForConnection(userId, serviceId, scopes);
-		if (missingScopes.length === 0)
+		if (missingScopes.length === 0) {
+			this.logger.warn(`User ${userId} already has a connection that satisfies these scopes`);
 			throw new ConflictException("You already have a connection that satisfies these scopes");
-		else
+		} else {
+			this.logger.log(`User ${userId} new scopes for ${serviceId} are: ${missingScopes.join(", ")}`);
+			this.logger.log(`Creating and sending an url for user ${userId} to connect to service ${serviceId}`);
 			return {
 				oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes(userId, serviceId, missingScopes),
 			};
+		}
 	}
 
 	@ApiOkResponse({
@@ -97,5 +105,6 @@ export class ConnectionsController {
 	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { serviceId }: ServiceIdParamDto) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
 			throw new InternalServerErrorException("An unknown error occurred while deleting the connection");
+		this.logger.log(`User ${userId} successfully deleted their connection to service ${serviceId}`);
 	}
 }

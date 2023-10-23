@@ -16,4 +16,10 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-form": ({ workflowStepId }) => `google-create-form-${workflowStepId}`,
 	"google-create-contact": ({ workflowStepId }) => `google-create-contact-${workflowStepId}`,
 	"linkedin-create-post": ({ workflowStepId }) => `linkedin-create-post-${workflowStepId}`,
+	"google-create-task-list": ({ workflowStepId }) => `google-create-task-list-${workflowStepId}`,
+	"google-create-course": ({ workflowStepId }) => `google-create-course-${workflowStepId}`,
+	"google-create-calendar": ({ workflowStepId }) => `google-create-calendar-${workflowStepId}`,
+	"google-create-drive-folder": ({ workflowStepId }) => `google-create-drive-folder-${workflowStepId}`,
+	"google-duplicate-drive-file": ({ workflowStepId }) => `google-duplicate-drive-file-${workflowStepId}`,
+	"google-form-add-youtube-item": ({ workflowStepId }) => `google-form-add-youtube-item-${workflowStepId}`,
 };

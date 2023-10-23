@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Req, Res, UseGuards } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpStatus,
+	Logger,
+	Param,
+	Patch,
+	Post,
+	Req,
+	Res,
+	UseGuards,
+} from "@nestjs/common";
 import { WorkflowsService } from "./workflows.service";
 import CreateWorkflowDto from "./dto/create-workflow.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
@@ -31,6 +44,8 @@ import Workflow from "./entities/workflow.entity";
 @UseGuards(JwtAuthGuard)
 @Controller("workflows")
 export class WorkflowsController {
+	private readonly logger = new Logger(WorkflowsController.name);
+
 	constructor(private readonly workspacesService: WorkflowsService) {}
 
 	@ApiOkResponse({
@@ -110,6 +125,8 @@ export class WorkflowsController {
 		@Res() response: Response,
 	) {
 		const result = await this.workspacesService.updateWorkflow(workflowId, updateWorkflowDto, ownerId);
+		if (result) this.logger.log(`Updated workflow ${workflowId} with ${JSON.stringify(updateWorkflowDto)}`);
+		else this.logger.warn(`No changes to workflow ${workflowId} made.`);
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).send();
 	}
 
@@ -127,6 +144,8 @@ export class WorkflowsController {
 		@Res() response: Response,
 	) {
 		const result = await this.workspacesService.toggleWorkflows(workflows, newState, ownerId);
+		if (result) this.logger.log(`Toggled ${workflows.length}, or less, workflows to ${newState}`);
+		else this.logger.warn(`No workflows toggled.`);
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_MODIFIED).send();
 	}
 
@@ -163,6 +182,8 @@ export class WorkflowsController {
 		@Res() response: Response,
 	) {
 		const result = await this.workspacesService.deleteWorkflows(workflows, ownerId);
+		if (result) this.logger.log(`Deleted ${workflows.length}, or less, workflows`);
+		else this.logger.warn(`No workflows deleted.`);
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_FOUND).send();
 	}
 
@@ -183,6 +204,8 @@ export class WorkflowsController {
 		@Res() response: Response,
 	) {
 		const result = await this.workspacesService.deleteWorkflow(workflowId, ownerId);
+		if (result) this.logger.log(`Deleted workflow ${workflowId}`);
+		else this.logger.warn(`Workflow ${workflowId} was not found.`);
 		return response.status(result ? HttpStatus.OK : HttpStatus.NOT_FOUND).send();
 	}
 }

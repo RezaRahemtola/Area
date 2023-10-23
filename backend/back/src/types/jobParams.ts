@@ -34,7 +34,7 @@ export class GoogleYoutubeCreateCommentParams extends UniqueJobParams {
 	content: string;
 }
 
-export class GoogleCreateDocumentParams extends UniqueJobParams {
+export class NameParams extends UniqueJobParams {
 	@IsString()
 	name: string;
 }
@@ -56,4 +56,39 @@ export class LinkedinCreatePostParams extends UniqueJobParams {
 
 	@IsString()
 	articleDescription: string;
+}
+
+export class TitleParams extends UniqueJobParams {
+	@IsString()
+	title: string;
+}
+
+export class GoogleCreateCourseParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	description: string;
+}
+
+export class GoogleDuplicateDriveFileParams extends UniqueJobParams {
+	@IsString()
+	fileId: string;
+
+	@IsString()
+	name: string;
+}
+
+export class GoogleAddFormYoutubeItemParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+
+	@IsString()
+	title: string;
+
+	@IsString()
+	description: string;
+
+	@IsString()
+	youtubeUrl: string;
 }
