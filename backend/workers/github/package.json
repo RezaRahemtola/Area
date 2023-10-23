@@ -1,5 +1,5 @@
 {
-  "name": "github",
+  "name": "github-area-worker",
   "version": "1.0.0",
   "description": "Github AREA worker",
   "main": "dist/main.js",
