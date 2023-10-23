@@ -8,7 +8,7 @@ env:
 jobs:
   build-supervisor:
     name: "Build: Supervisor"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend/supervisor/
