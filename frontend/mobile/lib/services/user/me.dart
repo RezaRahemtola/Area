@@ -1,15 +1,24 @@
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
-import 'package:dio/dio.dart';
+import 'package:area_mobile/types/user/me.dart';
 
-Future<ServiceReturn<List<Service>>> getMe(String accessToken) async {
+Future<ServiceReturn<UserMe>> getMe() async {
   try {
-    final options = Options(headers: {'Authorization': 'Bearer $accessToken'});
-    final response = await dio.get<List<dynamic>>('/me', options: options);
+    final response = await dio.get<Map<String, dynamic>>('/me');
+    print("--------------------------------SUCCESS\n");
+    print(response.data);
+    print("--------------------------------SUCCESS\n");
 
-    return ServiceReturn(
-        data: response.data!.map((e) => Service.fromJson(e)).toList());
+    final responseData = response.data;
+    if (responseData != null) {
+      return ServiceReturn(data: UserMe.fromJson(responseData));
+    } else {
+      return const ServiceReturn(error: "API response data is null");
+    }
   } catch (e) {
+    print("--------------------------------ERROR\n");
+    print(e);
+    print("--------------------------------ERROR\n");
     return ServiceReturn(error: e.toString());
   }
 }
