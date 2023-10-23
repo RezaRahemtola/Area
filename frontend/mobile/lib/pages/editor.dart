@@ -13,26 +13,37 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  // void grow() {
-  //   setState(() {
-  //     _size += 0.1;
-  //   });
-  // }
+  double _size = 1.0;
+  void grow() {
+    setState(() {
+      _size += 0.1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Workflow Title'),
+        title: Text(_size.toString()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Column(
           children: [
-            const Card(
+            Card(
               elevation: 3,
               child: ListTile(
-                title: Text("Action"),
+                title: Row(
+                  children: [
+                    Text("Action"),
+                    Expanded(child: SizedBox()),
+                    ElevatedButton(
+                        onPressed: () {
+                          showAlert(context);
+                        },
+                        child: Text("+"))
+                  ],
+                ),
                 tileColor: Color.fromARGB(255, 0, 255, 255),
               ),
             ),
@@ -90,4 +101,29 @@ class _EditorState extends State<Editor> {
       ),
     );
   }
+}
+
+void showAlert(BuildContext context) {
+  final textFieldValueHolder = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Please Enter Value in Text Field.'),
+        content: TextField(
+          controller: textFieldValueHolder,
+          decoration: const InputDecoration(hintText: 'Enter Some Text Here'),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
