@@ -13,18 +13,13 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  double _size = 1.0;
-  void grow() {
-    setState(() {
-      _size += 0.1;
-    });
-  }
+  List<String> reactions = ["Test", "Essai"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_size.toString()),
+        title: Text("Workflow"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
@@ -39,7 +34,9 @@ class _EditorState extends State<Editor> {
                     Expanded(child: SizedBox()),
                     ElevatedButton(
                         onPressed: () {
-                          showAlert(context);
+                          ShowAlert(
+                            reactions: reactions,
+                          );
                         },
                         child: Text("+"))
                   ],
@@ -47,54 +44,17 @@ class _EditorState extends State<Editor> {
                 tileColor: Color.fromARGB(255, 0, 255, 255),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // children placeholder actuellement
-                  Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)),
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)))),
-                      child: const ListTile(
-                        title: Text("Reaction"),
-                      )),
-                  Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)),
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)))),
-                      child: const ListTile(
-                        title: Text("Reaction"),
-                      )),
-                  Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)),
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)))),
-                      child: const ListTile(
-                        title: Text("Reaction"),
-                      )),
-                  Container(
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)),
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 150, 150, 150)))),
-                      child: const ListTile(
-                        title: Text("Reaction"),
-                      )),
-                ],
-              ),
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: ListView.builder(
+                    itemCount: reactions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(reactions[index]),
+                      );
+                    },
+                  )),
             ),
           ],
         ),
@@ -103,27 +63,55 @@ class _EditorState extends State<Editor> {
   }
 }
 
-void showAlert(BuildContext context) {
+class ReactionElement extends StatelessWidget {
+  final title;
+
+  const ReactionElement({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: const BoxDecoration(
+            border: Border(
+                left: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
+                bottom: BorderSide(color: Color.fromARGB(255, 150, 150, 150)))),
+        child: const ListTile(
+          title: Text("Reaction"),
+        ));
+  }
+}
+
+class ShowAlert extends StatefulWidget {
+  final List<String> reactions;
+
+  ShowAlert({super.key, required this.reactions});
+
+  @override
+  _ShowAlertState createState() => _ShowAlertState();
+}
+
+class _ShowAlertState extends State<ShowAlert> {
   final textFieldValueHolder = TextEditingController();
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Please Enter Value in Text Field.'),
-        content: TextField(
-          controller: textFieldValueHolder,
-          decoration: const InputDecoration(hintText: 'Enter Some Text Here'),
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Please Enter Value in Text Field.'),
+      content: TextField(
+        controller: textFieldValueHolder,
+        decoration: const InputDecoration(hintText: 'Enter Some Text Here'),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text("OK"),
+          onPressed: () {
+            setState(() {
+              widget.reactions.add(textFieldValueHolder.text);
+            });
+            Navigator.of(context).pop();
+          },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+      ],
+    );
+  }
 }
