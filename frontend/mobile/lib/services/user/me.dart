@@ -5,9 +5,6 @@ import 'package:area_mobile/types/user/me.dart';
 Future<ServiceReturn<UserMe>> getMe() async {
   try {
     final response = await dio.get<Map<String, dynamic>>('/me');
-    print("--------------------------------SUCCESS\n");
-    print(response.data);
-    print("--------------------------------SUCCESS\n");
 
     final responseData = response.data;
     if (responseData != null) {
@@ -16,9 +13,6 @@ Future<ServiceReturn<UserMe>> getMe() async {
       return const ServiceReturn(error: "API response data is null");
     }
   } catch (e) {
-    print("--------------------------------ERROR\n");
-    print(e);
-    print("--------------------------------ERROR\n");
     return ServiceReturn(error: e.toString());
   }
 }
