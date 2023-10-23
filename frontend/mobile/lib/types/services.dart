@@ -37,4 +37,12 @@ class Area {
       {required this.id,
       required this.name,
       required this.serviceScopesNeeded});
+
+  factory Area.fromJson(Map<String, dynamic> json) {
+    return Area(
+      id: json['id'],
+      name: json['name'],
+      serviceScopesNeeded: List<String>.from(json['serviceScopesNeeded']),
+    );
+  }
 }
