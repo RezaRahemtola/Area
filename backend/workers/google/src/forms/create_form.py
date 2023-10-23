@@ -1,10 +1,12 @@
 import json
+import sys
 
 import grpc
+from google.auth.exceptions import RefreshError
 from google.protobuf.struct_pb2 import Struct
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+from area_back_pb2 import JobError
 from src.utils.auth import forge_credentials
 from src.utils.parsing import get_arguments
 
@@ -16,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/forms.body']
 TARGET = "localhost:50050"
 
 def create_form():
-    args = get_arguments({"auth", "name", "workflowStepId"})
+    args = get_arguments({"auth", "name", "workflowStepId", "identifier"})
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
@@ -39,7 +41,14 @@ def create_form():
             params.update({
                 "workflowStepId": args["workflowStepId"],
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="forms", identifier="google-create-form", params=params))
+            AreaBackServiceStub(channel).OnReaction(JobData(name="google-create-form", identifier=args["identifier"], params=params))
 
-    except HttpError as error:
-        print(F'An error occurred: {error}')
+    except RefreshError as error:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
+        exit(1)
+    except Exception as e:
+        with grpc.insecure_channel(target) as channel:
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=args["identifier"], error=str(sys.exc_info()[0]), isAuthError=False))
+        raise e

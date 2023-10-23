@@ -58,6 +58,8 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 	}
 	args = append(args, "--target")
 	args = append(args, jm.callbackUrl)
+	args = append(args, "--identifier")
+	args = append(args, identifier)
 	args = append(args, "--auth")
 	args = append(args, string(auth))
 	for key, value := range params {

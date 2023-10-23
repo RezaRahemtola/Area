@@ -22,3 +22,8 @@ services:
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
         - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
         - GOOGLE_TOKEN_URI=${GOOGLE_TOKEN_URI}
+
+  linkedin:
+    container_name: linkedin
+    build:
+      context: ../workers/linkedin

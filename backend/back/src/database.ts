@@ -31,6 +31,16 @@ import { CreateGoogleSpreadsheetArea1697442335135 } from "./workflows/seed/16974
 import { CreateGoogleCreateFormArea1697476339491 } from "./workflows/seed/1697476339491-CreateGoogleCreateFormArea";
 import { UpdateGoogleServiceFormsScopes1697460124931 } from "./services/seed/1697460124931-UpdateGoogleServiceFormsScopes-seed";
 import { CreateGoogleCreateContactArea1697484676351 } from "./workflows/seed/1697484676351-CreateGoogleCreateContactArea";
+import { CreateMicrosoftServiceAndScopes1697423320221 } from "./services/seed/1697665090584-CreateMicrosoftServiceAndScopes";
+import { CreateFacebookServiceWithScopes1697687427741 } from "./services/seed/1697687427741-CreateFacebookServiceWithScopes";
+import { CreateLinkedInCreatePostArea1697628194232 } from "./workflows/seed/1697628194232-CreateLinkedInCreatePostArea";
+import { CreateMiroServiceWithScopes1697776146331 } from "./services/seed/1697776146331-CreateMiroServiceWithScopes";
+import { CreateGoogleTaskList1697746992707 } from "./workflows/seed/1697746992707-CreateGoogleTaskList";
+import { CreateGoogleCourseArea1697750743177 } from "./workflows/seed/1697750743177-CreateGoogleCourseArea";
+import { CreateGoogleCalendarArea1697892875843 } from "./workflows/seed/1697892875843-CreateGoogleCalendarArea";
+import { CreateGoogleDriveFolderArea1697900447428 } from "./workflows/seed/1697900447428-CreateGoogleDriveFolderArea";
+import { DuplicateGoogleDriveFileArea1697902627105 } from "./workflows/seed/1697902627105-DuplicateGoogleDriveFileArea";
+import { CreateGoogleFormYoutubeItem1697907107855 } from "./workflows/seed/1697907107855-CreateGoogleFormYoutubeItem";
 
 dotenv.config();
 
@@ -66,6 +76,16 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		UpdateGoogleServiceFormsScopes1697460124931,
 		CreateGoogleCreateFormArea1697476339491,
 		CreateGoogleCreateContactArea1697484676351,
+		CreateMicrosoftServiceAndScopes1697423320221,
+		CreateLinkedInCreatePostArea1697628194232,
+		CreateFacebookServiceWithScopes1697687427741,
+		CreateGoogleTaskList1697746992707,
+		CreateGoogleCourseArea1697750743177,
+		CreateMiroServiceWithScopes1697776146331,
+		CreateGoogleCalendarArea1697892875843,
+		CreateGoogleDriveFolderArea1697900447428,
+		DuplicateGoogleDriveFileArea1697902627105,
+		CreateGoogleFormYoutubeItem1697907107855,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

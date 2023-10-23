@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import UserConnection from "./entities/user-connection.entity";
 import { In, Repository } from "typeorm";
@@ -7,6 +7,8 @@ import ServiceScope from "../services/entities/service-scope.entity";
 
 @Injectable()
 export class ConnectionsService {
+	private readonly logger = new Logger(ConnectionsService.name);
+
 	constructor(
 		@InjectRepository(UserConnection)
 		private readonly userConnectionRepository: Repository<UserConnection>,
@@ -22,10 +24,20 @@ export class ConnectionsService {
 			where: { userId, serviceId },
 			relations: { scopes: true },
 		});
-		if (!connection) return scopes;
+		if (!connection) {
+			this.logger.log(`The user ${userId} is not connected to the service ${serviceId}, they need every scope asked`);
+			return scopes;
+		}
 		const connectionScopes = connection.scopes.map(({ id }) => id);
-		if (scopes.every((scope) => connectionScopes.includes(scope))) return [];
-		return [...new Set([...scopes, ...connectionScopes])];
+		if (scopes.every((scope) => connectionScopes.includes(scope))) {
+			this.logger.log("The connection already has all the scopes");
+			return [];
+		}
+		const newScopes = [...new Set([...scopes, ...connectionScopes])];
+		this.logger.log(
+			`The new scopes for connection ${connection.serviceId} of user ${userId} are: ${newScopes.join(", ")}`,
+		);
+		return newScopes;
 	}
 
 	async createUserConnection(userId: string, serviceId: ServiceName, scopes: string[], data: unknown) {
@@ -35,6 +47,13 @@ export class ConnectionsService {
 			data,
 			scopes: scopes.map((scope) => ({ serviceId, id: scope })),
 		});
+		this.logger.log(
+			`Creating connection ${userConnection.serviceId} for user ${userConnection.userId} with data: ${JSON.stringify(
+				data,
+				undefined,
+				2,
+			)} and scopes ${scopes.join(", ")}`,
+		);
 		return await this.userConnectionRepository.save(userConnection);
 	}
 
@@ -70,7 +89,13 @@ export class ConnectionsService {
 			throw new NotFoundException("User is not connected to this service");
 		return this.userConnectionRepository
 			.delete({ userId, serviceId })
-			.then(() => true)
-			.catch(() => false);
+			.then(() => {
+				this.logger.log(`Deleted connection ${serviceId} for user ${userId}`);
+				return true;
+			})
+			.catch(({ message }) => {
+				this.logger.error(`Error deleting connection ${serviceId} for user ${userId}: ${message}`);
+				return false;
+			});
 	}
 }
