@@ -8,7 +8,7 @@ env:
 jobs:
   eslint-backend:
     name: "ESLint: Backend"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend/back/
@@ -43,7 +43,7 @@ jobs:
 
   unit-tests-backend:
     name: "Unit tests: Backend"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend/back/
@@ -78,7 +78,7 @@ jobs:
 
   eslint-web:
     name: "ESLint: Web"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend/web/
