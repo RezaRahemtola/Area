@@ -8,6 +8,7 @@ type GithubAuthType = z.infer<typeof GithubAuthSchema>
 
 export default function parseArguments<T>(schema: ZodSchema): T {
     const data: Record<string, string | GithubAuthType> = {}
+    let ret: T
 
     for (let i = 3; i < process.argv.length; i++) {
         if (process.argv[i]!.startsWith("--")) {
@@ -15,7 +16,7 @@ export default function parseArguments<T>(schema: ZodSchema): T {
             const value = process.argv[i + 1]
 
             if (!value) {
-                console.log(`Error: ${process.argv[i]} requires an argument`)
+                console.error(`Error: ${process.argv[i]} requires an argument`)
                 process.exit(1)
             }
             data[key] = value
@@ -27,9 +28,10 @@ export default function parseArguments<T>(schema: ZodSchema): T {
             const auth = GithubAuthSchema.parse(JSON.parse(data.auth as string))
             data.auth = auth;
         }
-        return schema.parse(data)
+        ret = schema.parse(data)
     } catch (e) {
-        console.log(e)
+        console.error(e)
         process.exit(1)
     }
+    return ret
 }
