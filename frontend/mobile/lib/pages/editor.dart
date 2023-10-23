@@ -57,12 +57,23 @@ class _EditorState extends State<Editor> {
             Expanded(
               child: Padding(
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: ListView.builder(
-                    itemCount: reactions.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ReactionElement(
-                          title: reactions[index],
-                          removeReaction: removeReaction);
+                  child: ReorderableListView(
+                    children: <Widget>[
+                      for (int index = 0; index < reactions.length; index += 1)
+                        ReactionElement(
+                            key: Key('$index'),
+                            title: reactions[index],
+                            removeReaction: removeReaction)
+                    ],
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        String temp = reactions[oldIndex];
+                        reactions[oldIndex] = reactions[newIndex];
+                        reactions[newIndex] = temp;
+                      });
                     },
                   )),
             ),
