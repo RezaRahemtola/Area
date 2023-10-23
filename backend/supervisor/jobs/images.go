@@ -18,6 +18,7 @@ var JobToImage = map[string]string{
 	"google-create-drive-folder":        "supervisor-google",
 	"google-duplicate-drive-file":       "supervisor-google",
 	"google-form-add-youtube-item":      "supervisor-google",
+	"github-create-issue":               "supervisor-github",
 }
 
 var OptArgument = map[string]string{
@@ -38,6 +39,7 @@ var OptArgument = map[string]string{
 	"google-create-drive-folder":        "create-drive-folder",
 	"google-duplicate-drive-file":       "duplicate-drive-file",
 	"google-form-add-youtube-item":      "form-add-youtube-item",
+	"github-create-issue":               "create-issue",
 }
 
 func GetImages() []string {
