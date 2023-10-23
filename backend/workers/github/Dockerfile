@@ -32,5 +32,6 @@ USER user
 
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-ENTRYPOINT ["node", "--experimental-specifier-resolution=node", "dist/main.js"]
+ENTRYPOINT ["node", "--experimental-specifier-resolution=node", "main.js"]

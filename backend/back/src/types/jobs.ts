@@ -1,4 +1,5 @@
 import {
+	GithubCreateIssueParams,
 	GoogleAddFormYoutubeItemParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
@@ -30,6 +31,7 @@ export enum Jobs {
 	"google-create-drive-folder" = "google-create-drive-folder",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
+	"github-create-issue" = "github-create-issue",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -56,6 +58,7 @@ export const JobParamsClasses = {
 	"google-create-drive-folder": NameParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
+	"github-create-issue": GithubCreateIssueParams,
 };
 
 export type JobsParams = Mapper<{
@@ -76,4 +79,5 @@ export type JobsParams = Mapper<{
 	"google-create-drive-folder": NameParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
+	"github-create-issue": GithubCreateIssueParams;
 }>;

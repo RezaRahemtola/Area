@@ -1,4 +1,4 @@
-import { IsEmail, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsEmail, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class UniqueJobParams {
 	@IsUUID(4)
@@ -91,4 +91,27 @@ export class GoogleAddFormYoutubeItemParams extends UniqueJobParams {
 
 	@IsString()
 	youtubeUrl: string;
+}
+
+export class GithubCreateIssueParams extends UniqueJobParams {
+	@IsString()
+	owner: string;
+
+	@IsString()
+	repo: string;
+
+	@IsString()
+	title: string;
+
+	@IsString()
+	@IsOptional()
+	body: string;
+
+	@IsString({ each: true })
+	@IsOptional()
+	assignees: string[];
+
+	@IsString({ each: true })
+	@IsOptional()
+	labels: string[];
 }
