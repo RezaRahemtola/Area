@@ -15,6 +15,12 @@ class Editor extends StatefulWidget {
 class _EditorState extends State<Editor> {
   List<String> reactions = ["Test", "Essai"];
 
+  void updateReactions(String newReaction) {
+    setState(() {
+      reactions.add(newReaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +40,7 @@ class _EditorState extends State<Editor> {
                     Expanded(child: SizedBox()),
                     ElevatedButton(
                         onPressed: () {
-                          ShowAlert(
-                            reactions: reactions,
-                          );
+                          showAlert(context, updateReactions);
                         },
                         child: Text("+"))
                   ],
@@ -82,9 +86,9 @@ class ReactionElement extends StatelessWidget {
 }
 
 class ShowAlert extends StatefulWidget {
-  final List<String> reactions;
+  final Function(String) updateReactions;
 
-  ShowAlert({super.key, required this.reactions});
+  ShowAlert({super.key, required this.updateReactions});
 
   @override
   _ShowAlertState createState() => _ShowAlertState();
@@ -106,7 +110,7 @@ class _ShowAlertState extends State<ShowAlert> {
           child: const Text("OK"),
           onPressed: () {
             setState(() {
-              widget.reactions.add(textFieldValueHolder.text);
+              widget.updateReactions(textFieldValueHolder.text);
             });
             Navigator.of(context).pop();
           },
@@ -114,4 +118,13 @@ class _ShowAlertState extends State<ShowAlert> {
       ],
     );
   }
+}
+
+void showAlert(BuildContext context, Function(String) updateReactions) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return ShowAlert(updateReactions: updateReactions);
+    },
+  );
 }
