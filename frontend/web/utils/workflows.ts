@@ -87,7 +87,7 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 						id: baseReaction.areaServiceId,
 						imageUrl: reactionService.data!.imageUrl,
 					},
-					previousAreaId: baseReaction.previousAreaId ?? "e21baf04-3ae6-4f0b-8a09-ab1cd938f582",
+					previousAreaId: baseReaction.previousAreaId,
 				};
 			}),
 		),

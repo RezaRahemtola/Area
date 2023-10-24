@@ -76,7 +76,6 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 
 	const onClickEdit = async () => {
 		const editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
-		console.log(editorWorkflow);
 		setEditorWorkflow(editorWorkflow);
 		setSelectedEditorArea(null);
 		router.push("/editor");
