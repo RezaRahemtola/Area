@@ -130,7 +130,12 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "github", scope.split(","), connectionData);
+		return this.connectionsService.createUserConnection(
+			userId,
+			"github",
+			scope !== "" ? scope.split(",") : [],
+			connectionData,
+		);
 	}
 
 	async createGoogleConnection(userId: string, code: string) {

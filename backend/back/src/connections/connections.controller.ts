@@ -79,11 +79,15 @@ export class ConnectionsController {
 		scopes = [...new Set(scopes)];
 		this.logger.log(`Connecting user ${userId} to service ${serviceId} with scopes: ${scopes.join(", ")}`);
 		const missingScopes = await this.connectionsService.getNewScopesForConnection(userId, serviceId, scopes);
-		if (missingScopes.length === 0) {
+		if (!missingScopes) {
 			this.logger.warn(`User ${userId} already has a connection that satisfies these scopes`);
 			throw new ConflictException("You already have a connection that satisfies these scopes");
 		} else {
-			this.logger.log(`User ${userId} new scopes for ${serviceId} are: ${missingScopes.join(", ")}`);
+			this.logger.log(
+				`User ${userId} new scopes for ${serviceId} are: ${
+					missingScopes.length > 0 ? missingScopes.join(", ") : "no scope provided"
+				}`,
+			);
 			this.logger.log(`Creating and sending an url for user ${userId} to connect to service ${serviceId}`);
 			return {
 				oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes(userId, serviceId, missingScopes),

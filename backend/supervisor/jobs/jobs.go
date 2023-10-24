@@ -110,14 +110,19 @@ func (jm *JobManager) KillJob(identifier string) error {
 		return nil
 	}
 
-	err = jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{})
+	timeout := 1
+	err = jm.dockerClient.ContainerStop(context.Background(), job.containerID, container.StopOptions{
+		Timeout: &timeout,
+	})
 	if err != nil {
 		log.Printf("Error when stopping job %s: %v\n", identifier, err)
 		return err
 	}
 
-	if jm.production {
-		err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{})
+	if !jm.production {
+		err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{
+			Force: true,
+		})
 		if err != nil {
 			log.Printf("Error when removing job %s: %v\n", identifier, err)
 			return err

@@ -10,6 +10,7 @@ import { ServicesModule } from "./services/services.module";
 import { WorkflowsModule } from "./workflows/workflows.module";
 import { DATA_SOURCE_OPTIONS } from "./database";
 import { AboutModule } from "./about/about.module";
+import { WebhooksModule } from "./webhooks/webhooks.module";
 
 @Module({
 	imports: [
@@ -18,14 +19,15 @@ import { AboutModule } from "./about/about.module";
 			isGlobal: true,
 		}),
 		TypeOrmModule.forRoot(DATA_SOURCE_OPTIONS),
+		AboutModule,
 		AuthModule,
 		ConnectionsModule,
 		GrpcModule,
 		JobsModule,
 		UsersModule,
 		ServicesModule,
+		WebhooksModule,
 		WorkflowsModule,
-		AboutModule,
 	],
 	controllers: [],
 	providers: [],
