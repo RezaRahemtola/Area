@@ -5,7 +5,7 @@ import { GithubWebhookService } from "./services/gihub-webhook.service";
 import { GrpcModule } from "../grpc/grpc.module";
 
 @Module({
-	imports: [ConfigModule.forRoot(), GrpcModule],
+	imports: [GrpcModule],
 	controllers: [WebhooksController],
 	providers: [GithubWebhookService],
 })
