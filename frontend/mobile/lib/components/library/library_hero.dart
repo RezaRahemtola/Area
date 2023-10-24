@@ -1,3 +1,4 @@
+import 'package:area_mobile/pages/editor.dart';
 import 'package:flutter/material.dart';
 
 class LibraryHero extends StatelessWidget {
@@ -51,7 +52,10 @@ class WorkflowTile extends StatelessWidget {
       title: Text(workflowName),
       subtitle: Text('Services utilisés : ${servicesUsed.join(', ')}'),
       onTap: () {
-        // Open modal with Workflow properties
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const Editor(workflowID: 5)));
       },
     );
   }

@@ -1,4 +1,3 @@
-import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
@@ -65,13 +64,7 @@ class ServiceTile extends StatelessWidget {
         height: 50,
       ),
       title: Text(serviceName),
-      onTap: () {
-        print("tapped");
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const Editor(workflowID: 5)));
-      },
+      onTap: () {/**/},
     );
   }
 }
