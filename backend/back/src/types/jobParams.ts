@@ -125,6 +125,6 @@ export class GithubRepositoryActionParams {
 }
 
 export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
-    @IsString()
-    presentationId: string;
+	@IsString()
+	presentationId: string;
 }

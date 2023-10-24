@@ -56,8 +56,8 @@ export const JobParamsClasses = {
 	"google-create-drive-folder": NameParams,
 	"google-create-form": NameParams,
 	"google-create-presentation": NameParams,
-    "google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
-    "google-create-spreadsheet": NameParams,
+	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
+	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
@@ -76,8 +76,8 @@ export type JobsParams = Mapper<{
 	"google-create-draft-email": GoogleEmailParams;
 	"google-create-drive-folder": NameParams;
 	"google-create-form": NameParams;
-    "google-create-presentation": NameParams,
-    "google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
+	"google-create-presentation": NameParams;
+	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams;
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
