@@ -27,4 +27,6 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-duplicate-drive-file": ({ workflowStepId }) => uniqueJobId("google-duplicate-drive-file", workflowStepId),
 	"google-form-add-youtube-item": ({ workflowStepId }) => uniqueJobId("google-form-add-youtube-item", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
+	"google-create-slide-on-presentation": ({ workflowStepId }) =>
+		uniqueJobId("google-create-slide-on-presentation", workflowStepId),
 };

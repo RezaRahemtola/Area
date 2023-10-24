@@ -115,3 +115,8 @@ export class GithubCreateIssueParams extends UniqueJobParams {
 	@IsOptional()
 	labels: string[];
 }
+
+export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
+	@IsString()
+	presentationId: string;
+}
