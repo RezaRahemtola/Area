@@ -137,10 +137,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         child: Column(
           children: [
             const Text('Actions:'),
-            for (var action in actions) Text(action.name),
+            for (var action in actions) Text(action.id),
             const SizedBox(height: 16),
             const Text('Reactions:'),
-            for (var reaction in reactions) Text(reaction.name),
+            for (var reaction in reactions) Text(reaction.id),
           ],
         ),
       ),
