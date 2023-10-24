@@ -35,7 +35,7 @@ class LibraryHero extends StatelessWidget {
                     return Card(
                       elevation: 8,
                       child: WorkflowTile(
-                        workflowName: workflow.id,
+                        workflowName: workflow.name,
                         onTap: () {
                           // Open a modal or navigate to a detailed view
                           // and pass the service ID

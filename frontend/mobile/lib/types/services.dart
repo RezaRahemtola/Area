@@ -68,13 +68,11 @@ class Area {
 
 class AreaInWorkflow {
   final String id;
-  final String previousAreaId;
   final String areaId;
   final String areaServiceId;
 
   const AreaInWorkflow({
     required this.id,
-    required this.previousAreaId,
     required this.areaId,
     required this.areaServiceId,
   });
@@ -82,7 +80,6 @@ class AreaInWorkflow {
   factory AreaInWorkflow.fromJson(Map<String, dynamic> json) {
     return AreaInWorkflow(
       id: json['id'],
-      previousAreaId: json['previousAreaId'],
       areaId: json['areaId'],
       areaServiceId: json['areaServiceId'],
     );
