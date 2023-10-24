@@ -16,8 +16,10 @@ from area_back_pb2 import JobError
 SCOPES = ['https://www.googleapis.com/auth/tasks']
 TARGET = "localhost:50050"
 
+
 def create_task_list():
     args = get_arguments({"auth", "title", "workflowStepId", "identifier"})
+    target = args["target"] if args.keys().__contains__("target") else TARGET
 
     try:
         credentials = json.loads(args["auth"])
@@ -30,8 +32,6 @@ def create_task_list():
             "title": args["title"],
         }
         service.tasklists().insert(body=body).execute()
-
-        target = args["target"] if args.keys().__contains__("target") else TARGET
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()
