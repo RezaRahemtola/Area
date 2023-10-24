@@ -52,6 +52,11 @@ const translations = {
 			},
 		},
 	},
+	user: {
+		settings: {
+			title: "User settings",
+		},
+	},
 	landing: {
 		actions: {
 			downloadApk: " Download APK",

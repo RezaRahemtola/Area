@@ -5,6 +5,7 @@ import authService from "@/services/auth";
 import servicesService from "@/services/services";
 import workflowsService from "@/services/workflows";
 import connectionsService from "@/services/connections";
+import userService from "@/services/user";
 
 const axiosInstance = axios.create({
 	baseURL: API_URL,
@@ -38,6 +39,7 @@ const services = {
 	services: servicesService,
 	workflows: workflowsService,
 	connections: connectionsService,
+	user: userService,
 };
 
 export default services;
