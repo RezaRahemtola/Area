@@ -43,6 +43,7 @@ import { DuplicateGoogleDriveFileArea1697902627105 } from "./workflows/seed/1697
 import { CreateGoogleFormYoutubeItem1697907107855 } from "./workflows/seed/1697907107855-CreateGoogleFormYoutubeItem";
 import { CreateIssueGithubReaction1698062010534 } from "./workflows/seed/1698062010534-CreateIssueGithubReaction";
 import { CreateGoogleSlideInPresentationArea1698150990404 } from "./workflows/seed/1698150990404-CreateGoogleSlideInPresentationArea";
+import { UpdateServiceImagesToBrandFetchSVGs1698161840408 } from "./services/seed/1698161840408-UpdateServiceImagesToBrandFetchSVGs";
 
 dotenv.config();
 
@@ -90,6 +91,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleFormYoutubeItem1697907107855,
 		CreateIssueGithubReaction1698062010534,
 		CreateGoogleSlideInPresentationArea1698150990404,
+		UpdateServiceImagesToBrandFetchSVGs1698161840408,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
