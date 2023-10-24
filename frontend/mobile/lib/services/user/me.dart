@@ -6,7 +6,6 @@ Future<ServiceReturn<UserMe>> getMe() async {
   try {
     final response = await dio.get<Map<String, dynamic>>('/me');
 
-    print(response.data);
     final responseData = response.data;
     if (responseData != null) {
       return ServiceReturn(data: UserMe.fromJson(responseData));
