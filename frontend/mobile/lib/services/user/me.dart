@@ -6,9 +6,6 @@ Future<ServiceReturn<UserMe>> getMe() async {
   try {
     final response = await dio.get<Map<String, dynamic>>('/me');
 
-    print("-------------------------------- SUCCESS");
-    print(response.data);
-    print("-------------------------------- SUCCESS");
     final responseData = response.data;
     if (responseData != null) {
       return ServiceReturn(data: UserMe.fromJson(responseData));
@@ -16,9 +13,6 @@ Future<ServiceReturn<UserMe>> getMe() async {
       return const ServiceReturn(error: "API response data is null");
     }
   } catch (e) {
-    print("-------------------------------- ERROR");
-    print(e);
-    print("-------------------------------- ERROR");
     return ServiceReturn(error: e.toString());
   }
 }
