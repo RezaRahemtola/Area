@@ -19,8 +19,8 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-draft-email": ({ workflowStepId }) => uniqueJobId("google-create-draft-email", workflowStepId),
 	"google-create-drive-folder": ({ workflowStepId }) => uniqueJobId("google-create-drive-folder", workflowStepId),
 	"google-create-form": ({ workflowStepId }) => uniqueJobId("google-create-form", workflowStepId),
-	"google-create-presentation-slides": ({ workflowStepId }) =>
-		uniqueJobId("google-create-presentation-slides", workflowStepId),
+	"google-create-presentation": ({ workflowStepId }) => uniqueJobId("google-create-presentation", workflowStepId),
+	"google-create-slide-on-presentation": ({ workflowStepId }) => uniqueJobId("google-create-slide-on-presentation", workflowStepId),
 	"google-create-spreadsheet": ({ workflowStepId }) => uniqueJobId("google-create-spreadsheet", workflowStepId),
 	"google-create-task-list": ({ workflowStepId }) => uniqueJobId("google-create-task-list", workflowStepId),
 	"google-form-add-youtube-item": ({ workflowStepId }) => uniqueJobId("google-form-add-youtube-item", workflowStepId),

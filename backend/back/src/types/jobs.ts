@@ -4,6 +4,7 @@ import {
 	GoogleAddFormYoutubeItemParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
+	GoogleCreateSlideOnPresentationParams,
 	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
@@ -25,7 +26,8 @@ export enum Jobs {
 	"google-create-draft-email" = "google-create-draft-email",
 	"google-create-drive-folder" = "google-create-drive-folder",
 	"google-create-form" = "google-create-form",
-	"google-create-presentation-slides" = "google-create-presentation-slides",
+	"google-create-presentation" = "google-create-presentation",
+	"google-create-slide-on-presentation" = "google-create-slide-on-presentation",
 	"google-create-spreadsheet" = "google-create-spreadsheet",
 	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
@@ -53,8 +55,9 @@ export const JobParamsClasses = {
 	"google-create-draft-email": GoogleEmailParams,
 	"google-create-drive-folder": NameParams,
 	"google-create-form": NameParams,
-	"google-create-presentation-slides": NameParams,
-	"google-create-spreadsheet": NameParams,
+	"google-create-presentation": NameParams,
+    "google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
+    "google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
@@ -73,7 +76,8 @@ export type JobsParams = Mapper<{
 	"google-create-draft-email": GoogleEmailParams;
 	"google-create-drive-folder": NameParams;
 	"google-create-form": NameParams;
-	"google-create-presentation-slides": NameParams;
+    "google-create-presentation": NameParams,
+    "google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;

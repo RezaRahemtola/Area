@@ -13,11 +13,11 @@ from src.utils.parsing import get_arguments
 from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
-SCOPES = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/presentations']
 TARGET = "localhost:50050"
 
 
-def create_drive_folder():
+def create_presentation():
     args = get_arguments({"auth", "name", "workflowStepId", "identifier"})
     target = args["target"] if args.keys().__contains__("target") else TARGET
 
@@ -25,23 +25,22 @@ def create_drive_folder():
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
 
     try:
-        service = build('drive', 'v3', credentials=creds)
+        service = build('slides', 'v1', credentials=creds)
 
         body = {
-            'name': args["name"],
-            'mimeType': 'application/vnd.google-apps.folder'
+            'title': args["name"]
         }
-
-        folder = service.files().create(body=body, fields='id').execute()
+        presentation = service.presentations() \
+            .create(body=body).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
-                "folderId": folder.get("id")
+                "presentationId": presentation.get('presentationId')
             })
             AreaBackServiceStub(channel).OnReaction(
-                JobData(name="google-create-drive-folder", identifier=args["identifier"], params=params))
+                JobData(name="google-create-presentation", identifier=args["identifier"], params=params))
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:

@@ -6,6 +6,45 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-PAR-5-1-area-reza.rahemtola.git"
 
 jobs:
+  build-supervisor:
+    name: "Build: Supervisor"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend/supervisor/
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Get changed files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: 'backend/supervisor/**/*'
+      - name: Setup go
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "backend/supervisor/go.mod"
+          cache-dependency-path: "backend/supervisor/go.sum"
+      - name: Install dependencies
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          go mod download
+          sudo apt-get install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27.1
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
+      - name: Generate protobuf go files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          git clone https://github.com/RezaRahemtola/area-proto.git proto
+          protoc --experimental_allow_proto3_optional --go_out=proto --go_opt=paths=source_relative --go-grpc_out=proto --go-grpc_opt=paths=source_relative --proto_path=proto proto/area_supervisor.proto proto/area_types.proto
+      - name: Run go build
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: go build
+      - name: Run go format
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: go fmt && git diff --exit-code
+
   eslint-backend:
     name: "ESLint: Backend"
     runs-on: ubuntu-latest
@@ -214,6 +253,7 @@ jobs:
           ssh_private_key:
             ${{ secrets.SSH_KEY }}
     needs:
+      - build-supervisor
       - eslint-backend
       - unit-tests-backend
       - eslint-web

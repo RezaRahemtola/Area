@@ -123,3 +123,8 @@ export class GithubRepositoryActionParams {
 	@IsString()
 	repo: string;
 }
+
+export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
+    @IsString()
+    presentationId: string;
+}
