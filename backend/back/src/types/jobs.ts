@@ -1,5 +1,6 @@
 import {
 	GithubCreateIssueParams,
+	GithubRepositoryActionParams,
 	GoogleAddFormYoutubeItemParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
@@ -14,24 +15,25 @@ import {
 } from "./jobParams";
 
 export enum Jobs {
-	"timer-seconds-interval" = "timer-seconds-interval",
-	"google-send-email" = "google-send-email",
-	"google-create-draft-email" = "google-create-draft-email",
-	"google-update-signature-email" = "google-update-signature-email",
+	"github-create-issue" = "github-create-issue",
+	"github-on-issue-create" = "github-on-issue-create",
 	"google-create-comment-youtube" = "google-create-comment-youtube",
-	"google-create-document-docs" = "google-create-document-docs",
-	"google-create-presentation-slides" = "google-create-presentation-slides",
-	"google-create-spreadsheet" = "google-create-spreadsheet",
-	"google-create-form" = "google-create-form",
 	"google-create-contact" = "google-create-contact",
-	"linkedin-create-post" = "linkedin-create-post",
-	"google-create-task-list" = "google-create-task-list",
 	"google-create-course" = "google-create-course",
 	"google-create-calendar" = "google-create-calendar",
+	"google-create-document-docs" = "google-create-document-docs",
+	"google-create-draft-email" = "google-create-draft-email",
 	"google-create-drive-folder" = "google-create-drive-folder",
+	"google-create-form" = "google-create-form",
+	"google-create-presentation-slides" = "google-create-presentation-slides",
+	"google-create-spreadsheet" = "google-create-spreadsheet",
+	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
-	"github-create-issue" = "github-create-issue",
+	"google-send-email" = "google-send-email",
+	"google-update-signature-email" = "google-update-signature-email",
+	"linkedin-create-post" = "linkedin-create-post",
+	"timer-seconds-interval" = "timer-seconds-interval",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -41,43 +43,45 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 }
 
 export const JobParamsClasses = {
-	"timer-seconds-interval": TimerSecondIntervalParams,
-	"google-send-email": GoogleEmailParams,
-	"google-create-draft-email": GoogleEmailParams,
-	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
+	"github-create-issue": GithubCreateIssueParams,
+	"github-on-issue-create": GithubRepositoryActionParams,
+	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
+	"google-create-contact": GoogleCreateContactParams,
+	"google-create-course": GoogleCreateCourseParams,
 	"google-create-document-docs": NameParams,
+	"google-create-draft-email": GoogleEmailParams,
+	"google-create-drive-folder": NameParams,
+	"google-create-form": NameParams,
 	"google-create-presentation-slides": NameParams,
 	"google-create-spreadsheet": NameParams,
-	"google-create-form": NameParams,
-	"google-create-contact": GoogleCreateContactParams,
-	"linkedin-create-post": LinkedinCreatePostParams,
 	"google-create-task-list": TitleParams,
-	"google-create-course": GoogleCreateCourseParams,
-	"google-create-calendar": TitleParams,
-	"google-create-drive-folder": NameParams,
-	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
-	"github-create-issue": GithubCreateIssueParams,
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
+	"google-send-email": GoogleEmailParams,
+	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
+	"linkedin-create-post": LinkedinCreatePostParams,
+	"timer-seconds-interval": TimerSecondIntervalParams,
 };
 
 export type JobsParams = Mapper<{
-	"timer-seconds-interval": TimerSecondIntervalParams;
-	"google-send-email": GoogleEmailParams;
-	"google-create-draft-email": GoogleEmailParams;
-	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
+	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
+	"google-create-contact": GoogleCreateContactParams;
+	"google-create-course": GoogleCreateCourseParams;
 	"google-create-document-docs": NameParams;
+	"google-create-draft-email": GoogleEmailParams;
+	"google-create-drive-folder": NameParams;
+	"google-create-form": NameParams;
 	"google-create-presentation-slides": NameParams;
 	"google-create-spreadsheet": NameParams;
-	"google-create-form": NameParams;
-	"google-create-contact": GoogleCreateContactParams;
-	"linkedin-create-post": LinkedinCreatePostParams;
 	"google-create-task-list": TitleParams;
-	"google-create-course": GoogleCreateCourseParams;
-	"google-create-calendar": TitleParams;
-	"google-create-drive-folder": NameParams;
-	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
+	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
+	"google-send-email": GoogleEmailParams;
+	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"github-create-issue": GithubCreateIssueParams;
+	"github-on-issue-create": GithubRepositoryActionParams;
+	"linkedin-create-post": LinkedinCreatePostParams;
+	"timer-seconds-interval": TimerSecondIntervalParams;
 }>;

@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
-import { AuthenticatedJobData, GrpcResponse, JobId, JobList } from "./grpc.dto";
+import { AuthenticatedJobData, GrpcResponse, JobData, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
 import { JobsParams, JobsType } from "../types/jobs";
 import { JobsIdentifiers } from "../types/jobIds";
@@ -9,11 +9,8 @@ import { JobsService } from "../jobs/jobs.service";
 
 interface AreaSupervisorService {
 	launchJob(data: AuthenticatedJobData): Observable<GrpcResponse>;
-
 	killJob(job: JobId): Observable<GrpcResponse>;
-
 	killAllJobs(_: object): Observable<GrpcResponse>;
-
 	listJobs(_: object): Observable<JobList>;
 }
 
@@ -71,5 +68,19 @@ export class GrpcService implements OnModuleInit {
 	listJobs() {
 		this.logger.log("Listing all jobs");
 		return firstValueFrom(this.areaSupervisorService.listJobs({}));
+	}
+
+	async onAction(data: JobData) {
+		this.logger.log(`Received action job data ${JSON.stringify(data, undefined, 2)}`);
+		await this.jobsService.launchNextJob(data);
+	}
+
+	async onReaction(data: JobData) {
+		this.logger.log(`Received reaction job data ${JSON.stringify(data, undefined, 2)}`);
+		await this.jobsService.launchNextJob(data);
+	}
+
+	async onError(data: JobData) {
+		this.logger.error(`Received error job data ${JSON.stringify(data, undefined, 2)}`);
 	}
 }

@@ -115,3 +115,11 @@ export class GithubCreateIssueParams extends UniqueJobParams {
 	@IsOptional()
 	labels: string[];
 }
+
+export class GithubRepositoryActionParams {
+	@IsString()
+	owner: string;
+
+	@IsString()
+	repo: string;
+}
