@@ -1,25 +1,23 @@
 class UserMe {
   final String id;
-  final bool isVerified;
+  final bool isAdmin;
   final String email;
-  final String avatar;
-  final String token;
+  final String createdDate;
 
   UserMe({
     required this.id,
-    required this.isVerified,
+    required this.isAdmin,
     required this.email,
-    required this.avatar,
-    required this.token,
+    required this.createdDate,
   });
 
   factory UserMe.fromJson(Map<String, dynamic> json) {
-    return UserMe(
+    final UserMe userMe = UserMe(
       id: json['id'],
-      isVerified: json['isVerified'],
+      isAdmin: json['isAdmin'],
       email: json['email'],
-      avatar: json['avatar'],
-      token: json['token'],
+      createdDate: json['createdAt'],
     );
+    return userMe;
   }
 }
