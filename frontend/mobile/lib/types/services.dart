@@ -66,26 +66,54 @@ class Area {
   }
 }
 
+class AreaInWorkflow {
+  final String id;
+  final String previousAreaId;
+  final String areaId;
+  final String areaServiceId;
+
+  const AreaInWorkflow({
+    required this.id,
+    required this.previousAreaId,
+    required this.areaId,
+    required this.areaServiceId,
+  });
+
+  factory AreaInWorkflow.fromJson(Map<String, dynamic> json) {
+    return AreaInWorkflow(
+      id: json['id'],
+      previousAreaId: json['previousAreaId'],
+      areaId: json['areaId'],
+      areaServiceId: json['areaServiceId'],
+    );
+  }
+}
+
 class Workflow {
   final String id;
   final String name;
-  final String description;
-  final List<Area> areas;
+  final bool active;
+  final AreaInWorkflow action;
+  final List<AreaInWorkflow> reactions;
 
-  const Workflow({
+  Workflow({
     required this.id,
     required this.name,
-    required this.description,
-    required this.areas,
+    required this.active,
+    required this.action,
+    required this.reactions,
   });
 
   factory Workflow.fromJson(Map<String, dynamic> json) {
+    final reactionsData = json['reactions'] as List<dynamic>?;
+
     return Workflow(
       id: json['id'],
       name: json['name'],
-      description: json['description'],
-      areas: List<Area>.from(
-          json['areas'].map((e) => e != null ? Area.fromJson(e) : null)),
+      active: json['active'],
+      action: AreaInWorkflow.fromJson(json['action']),
+      reactions: List<AreaInWorkflow>.from(
+          reactionsData!.map((data) => AreaInWorkflow.fromJson(data))),
     );
   }
 }

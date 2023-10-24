@@ -2,6 +2,7 @@ import 'package:area_mobile/services/services/areas.dart';
 import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ExploreHero extends StatelessWidget {
   const ExploreHero({Key? key}) : super(key: key);
@@ -33,24 +34,7 @@ class ExploreHero extends StatelessWidget {
                   itemCount: services.length,
                   itemBuilder: (context, index) {
                     final service = services[index];
-                    return Card(
-                      elevation: 8,
-                      child: ServiceTile(
-                        serviceName: service.id,
-                        serviceIcon: service.imageUrl,
-                        onTap: () {
-                          // Open a modal or navigate to a detailed view
-                          // and pass the service ID
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ServiceDetails(service: service),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                    return ServiceCard(service: service);
                   },
                 );
               }
@@ -62,28 +46,31 @@ class ExploreHero extends StatelessWidget {
   }
 }
 
-class ServiceTile extends StatelessWidget {
-  final String serviceName;
-  final String serviceIcon;
-  final VoidCallback? onTap;
+class ServiceCard extends StatelessWidget {
+  final Service service;
 
-  const ServiceTile({
-    required this.serviceName,
-    required this.serviceIcon,
-    this.onTap,
-    Key? key,
-  }) : super(key: key);
+  const ServiceCard({Key? key, required this.service}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.network(
-        serviceIcon,
-        width: 50,
-        height: 50,
+    return Card(
+      elevation: 8,
+      child: ListTile(
+        leading: SvgPicture.network(
+          service.imageUrl,
+          width: 32,
+          height: 32,
+        ),
+        title: Text(service.id),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ServiceDetails(service: service),
+            ),
+          );
+        },
       ),
-      title: Text(serviceName),
-      onTap: onTap,
     );
   }
 }
@@ -91,9 +78,10 @@ class ServiceTile extends StatelessWidget {
 class ServiceDetails extends StatefulWidget {
   final Service service;
 
-  const ServiceDetails({Key? key, required this.service});
+  const ServiceDetails({Key? key, required this.service}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ServiceDetailsState createState() => _ServiceDetailsState();
 }
 
@@ -113,17 +101,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     final actionsResponse = await getServiceActions(widget.service.id);
     final reactionsResponse = await getServiceReactions(widget.service.id);
 
-    if (actionsResponse.data != null) {
-      setState(() {
-        actions = actionsResponse.data!;
-      });
-    }
-
-    if (reactionsResponse.data != null) {
-      setState(() {
-        reactions = reactionsResponse.data!;
-      });
-    }
+    setState(() {
+      actions = actionsResponse.data ?? [];
+      reactions = reactionsResponse.data ?? [];
+    });
   }
 
   @override
@@ -134,16 +115,49 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text('Actions:'),
-            for (var action in actions) Text(action.id),
-            const SizedBox(height: 16),
-            const Text('Reactions:'),
-            for (var reaction in reactions) Text(reaction.id),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SectionTitle(title: 'Actions:'),
+              for (var action in actions) ActionOrReactionItem(item: action),
+              const SizedBox(height: 16),
+              const SectionTitle(title: 'Reactions:'),
+              for (var reaction in reactions)
+                ActionOrReactionItem(item: reaction),
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class ActionOrReactionItem extends StatelessWidget {
+  final Area item;
+
+  const ActionOrReactionItem({Key? key, required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 8,
+        child: ListTile(
+          title: Text(item.id),
+          // Add more information if needed
+        ));
   }
 }
