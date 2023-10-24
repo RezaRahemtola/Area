@@ -20,7 +20,7 @@ export enum Jobs {
 	"google-update-signature-email" = "google-update-signature-email",
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-document-docs" = "google-create-document-docs",
-	"google-create-presentation-slides" = "google-create-presentation-slides",
+	"google-create-presentation" = "google-create-presentation",
 	"google-create-spreadsheet" = "google-create-spreadsheet",
 	"google-create-form" = "google-create-form",
 	"google-create-contact" = "google-create-contact",
@@ -47,7 +47,7 @@ export const JobParamsClasses = {
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
 	"google-create-document-docs": NameParams,
-	"google-create-presentation-slides": NameParams,
+	"google-create-presentation": NameParams,
 	"google-create-spreadsheet": NameParams,
 	"google-create-form": NameParams,
 	"google-create-contact": GoogleCreateContactParams,
@@ -68,7 +68,7 @@ export type JobsParams = Mapper<{
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
 	"google-create-document-docs": NameParams;
-	"google-create-presentation-slides": NameParams;
+	"google-create-presentation": NameParams;
 	"google-create-spreadsheet": NameParams;
 	"google-create-form": NameParams;
 	"google-create-contact": GoogleCreateContactParams;

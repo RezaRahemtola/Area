@@ -16,8 +16,10 @@ from src.utils.parsing import get_arguments
 SCOPES = ['https://www.googleapis.com/auth/gmail.settings.basic']
 TARGET = "localhost:50050"
 
+
 def update_signature():
     args = get_arguments({"auth", "signature", "workflowStepId", "identifier"})
+    target = args["target"] if args.keys().__contains__("target") else TARGET
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
@@ -27,7 +29,7 @@ def update_signature():
 
         primary_alias = None
 
-        aliases = service.users().settings().sendAs().list(userId='me')\
+        aliases = service.users().settings().sendAs().list(userId='me') \
             .execute()
         for alias in aliases.get('sendAs'):
             if alias.get('isPrimary'):
@@ -43,20 +45,20 @@ def update_signature():
             .patch(userId='me', sendAsEmail=primary_alias.get('sendAsEmail'),
                    body=send_as_configuration).execute()
 
-        target = args["target"] if args.keys().__contains__("target") else TARGET
-
         with grpc.insecure_channel(target) as channel:
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
                 "displayName": result.get("displayName")
             })
-            AreaBackServiceStub(channel).OnReaction(JobData(name="google-update-signature-email", identifier="google-update-signature-email", params=params))
-
+            AreaBackServiceStub(channel).OnReaction(
+                JobData(name="google-update-signature-email", identifier="google-update-signature-email",
+                        params=params))
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:
-            AreaBackServiceStub(channel).OnError(JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
+            AreaBackServiceStub(channel).OnError(
+                JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
         exit(1)
     except Exception as e:
         with grpc.insecure_channel(target) as channel:

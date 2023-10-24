@@ -14,7 +14,7 @@ from src.gmail.update_signature import update_signature
 from src.tasks.create_task_list import create_task_list
 from src.youtube.create_comment import create_comment
 from src.docs.create_document import create_document
-from src.slides.create_slide import create_slide
+from src.slides.create_presentation import create_presentation
 from src.spreadsheets.create_spreadsheet import create_spreadsheet
 
 
@@ -43,8 +43,8 @@ def main():
             create_document()
 
         # Slides
-        case "create-presentation-slides":
-            create_slide()
+        case "create-presentation":
+            create_presentation()
 
         # Spreadsheets
         case "create-spreadsheet":
