@@ -75,12 +75,12 @@ export class WorkflowsService {
 				({
 					id,
 					parameters,
-					previousWorkflowArea: { id: previousWorkflowAreaId },
+					previousWorkflowArea: { id: previousAreaId },
 					area: { id: areaId, serviceId: areaServiceId },
 					jobId,
 				}) => ({
 					id,
-					previousWorkflowAreaId,
+					previousAreaId,
 					areaId,
 					areaServiceId,
 					jobId,
@@ -128,12 +128,12 @@ export class WorkflowsService {
 					({
 						id,
 						parameters,
-						previousWorkflowArea: { id: previousWorkflowAreaId },
+						previousWorkflowArea: { id: previousAreaId },
 						area: { id: areaId, serviceId: areaServiceId },
 						jobId,
 					}) => ({
 						id,
-						previousWorkflowAreaId,
+						previousAreaId,
 						areaId,
 						areaServiceId,
 						parameters,
