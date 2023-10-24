@@ -51,12 +51,16 @@ class UserHero extends StatelessWidget {
 
               return Column(
                 children: [
-                  Card(
-                    elevation: 8,
-                    child: UserTile(
-                      id: user.id,
-                      userEmail: user.email,
-                    ),
+                  UserTile(
+                    id: user.id,
+                    userEmail: user.email,
+                    isAdmin: user.isAdmin,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      storage.removeAccessToken();
+                    },
+                    child: const Text('Se Déconnecter'),
                   ),
                 ],
               );
@@ -71,16 +75,30 @@ class UserHero extends StatelessWidget {
 class UserTile extends StatelessWidget {
   final String id;
   final String userEmail;
+  final bool isAdmin;
 
-  const UserTile({required this.id, required this.userEmail, Key? key})
+  const UserTile(
+      {required this.id,
+      required this.userEmail,
+      required this.isAdmin,
+      Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.account_circle),
-      title: Text("#$id"),
-      subtitle: Text(userEmail),
+    return Card(
+      elevation: 8,
+      child: Column(children: [
+        Image.asset('assets/user_profile.jpg'),
+        ListTile(
+          title: Text(userEmail),
+          subtitle: Text(id),
+        ),
+        isAdmin
+            ? Image.network(
+                'https://png.pngtree.com/png-vector/20220810/ourmid/pngtree-sheriff-star-badge-png-image_6105998.png')
+            : Container(),
+      ]),
     );
   }
 }
