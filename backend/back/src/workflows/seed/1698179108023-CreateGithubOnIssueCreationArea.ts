@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 import { ParametersFormFlowFieldDto } from "../../services/dto/area.dto";
 import Area from "../../services/entities/area.entity";
 
-export class OnIssueCreatedGithubAction1698179108023 implements MigrationInterface {
+export class CreateGithubOnIssueCreationArea1698179108023 implements MigrationInterface {
 	private readonly parametersFormFlow: ParametersFormFlowFieldDto[] = [
 		{
 			name: "owner",
