@@ -70,9 +70,18 @@ class _EditorState extends State<Editor> {
                         if (oldIndex < newIndex) {
                           newIndex -= 1;
                         }
+                        // print("ancien ordre");
+                        // print(reactions);
+                        // String temp = reactions[oldIndex];
+                        // reactions[oldIndex] = reactions[newIndex];
+                        // reactions[newIndex] = temp;
+                        // print("nouvel ordre");
+                        // print(reactions);
+                        // print(oldIndex);
+                        // print(newIndex);
                         String temp = reactions[oldIndex];
-                        reactions[oldIndex] = reactions[newIndex];
-                        reactions[newIndex] = temp;
+                        reactions.removeAt(oldIndex);
+                        reactions.insert(newIndex, temp);
                       });
                     },
                   )),
