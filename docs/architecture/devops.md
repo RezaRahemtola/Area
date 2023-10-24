@@ -19,6 +19,7 @@ checks, launched automatically on every code change (`commit`):
 results on failure
 - [Cypress](https://www.cypress.io/) tests web: Launching end-to-end tests on the web similar to the backend ones (screenshots and videos available
 on failure)
+- Supervisor build & format: Checking if the [supervisor](/architecture/supervisor) is building and if its files are correctly formatted.
 - Mobile verifications: Checking if everything is formatted correctly, performing static analysis and running tests
 - Web preview: Using Vercel to deploy the web frontend in development environments (excluding the `main` branch)
 to simplify testing and cross-validation of features
