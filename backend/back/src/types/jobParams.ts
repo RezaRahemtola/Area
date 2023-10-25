@@ -128,3 +128,8 @@ export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
 	@IsString()
 	presentationId: string;
 }
+
+export class YoutubeChannelParams {
+	@IsString()
+	channelId: string;
+}

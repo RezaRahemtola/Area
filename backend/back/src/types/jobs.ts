@@ -13,6 +13,7 @@ import {
 	NameParams,
 	TimerSecondIntervalParams,
 	TitleParams,
+	YoutubeChannelParams,
 } from "./jobParams";
 
 export enum Jobs {
@@ -32,6 +33,7 @@ export enum Jobs {
 	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
+	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
 	"google-update-signature-email" = "google-update-signature-email",
 	"linkedin-create-post" = "linkedin-create-post",
@@ -61,6 +63,7 @@ export const JobParamsClasses = {
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
+	"google-on-new-video": YoutubeChannelParams,
 	"google-send-email": GoogleEmailParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
@@ -84,6 +87,7 @@ export type JobsParams = Mapper<{
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
+	"google-on-new-video": YoutubeChannelParams;
 	"google-send-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
