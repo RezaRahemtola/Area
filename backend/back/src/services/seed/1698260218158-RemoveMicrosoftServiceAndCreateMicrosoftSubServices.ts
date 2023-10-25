@@ -24,7 +24,7 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 		{
 			name: "microsoft-graph",
 			imageUrl: "https://asset.brandfetch.io/idchmboHEZ/iduap5ndHF.svg",
-			scopes: ["email", "openid", "profile", "User.Read"],
+			scopes: ["User.Read", "Mail.Read"],
 			prefix: "https://graph.microsoft.com/",
 		},
 		{
@@ -100,7 +100,9 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 				await queryRunner.query(
 					`INSERT INTO "service_scope" ("id", "service_id")
           VALUES
-          ${scopes.map((scope) => `('${prefix}${scope}', '${name}')`).join(", ")}`,
+          ${[...scopes.map((scope) => `${prefix}${scope}`), ...["profile", "openid", "email"]]
+						.map((scope) => `('${scope}', '${name}')`)
+						.join(", ")}`,
 				);
 			}),
 		);
