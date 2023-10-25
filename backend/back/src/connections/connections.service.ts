@@ -41,14 +41,6 @@ export class ConnectionsService {
 	}
 
 	async createUserConnection(userId: string, serviceId: ServiceName, scopes: string[], data: unknown) {
-		this.logger.log(
-			`scopes: ${scopes.map((scope) => `"${scope}"`).join(", ")} mapped scopes: ${JSON.stringify(
-				scopes.map((scope) => ({
-					serviceId,
-					id: scope,
-				})),
-			)}`,
-		);
 		const userConnection = this.userConnectionRepository.create({
 			userId,
 			serviceId,
