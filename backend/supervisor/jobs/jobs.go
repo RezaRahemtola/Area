@@ -7,6 +7,7 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"log"
+	"regexp"
 )
 
 type JobManager struct {
@@ -24,6 +25,7 @@ type Job struct {
 }
 
 var instance *JobManager
+var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
 
 func InitJobManager(cli *client.Client, callbackUrl string, env string) {
 	instance = &JobManager{cli, map[string]Job{}, callbackUrl, env == "production", 0}
@@ -119,16 +121,6 @@ func (jm *JobManager) KillJob(identifier string) error {
 		return err
 	}
 
-	if !jm.production {
-		err = jm.dockerClient.ContainerRemove(context.Background(), job.containerID, types.ContainerRemoveOptions{
-			Force: true,
-		})
-		if err != nil {
-			log.Printf("Error when removing job %s: %v\n", identifier, err)
-			return err
-		}
-	}
-
 	delete(jm.jobs, identifier)
 	log.Printf("Job %s killed\n", identifier)
 	return nil
@@ -170,10 +162,11 @@ func (jm *JobManager) cleanContainers() error {
 }
 
 func (jm *JobManager) generateContainerName(identifier string) string {
+	name := nonAlphanumericRegex.ReplaceAllString(identifier, "-")
 	if jm.production {
-		return identifier
+		return name
 	}
-	return fmt.Sprintf("%s-%d", identifier, jm.jobsCount)
+	return fmt.Sprintf("%s-%d", name, jm.jobsCount)
 }
 
 func isSupervisorContainer(image string) bool {
