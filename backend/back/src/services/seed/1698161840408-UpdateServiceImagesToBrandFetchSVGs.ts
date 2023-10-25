@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { ServiceName } from "../services.service";
 
 export class UpdateServiceImagesToBrandFetchSVGs1698161840408 implements MigrationInterface {
-	private readonly SERVICES_IMAGES_URLS: Partial<Record<ServiceName, Record<"lastUrl" | "newUrl", string>>> = {
+	private readonly SERVICES_IMAGES_URLS: Partial<Record<string, Record<"lastUrl" | "newUrl", string>>> = {
 		github: {
 			newUrl: "https://asset.brandfetch.io/idZAyF9rlg/id6a3YYV60.svg",
 			lastUrl: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
