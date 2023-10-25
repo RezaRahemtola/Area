@@ -12,11 +12,17 @@ export const SERVICE_NAMES = [
 	"google",
 	"twitter",
 	"linkedin",
-	"microsoft",
 	"facebook",
 	"miro",
+	"microsoft-graph",
+	"microsoft-onenote",
+	"microsoft-outlook",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
+
+export type SubServiceNameFromServiceName<T extends ServiceName, S extends string> = T extends `${S}-${infer U}`
+	? U
+	: never;
 
 @Injectable()
 export class ServicesService {
