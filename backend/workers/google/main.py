@@ -37,7 +37,7 @@ def main():
         case "update-signature-email":
             update_signature()
         case "change-gmail-interface-language":
-            change_interface_language   ()
+            change_interface_language()
 
         # YouTube
         case "create-comment-youtube":
