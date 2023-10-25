@@ -27,6 +27,7 @@ export enum Jobs {
 	"google-create-drive-folder" = "google-create-drive-folder",
 	"google-create-form" = "google-create-form",
 	"google-create-presentation" = "google-create-presentation",
+	"google-create-shared-drive" = "google-create-shared-drive",
 	"google-create-slide-on-presentation" = "google-create-slide-on-presentation",
 	"google-create-spreadsheet" = "google-create-spreadsheet",
 	"google-create-task-list" = "google-create-task-list",
@@ -56,6 +57,7 @@ export const JobParamsClasses = {
 	"google-create-drive-folder": NameParams,
 	"google-create-form": NameParams,
 	"google-create-presentation": NameParams,
+	"google-create-shared-drive": NameParams,
 	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
 	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
@@ -77,6 +79,7 @@ export type JobsParams = Mapper<{
 	"google-create-drive-folder": NameParams;
 	"google-create-form": NameParams;
 	"google-create-presentation": NameParams;
+	"google-create-shared-drive": NameParams;
 	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams;
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
