@@ -2,6 +2,7 @@ import {
 	GithubCreateIssueParams,
 	GithubRepositoryActionParams,
 	GoogleAddFormYoutubeItemParams,
+	GoogleChangeGmailLanguageParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
 	GoogleCreateSlideOnPresentationParams,
@@ -21,6 +22,7 @@ export enum Jobs {
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-contact" = "google-create-contact",
 	"google-create-course" = "google-create-course",
+	"google-change-gmail-interface-language" = "google-change-gmail-interface-language",
 	"google-create-calendar" = "google-create-calendar",
 	"google-create-document-docs" = "google-create-document-docs",
 	"google-create-draft-email" = "google-create-draft-email",
@@ -48,6 +50,7 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 export const JobParamsClasses = {
 	"github-create-issue": GithubCreateIssueParams,
 	"github-on-issue-create": GithubRepositoryActionParams,
+	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams,
 	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
 	"google-create-contact": GoogleCreateContactParams,
@@ -70,6 +73,7 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
 	"google-create-contact": GoogleCreateContactParams;

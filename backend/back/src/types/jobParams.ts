@@ -128,3 +128,8 @@ export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
 	@IsString()
 	presentationId: string;
 }
+
+export class GoogleChangeGmailLanguageParams extends UniqueJobParams {
+	@IsString()
+	language: string;
+}
