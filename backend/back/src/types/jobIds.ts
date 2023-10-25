@@ -11,6 +11,8 @@ function uniqueJobId(jobId: string, workflowStepId: string) {
 export const JobsIdentifiers: JobsIdentifiers = {
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
 	"github-on-issue-create": ({ owner, repo }) => `github-on-issue-create-${owner}/${repo}`,
+	"google-change-gmail-interface-language": ({ workflowStepId }) =>
+		uniqueJobId("google-change-gmail-interface-language", workflowStepId),
 	"google-create-calendar": ({ workflowStepId }) => uniqueJobId("google-create-calendar", workflowStepId),
 	"google-create-comment-youtube": ({ workflowStepId }) => uniqueJobId("google-create-comment-youtube", workflowStepId),
 	"google-create-contact": ({ workflowStepId }) => uniqueJobId("google-create-contact", workflowStepId),
