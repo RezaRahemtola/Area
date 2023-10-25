@@ -18,10 +18,12 @@ import UpdateWorkflowDto from "./dto/update-workflow.dto";
 import UserConnection from "../connections/entities/user-connection.entity";
 import { JobsIdentifiers } from "../types/jobIds";
 import { JobsService } from "../jobs/jobs.service";
-import { JobsType } from "../types/jobs";
+import { JobParamsClasses, JobsType } from "../types/jobs";
 import Service from "../services/entities/service.entity";
 import { ConnectionsService } from "../connections/connections.service";
 import { ServiceName } from "../services/services.service";
+import { UniqueJobParams } from "../types/jobParams";
+import { plainToInstance } from "class-transformer";
 
 @Injectable()
 export class WorkflowsService {
@@ -340,7 +342,11 @@ export class WorkflowsService {
 		return dbReactions;
 	}
 
-	private async getNeededNewScopes(userId: string, serviceId: ServiceName, neededScopeIds: string[]) {
+	private async getNeededNewScopes(
+		userId: string,
+		serviceId: ServiceName,
+		neededScopeIds: string[],
+	): Promise<string[] | null> {
 		const service = await this.workflowRepository.manager.findOneBy(Service, { id: serviceId });
 		if (!service) throw new NotFoundException(`Service ${serviceId} not found.`);
 		if (!service.needConnection) return [];
@@ -389,13 +395,15 @@ export class WorkflowsService {
 			areaServiceId,
 			workflowArea.area.serviceScopesNeeded.map(({ id }) => id),
 		);
-		if (neededNewScopes.length > 0) {
+		if (neededNewScopes && neededNewScopes.length > 0) {
 			throw new BadRequestException(
 				`You need to connect to ${areaServiceId} with scopes ${neededNewScopes.join(", ")}.`,
 			);
 		}
 		const jobType = `${areaServiceId}-${areaId}`;
-		parameters.workflowStepId = id;
+		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof UniqueJobParams) {
+			parameters.workflowStepId = id;
+		}
 		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
 			throw new BadRequestException(`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`);
 		});
