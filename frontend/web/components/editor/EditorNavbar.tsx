@@ -17,7 +17,13 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 	const { t } = useTranslation();
 
 	const onSaveWorkflow = async () => {
-		const response = await services.workflows.create(workflow);
+		let response;
+		if (workflow.id !== undefined) {
+			response = await services.workflows.update({ ...workflow, id: workflow.id });
+			await services.workflows.toggleOne(workflow.id, workflow.active);
+		} else {
+			response = await services.workflows.create(workflow);
+		}
 
 		if (!response.error) {
 			router.push("/dashboard");
