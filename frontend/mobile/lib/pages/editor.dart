@@ -31,7 +31,7 @@ class _EditorState extends State<Editor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Workflow"),
+        title: const Text("Workflow"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
@@ -42,16 +42,16 @@ class _EditorState extends State<Editor> {
               child: ListTile(
                 title: Row(
                   children: [
-                    Text("Action"),
-                    Expanded(child: SizedBox()),
+                    const Text("Action"),
+                    const Expanded(child: SizedBox()),
                     ElevatedButton(
                         onPressed: () {
                           showAlert(context, updateReactions);
                         },
-                        child: Text("+"))
+                        child: const Text("+"))
                   ],
                 ),
-                tileColor: Color.fromARGB(255, 0, 255, 255),
+                tileColor: const Color.fromARGB(255, 0, 255, 255),
               ),
             ),
             Expanded(
