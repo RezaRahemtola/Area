@@ -12,6 +12,7 @@ export type InterfaceTheme = (typeof INTERFACE_THEMES)[number];
 export const INTERFACE_LANGUAGES = [
 	{ id: "en", text: "🇺🇸 English" },
 	{ id: "fr", text: "🇫🇷 Francais" },
+	{ id: "is", text: "🇮🇸 Íslenskur" },
 ] as const;
 export type InterfaceLanguage = (typeof INTERFACE_LANGUAGES)[number]["id"];
 
