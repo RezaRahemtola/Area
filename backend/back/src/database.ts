@@ -45,6 +45,8 @@ import { CreateIssueGithubReaction1698062010534 } from "./workflows/seed/1698062
 import { CreateGoogleSlideInPresentationArea1698150990404 } from "./workflows/seed/1698150990404-CreateGoogleSlideInPresentationArea";
 import { UpdateServiceImagesToBrandFetchSVGs1698161840408 } from "./services/seed/1698161840408-UpdateServiceImagesToBrandFetchSVGs";
 import { CreateGithubOnIssueCreationArea1698179108023 } from "./workflows/seed/1698179108023-CreateGithubOnIssueCreationArea";
+import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/1698266623053-CreateGoogleSharedDriveArea";
+
 dotenv.config();
 
 export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
@@ -93,6 +95,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSlideInPresentationArea1698150990404,
 		UpdateServiceImagesToBrandFetchSVGs1698161840408,
 		CreateGithubOnIssueCreationArea1698179108023,
+		CreateGoogleSharedDriveArea1698266623053,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

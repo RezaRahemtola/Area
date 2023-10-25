@@ -5,6 +5,7 @@ from src.calendar.create_calendar import create_calendar
 from src.classrooms.create_course import create_course
 from src.contacts.create_contact import create_contact
 from src.drive.create_folder import create_drive_folder
+from src.drive.create_shared_drive import create_shared_drive
 from src.drive.duplicate_file import duplicate_drive_file
 from src.forms.add_youtube_item import form_add_youtube_item
 from src.forms.create_form import create_form
@@ -80,6 +81,8 @@ def main():
             create_drive_folder()
         case "duplicate-drive-file":
             duplicate_drive_file()
+        case "create-shared-drive":
+            create_shared_drive()
 
         case _:
             print("Error: Invalid job")
