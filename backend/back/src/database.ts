@@ -48,6 +48,8 @@ import { CreateGithubOnIssueCreationArea1698179108023 } from "./workflows/seed/1
 import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/1698266623053-CreateGoogleSharedDriveArea";
 import { CreateGoogleChangeGmailInterfaceLanguageArea1698268856232 } from "./workflows/seed/1698268856232-CreateGoogleChangeGmailInterfaceLanguageArea";
 
+import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from "./services/seed/1698260218158-RemoveMicrosoftServiceAndCreateMicrosoftSubServices";
+
 dotenv.config();
 
 export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
@@ -96,6 +98,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSlideInPresentationArea1698150990404,
 		UpdateServiceImagesToBrandFetchSVGs1698161840408,
 		CreateGithubOnIssueCreationArea1698179108023,
+		RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158,
 		CreateGoogleSharedDriveArea1698266623053,
 		CreateGoogleChangeGmailInterfaceLanguageArea1698268856232,
 	],
