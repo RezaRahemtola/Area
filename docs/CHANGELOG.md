@@ -1,3 +1,78 @@
+<a name="v1.0.0"></a>
+# [v1.0.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.0.0) - 25 Oct 2023
+
+## Changes
+
+New actions (with webhooks), global web & mobile improvements
+
+## 🚀 Features
+
+- Multiple web fixes & user settings setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#127](https://github.com/RezaRahemtola/Area/issues/127))
+- GitHub on push webhook action [@EdenComp](https://github.com/EdenComp) ([#129](https://github.com/RezaRahemtola/Area/issues/129))
+- Improve the whole mobile app to a professional level [@Tomi-Tom](https://github.com/Tomi-Tom) ([#108](https://github.com/RezaRahemtola/Area/issues/108))
+- Updated service images in database to unify the file format for the frontend (hello [@Tomi-Tom](https://github.com/Tomi-Tom)) [@Croos3r](https://github.com/Croos3r) ([#126](https://github.com/RezaRahemtola/Area/issues/126))
+- Create slide in google presentation reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#125](https://github.com/RezaRahemtola/Area/issues/125))
+- Supervisor CI [@EdenComp](https://github.com/EdenComp) ([#77](https://github.com/RezaRahemtola/Area/issues/77))
+- Create google calendar, create drive folder, duplicate drive file & add youtube form item reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#124](https://github.com/RezaRahemtola/Area/issues/124))
+- Added about.json endpoint with service alongside [@Croos3r](https://github.com/Croos3r) ([#122](https://github.com/RezaRahemtola/Area/issues/122))
+- Github create issue reaction [@EdenComp](https://github.com/EdenComp) ([#117](https://github.com/RezaRahemtola/Area/issues/117))
+
+## 🐛 Bug Fixes
+
+- fix: prod crashes with areas [@EdenComp](https://github.com/EdenComp) ([#130](https://github.com/RezaRahemtola/Area/issues/130))
+- Multiple web fixes & user settings setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#127](https://github.com/RezaRahemtola/Area/issues/127))
+- Updated service images in database to unify the file format for the frontend (hello [@Tomi-Tom](https://github.com/Tomi-Tom)) [@Croos3r](https://github.com/Croos3r) ([#126](https://github.com/RezaRahemtola/Area/issues/126))
+
+## 🧰 Maintenance
+
+- Multiple web fixes \& user settings setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#127](https://github.com/RezaRahemtola/Area/issues/127))
+- Updated service images in database to unify the file format for the frontend [@Croos3r](https://github.com/Croos3r) ([#126](https://github.com/RezaRahemtola/Area/issues/126))
+
+## 📄 Documentation
+
+- Documentation Home, project and getting started pages [@RezaRahemtola](https://github.com/RezaRahemtola) ([#123](https://github.com/RezaRahemtola/Area/issues/123))
+
+
+[Changes][v1.0.0]
+
+
+<a name="v0.11.0"></a>
+# [v0.11.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.11.0) - 20 Oct 2023
+
+## Changes
+
+New services and reactions from several providers, lot of bug fixes and debug options
+
+## 🚀 Features
+
+- Create Google task list and course reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#116](https://github.com/RezaRahemtola/Area/issues/116))
+- Added logging to everything in the backend [@Croos3r](https://github.com/Croos3r) ([#121](https://github.com/RezaRahemtola/Area/issues/121))
+- Fixed guard bug when jwt was valid but the user id in it was from another universe [@Croos3r](https://github.com/Croos3r) ([#120](https://github.com/RezaRahemtola/Area/issues/120))
+- Added 7th service: Miro 👨‍🦯 [@Croos3r](https://github.com/Croos3r) ([#119](https://github.com/RezaRahemtola/Area/issues/119))
+- Added 6th service Facebook [@Croos3r](https://github.com/Croos3r) ([#118](https://github.com/RezaRahemtola/Area/issues/118))
+- LinkedIn create post reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#115](https://github.com/RezaRahemtola/Area/issues/115))
+- Added Microsoft oauth service [@Croos3r](https://github.com/Croos3r) ([#114](https://github.com/RezaRahemtola/Area/issues/114))
+- Back gRPC error handling route [@EdenComp](https://github.com/EdenComp) ([#107](https://github.com/RezaRahemtola/Area/issues/107))
+
+## 🐛 Bug Fixes
+
+- Fixed guard bug when jwt was valid but the user id in it was from another universe [@Croos3r](https://github.com/Croos3r) ([#120](https://github.com/RezaRahemtola/Area/issues/120))
+- LinkedIn create post reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#115](https://github.com/RezaRahemtola/Area/issues/115))
+
+## 🧰 Maintenance
+
+- Added logging to everything in the backend [@Croos3r](https://github.com/Croos3r) ([#121](https://github.com/RezaRahemtola/Area/issues/121))
+
+## 📄 Documentation
+
+- Added logging to everything in the backend [@Croos3r](https://github.com/Croos3r) ([#121](https://github.com/RezaRahemtola/Area/issues/121))
+- LinkedIn create post reaction [@RezaRahemtola](https://github.com/RezaRahemtola) ([#115](https://github.com/RezaRahemtola/Area/issues/115))
+- Update changelog for "v0.10.0" [@github-actions](https://github.com/github-actions) ([#113](https://github.com/RezaRahemtola/Area/issues/113))
+
+
+[Changes][v0.11.0]
+
+
 <a name="v0.10.0"></a>
 # [v0.10.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v0.10.0) - 18 Oct 2023
 
@@ -360,6 +435,8 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.0.0]: https://github.com/RezaRahemtola/Area/compare/v0.11.0...v1.0.0
+[v0.11.0]: https://github.com/RezaRahemtola/Area/compare/v0.10.0...v0.11.0
 [v0.10.0]: https://github.com/RezaRahemtola/Area/compare/v0.9.0...v0.10.0
 [v0.9.0]: https://github.com/RezaRahemtola/Area/compare/v0.8.0...v0.9.0
 [v0.8.0]: https://github.com/RezaRahemtola/Area/compare/v0.7.4...v0.8.0
