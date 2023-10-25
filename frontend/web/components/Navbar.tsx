@@ -1,8 +1,13 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useEffect } from "react";
 import Link from "next/link";
 
+import { useAtom } from "jotai";
 import ThemeSelector from "@/components/ThemeSelector";
 import AuthLayout from "@/layouts/auth/AuthLayout";
+import { interfaceLanguageAtom } from "@/stores/user";
+import i18n from "@/config/i18n";
 
 type NavbarProps = {
 	beforeLogoContent?: ReactNode;
@@ -11,28 +16,36 @@ type NavbarProps = {
 	endContent?: ReactNode;
 };
 
-const Navbar = ({ beforeLogoContent, hasLogo = true, centerContent, endContent }: NavbarProps) => (
-	<div className="navbar bg-primary">
-		<div className="navbar-start">
-			{beforeLogoContent}
-			{hasLogo ? (
-				<Link className="btn btn-ghost normal-case text-xl" href="/">
-					Area
-				</Link>
-			) : (
-				<></>
-			)}
+const Navbar = ({ beforeLogoContent, hasLogo = true, centerContent, endContent }: NavbarProps) => {
+	const [interfaceLanguage] = useAtom(interfaceLanguageAtom);
+
+	useEffect(() => {
+		i18n.changeLanguage(interfaceLanguage).then();
+	}, [interfaceLanguage]);
+
+	return (
+		<div className="navbar bg-primary">
+			<div className="navbar-start">
+				{beforeLogoContent}
+				{hasLogo ? (
+					<Link className="btn btn-ghost normal-case text-xl" href="/">
+						Area
+					</Link>
+				) : (
+					<></>
+				)}
+			</div>
+			<div className="navbar-center hidden lg:flex">{centerContent}</div>
+			<div className="navbar-end">
+				{endContent ?? (
+					<>
+						<ThemeSelector />
+						<AuthLayout />
+					</>
+				)}
+			</div>
 		</div>
-		<div className="navbar-center hidden lg:flex">{centerContent}</div>
-		<div className="navbar-end">
-			{endContent ?? (
-				<>
-					<ThemeSelector />
-					<AuthLayout />
-				</>
-			)}
-		</div>
-	</div>
-);
+	);
+};
 
 export default Navbar;

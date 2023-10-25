@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useAtom } from "jotai";
 
 import { interfaceThemeAtom, userAuthTokenAtom } from "@/stores/user";
@@ -11,16 +11,15 @@ const ThemeSelector = () => {
 	const [userAuthToken] = useAtom(userAuthTokenAtom);
 	const [interfaceTheme, setInterfaceTheme] = useAtom(interfaceThemeAtom);
 	const systemTheme = useSystemTheme();
-	const [selectedTheme, setSelectedTheme] = useState(interfaceTheme === "auto" ? systemTheme : interfaceTheme);
 
 	useEffect(() => {
-		document.querySelector("html")?.setAttribute("data-theme", selectedTheme);
-	}, [selectedTheme]);
+		const theme = interfaceTheme === "auto" ? systemTheme : interfaceTheme;
+		document.querySelector("html")?.setAttribute("data-theme", theme);
+	}, [interfaceTheme]);
 
 	const handleThemeChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		const newTheme = e.target.checked ? "dark" : "light";
 		setInterfaceTheme(newTheme);
-		setSelectedTheme(newTheme);
 		if (userAuthToken) {
 			await services.user.updateProfile({ theme: newTheme });
 		}
@@ -28,7 +27,12 @@ const ThemeSelector = () => {
 
 	return (
 		<label className="swap swap-rotate mr-2">
-			<input type="checkbox" name="theme-selector" onChange={handleThemeChange} checked={selectedTheme !== "light"} />
+			<input
+				type="checkbox"
+				name="theme-selector"
+				onChange={handleThemeChange}
+				checked={interfaceTheme === "auto" ? systemTheme !== "light" : interfaceTheme !== "light"}
+			/>
 
 			{/* sun icon */}
 			<svg className="swap-on fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
