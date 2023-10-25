@@ -39,6 +39,7 @@ dependencies:
   dio: ^5.3.3
   easy_search_bar: ^2.5.0
   flutter_dotenv: ^5.1.0
+  flutter_svg: ^0.22.0
   flutter_secure_storage: ^9.0.0
 
 dev_dependencies:

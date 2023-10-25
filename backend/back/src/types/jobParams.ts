@@ -116,6 +116,14 @@ export class GithubCreateIssueParams extends UniqueJobParams {
 	labels: string[];
 }
 
+export class GithubRepositoryActionParams {
+	@IsString()
+	owner: string;
+
+	@IsString()
+	repo: string;
+}
+
 export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
 	@IsString()
 	presentationId: string;

@@ -1,3 +1,4 @@
+import 'package:area_mobile/pages/editor.dart';
 import 'package:flutter/material.dart';
 
 class CreateHero extends StatelessWidget {
@@ -64,7 +65,12 @@ class WorkflowForm extends StatelessWidget {
           ),
           const SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Editor(workflowID: 1)));
+            },
             child: const Text('Enregistrer le Workflow'),
           ),
         ],

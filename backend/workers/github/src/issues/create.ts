@@ -45,7 +45,7 @@ export default async function createIssue() {
 			},
 		});
 	} catch (e) {
-		if (e instanceof RequestError && e.status === 401) {
+		if (e instanceof RequestError) {
 			const data: GithubErrorData | undefined = e.response?.data as GithubErrorData;
 			await onError(client, {
 				identifier: params.identifier,

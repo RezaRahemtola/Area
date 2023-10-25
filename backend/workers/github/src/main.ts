@@ -1,6 +1,8 @@
 import createIssue from "./issues/create.js";
+import setupWebhook from "./webhooks/setup";
 
 const areas: Record<string, () => Promise<void>> = {
+    "setup-webhook": setupWebhook,
     "create-issue": createIssue,
 }
 async function main() {

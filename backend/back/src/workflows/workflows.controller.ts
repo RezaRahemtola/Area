@@ -76,7 +76,7 @@ export class WorkflowsController {
 	}
 
 	@ApiOkResponse({
-		description: "The workflows was successfully retrieved",
+		description: "The workflows were successfully retrieved",
 		type: [PickType(Workflow, ["id", "name", "active", "action", "reactions"])],
 	})
 	@ApiNotFoundResponse({

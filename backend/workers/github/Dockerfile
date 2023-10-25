@@ -30,6 +30,11 @@ RUN addgroup -S user \
 RUN chown -R user:user /app
 USER user
 
+ARG GITHUB_WEBHOOK_URL
+ARG GITHUB_WEBHOOK_SECRET
+ENV GITHUB_WEBHOOK_URL=$GITHUB_WEBHOOK_URL
+ENV GITHUB_WEBHOOK_SECRET=$GITHUB_WEBHOOK_SECRET
+
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json

@@ -17,7 +17,7 @@ export class ConnectionsService {
 		private readonly serviceScopesRepository: Repository<ServiceScope>,
 	) {}
 
-	async getNewScopesForConnection(userId: string, serviceId: ServiceName, scopes: string[]): Promise<string[]> {
+	async getNewScopesForConnection(userId: string, serviceId: ServiceName, scopes: string[]): Promise<string[] | null> {
 		if ((await this.serviceScopesRepository.count({ where: { serviceId, id: In(scopes) } })) !== scopes.length)
 			throw new NotFoundException("One or more scopes are invalid");
 		const connection = await this.userConnectionRepository.findOne({
@@ -31,7 +31,7 @@ export class ConnectionsService {
 		const connectionScopes = connection.scopes.map(({ id }) => id);
 		if (scopes.every((scope) => connectionScopes.includes(scope))) {
 			this.logger.log("The connection already has all the scopes");
-			return [];
+			return null;
 		}
 		const newScopes = [...new Set([...scopes, ...connectionScopes])];
 		this.logger.log(
@@ -41,6 +41,14 @@ export class ConnectionsService {
 	}
 
 	async createUserConnection(userId: string, serviceId: ServiceName, scopes: string[], data: unknown) {
+		this.logger.log(
+			`scopes: ${scopes.map((scope) => `"${scope}"`).join(", ")} mapped scopes: ${JSON.stringify(
+				scopes.map((scope) => ({
+					serviceId,
+					id: scope,
+				})),
+			)}`,
+		);
 		const userConnection = this.userConnectionRepository.create({
 			userId,
 			serviceId,

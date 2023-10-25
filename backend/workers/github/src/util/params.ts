@@ -1,10 +1,21 @@
 import { z, ZodSchema } from "zod";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 export const GithubAuthSchema = z.object({
 	token_type: z.string().optional(),
 	access_token: z.string(),
 });
 type GithubAuthType = z.infer<typeof GithubAuthSchema>;
+
+export function getFromEnv(key: string) {
+	const value = process.env[key];
+	if (!value) {
+		throw new Error(`Missing environment variable ${key}`);
+	}
+	return value;
+}
 
 export default function parseArguments<T>(schema: ZodSchema): T {
 	const data: Record<string, string | GithubAuthType> = {};

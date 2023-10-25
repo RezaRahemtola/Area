@@ -13,7 +13,9 @@ const register = async ({ email, password }: Credentials): Promise<ServiceReturn
 		return { data: response.data.accessToken, error: undefined };
 	} catch (error) {
 		if (!isAxiosError(error)) return { data: null, error: SERVICE_ERROR_UNKNOWN };
-
+		if (error.response?.status === StatusCodes.CONFLICT) {
+			return { data: null, error: "An account with this email already exists, try to log in instead" };
+		}
 		if (error.response?.status === StatusCodes.BAD_REQUEST) {
 			return { data: null, error: formatApiErrorMessage(error.response.data?.message) };
 		}

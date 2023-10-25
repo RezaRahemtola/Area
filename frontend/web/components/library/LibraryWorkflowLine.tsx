@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
-import { Workflow } from "@/types/workflows";
+import { Workflow, WorkflowAction } from "@/types/workflows";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import RenameWorkflowModal from "@/components/library/modals/RenameWorkflowModal";
 import { libraryOpenedWorkflowOptionsAtom } from "@/stores/library";
@@ -15,17 +15,17 @@ import services from "@/services";
 import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
 import { convertWorkflowToEditorWorkflow } from "@/utils/workflows";
 
-const ServiceLogo = ({ serviceId }: { serviceId: string }) => {
+const ServiceLogo = ({ area }: { area: WorkflowAction }) => {
 	const [servicePicture, setServicePicture] = useState<string | undefined>();
 	const [cachedServices, setCachedServices] = useAtom(servicesAtom);
 
 	useEffect(() => {
 		(async () => {
-			const service = cachedServices.find((s) => s.id === serviceId);
+			const service = cachedServices.find((s) => s.id === area.areaServiceId);
 			if (service !== undefined) {
 				setServicePicture(service.imageUrl);
 			} else {
-				const fetchedService = await services.services.getOne(serviceId);
+				const fetchedService = await services.services.getOne(area.areaServiceId);
 				if (fetchedService.data !== null) {
 					setCachedServices((prev) => [...prev, fetchedService.data]);
 					setServicePicture(fetchedService.data.imageUrl);
@@ -35,9 +35,11 @@ const ServiceLogo = ({ serviceId }: { serviceId: string }) => {
 	}, []);
 
 	return (
-		<div className="avatar">
-			<div className="mask mask-squircle w-12 h-12">
-				{servicePicture && <Image src={servicePicture} alt="Service logo" width={500} height={500} />}
+		<div className="tooltip tooltip-top tooltip-accent" data-tip={area.areaId}>
+			<div className="avatar">
+				<div className="mask mask-squircle w-12 h-12">
+					{servicePicture && <Image src={servicePicture} alt="Service logo" width={500} height={500} />}
+				</div>
 			</div>
 		</div>
 	);
@@ -76,7 +78,6 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 
 	const onClickEdit = async () => {
 		const editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
-		console.log(editorWorkflow);
 		setEditorWorkflow(editorWorkflow);
 		setSelectedEditorArea(null);
 		router.push("/editor");
@@ -107,10 +108,10 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 			</th>
 			<td>
 				<div className="flex items-center space-x-3">
-					<ServiceLogo serviceId={workflow.action.areaServiceId} />
+					<ServiceLogo area={workflow.action} />
 
 					{workflow.reactions.map((reaction) => (
-						<ServiceLogo serviceId={reaction.areaServiceId} key={reaction.id} />
+						<ServiceLogo area={reaction} key={reaction.id} />
 					))}
 				</div>
 			</td>

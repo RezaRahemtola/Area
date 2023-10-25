@@ -1,6 +1,9 @@
 import 'package:area_mobile/components/user/settings.dart';
-import 'package:flutter/material.dart';
+import 'package:area_mobile/services/user/me.dart'; // Assuming this file contains the getMe function
 import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/user/me.dart';
+import 'package:flutter/material.dart';
 
 class UserHero extends StatelessWidget {
   const UserHero({Key? key}) : super(key: key);
@@ -24,41 +27,78 @@ class UserHero extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Nom de l\'utilisateur',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/user_profile.jpg'),
-            ),
-            const SizedBox(height: 16.0),
-            const ListTile(
-              leading: Icon(Icons.email),
-              title: Text('Adresse Email'),
-              subtitle: Text('utilisateur@example.com'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('Numéro de Téléphone'),
-              subtitle: Text('+1234567890'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                storage.removeAccessToken();
-              },
-              child: const Text('Se Déconnecter'),
-            ),
-          ],
+        child: FutureBuilder<ServiceReturn<UserMe>>(
+          future: getMe(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              final UserMe? user = snapshot.data?.data;
+
+              if (user == null) {
+                return Column(
+                  children: [
+                    const Text("No data available"),
+                    ElevatedButton(
+                      onPressed: () {
+                        storage.removeAccessToken();
+                      },
+                      child: const Text('Se Déconnecter'),
+                    ),
+                  ],
+                );
+              }
+
+              return Column(
+                children: [
+                  UserTile(
+                    id: user.id,
+                    userEmail: user.email,
+                    isAdmin: user.isAdmin,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      storage.removeAccessToken();
+                    },
+                    child: const Text('Se Déconnecter'),
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ),
+    );
+  }
+}
+
+class UserTile extends StatelessWidget {
+  final String id;
+  final String userEmail;
+  final bool isAdmin;
+
+  const UserTile(
+      {required this.id,
+      required this.userEmail,
+      required this.isAdmin,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 8,
+      child: Column(children: [
+        Image.asset('assets/user_profile.jpg'),
+        ListTile(
+          title: Text(userEmail),
+          subtitle: Text(id),
+        ),
+        isAdmin
+            ? Image.network(
+                'https://png.pngtree.com/png-vector/20220810/ourmid/pngtree-sheriff-star-badge-png-image_6105998.png')
+            : Container(),
+      ]),
     );
   }
 }

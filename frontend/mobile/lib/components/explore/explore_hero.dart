@@ -1,6 +1,8 @@
+import 'package:area_mobile/services/services/areas.dart';
 import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ExploreHero extends StatelessWidget {
   const ExploreHero({Key? key}) : super(key: key);
@@ -20,7 +22,11 @@ class ExploreHero extends StatelessWidget {
               future: getAll(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error.toString()}'),
+                  );
                 } else {
                   final List<Service> services = [...?snapshot.data?.data];
 
@@ -28,13 +34,7 @@ class ExploreHero extends StatelessWidget {
                     itemCount: services.length,
                     itemBuilder: (context, index) {
                       final service = services[index];
-                      return Card(
-                        elevation: 8,
-                        child: ServiceTile(
-                          serviceName: service.id,
-                          serviceIcon: service.imageUrl,
-                        ),
-                      );
+                      return ServiceCard(service: service);
                     },
                   );
                 }
@@ -45,26 +45,118 @@ class ExploreHero extends StatelessWidget {
   }
 }
 
-class ServiceTile extends StatelessWidget {
-  final String serviceName;
-  final String serviceIcon;
+class ServiceCard extends StatelessWidget {
+  final Service service;
 
-  const ServiceTile({
-    required this.serviceName,
-    required this.serviceIcon,
-    Key? key,
-  }) : super(key: key);
+  const ServiceCard({Key? key, required this.service}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.network(
-        serviceIcon,
-        width: 50,
-        height: 50,
+    return Card(
+      elevation: 8,
+      child: ListTile(
+        leading: SvgPicture.network(
+          service.imageUrl,
+          width: 32,
+          height: 32,
+        ),
+        title: Text(service.id),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ServiceDetails(service: service),
+            ),
+          );
+        },
       ),
-      title: Text(serviceName),
-      onTap: () {/**/},
     );
+  }
+}
+
+class ServiceDetails extends StatefulWidget {
+  final Service service;
+
+  const ServiceDetails({Key? key, required this.service}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _ServiceDetailsState createState() => _ServiceDetailsState();
+}
+
+class _ServiceDetailsState extends State<ServiceDetails> {
+  List<Area> actions = [];
+  List<Area> reactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch actions and reactions when the widget is initialized
+    fetchActionsAndReactions();
+  }
+
+  void fetchActionsAndReactions() async {
+    // Fetch actions and reactions for the selected service
+    final actionsResponse = await getServiceActions(widget.service.id);
+    final reactionsResponse = await getServiceReactions(widget.service.id);
+
+    setState(() {
+      actions = actionsResponse.data ?? [];
+      reactions = reactionsResponse.data ?? [];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.service.id),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SectionTitle(title: 'Actions:'),
+              for (var action in actions) ActionOrReactionItem(item: action),
+              const SizedBox(height: 16),
+              const SectionTitle(title: 'Reactions:'),
+              for (var reaction in reactions)
+                ActionOrReactionItem(item: reaction),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class ActionOrReactionItem extends StatelessWidget {
+  final Area item;
+
+  const ActionOrReactionItem({Key? key, required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 8,
+        child: ListTile(
+          title: Text(item.id),
+          // Add more information if needed
+        ));
   }
 }
