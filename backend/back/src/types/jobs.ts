@@ -68,6 +68,8 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"github-create-issue": GithubCreateIssueParams;
+	"github-on-issue-create": GithubRepositoryActionParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
 	"google-create-contact": GoogleCreateContactParams;
@@ -84,8 +86,6 @@ export type JobsParams = Mapper<{
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-send-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
-	"github-create-issue": GithubCreateIssueParams;
-	"github-on-issue-create": GithubRepositoryActionParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
 }>;

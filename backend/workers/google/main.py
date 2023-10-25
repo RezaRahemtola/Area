@@ -17,7 +17,7 @@ from src.youtube.create_comment import create_comment
 from src.docs.create_document import create_document
 from src.slides.create_presentation import create_presentation
 from src.spreadsheets.create_spreadsheet import create_spreadsheet
-
+from src.youtube.on_video import on_video
 
 dotenv.load_dotenv()
 
@@ -25,7 +25,6 @@ def main():
     if len(sys.argv) < 2:
         print("Error: No job specified")
         exit(1)
-
     match sys.argv[1]:
         # GMail
         case "send-email":
@@ -38,6 +37,8 @@ def main():
         # YouTube
         case "create-comment-youtube":
             create_comment()
+        case "on-youtube-video":
+            on_video()
 
         # Docs
         case "create-document-docs":
