@@ -280,7 +280,7 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split("+"), connectionData);
+		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split(" "), connectionData);
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
