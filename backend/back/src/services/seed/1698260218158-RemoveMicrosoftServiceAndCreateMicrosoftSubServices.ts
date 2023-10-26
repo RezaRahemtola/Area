@@ -29,7 +29,8 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 		},
 		{
 			name: "microsoft-onenote",
-			imageUrl: "https://asset.brandfetch.io/idrfH1ij9n/idUEYlOACF.jpeg",
+			imageUrl:
+				"https://upload.wikimedia.org/wikipedia/commons/1/10/Microsoft_Office_OneNote_%282019%E2%80%93present%29.svg",
 			scopes: [
 				"Notes.Create",
 				"Notes.Read",
