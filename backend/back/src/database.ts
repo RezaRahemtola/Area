@@ -49,9 +49,7 @@ import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/16982
 import { CreateGoogleChangeGmailInterfaceLanguageArea1698268856232 } from "./workflows/seed/1698268856232-CreateGoogleChangeGmailInterfaceLanguageArea";
 
 import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from "./services/seed/1698260218158-RemoveMicrosoftServiceAndCreateMicrosoftSubServices";
-import {
-	CreateGithubIssuesAreas1698331915608
-} from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
+import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 
 dotenv.config();
 
