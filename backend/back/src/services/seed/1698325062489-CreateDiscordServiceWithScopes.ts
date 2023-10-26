@@ -42,7 +42,7 @@ export class CreateDiscordServiceWithScopes1698325062489 implements MigrationInt
 		await queryRunner.query(
 			`INSERT INTO "service_scope" ("id", "service_id")
       VALUES
-      ${this.DISCORD_SERVICE_SCOPES.map((scope) => `('${scope}', 'miro')`).join(",")}`,
+      ${this.DISCORD_SERVICE_SCOPES.map((scope) => `('${scope}', 'discord')`).join(",")}`,
 		);
 	}
 
@@ -50,12 +50,12 @@ export class CreateDiscordServiceWithScopes1698325062489 implements MigrationInt
 		await queryRunner.query(
 			`DELETE
        FROM "service"
-       WHERE "id" = 'miro'`,
+       WHERE "id" = 'discord'`,
 		);
 		await queryRunner.query(
 			`DELETE
        FROM "service_scope"
-       WHERE "service_id" = 'google'
+       WHERE "service_id" = 'discord'
          AND "id" IN (${this.DISCORD_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
 		);
 	}
