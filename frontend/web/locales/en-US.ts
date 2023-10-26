@@ -41,6 +41,7 @@ const translations = {
 		},
 	},
 	library: {
+		title: "My workflows",
 		emptyState: {
 			title: "You don't have any workflow",
 			action: "Create one",
@@ -55,6 +56,13 @@ const translations = {
 	user: {
 		settings: {
 			title: "User settings",
+			email: "Email",
+			theme: "Theme",
+			language: "Language",
+		},
+		menu: {
+			settings: "Settings",
+			logout: "Logout",
 		},
 	},
 	landing: {

@@ -45,7 +45,11 @@ import { CreateIssueGithubReaction1698062010534 } from "./workflows/seed/1698062
 import { CreateGoogleSlideInPresentationArea1698150990404 } from "./workflows/seed/1698150990404-CreateGoogleSlideInPresentationArea";
 import { UpdateServiceImagesToBrandFetchSVGs1698161840408 } from "./services/seed/1698161840408-UpdateServiceImagesToBrandFetchSVGs";
 import { CreateGithubOnIssueCreationArea1698179108023 } from "./workflows/seed/1698179108023-CreateGithubOnIssueCreationArea";
+import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/1698266623053-CreateGoogleSharedDriveArea";
+import { CreateGoogleChangeGmailInterfaceLanguageArea1698268856232 } from "./workflows/seed/1698268856232-CreateGoogleChangeGmailInterfaceLanguageArea";
+import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from "./services/seed/1698260218158-RemoveMicrosoftServiceAndCreateMicrosoftSubServices";
 import { CreateGoogleOnNewVideo1698251712512 } from "./workflows/seed/1698251712512-CreateGoogleOnNewVideo";
+
 dotenv.config();
 
 export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
@@ -94,6 +98,9 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSlideInPresentationArea1698150990404,
 		UpdateServiceImagesToBrandFetchSVGs1698161840408,
 		CreateGithubOnIssueCreationArea1698179108023,
+		RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158,
+		CreateGoogleSharedDriveArea1698266623053,
+		CreateGoogleChangeGmailInterfaceLanguageArea1698268856232,
 		CreateGoogleOnNewVideo1698251712512,
 	],
 	synchronize: process.env.NODE_ENV === "development",

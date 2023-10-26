@@ -38,8 +38,23 @@ export const update = async (
 	},
 ): Promise<ServiceReturn<CreateWorkflowReturn>> => {
 	try {
-		const { id, ...workflowData } = workflow;
-		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${id}`, { ...workflowData });
+		const { id } = workflow;
+		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${id}`, {
+			name: workflow.name,
+			action: {
+				id: workflow.action!.id,
+				parameters: convertAreaParamsToWorkflowPayloadParams(workflow.action!.area!.parameters),
+				areaId: workflow.action!.area?.id,
+				areaServiceId: workflow.action!.areaService?.id,
+			},
+			reactions: workflow.reactions!.map((reaction) => ({
+				id: reaction.id,
+				parameters: convertAreaParamsToWorkflowPayloadParams(reaction.area!.parameters),
+				areaId: reaction.area?.id,
+				areaServiceId: reaction.areaService?.id,
+				previousAreaId: reaction.previousAreaId,
+			})),
+		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };

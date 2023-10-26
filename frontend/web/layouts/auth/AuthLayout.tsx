@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef } from "react";
 
+import { useTranslation } from "react-i18next";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import LoginModal from "@/components/auth/modals/LoginModal";
 import RegisterModal from "@/components/auth/modals/RegisterModal";
@@ -15,6 +16,7 @@ const AuthLayout = () => {
 	const loginModalRef = useRef<HTMLDialogElement>(null);
 	const registerModalRef = useRef<HTMLDialogElement>(null);
 	const [userAuthToken, setUserAuthToken] = useAtom(userAuthTokenAtom);
+	const { t } = useTranslation();
 
 	const router = useRouter();
 	const pathname = usePathname();
@@ -53,13 +55,13 @@ const AuthLayout = () => {
 						<li>
 							<Link href="/dashboard/user">
 								<FontAwesomeIcon icon="gear" />
-								Settings
+								{t("user.menu.settings")}
 							</Link>
 						</li>
 						<li>
 							<a onClick={onLogout}>
 								<FontAwesomeIcon icon="arrow-right-from-bracket" />
-								Logout
+								{t("user.menu.logout")}
 							</a>
 						</li>
 					</ul>
@@ -68,11 +70,11 @@ const AuthLayout = () => {
 				<>
 					<LoginModal ref={loginModalRef} onAuthTypeChange={switchAuthToRegister} onAuthSuccess={onAuthSuccess} />
 					<a className="btn btn-ghost mr-2" onClick={switchAuthToLogin} data-cy="login-open-modal">
-						Login
+						{t("auth.login.title")}
 					</a>
 					<RegisterModal ref={registerModalRef} onAuthTypeChange={switchAuthToLogin} onAuthSuccess={onAuthSuccess} />
 					<a className="btn btn-secondary mr-2" onClick={switchAuthToRegister} data-cy="register-open-modal">
-						Register
+						{t("auth.register.title")}
 					</a>
 				</>
 			)}

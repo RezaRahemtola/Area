@@ -221,7 +221,7 @@ export class WorkflowsService {
 		await queryRunner.startTransaction();
 
 		try {
-			if (name) {
+			if (name && workflow.name !== name) {
 				if (await queryRunner.manager.exists(Workflow, { where: { name, ownerId: ownerId } })) {
 					// noinspection ExceptionCaughtLocallyJS
 					throw new ConflictException(`Workflow ${name} already exists.`);

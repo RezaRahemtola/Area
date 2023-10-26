@@ -4,6 +4,8 @@ var JobToImage = map[string]string{
 	"github-create-issue":                 "supervisor-github",
 	"github-on-issue-create":              "supervisor-github",
 	"google-create-calendar":              "supervisor-google",
+
+	"google-change-gmail-interface-language": "supervisor-google",
 	"google-create-contact":               "supervisor-google",
 	"google-create-comment-youtube":       "supervisor-google",
 	"google-create-course":                "supervisor-google",
@@ -12,6 +14,7 @@ var JobToImage = map[string]string{
 	"google-create-draft-email":           "supervisor-google",
 	"google-create-form":                  "supervisor-google",
 	"google-create-presentation":          "supervisor-google",
+	"google-create-shared-drive":          "supervisor-google",
 	"google-create-slide-on-presentation": "supervisor-google",
 	"google-create-spreadsheet":           "supervisor-google",
 	"google-create-task-list":             "supervisor-google",
@@ -27,6 +30,7 @@ var JobToImage = map[string]string{
 var OptArgument = map[string]string{
 	"github-create-issue":                 "create-issue",
 	"github-on-issue-create":              "setup-webhook",
+	"google-change-gmail-interface-language": "change-gmail-interface-language",
 	"google-create-calendar":              "create-calendar",
 	"google-create-comment-youtube":       "create-comment-youtube",
 	"google-create-contact":               "create-contact",
@@ -36,6 +40,7 @@ var OptArgument = map[string]string{
 	"google-create-drive-folder":          "create-drive-folder",
 	"google-create-form":                  "create-form",
 	"google-create-presentation":          "create-presentation",
+	"google-create-shared-drive":             "create-shared-drive",
 	"google-create-slide-on-presentation": "create-slide-on-presentation",
 	"google-create-spreadsheet":           "create-spreadsheet",
 	"google-create-task-list":             "create-task-list",
