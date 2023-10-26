@@ -7,38 +7,35 @@ import "../proto/google/protobuf/struct";
 import { GithubErrorData } from "../util/types";
 import { onError, onReaction } from "../util/grpc";
 
-const CreateIssueSchema = z.object({
+const CloseIssueSchema = z.object({
 	auth: GithubAuthSchema,
 	target: z.string().optional(),
 	identifier: z.string(),
 	workflowStepId: z.string(),
 	owner: z.string(),
 	repo: z.string(),
-	title: z.string(),
-	body: z.string().optional(),
-	assignees: z.string().array().optional(),
-	labels: z.string().array().optional(),
+	completed: z.boolean().optional().default(true),
+	issueNumber: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().positive()),
 });
-type CreateIssueType = z.infer<typeof CreateIssueSchema>;
+type CloseIssueType = z.infer<typeof CloseIssueSchema>;
 
-export default async function createIssue() {
-	const params = parseArguments<CreateIssueType>(CreateIssueSchema);
+export default async function closeIssue() {
+	const params = parseArguments<CloseIssueType>(CloseIssueSchema);
 	const octokit = new Octokit({
 		auth: params.auth.access_token,
 	});
 	const client = new AreaBackServiceClient(params.target ?? "localhost:50050", credentials.createInsecure());
 
 	try {
-		const res = await octokit.rest.issues.create({
+		const res = await octokit.rest.issues.update({
 			owner: params.owner,
 			repo: params.repo,
-			title: params.title,
-			body: params.body,
-			assignees: params.assignees,
-			labels: params.labels,
+			issue_number: params.issueNumber,
+			state: "closed",
+			state_reason: params.completed ? "completed" : "not_planned",
 		});
 		await onReaction(client, {
-			name: "github-create-issue",
+			name: "github-close-issue",
 			identifier: params.identifier,
 			params: {
 				url: res.data.url,

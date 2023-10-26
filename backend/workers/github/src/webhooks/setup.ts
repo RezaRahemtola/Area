@@ -49,7 +49,7 @@ export default async function setupWebhook() {
 			await onError(client, {
 				identifier: params.identifier,
 				error: data.message,
-				isAuthError: e.status === 401,
+				isAuthError: e.status === 401 || e.status === 403,
 			});
 		}
 	}

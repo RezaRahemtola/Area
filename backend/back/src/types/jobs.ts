@@ -1,5 +1,7 @@
 import {
+	GithubCloseIssueParams,
 	GithubCreateIssueParams,
+	GithubReopenIssueParams,
 	GithubRepositoryActionParams,
 	GoogleAddFormYoutubeItemParams,
 	GoogleChangeGmailLanguageParams,
@@ -17,8 +19,12 @@ import {
 } from "./jobParams";
 
 export enum Jobs {
+	"github-close-issue" = "github-close-issue",
 	"github-create-issue" = "github-create-issue",
+	"github-reopen-issue" = "github-reopen-issue",
+	"github-on-issue-close" = "github-on-issue-close",
 	"github-on-issue-create" = "github-on-issue-create",
+	"github-on-issue-reopen" = "github-on-issue-reopen",
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-contact" = "google-create-contact",
 	"google-create-course" = "google-create-course",
@@ -48,8 +54,12 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 }
 
 export const JobParamsClasses = {
+	"github-close-issue": GithubCloseIssueParams,
 	"github-create-issue": GithubCreateIssueParams,
+	"github-reopen-issue": GithubReopenIssueParams,
+	"github-on-issue-close": GithubRepositoryActionParams,
 	"github-on-issue-create": GithubRepositoryActionParams,
+	"github-on-issue-reopen": GithubRepositoryActionParams,
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams,
 	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
@@ -73,6 +83,12 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"github-close-issue": GithubCloseIssueParams;
+	"github-create-issue": GithubCreateIssueParams;
+	"github-reopen-issue": GithubReopenIssueParams;
+	"github-on-issue-close": GithubRepositoryActionParams;
+	"github-on-issue-create": GithubRepositoryActionParams;
+	"github-on-issue-reopen": GithubRepositoryActionParams;
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
@@ -91,8 +107,6 @@ export type JobsParams = Mapper<{
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-send-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
-	"github-create-issue": GithubCreateIssueParams;
-	"github-on-issue-create": GithubRepositoryActionParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
 }>;

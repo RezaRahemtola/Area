@@ -12,6 +12,7 @@ export const PARAMETERS_FORM_FLOW_FIELD_TYPES = [
 	"datetime",
 	"time",
 	"text-array",
+	"boolean",
 ] as const;
 
 export class ParametersFormFlowFieldDto {

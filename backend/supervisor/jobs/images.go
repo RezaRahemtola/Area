@@ -1,8 +1,12 @@
 package jobs
 
 var JobToImage = map[string]string{
+	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
+	"github-reopen-issue":                    "supervisor-github",
+	"github-on-issue-close":                  "supervisor-github",
 	"github-on-issue-create":                 "supervisor-github",
+	"github-on-issue-reopen":                 "supervisor-github",
 	"google-change-gmail-interface-language": "supervisor-google",
 	"google-create-calendar":                 "supervisor-google",
 	"google-create-contact":                  "supervisor-google",
@@ -26,8 +30,12 @@ var JobToImage = map[string]string{
 }
 
 var OptArgument = map[string]string{
+	"github-close-issue":                     "close-issue",
 	"github-create-issue":                    "create-issue",
+	"github-reopen-issue":                    "reopen-issue",
+	"github-on-issue-close":                  "setup-webhook",
 	"github-on-issue-create":                 "setup-webhook",
+	"github-on-issue-reopen":                 "setup-webhook",
 	"google-change-gmail-interface-language": "change-gmail-interface-language",
 	"google-create-calendar":                 "create-calendar",
 	"google-create-comment-youtube":          "create-comment-youtube",
