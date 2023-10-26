@@ -50,6 +50,7 @@ const translations = {
 			rename: {
 				title: "Renommer le workflow",
 				newName: "Nouveau nom",
+				successMessage: "Workflow renommé avec succès !",
 			},
 		},
 	},
@@ -59,6 +60,7 @@ const translations = {
 			email: "Email",
 			theme: "Thème",
 			language: "Langue",
+			updateSuccessMessage: "Paramètres mis à jour avec succès !",
 		},
 		menu: {
 			settings: "Paramètres",

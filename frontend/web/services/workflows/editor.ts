@@ -64,3 +64,14 @@ export const update = async (
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
 	}
 };
+
+export const rename = async (id: string, name: string) => {
+	try {
+		const response = await axiosInstance.patch<CreateWorkflowReturn>(`/workflows/${id}`, {
+			name,
+		});
+		return { data: response.data, error: undefined };
+	} catch (error) {
+		return { data: null, error: SERVICE_ERROR_UNKNOWN };
+	}
+};
