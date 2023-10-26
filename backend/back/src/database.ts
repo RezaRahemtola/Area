@@ -49,6 +49,7 @@ import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/16982
 import { CreateGoogleChangeGmailInterfaceLanguageArea1698268856232 } from "./workflows/seed/1698268856232-CreateGoogleChangeGmailInterfaceLanguageArea";
 import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from "./services/seed/1698260218158-RemoveMicrosoftServiceAndCreateMicrosoftSubServices";
 import { CreateGoogleOnNewVideo1698251712512 } from "./workflows/seed/1698251712512-CreateGoogleOnNewVideo";
+import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698322805180-CreateLinearServiceWithScopes";
 
 dotenv.config();
 
@@ -102,6 +103,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSharedDriveArea1698266623053,
 		CreateGoogleChangeGmailInterfaceLanguageArea1698268856232,
 		CreateGoogleOnNewVideo1698251712512,
+		CreateLinearServiceWithScopes1698322805180,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
