@@ -18,6 +18,7 @@ export const SERVICE_NAMES = [
 	"microsoft-onenote",
 	"microsoft-outlook",
 	"linear",
+	"discord",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 
