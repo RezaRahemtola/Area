@@ -47,8 +47,10 @@ import { UpdateServiceImagesToBrandFetchSVGs1698161840408 } from "./services/see
 import { CreateGithubOnIssueCreationArea1698179108023 } from "./workflows/seed/1698179108023-CreateGithubOnIssueCreationArea";
 import { CreateGoogleSharedDriveArea1698266623053 } from "./workflows/seed/1698266623053-CreateGoogleSharedDriveArea";
 import { CreateGoogleChangeGmailInterfaceLanguageArea1698268856232 } from "./workflows/seed/1698268856232-CreateGoogleChangeGmailInterfaceLanguageArea";
-
 import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from "./services/seed/1698260218158-RemoveMicrosoftServiceAndCreateMicrosoftSubServices";
+import { CreateGoogleOnNewVideo1698251712512 } from "./workflows/seed/1698251712512-CreateGoogleOnNewVideo";
+import { CreateDiscordServiceWithScopes1698325062489 } from "./services/seed/1698325062489-CreateDiscordServiceWithScopes";
+import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698322805180-CreateLinearServiceWithScopes";
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 
 dotenv.config();
@@ -102,6 +104,9 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158,
 		CreateGoogleSharedDriveArea1698266623053,
 		CreateGoogleChangeGmailInterfaceLanguageArea1698268856232,
+		CreateGoogleOnNewVideo1698251712512,
+		CreateDiscordServiceWithScopes1698325062489,
+		CreateLinearServiceWithScopes1698322805180,
 		CreateGithubIssuesAreas1698331915608,
 	],
 	synchronize: process.env.NODE_ENV === "development",

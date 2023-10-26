@@ -150,3 +150,8 @@ export class GoogleChangeGmailLanguageParams extends UniqueJobParams {
 	@IsString()
 	language: string;
 }
+
+export class YoutubeChannelParams {
+	@IsString()
+	channelId: string;
+}

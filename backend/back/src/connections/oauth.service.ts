@@ -215,6 +215,52 @@ export class OauthService {
 		return this.connectionsService.createUserConnection(userId, "miro", scope.split(" "), connectionData);
 	}
 
+	async createLinearConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<Omit<OAuthResponse, "scope"> & { scope: string[] }>(
+			"https://api.linear.app/oauth/token",
+			{
+				client_id: this.configService.getOrThrow<string>("LINEAR_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("LINEAR_CLIENT_SECRET"),
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("linear"),
+				grant_type: "authorization_code",
+			},
+			{
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					Accept: "application/json",
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "linear", scope, connectionData);
+	}
+
+	async createDiscordConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://discord.com/api/oauth2/token",
+			{
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("discord"),
+				grant_type: "authorization_code",
+			},
+			{
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					Accept: "application/json",
+				},
+				auth: {
+					username: this.configService.getOrThrow<string>("DISCORD_CLIENT_ID"),
+					password: this.configService.getOrThrow<string>("DISCORD_CLIENT_SECRET"),
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "discord", scope.split(" "), connectionData);
+	}
+
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
 		const { oauthUrl } = await this.servicesService.getService(serviceId);
 		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
@@ -306,5 +352,21 @@ export class OauthService {
 		"microsoft-graph": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("graph"),
 		"microsoft-onenote": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("onenote"),
 		"microsoft-outlook": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("outlook"),
+		linear: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"LINEAR_CLIENT_ID",
+				)}&scope=${scopes.join(",")}&redirect_uri=${oauthCallbackUrlFactory("linear")}&state=${userId}&prompt=consent`,
+			connectionFactory: this.createLinearConnection.bind(this),
+		},
+		discord: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"DISCORD_CLIENT_ID",
+				)}&scope=${encodeURI(scopes.join(" "))}&redirect_uri=${oauthCallbackUrlFactory(
+					"discord",
+				)}&state=${userId}&prompt=consent`,
+			connectionFactory: this.createDiscordConnection.bind(this),
+		},
 	};
 }
