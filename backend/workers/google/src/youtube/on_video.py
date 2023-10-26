@@ -1,76 +1,78 @@
-import json
 import sys
+import urllib3
 
 import grpc
-from google.auth.exceptions import RefreshError
+import xml.etree.ElementTree as ET
 from google.protobuf.struct_pb2 import Struct
-from googleapiclient.discovery import build
 from time import sleep
 
 from area_back_pb2 import JobError
 from area_types_pb2 import JobData
-from src.utils.auth import forge_credentials
 from src.utils.parsing import get_arguments
 
 from area_back_pb2_grpc import AreaBackServiceStub
 
-SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 TARGET = "localhost:50050"
-SEARCH_TIMEOUT = 10
+SEARCH_TIMEOUT = 60
+PROPERTIES = {
+    "{http://www.youtube.com/xml/schemas/2015}videoId": "videoId",
+    "{http://www.youtube.com/xml/schemas/2015}channelId": "channelId",
+    "{http://www.w3.org/2005/Atom}title": "title",
+    "{http://search.yahoo.com/mrss/}description": "description",
+    "{http://www.w3.org/2005/Atom}published": "createdAt",
 
-def search_last_video(service, channelId):
-    return service.search().list(
-        part="snippet",
-        channelId=channelId,
-        maxResults=1,
-        order="date",
-        type="video"
-    ).execute()
+}
+FETCH_URL = "https://www.youtube.com/feeds/videos.xml?channel_id="
+WATCH_URL = "https://www.youtube.com/watch?v="
+
+
+def search_last_video(channelId):
+    video = None
+    res = urllib3.request("GET", FETCH_URL + channelId)
+    xml = ET.fromstring(res.data.decode("utf-8"))
+    for child in xml:
+        if child.tag == "{http://www.w3.org/2005/Atom}entry":
+            video = {}
+            for i in child.iter():
+                if i.tag in PROPERTIES.keys():
+                    video[PROPERTIES[i.tag]] = i.text
+            video["url"] = WATCH_URL + video["videoId"]
+            break
+    return video
 
 
 def is_new_video(first_video, last_video):
-    if len(first_video["items"]) == 0:
-        return len(last_video["items"]) > 0
-    elif len(last_video["items"]) == 0:
+    if first_video is None:
+        return last_video is not None
+    if last_video is None:
         return False
-    return first_video["items"][0]["id"]["videoId"] != last_video["items"][0]["id"]["videoId"]
+    return first_video["videoId"] != last_video["videoId"]
 
 
 def on_video():
-    args = get_arguments({"auth", "channelId", "identifier"})
+    args = get_arguments({"channelId", "identifier"})
     target = args["target"] if args.keys().__contains__("target") else TARGET
 
-    credentials = json.loads(args["auth"])
-    creds = forge_credentials(credentials["refresh_token"], SCOPES)
-
     try:
-        service = build('youtube', 'v3', credentials=creds)
-        first_video = search_last_video(service, args["channelId"])
+        first_video = search_last_video(args["channelId"])
 
         while True:
             sleep(SEARCH_TIMEOUT)
-            last_video = search_last_video(service, args["channelId"])
+            last_video = search_last_video(args["channelId"])
             if is_new_video(first_video, last_video):
-                video = last_video["items"][0]
                 with grpc.insecure_channel(target) as channel:
                     params = Struct()
                     params.update({
-                        "channelId": args["channelId"],
-                        "videoId": video["id"]["videoId"],
-                        "title": video["snippet"]["title"],
-                        "description": video["snippet"]["description"],
-                        "createdAt": video["snippet"]["publishedAt"],
-                        "thumbnail": video["snippet"]["thumbnails"]["default"]["url"]
+                        "channelId": last_video["channelId"],
+                        "videoId": last_video["videoId"],
+                        "title": last_video["title"],
+                        "description": last_video["description"],
+                        "createdAt": last_video["createdAt"],
+                        "url": last_video["url"]
                     })
-                    AreaBackServiceStub(channel).OnReaction(
-                        JobData(name="google-on-new-video", identifier=args["identifier"], params=params))
+                    AreaBackServiceStub(channel).OnReaction(JobData(name="google-on-new-video", identifier=args["identifier"], params=params))
                 first_video = last_video
 
-    except RefreshError as error:
-        with grpc.insecure_channel(target) as channel:
-            AreaBackServiceStub(channel).OnError(
-                JobError(identifier=args["identifier"], error=str(error), isAuthError=True))
-        exit(1)
     except Exception as e:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(

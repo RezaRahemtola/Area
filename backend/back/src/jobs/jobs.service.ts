@@ -10,6 +10,7 @@ import { Repository } from "typeorm";
 import { AuthenticatedJobData, JobData } from "../grpc/grpc.dto";
 import { RuntimeException } from "@nestjs/core/errors/exceptions";
 import { ConnectionsService } from "../connections/connections.service";
+import { uniqBy } from "lodash";
 
 @Injectable()
 export class JobsService {
@@ -112,8 +113,10 @@ export class JobsService {
 	}
 
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
-		this.logger.log(`Launching ${jobs.length} jobs`);
-		for (const job of jobs) {
+		const uniqueJobs = uniqBy(jobs, (job) => job.identifier);
+
+		this.logger.log(`Launching ${uniqueJobs.length} jobs`);
+		for (const job of uniqueJobs) {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType, job.params);
 			const response = await this.grpcService.launchJob(jobType, params, job.auth);
@@ -169,7 +172,7 @@ export class JobsService {
 	async synchronizeJobs(): Promise<void> {
 		const jobs = await this.getActionJobsToStart();
 
-		this.logger.log(`Found ${jobs.length} jobs to start to synchronize this beau bordel`);
+		this.logger.log(`Found ${jobs.length} jobs to start`);
 		const res = await this.grpcService.killAllJobs();
 		if (res.error) {
 			throw new RuntimeException(`Error while synchronizing: ${res.error.message}`);
