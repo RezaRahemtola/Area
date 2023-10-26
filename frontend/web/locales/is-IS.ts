@@ -50,6 +50,7 @@ const translations = {
 			rename: {
 				title: "Endurnefna verkflæðið",
 				newName: "Nýtt nafn",
+				successMessage: "Verkflæði breytt nafni!",
 			},
 		},
 	},
@@ -59,6 +60,7 @@ const translations = {
 			email: "Tölvupóstur",
 			theme: "Þema",
 			language: "Tungumál",
+			updateSuccessMessage: "Stillingar uppfærðar!",
 		},
 		menu: {
 			settings: "Stillingar",
