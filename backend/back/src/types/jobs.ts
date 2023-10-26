@@ -23,9 +23,13 @@ export enum Jobs {
 	"github-close-issue" = "github-close-issue",
 	"github-create-issue" = "github-create-issue",
 	"github-reopen-issue" = "github-reopen-issue",
+	"github-on-commit" = "github-on-commit",
 	"github-on-issue-close" = "github-on-issue-close",
 	"github-on-issue-create" = "github-on-issue-create",
 	"github-on-issue-reopen" = "github-on-issue-reopen",
+	"github-on-pull-request-close" = "github-on-pull-request-close",
+	"github-on-pull-request-create" = "github-on-pull-request-create",
+	"github-on-pull-request-merge" = "github-on-pull-request-merge",
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-contact" = "google-create-contact",
 	"google-create-course" = "google-create-course",
@@ -59,9 +63,13 @@ export const JobParamsClasses = {
 	"github-close-issue": GithubCloseIssueParams,
 	"github-create-issue": GithubCreateIssueParams,
 	"github-reopen-issue": GithubReopenIssueParams,
+	"github-on-commit": GithubRepositoryActionParams,
 	"github-on-issue-close": GithubRepositoryActionParams,
 	"github-on-issue-create": GithubRepositoryActionParams,
 	"github-on-issue-reopen": GithubRepositoryActionParams,
+	"github-on-pull-request-close": GithubRepositoryActionParams,
+	"github-on-pull-request-create": GithubRepositoryActionParams,
+	"github-on-pull-request-merge": GithubRepositoryActionParams,
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams,
 	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
@@ -89,9 +97,13 @@ export type JobsParams = Mapper<{
 	"github-close-issue": GithubCloseIssueParams;
 	"github-create-issue": GithubCreateIssueParams;
 	"github-reopen-issue": GithubReopenIssueParams;
+	"github-on-commit": GithubRepositoryActionParams;
 	"github-on-issue-close": GithubRepositoryActionParams;
 	"github-on-issue-create": GithubRepositoryActionParams;
 	"github-on-issue-reopen": GithubRepositoryActionParams;
+	"github-on-pull-request-close": GithubRepositoryActionParams;
+	"github-on-pull-request-create": GithubRepositoryActionParams;
+	"github-on-pull-request-merge": GithubRepositoryActionParams;
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
