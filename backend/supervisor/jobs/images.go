@@ -41,7 +41,7 @@ var OptArgument = map[string]string{
 	"google-create-task-list":             "create-task-list",
 	"google-duplicate-drive-file":         "duplicate-drive-file",
 	"google-form-add-youtube-item":        "form-add-youtube-item",
-	"google-on-new-video":                 "on-new-video",
+	"google-on-new-video":                 "on-youtube-video",
 	"google-send-email":                   "send-email",
 	"google-update-signature-email":       "update-signature-email",
 	"linkedin-create-post":                "create-post",
