@@ -16,7 +16,7 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			/>
 		);
 	}
-	if (["email", "short-text", "long-text"].includes(parameter.type)) {
+	if (["short-text", "long-text", "text-array"].includes(parameter.type)) {
 		return (
 			<input
 				type="text"
@@ -32,7 +32,8 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 const EditorAreParameter = ({ parameter, onValueChange }: EditorAreaParameterProps) => (
 	<>
 		<label className="label">
-			<span className="label-text text-neutral-content">{parameter.name}</span>
+			<span className="label-text text-neutral-content">{parameter.name} </span>
+			{parameter.required && <span className="label-text text-red-500">*</span>}
 		</label>
 		<EditorAreaParameterInput parameter={parameter} onValueChange={onValueChange} />
 	</>
