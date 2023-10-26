@@ -2,6 +2,7 @@ import {
 	GithubCreateIssueParams,
 	GithubRepositoryActionParams,
 	GoogleAddFormYoutubeItemParams,
+	GoogleChangeGmailLanguageParams,
 	GoogleCreateContactParams,
 	GoogleCreateCourseParams,
 	GoogleCreateSlideOnPresentationParams,
@@ -21,12 +22,14 @@ export enum Jobs {
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-contact" = "google-create-contact",
 	"google-create-course" = "google-create-course",
+	"google-change-gmail-interface-language" = "google-change-gmail-interface-language",
 	"google-create-calendar" = "google-create-calendar",
 	"google-create-document-docs" = "google-create-document-docs",
 	"google-create-draft-email" = "google-create-draft-email",
 	"google-create-drive-folder" = "google-create-drive-folder",
 	"google-create-form" = "google-create-form",
 	"google-create-presentation" = "google-create-presentation",
+	"google-create-shared-drive" = "google-create-shared-drive",
 	"google-create-slide-on-presentation" = "google-create-slide-on-presentation",
 	"google-create-spreadsheet" = "google-create-spreadsheet",
 	"google-create-task-list" = "google-create-task-list",
@@ -47,6 +50,7 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 export const JobParamsClasses = {
 	"github-create-issue": GithubCreateIssueParams,
 	"github-on-issue-create": GithubRepositoryActionParams,
+	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams,
 	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
 	"google-create-contact": GoogleCreateContactParams,
@@ -56,6 +60,7 @@ export const JobParamsClasses = {
 	"google-create-drive-folder": NameParams,
 	"google-create-form": NameParams,
 	"google-create-presentation": NameParams,
+	"google-create-shared-drive": NameParams,
 	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams,
 	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
@@ -68,6 +73,7 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;
 	"google-create-contact": GoogleCreateContactParams;
@@ -77,6 +83,7 @@ export type JobsParams = Mapper<{
 	"google-create-drive-folder": NameParams;
 	"google-create-form": NameParams;
 	"google-create-presentation": NameParams;
+	"google-create-shared-drive": NameParams;
 	"google-create-slide-on-presentation": GoogleCreateSlideOnPresentationParams;
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;

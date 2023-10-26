@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 
 import en from "@/locales/en-US";
 import fr from "@/locales/fr-FR";
+import is from "@/locales/is-IS";
 
 i18n.use(initReactI18next).init({
 	resources: {
@@ -12,6 +13,9 @@ i18n.use(initReactI18next).init({
 		fr: {
 			translation: fr,
 		},
+		is: {
+			translation: is,
+		},
 	},
 	fallbackLng: "en",
 
@@ -19,3 +23,5 @@ i18n.use(initReactI18next).init({
 		escapeValue: false,
 	},
 });
+
+export default i18n;

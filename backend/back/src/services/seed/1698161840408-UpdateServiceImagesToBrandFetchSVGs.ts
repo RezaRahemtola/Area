@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { ServiceName } from "../services.service";
 
 export class UpdateServiceImagesToBrandFetchSVGs1698161840408 implements MigrationInterface {
-	private readonly images: Partial<Record<ServiceName, Record<"lastUrl" | "newUrl", string>>> = {
+	private readonly SERVICES_IMAGES_URLS: Partial<Record<string, Record<"lastUrl" | "newUrl", string>>> = {
 		github: {
 			newUrl: "https://asset.brandfetch.io/idZAyF9rlg/id6a3YYV60.svg",
 			lastUrl: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
@@ -39,7 +38,7 @@ export class UpdateServiceImagesToBrandFetchSVGs1698161840408 implements Migrati
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await Promise.all(
-			Object.entries(this.images).map(async ([service, { newUrl }]) => {
+			Object.entries(this.SERVICES_IMAGES_URLS).map(async ([service, { newUrl }]) => {
 				await queryRunner.query(
 					`UPDATE service
            SET image_url = '${newUrl}'
@@ -51,7 +50,7 @@ export class UpdateServiceImagesToBrandFetchSVGs1698161840408 implements Migrati
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await Promise.all(
-			Object.entries(this.images).map(async ([service, { lastUrl }]) => {
+			Object.entries(this.SERVICES_IMAGES_URLS).map(async ([service, { lastUrl }]) => {
 				await queryRunner.query(
 					`UPDATE service
            SET image_url = '${lastUrl}'

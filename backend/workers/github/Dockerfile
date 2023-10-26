@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-scripts
 
 # Get protobuf files
 RUN apk add git protobuf protobuf-dev
