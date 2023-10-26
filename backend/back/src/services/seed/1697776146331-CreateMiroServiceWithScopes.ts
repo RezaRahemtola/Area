@@ -33,7 +33,7 @@ export class CreateMiroServiceWithScopes1697776146331 implements MigrationInterf
 		await queryRunner.query(
 			`DELETE
        FROM "service_scope"
-       WHERE "service_id" = 'google'
+       WHERE "service_id" = 'miro'
          AND "id" IN (${this.MIRO_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
 		);
 	}
