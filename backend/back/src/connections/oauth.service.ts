@@ -262,31 +262,25 @@ export class OauthService {
 	}
 
 	async createGitlabConnection(userId: string, code: string) {
-		try {
-			const {
-				data: { scope, ...connectionData },
-			} = await this.httpService.axiosRef.post<OAuthResponse>(
-				"https://gitlab.com/oauth/authorize",
-				{
-					client_id: this.configService.getOrThrow<string>("GITLAB_CLIENT_ID"),
-					client_secret: this.configService.getOrThrow<string>("GITLAB_CLIENT_SECRET"),
-					code,
-					redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("gitlab"),
-					grant_type: "authorization_code",
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://gitlab.com/oauth/token",
+			{
+				client_id: this.configService.getOrThrow<string>("GITLAB_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("GITLAB_CLIENT_SECRET"),
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("gitlab"),
+				grant_type: "authorization_code",
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
 				},
-				{
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/x-www-form-urlencoded",
-					},
-				},
-			);
-			this.logger.debug(JSON.stringify(connectionData));
-			return this.connectionsService.createUserConnection(userId, "gitlab", scope.split("+"), connectionData);
-		} catch (e) {
-			console.error(e);
-			throw e;
-		}
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split("+"), connectionData);
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
@@ -401,7 +395,7 @@ export class OauthService {
 				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow("GITLAB_CLIENT_ID")}&scope=${encodeURI(
 					scopes.join("+"),
 				)}&redirect_uri=${oauthCallbackUrlFactory("gitlab")}&state=${userId}`,
-			connectionFactory: this.createDiscordConnection.bind(this),
+			connectionFactory: this.createGitlabConnection.bind(this),
 		},
 	};
 }
