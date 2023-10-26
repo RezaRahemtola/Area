@@ -33,7 +33,7 @@ const translations = {
 	editor: {
 		action: {
 			title: "Action",
-			description: "Un événements qui lance votre workflow",
+			description: "Un événement qui lance votre workflow",
 		},
 		reaction: {
 			title: "Réaction",
