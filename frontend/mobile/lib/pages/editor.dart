@@ -1,11 +1,12 @@
+import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 
 class Editor extends StatefulWidget {
-  final int workflowID;
+  final Workflow workflow;
 
   const Editor({
     super.key,
-    required this.workflowID,
+    required this.workflow,
   });
 
   @override
@@ -30,9 +31,7 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Workflow"),
-      ),
+      appBar: AppBar(title: Text(widget.workflow.name)),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Column(
@@ -42,7 +41,7 @@ class _EditorState extends State<Editor> {
               child: ListTile(
                 title: Row(
                   children: [
-                    const Text("Action"),
+                    Text(widget.workflow.action.id),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                         onPressed: () {

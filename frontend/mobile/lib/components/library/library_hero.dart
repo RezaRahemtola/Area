@@ -55,8 +55,23 @@ class LibraryHero extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const Editor(workflowID: 5)));
+                                  builder: (context) => Editor(
+                                        workflow: Workflow(
+                                            id: "",
+                                            name: "New Workflow",
+                                            active: true,
+                                            action: const AreaInWorkflow(
+                                                id: "id",
+                                                areaId: "areaId",
+                                                areaServiceId: "areaServiceId"),
+                                            reactions: [
+                                              const AreaInWorkflow(
+                                                  id: "id",
+                                                  areaId: "areaId",
+                                                  areaServiceId:
+                                                      "areaServiceId")
+                                            ]),
+                                      )));
                         },
                       ),
                     );
