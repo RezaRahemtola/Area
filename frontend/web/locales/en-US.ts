@@ -67,6 +67,11 @@ const translations = {
 			logout: "Logout",
 		},
 	},
+	services: {
+		actions: "Actions",
+		reactions: "Reactions",
+		noArea: "This service doesn't have any action or reaction",
+	},
 	landing: {
 		actions: {
 			downloadApk: " Download APK",

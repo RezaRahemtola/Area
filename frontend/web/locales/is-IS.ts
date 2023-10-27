@@ -67,6 +67,11 @@ const translations = {
 			logout: "Aftengdu",
 		},
 	},
+	services: {
+		actions: "Aðgerðir",
+		reactions: "Viðbrögð",
+		noArea: "Þessi þjónusta hefur engar aðgerðir eða viðbrögð",
+	},
 	landing: {
 		actions: {
 			downloadApk: " Sækja APK",

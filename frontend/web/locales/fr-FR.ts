@@ -67,6 +67,11 @@ const translations = {
 			logout: "Déconnexion",
 		},
 	},
+	services: {
+		actions: "Actions",
+		reactions: "Réactions",
+		noArea: "Ce service n'a pas d'action ou de réaction",
+	},
 	landing: {
 		actions: {
 			downloadApk: " Télécharger l'APK",
