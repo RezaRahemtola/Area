@@ -63,6 +63,7 @@ import { CreateGoogleUpdateSpreadsheetTitleArea1698656017859 } from "./workflows
 import { CreateLinearCreateIssueAreas1698614949784 } from "./workflows/seed/1698614949784-CreateLinearCreateIssueAreas";
 import { CreateGitlabCommitPRActions1698678924392 } from "./workflows/seed/1698678924392-CreateGitlabCommitPRActions";
 import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/1698793446046-CreateMiroCreateBoardReaction";
+import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
 
 dotenv.config();
 
@@ -130,6 +131,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateLinearCreateIssueAreas1698614949784,
 		CreateGitlabCommitPRActions1698678924392,
 		CreateMiroCreateBoardReaction1698793446046,
+		UpdateGoogleServiceScopes1698414179394,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
