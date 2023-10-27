@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateGitLabServiceWithScopes1698332919825 implements MigrationInterface {
-	private readonly DISCORD_SERVICE_SCOPES = [
+	private readonly GITLAB_SERVICE_SCOPES = [
 		"api",
 		"read_user",
 		"read_api",
@@ -27,7 +27,7 @@ export class CreateGitLabServiceWithScopes1698332919825 implements MigrationInte
 		await queryRunner.query(
 			`INSERT INTO "service_scope" ("id", "service_id")
       VALUES
-      ${this.DISCORD_SERVICE_SCOPES.map((scope) => `('${scope}', 'gitlab')`).join(",")}`,
+      ${this.GITLAB_SERVICE_SCOPES.map((scope) => `('${scope}', 'gitlab')`).join(",")}`,
 		);
 	}
 
@@ -41,7 +41,7 @@ export class CreateGitLabServiceWithScopes1698332919825 implements MigrationInte
 			`DELETE
        FROM "service_scope"
        WHERE "service_id" = 'gitlab'
-         AND "id" IN (${this.DISCORD_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
+         AND "id" IN (${this.GITLAB_SERVICE_SCOPES.map((scope) => `'${scope}'`).join(",")})`,
 		);
 	}
 }
