@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import { Service } from "@/types/services";
 import { splitArrayInChunks } from "@/utils/arrays";
 
