@@ -28,11 +28,13 @@ type ServiceOAuthUrlFactory<TService extends ServiceName> = <TBaseUrl extends st
 	scopes: string[],
 	oauthCallbackUrlFactory: OAuthCallbackUrlFactory<TService>,
 ) => `${TBaseUrl}${string}`;
+type ServiceOAuthFactory<TService extends ServiceName> = {
+	urlFactory: ServiceOAuthUrlFactory<TService>;
+	connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
+	loginScopes?: string[];
+};
 type ServiceOAuthFactories<TServices extends ServiceName> = {
-	[TService in TServices]: {
-		urlFactory: ServiceOAuthUrlFactory<TService>;
-		connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
-	};
+	[TService in TServices]: ServiceOAuthFactory<TService>;
 };
 
 @Injectable()
@@ -301,10 +303,7 @@ export class OauthService {
 		TSubService extends SubServiceNameFromServiceName<ServiceName, "microsoft">,
 	>(
 		subService: TSubService,
-	) => {
-		urlFactory: ServiceOAuthUrlFactory<`microsoft-${TSubService}`>;
-		connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
-	} = (subService) => ({
+	) => ServiceOAuthFactory<`microsoft-${TSubService}`> = (subService) => ({
 		urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
 			`${baseUrl}?client_id=${this.configService.getOrThrow("MICROSOFT_CLIENT_ID")}&scope=${encodeURI(
 				["offline_access", ...scopes].join(" "),
@@ -321,6 +320,7 @@ export class OauthService {
 					",",
 				)}&state=${userId}&redirect_uri=${oauthCallbackUrlFactory("github")}`,
 			connectionFactory: this.createGitHubConnection.bind(this),
+			loginScopes: ["user:email"],
 		},
 		google: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
@@ -347,6 +347,7 @@ export class OauthService {
 			connectionFactory: () => {
 				throw new Error("Cannot create OAuth connection for timer service");
 			},
+			loginScopes: [],
 		},
 		linkedin: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
