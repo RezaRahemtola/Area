@@ -35,6 +35,17 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			/>
 		);
 	}
+	if (parameter.type === "boolean") {
+		return (
+			<input
+				type="checkbox"
+				name="workflow-running"
+				className="toggle toggle-success"
+				checked={parameter.value ?? false}
+				onChange={(e) => onValueChange(parameter.name, e.target.checked as never)}
+			/>
+		);
+	}
 	return <></>;
 };
 

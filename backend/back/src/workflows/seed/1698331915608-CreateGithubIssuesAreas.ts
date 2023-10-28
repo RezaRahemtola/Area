@@ -25,7 +25,6 @@ export class CreateGithubIssuesAreas1698331915608 implements MigrationInterface 
 	];
 
 	private readonly closeIssueParametersFormFlow: ParametersFormFlowFieldDto[] = [
-		...this.githubActionsParametersFormFlow,
 		...this.reopenIssueParametersFormFlow,
 		{
 			name: "completed",
@@ -39,8 +38,8 @@ export class CreateGithubIssuesAreas1698331915608 implements MigrationInterface 
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow")
             VALUES ('on-issue-close', 'github', true, 'Triggers when an issue is closed on a Github repository', $1),
                    ('on-issue-reopen', 'github', true, 'Triggers when an issue is reopened on a Github repository', $2),
-                   ('close-issue', 'github', true, 'Close an issue on a Github repository', $3),
-                   ('reopen-issue', 'github', true, 'Reopen an issue on a Github repository', $4)`,
+                   ('close-issue', 'github', false, 'Close an issue on a Github repository', $3),
+                   ('reopen-issue', 'github', false, 'Reopen an issue on a Github repository', $4)`,
 			[
 				JSON.stringify(this.githubActionsParametersFormFlow),
 				JSON.stringify(this.githubActionsParametersFormFlow),
