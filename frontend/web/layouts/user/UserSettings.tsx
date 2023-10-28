@@ -13,6 +13,7 @@ import {
 import services from "@/services";
 import { interfaceLanguageAtom, interfaceThemeAtom } from "@/stores/user";
 import i18n from "@/config/i18n";
+import { emitToastError, emitToastSuccess } from "@/utils/toast";
 
 type UserSettingsProps = {
 	user: User;
@@ -88,10 +89,14 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 						email: userSettings.email !== user.email ? userSettings.email : undefined,
 					};
 					const response = await services.user.updateProfile(settings);
-					if (response.error) return;
+					if (response.error) {
+						emitToastError(response.error);
+						return;
+					}
 					setInterfaceTheme(settings.theme!);
 					await i18n.changeLanguage(settings.language);
 					setInterfaceLanguage(settings.language!);
+					emitToastSuccess(t("user.settings.updateSuccessMessage"));
 				}}
 			>
 				{t("actions.save")}

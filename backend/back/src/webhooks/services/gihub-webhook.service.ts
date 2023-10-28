@@ -3,7 +3,7 @@ import { GrpcService } from "../../grpc/grpc.service";
 import { createHmac, timingSafeEqual } from "crypto";
 import { ConfigService } from "@nestjs/config";
 
-type GithubActions = "opened" | "reopened" | "closed";
+type GithubBodyActions = "opened" | "reopened" | "closed";
 type GithubBodyType = "issue" | "pull_request" | "commit";
 
 type GithubBaseBody = {
@@ -17,7 +17,7 @@ type GithubBaseBody = {
 
 type GithubIssueBody = GithubBaseBody & {
 	type: "issue";
-	action: GithubActions;
+	action: GithubBodyActions;
 	issue: {
 		html_url: string;
 		title: string;
@@ -28,7 +28,7 @@ type GithubIssueBody = GithubBaseBody & {
 
 type GithubPullRequestBody = GithubBaseBody & {
 	type: "pull_request";
-	action: GithubActions;
+	action: GithubBodyActions;
 	pull_request: {
 		html_url: string;
 		title: string;

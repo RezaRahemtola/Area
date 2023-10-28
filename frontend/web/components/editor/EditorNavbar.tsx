@@ -2,11 +2,11 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-
 import Navbar from "@/components/Navbar";
 import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import services from "@/services";
+import { emitToastError } from "@/utils/toast";
 
 type EditorNavbarProps = {
 	isAuthenticated: boolean;
@@ -27,6 +27,8 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 
 		if (!response.error) {
 			router.push("/dashboard");
+		} else {
+			emitToastError(response.error);
 		}
 	};
 

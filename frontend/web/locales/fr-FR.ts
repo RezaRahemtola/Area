@@ -33,7 +33,7 @@ const translations = {
 	editor: {
 		action: {
 			title: "Action",
-			description: "Un événements qui lance votre workflow",
+			description: "Un événement qui lance votre workflow",
 		},
 		reaction: {
 			title: "Réaction",
@@ -50,6 +50,7 @@ const translations = {
 			rename: {
 				title: "Renommer le workflow",
 				newName: "Nouveau nom",
+				successMessage: "Workflow renommé avec succès !",
 			},
 		},
 	},
@@ -59,11 +60,17 @@ const translations = {
 			email: "Email",
 			theme: "Thème",
 			language: "Langue",
+			updateSuccessMessage: "Paramètres mis à jour avec succès !",
 		},
 		menu: {
 			settings: "Paramètres",
 			logout: "Déconnexion",
 		},
+	},
+	services: {
+		actions: "Actions",
+		reactions: "Réactions",
+		noArea: "Ce service n'a pas d'action ou de réaction",
 	},
 	landing: {
 		actions: {

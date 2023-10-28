@@ -10,39 +10,38 @@ class ExploreHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Explore Services'),
-      ),
-      body: Container(
-        constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
-        color: const Color(0xFFC5C6C6),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FutureBuilder<ServiceReturn<List<Service>>>(
-            future: getAll(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error: ${snapshot.error.toString()}'),
-                );
-              } else {
-                final List<Service> services = [...?snapshot.data?.data];
-
-                return ListView.builder(
-                  itemCount: services.length,
-                  itemBuilder: (context, index) {
-                    final service = services[index];
-                    return ServiceCard(service: service);
-                  },
-                );
-              }
-            },
-          ),
+        appBar: AppBar(
+          title: const Text('Explore Services'),
         ),
-      ),
-    );
+        body: Container(
+          constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
+          color: const Color(0xFFC5C6C6),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FutureBuilder<ServiceReturn<List<Service>>>(
+              future: getAll(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error.toString()}'),
+                  );
+                } else {
+                  final List<Service> services = [...?snapshot.data?.data];
+
+                  return ListView.builder(
+                    itemCount: services.length,
+                    itemBuilder: (context, index) {
+                      final service = services[index];
+                      return ServiceCard(service: service);
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ));
   }
 }
 

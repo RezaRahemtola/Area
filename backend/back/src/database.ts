@@ -51,6 +51,7 @@ import { RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 } from
 import { CreateGoogleOnNewVideo1698251712512 } from "./workflows/seed/1698251712512-CreateGoogleOnNewVideo";
 import { CreateDiscordServiceWithScopes1698325062489 } from "./services/seed/1698325062489-CreateDiscordServiceWithScopes";
 import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698322805180-CreateLinearServiceWithScopes";
+import { CreateGitLabServiceWithScopes1698332919825 } from "./services/seed/1698332919825-CreateGitLabServiceWithScopes";
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353438280-CreateGithubCommitPRAreas";
 
@@ -108,6 +109,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleOnNewVideo1698251712512,
 		CreateDiscordServiceWithScopes1698325062489,
 		CreateLinearServiceWithScopes1698322805180,
+		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
 		CreateGithubCommitPRAreas1698353438280,
 	],

@@ -7,10 +7,6 @@ export const PARAMETERS_FORM_FLOW_FIELD_TYPES = [
 	"short-text",
 	"long-text",
 	"integer",
-	"float",
-	"date",
-	"datetime",
-	"time",
 	"text-array",
 	"boolean",
 ] as const;

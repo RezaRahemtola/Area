@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import Modal from "@/components/Modal";
 import { Workflow } from "@/types/workflows";
 import services from "@/services";
+import { emitToastError, emitToastSuccess } from "@/utils/toast";
 
 type RenameWorkflowModalProps = {
 	workflow: Workflow;
@@ -13,7 +14,12 @@ const RenameWorkflowModal = forwardRef<HTMLDialogElement, RenameWorkflowModalPro
 	const { t } = useTranslation();
 
 	const onSubmit = async () => {
-		await services.workflows.update({ id: workflow.id, name: newName });
+		const response = await services.workflows.rename(workflow.id, newName);
+		if (response.error) {
+			emitToastError(response.error);
+			return;
+		}
+		emitToastSuccess(t("library.actions.rename.successMessage"));
 		onSuccess();
 	};
 

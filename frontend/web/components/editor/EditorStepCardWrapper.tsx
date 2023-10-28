@@ -19,7 +19,7 @@ const EditorStepCardWrapper = ({ title, children, actions }: EditorStepCardWrapp
 					<p className="card-title justify-center text-2xl ml-2">
 						<FontAwesomeIcon icon="bolt" svgProps={{ className: "h-7 w-7" }} /> {title}
 					</p>
-					{actions.enabled ? (
+					{actions.enabled && (
 						<div className="dropdown">
 							<button tabIndex={0} className="btn btn-ghost btn-xs">
 								<FontAwesomeIcon icon="ellipsis" />
@@ -33,8 +33,6 @@ const EditorStepCardWrapper = ({ title, children, actions }: EditorStepCardWrapp
 								</li>
 							</ul>
 						</div>
-					) : (
-						<></>
 					)}
 				</div>
 				{children}

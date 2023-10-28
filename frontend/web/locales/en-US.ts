@@ -50,6 +50,7 @@ const translations = {
 			rename: {
 				title: "Rename workflow",
 				newName: "New name",
+				successMessage: "Workflow successfully renamed!",
 			},
 		},
 	},
@@ -59,11 +60,17 @@ const translations = {
 			email: "Email",
 			theme: "Theme",
 			language: "Language",
+			updateSuccessMessage: "Settings successfully updated!",
 		},
 		menu: {
 			settings: "Settings",
 			logout: "Logout",
 		},
+	},
+	services: {
+		actions: "Actions",
+		reactions: "Reactions",
+		noArea: "This service doesn't have any action or reaction",
 	},
 	landing: {
 		actions: {

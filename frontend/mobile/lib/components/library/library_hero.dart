@@ -1,3 +1,4 @@
+import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/services/services/workflows.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,21 @@ class LibraryHero extends StatelessWidget {
                 );
               } else {
                 final List<Workflow> workflows = [...?snapshot.data?.data];
-
+                //FIXME - juste add d'un workflow pour tester
+                workflows.add(Workflow(
+                    id: "1",
+                    name: "nom",
+                    active: true,
+                    action: const AreaInWorkflow(
+                        id: "id",
+                        areaId: "qsdfg",
+                        areaServiceId: "areaServiceId"),
+                    reactions: [
+                      const AreaInWorkflow(
+                          id: "id",
+                          areaId: "qsdfg",
+                          areaServiceId: "areaServiceId")
+                    ]));
                 return ListView.builder(
                   itemCount: workflows.length,
                   itemBuilder: (context, index) {
@@ -37,8 +52,26 @@ class LibraryHero extends StatelessWidget {
                       child: WorkflowTile(
                         workflowName: workflow.name,
                         onTap: () {
-                          // Open a modal or navigate to a detailed view
-                          // and pass the service ID
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Editor(
+                                        workflow: Workflow(
+                                            id: "",
+                                            name: "New Workflow",
+                                            active: true,
+                                            action: const AreaInWorkflow(
+                                                id: "id",
+                                                areaId: "areaId",
+                                                areaServiceId: "areaServiceId"),
+                                            reactions: [
+                                              const AreaInWorkflow(
+                                                  id: "id",
+                                                  areaId: "areaId",
+                                                  areaServiceId:
+                                                      "areaServiceId")
+                                            ]),
+                                      )));
                         },
                       ),
                     );
