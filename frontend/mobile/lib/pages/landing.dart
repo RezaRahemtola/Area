@@ -17,11 +17,32 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
+  String locale = "en";
 
   @override
   void initState() {
     super.initState();
     _checkAuth();
+    _checkLocale();
+  }
+
+  void _checkLocale() async {
+    final storageLocale = await storage.getLocale();
+    if (storageLocale == null) {
+      storage.setLocale(locale);
+    } else {
+      setState(() {
+        locale = storageLocale;
+      });
+    }
+  }
+
+  void _updateSettings(String newLocale) async {
+    // TODO: Add theme too
+    storage.setLocale(newLocale);
+    setState(() {
+      locale = newLocale;
+    });
   }
 
   void _checkAuth() async {
@@ -46,63 +67,72 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isLoggedIn) {
-      return LoginPage(onSuccess: _checkAuth);
-    }
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.workspaces_filled),
-            label: 'Library',
-            backgroundColor: Color(0xFF516079),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
-            backgroundColor: Color(0xFF516079),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: 'CREATE',
-            backgroundColor: Color(0xFF516079),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_activity),
-            label: 'Activity',
-            backgroundColor: Color(0xFF516079),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'User',
-            backgroundColor: Color(0xFF516079),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: <Widget>[
-          const Center(
-            child: LibraryHero(),
-          ),
-          const Center(
-            child: ExploreHero(),
-          ),
-          const Center(
-            child: CreateHero(),
-          ),
-          const Center(
-            child: ActivityHero(),
-          ),
-          Center(
-            child: UserHero(
-              onDisconnect: _onDisconnect,
+    return Localizations.override(
+      context: context,
+      locale: Locale(locale),
+      child: Builder(
+        builder: (context) {
+          if (!isLoggedIn) {
+            return LoginPage(onSuccess: _checkAuth);
+          }
+          return Scaffold(
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.workspaces_filled),
+                  label: 'Library',
+                  backgroundColor: Color(0xFF516079),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.explore),
+                  label: 'Explore',
+                  backgroundColor: Color(0xFF516079),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.create),
+                  label: 'CREATE',
+                  backgroundColor: Color(0xFF516079),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.local_activity),
+                  label: 'Activity',
+                  backgroundColor: Color(0xFF516079),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  label: 'User',
+                  backgroundColor: Color(0xFF516079),
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.amber[800],
+              onTap: _onItemTapped,
             ),
-          ),
-        ],
+            body: IndexedStack(
+              index: _selectedIndex,
+              children: <Widget>[
+                const Center(
+                  child: LibraryHero(),
+                ),
+                const Center(
+                  child: ExploreHero(),
+                ),
+                const Center(
+                  child: CreateHero(),
+                ),
+                const Center(
+                  child: ActivityHero(),
+                ),
+                Center(
+                  child: UserHero(
+                    onDisconnect: _onDisconnect,
+                    updateSettings: _updateSettings,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
