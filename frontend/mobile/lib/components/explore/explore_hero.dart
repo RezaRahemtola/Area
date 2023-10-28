@@ -156,6 +156,7 @@ class ActionOrReactionItem extends StatelessWidget {
         elevation: 8,
         child: ListTile(
           title: Text(item.id),
+          subtitle: Text(item.description),
           // Add more information if needed
         ));
   }
