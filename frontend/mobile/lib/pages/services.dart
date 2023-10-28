@@ -2,16 +2,17 @@ import 'package:area_mobile/services/services/areas.dart';
 import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ExploreHero extends StatelessWidget {
-  const ExploreHero({Key? key}) : super(key: key);
+class Services extends StatelessWidget {
+  const Services({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Explore Services'),
+          title: Text(AppLocalizations.of(context)!.servicesTitle),
         ),
         body: Container(
           constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
@@ -25,7 +26,8 @@ class ExploreHero extends StatelessWidget {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(
-                    child: Text('Error: ${snapshot.error.toString()}'),
+                    child: Text(AppLocalizations.of(context)!
+                        .error(snapshot.error.toString())),
                   );
                 } else {
                   final List<Service> services = [...?snapshot.data?.data];
@@ -117,10 +119,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SectionTitle(title: 'Actions:'),
+              SectionTitle(title: AppLocalizations.of(context)!.actions),
               for (var action in actions) ActionOrReactionItem(item: action),
               const SizedBox(height: 16),
-              const SectionTitle(title: 'Reactions:'),
+              SectionTitle(title: AppLocalizations.of(context)!.reactions),
               for (var reaction in reactions)
                 ActionOrReactionItem(item: reaction),
             ],

@@ -1,3 +1,11 @@
 {
-    "libraryTitle": "Librairie de workflows"
+    "email": "Email",
+    "password": "Mot de passe",
+    "logout": "Déconnexion",
+    "error": "Erreur : {error}",
+    "authErrorEmail": "Veuillez entrer votre email",
+    "actions": "Actions",
+    "reactions": "Réactions",
+    "libraryTitle": "Mes workflows",
+    "servicesTitle": "Services"
 }
