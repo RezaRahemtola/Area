@@ -3,10 +3,10 @@ import { GrpcService } from "../../grpc/grpc.service";
 import { createHmac, timingSafeEqual } from "crypto";
 import { ConfigService } from "@nestjs/config";
 
-type GithubActions = "opened" | "reopened" | "closed";
+type GithubBodyActions = "opened" | "reopened" | "closed";
 
 type GithubWebhookBody = {
-	action: GithubActions;
+	action: GithubBodyActions;
 	issue?: {
 		html_url: string;
 		title: string;
@@ -68,7 +68,6 @@ export class GithubWebhookService {
 				});
 			}
 		}
-		console.log(body);
 	}
 
 	async onGithubWebhook(signature: string, body: unknown) {
