@@ -1,4 +1,4 @@
-import { IsEmail, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class UniqueJobParams {
 	@IsUUID(4)
@@ -114,6 +114,23 @@ export class GithubCreateIssueParams extends UniqueJobParams {
 	@IsString({ each: true })
 	@IsOptional()
 	labels: string[];
+}
+
+export class GithubReopenIssueParams extends UniqueJobParams {
+	@IsString()
+	owner: string;
+
+	@IsString()
+	repo: string;
+
+	@IsNumber()
+	issueNumber: number;
+}
+
+export class GithubCloseIssueParams extends GithubReopenIssueParams {
+	@IsBoolean()
+	@IsOptional()
+	completed: boolean;
 }
 
 export class GithubRepositoryActionParams {

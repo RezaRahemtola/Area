@@ -3,10 +3,10 @@ import { GrpcService } from "../../grpc/grpc.service";
 import { createHmac, timingSafeEqual } from "crypto";
 import { ConfigService } from "@nestjs/config";
 
-type GithubActions = "opened";
+type GithubBodyActions = "opened" | "reopened" | "closed";
 
 type GithubWebhookBody = {
-	action: GithubActions;
+	action: GithubBodyActions;
 	issue?: {
 		html_url: string;
 		title: string;
@@ -16,6 +16,17 @@ type GithubWebhookBody = {
 	repository: {
 		full_name: string;
 	};
+	sender: {
+		login: string;
+	};
+};
+
+const GithubTriggers: Record<string, Record<string, string>> = {
+	issues: {
+		opened: "github-on-issue-create",
+		closed: "github-on-issue-close",
+		reopened: "github-on-issue-reopen",
+	},
 };
 
 @Injectable()
@@ -42,18 +53,19 @@ export class GithubWebhookService {
 
 	async parseBody(body: GithubWebhookBody) {
 		if (body.issue) {
-			switch (body.action) {
-				case "opened":
-					await this.grpcService.onAction({
-						name: "github-on-issue-create",
-						identifier: this.identifierFromRepo("github-on-issue-create", body.repository.full_name),
-						params: {
-							url: body.issue.html_url,
-							title: body.issue.title,
-							body: body.issue.body,
-							createdAt: body.issue.created_at,
-						},
-					});
+			const trigger = GithubTriggers.issues[body.action];
+			if (trigger) {
+				await this.grpcService.onAction({
+					name: trigger,
+					identifier: this.identifierFromRepo(trigger, body.repository.full_name),
+					params: {
+						url: body.issue.html_url,
+						title: body.issue.title,
+						body: body.issue.body,
+						createdAt: body.issue.created_at,
+						author: body.sender.login,
+					},
+				});
 			}
 		}
 	}

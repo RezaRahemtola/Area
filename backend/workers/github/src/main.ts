@@ -1,9 +1,13 @@
 import createIssue from "./issues/create.js";
 import setupWebhook from "./webhooks/setup";
+import closeIssue from "./issues/close";
+import reopenIssue from "./issues/reopen";
 
 const areas: Record<string, () => Promise<void>> = {
-    "setup-webhook": setupWebhook,
+    "close-issue": closeIssue,
     "create-issue": createIssue,
+    "reopen-issue": reopenIssue,
+    "setup-webhook": setupWebhook
 }
 async function main() {
     const job = process.argv[2];

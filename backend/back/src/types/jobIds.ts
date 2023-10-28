@@ -8,9 +8,17 @@ function uniqueJobId(jobId: string, workflowStepId: string) {
 	return `${jobId}-${workflowStepId}`;
 }
 
+function uniqueWebhookId(service: string, webhookId: string) {
+	return `${service}-${webhookId}`;
+}
+
 export const JobsIdentifiers: JobsIdentifiers = {
+	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
-	"github-on-issue-create": ({ owner, repo }) => `github-on-issue-create-${owner}/${repo}`,
+	"github-reopen-issue": ({ workflowStepId }) => uniqueJobId("github-reopen-issue", workflowStepId),
+	"github-on-issue-close": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
+	"github-on-issue-create": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
+	"github-on-issue-reopen": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
 	"google-change-gmail-interface-language": ({ workflowStepId }) =>
 		uniqueJobId("google-change-gmail-interface-language", workflowStepId),
 	"google-create-calendar": ({ workflowStepId }) => uniqueJobId("google-create-calendar", workflowStepId),
