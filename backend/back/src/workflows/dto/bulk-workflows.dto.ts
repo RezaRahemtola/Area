@@ -7,6 +7,12 @@ export default class BulkWorkflowsDto {
 	workflows!: string[];
 }
 
+export class ToggleWorkflowDto {
+	@ApiProperty()
+	@IsBoolean()
+	newState!: boolean;
+}
+
 export class BulkToggleWorkflowsDto extends BulkWorkflowsDto {
 	@ApiProperty()
 	@IsBoolean()
