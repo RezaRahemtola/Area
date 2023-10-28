@@ -5,7 +5,7 @@ export type Service = {
 	scopes: string[];
 };
 
-export type AreaParameterType = "email" | "short-text" | "long-text" | "integer" | "text-array";
+export type AreaParameterType = "email" | "short-text" | "long-text" | "integer" | "text-array" | "boolean";
 
 export type AreaParameter = {
 	name: string;
