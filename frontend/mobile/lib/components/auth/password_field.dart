@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class PasswordField extends StatelessWidget {
   final TextEditingController passwordController;
   final String label;
-  final String placeholder;
+  final String placeholder = "john.doe@example.com";
 
-  const PasswordField(
-      {super.key,
-      required this.passwordController,
-      required this.label,
-      this.placeholder = "john.doe@example.com"});
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {

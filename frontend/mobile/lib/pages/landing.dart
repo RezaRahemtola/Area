@@ -1,4 +1,4 @@
-import 'package:area_mobile/components/activity/activity_hero.dart';
+import 'package:area_mobile/pages/activity.dart';
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/pages/library.dart';
@@ -80,30 +80,30 @@ class _LandingPageState extends State<LandingPage> {
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
               items: <BottomNavigationBarItem>[
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.workspaces_filled),
-                  label: 'Library',
-                  backgroundColor: Color(0xFF516079),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.workspaces_filled),
+                  label: AppLocalizations.of(context)!.navbarLibrary,
+                  backgroundColor: const Color(0xFF516079),
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.explore),
                   label: AppLocalizations.of(context)!.servicesTitle,
                   backgroundColor: const Color(0xFF516079),
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.create),
-                  label: 'CREATE',
-                  backgroundColor: Color(0xFF516079),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.create),
+                  label: AppLocalizations.of(context)!.editorTitle,
+                  backgroundColor: const Color(0xFF516079),
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.local_activity),
-                  label: 'Activity',
-                  backgroundColor: Color(0xFF516079),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.local_activity),
+                  label: AppLocalizations.of(context)!.activityTitle,
+                  backgroundColor: const Color(0xFF516079),
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle),
-                  label: 'User',
-                  backgroundColor: Color(0xFF516079),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.account_circle),
+                  label: AppLocalizations.of(context)!.userTitle,
+                  backgroundColor: const Color(0xFF516079),
                 ),
               ],
               currentIndex: _selectedIndex,
@@ -137,7 +137,7 @@ class _LandingPageState extends State<LandingPage> {
                       ]),
                 )),
                 const Center(
-                  child: ActivityHero(),
+                  child: Activity(),
                 ),
                 Center(
                   child: User(

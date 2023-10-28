@@ -1,11 +1,22 @@
 {
+    "welcome": "Welcome to Area!",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm password",
+    "passwordsNotMatching": "Passwords don't match",
+    "invalidEmail": "Invalid email",
+    "pleaseFillForm": "Please fill the form",
     "logout": "Logout",
+    "register": "Register",
+    "login": "Login",
     "error": "Error: {error}",
     "authErrorEmail": "Please enter your email",
     "actions": "Actions",
     "reactions": "Reactions",
     "libraryTitle": "My workflows",
-    "servicesTitle": "Services"
+    "servicesTitle": "Services",
+    "editorTitle": "Editor",
+    "userTitle": "User",
+    "activityTitle": "Activity",
+    "navbarLibrary": "Library"
 }

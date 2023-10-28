@@ -1,11 +1,22 @@
 {
+    "welcome": "Velkomin á svæðið!",
     "email": "Tölvupóstur",
     "password": "Lykilorð",
+    "confirmPassword": "Staðfesta lykilorð",
+    "passwordsNotMatching": "Lykilorð eru ekki þau sömu",
+    "invalidEmail": "Ógilt netfang",
+    "pleaseFillForm": "Vinsamlegast fylltu út eyðublaðið",
     "logout": "Aftengdu",
+    "register": "Skráðu þig",
+    "login": "Skrá inn",
     "error": "villa: {error}",
     "authErrorEmail": "Vinsamlegast sláðu inn netfangið þitt",
     "actions": "Aðgerðir",
     "reactions": "Viðbrögð",
     "libraryTitle": "Verkflæði mín",
-    "servicesTitle": "Þjónusta"
+    "servicesTitle": "Þjónusta",
+    "editorTitle": "Ritstjóri",
+    "userTitle": "Notandi",
+    "activityTitle": "Virkni",
+    "navbarLibrary": "Bókasafn"
 }

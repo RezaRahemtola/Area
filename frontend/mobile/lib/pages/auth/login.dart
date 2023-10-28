@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Welcome to AREA!",
+                                  AppLocalizations.of(context)!.welcome,
                                   textAlign: TextAlign.center,
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
@@ -91,13 +91,13 @@ class LoginButtons extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => const RegisterPage()));
             },
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                 ),
-                Text("Register"),
+                Text(AppLocalizations.of(context)!.register),
               ],
             )),
         ElevatedButton(
@@ -117,7 +117,7 @@ class LoginButtons extends StatelessWidget {
                 }
               }
             },
-            child: const Text("Submit")),
+            child: Text(AppLocalizations.of(context)!.login)),
       ],
     );
   }

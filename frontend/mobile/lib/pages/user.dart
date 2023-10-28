@@ -32,7 +32,7 @@ class _UserHero extends State<User> {
             icon: const Icon(Icons.settings),
           ),
         ],
-        title: const Text('Compte Utilisateur'),
+        title: Text(AppLocalizations.of(context)!.userTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
