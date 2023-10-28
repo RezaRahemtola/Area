@@ -161,8 +161,7 @@ export class GithubWebhookService {
 				break;
 
 			case "commit":
-				if (!body.head_commit)
-					return;
+				if (!body.head_commit) return;
 				await this.grpcService.onAction({
 					name: "github-on-commit",
 					identifier: this.identifierFromRepo("github-on-commit", body.repository.full_name),
