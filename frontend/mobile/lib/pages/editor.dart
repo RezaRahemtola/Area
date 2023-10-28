@@ -1,5 +1,6 @@
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Editor extends StatefulWidget {
   final Workflow workflow;
@@ -31,7 +32,7 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.workflow.name)),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.editorTitle)),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Column(

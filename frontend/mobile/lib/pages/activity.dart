@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ActivityHero extends StatelessWidget {
-  const ActivityHero({Key? key}) : super(key: key);
+class Activity extends StatelessWidget {
+  const Activity({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Log'),
+        title: Text(AppLocalizations.of(context)!.activityTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

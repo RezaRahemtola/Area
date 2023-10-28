@@ -2,15 +2,16 @@ import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/services/services/workflows.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class LibraryHero extends StatelessWidget {
-  const LibraryHero({Key? key}) : super(key: key);
+class Library extends StatelessWidget {
+  const Library({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Workflows Library'),
+        title: Text(AppLocalizations.of(context)!.libraryTitle),
       ),
       body: Container(
         constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
@@ -24,7 +25,8 @@ class LibraryHero extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text('Error: ${snapshot.error.toString()}'),
+                  child: Text(AppLocalizations.of(context)!
+                      .error(snapshot.error.toString())),
                 );
               } else {
                 final List<Workflow> workflows = [...?snapshot.data?.data];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmailField extends StatelessWidget {
   const EmailField({
@@ -14,13 +15,13 @@ class EmailField extends StatelessWidget {
       padding: const EdgeInsets.all(25),
       child: TextFormField(
         controller: emailController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Email",
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: AppLocalizations.of(context)!.libraryTitle,
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your email.';
+            return AppLocalizations.of(context)!.authErrorEmail;
           }
           return null;
         },

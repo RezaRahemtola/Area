@@ -1,13 +1,22 @@
 import 'package:area_mobile/components/user/settings.dart';
-import 'package:area_mobile/services/user/me.dart'; // Assuming this file contains the getMe function
-import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/services/user/me.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/me.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class UserHero extends StatelessWidget {
-  const UserHero({Key? key}) : super(key: key);
+class User extends StatefulWidget {
+  final Function onDisconnect;
+  final Function(String newLocale) updateSettings;
 
+  const User(
+      {super.key, required this.onDisconnect, required this.updateSettings});
+
+  @override
+  State<User> createState() => _UserHero();
+}
+
+class _UserHero extends State<User> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +32,7 @@ class UserHero extends StatelessWidget {
             icon: const Icon(Icons.settings),
           ),
         ],
-        title: const Text('Compte Utilisateur'),
+        title: Text(AppLocalizations.of(context)!.userTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -38,12 +47,11 @@ class UserHero extends StatelessWidget {
               if (user == null) {
                 return Column(
                   children: [
-                    const Text("No data available"),
                     ElevatedButton(
                       onPressed: () {
-                        storage.removeAccessToken();
+                        widget.onDisconnect();
                       },
-                      child: const Text('Se Déconnecter'),
+                      child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ],
                 );
@@ -58,9 +66,27 @@ class UserHero extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      storage.removeAccessToken();
+                      widget.updateSettings("fr");
                     },
-                    child: const Text('Se Déconnecter'),
+                    child: const Text('Change locale to FR'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.updateSettings("en");
+                    },
+                    child: const Text('Change locale to EN'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.updateSettings("is");
+                    },
+                    child: const Text('Change locale to IS'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.onDisconnect();
+                    },
+                    child: Text(AppLocalizations.of(context)!.logout),
                   ),
                 ],
               );
@@ -89,15 +115,11 @@ class UserTile extends StatelessWidget {
     return Card(
       elevation: 8,
       child: Column(children: [
-        Image.asset('assets/user_profile.jpg'),
+        Image.asset('assets/default-profile-picture.webp'),
         ListTile(
           title: Text(userEmail),
           subtitle: Text(id),
         ),
-        isAdmin
-            ? Image.network(
-                'https://png.pngtree.com/png-vector/20220810/ourmid/pngtree-sheriff-star-badge-png-image_6105998.png')
-            : Container(),
       ]),
     );
   }

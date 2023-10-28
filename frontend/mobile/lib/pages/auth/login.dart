@@ -3,6 +3,7 @@ import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/pages/auth/register.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function() onSuccess;
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Welcome to AREA!",
+                                  AppLocalizations.of(context)!.welcome,
                                   textAlign: TextAlign.center,
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
@@ -48,7 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               EmailField(emailController: emailController),
                               PasswordField(
-                                  passwordController: passwordController),
+                                passwordController: passwordController,
+                                label: AppLocalizations.of(context)!.password,
+                              ),
                               LoginButtons(
                                 formKey: _formKey,
                                 emailController: emailController,
@@ -88,13 +91,13 @@ class LoginButtons extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => const RegisterPage()));
             },
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                 ),
-                Text("Register"),
+                Text(AppLocalizations.of(context)!.register),
               ],
             )),
         ElevatedButton(
@@ -114,7 +117,7 @@ class LoginButtons extends StatelessWidget {
                 }
               }
             },
-            child: const Text("Submit")),
+            child: Text(AppLocalizations.of(context)!.login)),
       ],
     );
   }

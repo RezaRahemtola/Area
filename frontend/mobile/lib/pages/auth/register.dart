@@ -3,6 +3,7 @@ import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/pages/landing.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -40,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Welcome to AREA!",
+                                  AppLocalizations.of(context)!.welcome,
                                   textAlign: TextAlign.center,
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
@@ -48,12 +49,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               EmailField(emailController: emailController),
                               PasswordField(
-                                  passwordController: passwordController),
+                                passwordController: passwordController,
+                                label: AppLocalizations.of(context)!.password,
+                              ),
                               PasswordField(
-                                  passwordController: passwordReController,
-                                  label: "Confirm password",
-                                  placeholder:
-                                      'Please re-enter your password.'),
+                                passwordController: passwordReController,
+                                label: AppLocalizations.of(context)!
+                                    .confirmPassword,
+                              ),
                               RegisterButton(
                                   formKey: _formKey,
                                   emailController: emailController,
@@ -90,13 +93,13 @@ class RegisterButton extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const LandingPage()));
             },
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                 ),
-                Text("Login"),
+                Text(AppLocalizations.of(context)!.login),
               ],
             )),
         ElevatedButton(
@@ -104,12 +107,15 @@ class RegisterButton extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 if (passwordController.text != passwordReController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Passwords don't match.")),
+                    SnackBar(
+                        content: Text(AppLocalizations.of(context)!
+                            .passwordsNotMatching)),
                   );
                 } else if (emailController.text.isEmpty) {
-                  // actually impossible, but will insert here the email validation condition
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Invalid email.")),
+                    SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.invalidEmail)),
                   );
                 } else {
                   final result = await services.auth
@@ -117,9 +123,6 @@ class RegisterButton extends StatelessWidget {
                   if (!context.mounted) return;
 
                   if (result.data != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Registered")),
-                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -133,12 +136,13 @@ class RegisterButton extends StatelessWidget {
                 }
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text("Please fill the register form.")),
+                  SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context)!.pleaseFillForm)),
                 );
               }
             },
-            child: const Text("Submit"))
+            child: Text(AppLocalizations.of(context)!.register))
       ],
     );
   }

@@ -1,0 +1,22 @@
+{
+    "welcome": "Bienvenue sur Area !",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmation du mot de passe",
+    "passwordsNotMatching": "Les mots de passe ne sont pas les mêmes",
+    "invalidEmail": "Email invalide",
+    "pleaseFillForm": "Veuillez remplir le formulaire",
+    "logout": "Déconnexion",
+    "register": "Inscription",
+    "login": "Connexion",
+    "error": "Erreur : {error}",
+    "authErrorEmail": "Veuillez entrer votre email",
+    "actions": "Actions",
+    "reactions": "Réactions",
+    "libraryTitle": "Mes workflows",
+    "servicesTitle": "Services",
+    "editorTitle": "Éditeur",
+    "userTitle": "Utilisateur",
+    "activityTitle": "Activité",
+    "navbarLibrary": "Librarie"
+}
