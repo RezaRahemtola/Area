@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsBoolean, IsEnum, IsString } from "class-validator";
 import { Type } from "class-transformer";
 
-export const PARAMETERS_FORM_FLOW_FIELD_TYPES = ["short-text", "long-text", "integer", "text-array"] as const;
+export const PARAMETERS_FORM_FLOW_FIELD_TYPES = ["email", "short-text", "long-text", "integer", "text-array"] as const;
 
 export class ParametersFormFlowFieldDto {
 	@ApiProperty({

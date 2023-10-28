@@ -16,7 +16,7 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			/>
 		);
 	}
-	if (["short-text", "long-text", "text-array"].includes(parameter.type)) {
+	if (["email", "short-text", "long-text", "text-array"].includes(parameter.type)) {
 		return (
 			<input
 				type="text"
