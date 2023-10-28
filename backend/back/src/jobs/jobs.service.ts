@@ -128,9 +128,26 @@ export class JobsService {
 		}
 	}
 
+	replaceParamsInJob(oldJob: unknown, params: unknown): unknown {
+		const blacklist = ["auth", "identifier", "workflowStepId"];
+		const oldJobKeys = Object.keys(oldJob);
+
+		for (const [key, value] of Object.entries(params)) {
+			if (typeof value === "string") {
+				for (const oldJobKey of oldJobKeys.filter((key) => !blacklist.includes(key))) {
+					params[key] = params[key].replaceAll(`$${oldJobKey}`, oldJob[oldJobKey]);
+				}
+			}
+		}
+		return params;
+	}
+
 	async launchNextJob(data: JobData): Promise<void> {
 		const jobs = await this.getReactionsForJob(data.identifier);
 		this.logger.log(`Launching next ${jobs} jobs for job ${data.identifier}`);
+		for (const job of jobs) {
+			job.params = this.replaceParamsInJob(data.params, job.params);
+		}
 		await this.launchJobs(jobs);
 	}
 

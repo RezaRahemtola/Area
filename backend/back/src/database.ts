@@ -54,6 +54,7 @@ import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698
 import { CreateGitLabServiceWithScopes1698332919825 } from "./services/seed/1698332919825-CreateGitLabServiceWithScopes";
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353438280-CreateGithubCommitPRAreas";
+import { WorkflowAreaReturnParams1698521602687 } from "./migrations/1698521602687-WorkflowAreaReturnParams";
 
 dotenv.config();
 
@@ -112,6 +113,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
 		CreateGithubCommitPRAreas1698353438280,
+		WorkflowAreaReturnParams1698521602687,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

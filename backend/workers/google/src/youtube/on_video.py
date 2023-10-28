@@ -20,7 +20,6 @@ PROPERTIES = {
     "{http://www.w3.org/2005/Atom}title": "title",
     "{http://search.yahoo.com/mrss/}description": "description",
     "{http://www.w3.org/2005/Atom}published": "createdAt",
-
 }
 FETCH_URL = "https://www.youtube.com/feeds/videos.xml?channel_id="
 WATCH_URL = "https://www.youtube.com/watch?v="
@@ -63,8 +62,6 @@ def on_video():
                 with grpc.insecure_channel(target) as channel:
                     params = Struct()
                     params.update({
-                        "channelId": last_video["channelId"],
-                        "videoId": last_video["videoId"],
                         "title": last_video["title"],
                         "description": last_video["description"],
                         "createdAt": last_video["createdAt"],
