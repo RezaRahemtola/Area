@@ -1,3 +1,43 @@
+<a name="v1.1.0"></a>
+# [v1.1.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.1.0) - 28 Oct 2023
+
+## Changes
+
+Services splitting, web UI improvements, 3 new services, mobile editor v1 and multiple other improvements and fixes
+
+## 🚀 Features
+
+- Web toasts, array editor param and services page refactored [@RezaRahemtola](https://github.com/RezaRahemtola) ([#146](https://github.com/RezaRahemtola/Area/issues/146))
+- Added service GItLab to the list of supported services [@Croos3r](https://github.com/Croos3r) ([#144](https://github.com/RezaRahemtola/Area/issues/144))
+- YouTube new video action [@EdenComp](https://github.com/EdenComp) ([#131](https://github.com/RezaRahemtola/Area/issues/131))
+- Added Discord to the list of supported services [@Croos3r](https://github.com/Croos3r) ([#142](https://github.com/RezaRahemtola/Area/issues/142))
+- Added Linear to the list of supported services [@Croos3r](https://github.com/Croos3r) ([#141](https://github.com/RezaRahemtola/Area/issues/141))
+- Subdiving microsoft service into outlook, onenote and graph subservices [@Croos3r](https://github.com/Croos3r) ([#137](https://github.com/RezaRahemtola/Area/issues/137))
+- Create Google shared drive & Update Gmail interface language reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#135](https://github.com/RezaRahemtola/Area/issues/135))
+- Web user settings [@RezaRahemtola](https://github.com/RezaRahemtola) ([#134](https://github.com/RezaRahemtola/Area/issues/134))
+- Migrations: Little typo fix and SVG image update for timer service [@Croos3r](https://github.com/Croos3r) ([#133](https://github.com/RezaRahemtola/Area/issues/133))
+- Flutter Editor V1 [@axel-denis](https://github.com/axel-denis) ([#128](https://github.com/RezaRahemtola/Area/issues/128))
+
+## 🐛 Bug Fixes
+
+- Subdiving microsoft service into outlook, onenote and graph subservices [@Croos3r](https://github.com/Croos3r) ([#137](https://github.com/RezaRahemtola/Area/issues/137))
+- Fixed bug when updating a workflow with the same name [@Croos3r](https://github.com/Croos3r) ([#138](https://github.com/RezaRahemtola/Area/issues/138))
+- Migrations: Little typo fix and SVG image update for timer service [@Croos3r](https://github.com/Croos3r) ([#133](https://github.com/RezaRahemtola/Area/issues/133))
+
+## 🧰 Maintenance
+
+- Migrations: Little typo fix and SVG image update for timer service [@Croos3r](https://github.com/Croos3r) ([#133](https://github.com/RezaRahemtola/Area/issues/133))
+
+## 📄 Documentation
+
+- Excluded webhook endpoints [@EdenComp](https://github.com/EdenComp) ([#136](https://github.com/RezaRahemtola/Area/issues/136))
+- Added documentation for the /about.json endpoint [@Croos3r](https://github.com/Croos3r) ([#139](https://github.com/RezaRahemtola/Area/issues/139))
+- Update changelog for "v1.0.0" [@github-actions](https://github.com/github-actions) ([#132](https://github.com/RezaRahemtola/Area/issues/132))
+
+
+[Changes][v1.1.0]
+
+
 <a name="v1.0.0"></a>
 # [v1.0.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.0.0) - 25 Oct 2023
 
@@ -435,6 +475,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.1.0]: https://github.com/RezaRahemtola/Area/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/RezaRahemtola/Area/compare/v0.11.0...v1.0.0
 [v0.11.0]: https://github.com/RezaRahemtola/Area/compare/v0.10.0...v0.11.0
 [v0.10.0]: https://github.com/RezaRahemtola/Area/compare/v0.9.0...v0.10.0

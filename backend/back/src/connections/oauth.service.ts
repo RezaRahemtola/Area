@@ -261,6 +261,28 @@ export class OauthService {
 		return this.connectionsService.createUserConnection(userId, "discord", scope.split(" "), connectionData);
 	}
 
+	async createGitlabConnection(userId: string, code: string) {
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://gitlab.com/oauth/token",
+			{
+				client_id: this.configService.getOrThrow<string>("GITLAB_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("GITLAB_CLIENT_SECRET"),
+				code,
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("gitlab"),
+				grant_type: "authorization_code",
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+			},
+		);
+		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split(" "), connectionData);
+	}
+
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
 		const { oauthUrl } = await this.servicesService.getService(serviceId);
 		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
@@ -367,6 +389,13 @@ export class OauthService {
 					"discord",
 				)}&state=${userId}&prompt=consent`,
 			connectionFactory: this.createDiscordConnection.bind(this),
+		},
+		gitlab: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow("GITLAB_CLIENT_ID")}&scope=${encodeURI(
+					scopes.join("+"),
+				)}&redirect_uri=${oauthCallbackUrlFactory("gitlab")}&state=${userId}`,
+			connectionFactory: this.createGitlabConnection.bind(this),
 		},
 	};
 }

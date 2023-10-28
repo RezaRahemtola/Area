@@ -19,6 +19,7 @@ export const SERVICE_NAMES = [
 	"microsoft-outlook",
 	"linear",
 	"discord",
+	"gitlab",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 

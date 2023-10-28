@@ -25,7 +25,11 @@ export const getEmptyEditorWorkflow = (): EditorWorkflow => {
 export const convertAreaParamsToWorkflowPayloadParams = (parameters: AreaParameterWithValue[]) =>
 	parameters.reduce((result: Record<string, never>, param) => {
 		let { value } = param;
-		if (param.type === "integer") value = parseInt(value as unknown as string, 10) as never;
+		if (param.type === "integer") {
+			value = parseInt(value as unknown as string, 10) as never;
+		} else if (param.type === "text-array") {
+			value = (value as unknown as string).split(",") as never;
+		}
 		// eslint-disable-next-line no-param-reassign
 		result[param.name] = value as never;
 		return result;

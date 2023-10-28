@@ -1,5 +1,6 @@
 class UserMe {
   final String id;
+
   final bool isAdmin;
   final String email;
   final String createdDate;
