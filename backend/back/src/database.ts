@@ -53,6 +53,7 @@ import { CreateDiscordServiceWithScopes1698325062489 } from "./services/seed/169
 import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698322805180-CreateLinearServiceWithScopes";
 import { CreateGitLabServiceWithScopes1698332919825 } from "./services/seed/1698332919825-CreateGitLabServiceWithScopes";
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
+import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353438280-CreateGithubCommitPRAreas";
 
 dotenv.config();
 
@@ -110,6 +111,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateLinearServiceWithScopes1698322805180,
 		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
+		CreateGithubCommitPRAreas1698353438280,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
