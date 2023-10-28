@@ -16,13 +16,16 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
 	"github-reopen-issue": ({ workflowStepId }) => uniqueJobId("github-reopen-issue", workflowStepId),
-	"github-on-commit": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-issue-close": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-issue-create": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-issue-reopen": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-pull-request-close": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-pull-request-create": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
-	"github-on-pull-request-merge": ({ owner, repo }) => uniqueWebhookId("github", `${owner}/${repo}`),
+	"github-on-commit": ({ owner, repo }) => uniqueWebhookId("github-on-commit", `${owner}/${repo}`),
+	"github-on-issue-close": ({ owner, repo }) => uniqueWebhookId("github-on-issue-close", `${owner}/${repo}`),
+	"github-on-issue-create": ({ owner, repo }) => uniqueWebhookId("github-on-issue-create", `${owner}/${repo}`),
+	"github-on-issue-reopen": ({ owner, repo }) => uniqueWebhookId("github-on-issue-reopen", `${owner}/${repo}`),
+	"github-on-pull-request-close": ({ owner, repo }) =>
+		uniqueWebhookId("github-on-pull-request-close", `${owner}/${repo}`),
+	"github-on-pull-request-create": ({ owner, repo }) =>
+		uniqueWebhookId("github-on-pull-request-create", `${owner}/${repo}`),
+	"github-on-pull-request-merge": ({ owner, repo }) =>
+		uniqueWebhookId("github-on-pull-request-merge", `${owner}/${repo}`),
 	"google-change-gmail-interface-language": ({ workflowStepId }) =>
 		uniqueJobId("google-change-gmail-interface-language", workflowStepId),
 	"google-create-calendar": ({ workflowStepId }) => uniqueJobId("google-create-calendar", workflowStepId),
