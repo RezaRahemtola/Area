@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 
 class UserHero extends StatefulWidget {
   final Function onDisconnect;
+  final Function(String newLocale) updateSettings;
 
-  const UserHero({
-    super.key,
-    required this.onDisconnect,
-  });
+  const UserHero(
+      {super.key, required this.onDisconnect, required this.updateSettings});
 
   @override
   State<UserHero> createState() => _UserHero();
@@ -64,6 +63,24 @@ class _UserHero extends State<UserHero> {
                     id: user.id,
                     userEmail: user.email,
                     isAdmin: user.isAdmin,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.updateSettings("fr");
+                    },
+                    child: const Text('Change locale to FR'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.updateSettings("en");
+                    },
+                    child: const Text('Change locale to EN'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.updateSettings("is");
+                    },
+                    child: const Text('Change locale to IS'),
                   ),
                   ElevatedButton(
                     onPressed: () {

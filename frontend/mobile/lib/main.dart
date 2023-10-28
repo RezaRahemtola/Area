@@ -1,7 +1,8 @@
+import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/pages/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:area_mobile/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {
   runApp(MyApp());
@@ -25,6 +26,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'AREA', theme: _theme, home: const LandingPage());
+    return MaterialApp(
+      title: 'AREA',
+      theme: _theme,
+      home: const LandingPage(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+    );
   }
 }
