@@ -26,7 +26,7 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 		}
 
 		if (!response.error) {
-			router.push("/dashboard");
+			router.push("/dashboard/library");
 		} else {
 			emitToastError(response.error);
 		}
