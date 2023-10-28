@@ -1,13 +1,22 @@
 import 'package:area_mobile/components/user/settings.dart';
 import 'package:area_mobile/services/user/me.dart'; // Assuming this file contains the getMe function
-import 'package:area_mobile/storage/index.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/me.dart';
 import 'package:flutter/material.dart';
 
-class UserHero extends StatelessWidget {
-  const UserHero({Key? key}) : super(key: key);
+class UserHero extends StatefulWidget {
+  final Function onDisconnect;
 
+  const UserHero({
+    super.key,
+    required this.onDisconnect,
+  });
+
+  @override
+  State<UserHero> createState() => _UserHero();
+}
+
+class _UserHero extends State<UserHero> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +50,7 @@ class UserHero extends StatelessWidget {
                     const Text("No data available"),
                     ElevatedButton(
                       onPressed: () {
-                        storage.removeAccessToken();
+                        widget.onDisconnect();
                       },
                       child: const Text('Se Déconnecter'),
                     ),
@@ -58,7 +67,7 @@ class UserHero extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      storage.removeAccessToken();
+                      widget.onDisconnect();
                     },
                     child: const Text('Se Déconnecter'),
                   ),

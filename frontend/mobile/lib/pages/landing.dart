@@ -1,9 +1,9 @@
-import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/components/activity/activity_hero.dart';
 import 'package:area_mobile/components/create/create_hero.dart';
 import 'package:area_mobile/components/explore/explore_hero.dart';
-import 'package:area_mobile/components/user/user_hero.dart';
 import 'package:area_mobile/components/library/library_hero.dart';
+import 'package:area_mobile/components/user/user_hero.dart';
+import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/storage/index.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +28,13 @@ class _LandingPageState extends State<LandingPage> {
     final token = await storage.getAccessToken();
     setState(() {
       isLoggedIn = token != null;
+    });
+  }
+
+  void _onDisconnect() {
+    storage.removeAccessToken();
+    setState(() {
+      isLoggedIn = false;
     });
   }
 
@@ -77,21 +84,23 @@ class _LandingPageState extends State<LandingPage> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: const <Widget>[
-          Center(
+        children: <Widget>[
+          const Center(
             child: LibraryHero(),
           ),
-          Center(
+          const Center(
             child: ExploreHero(),
           ),
-          Center(
+          const Center(
             child: CreateHero(),
           ),
-          Center(
+          const Center(
             child: ActivityHero(),
           ),
           Center(
-            child: UserHero(),
+            child: UserHero(
+              onDisconnect: _onDisconnect,
+            ),
           ),
         ],
       ),
