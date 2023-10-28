@@ -8,8 +8,8 @@ class PasswordField extends StatelessWidget {
   const PasswordField(
       {super.key,
       required this.passwordController,
-      this.label = "Password",
-      this.placeholder = "Please enter your password"});
+      required this.label,
+      this.placeholder = "john.doe@example.com"});
 
   @override
   Widget build(BuildContext context) {

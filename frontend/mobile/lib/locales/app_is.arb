@@ -1,3 +1,11 @@
 {
-    "libraryTitle": "Verkflæðissafn"
+    "email": "Tölvupóstur",
+    "password": "Lykilorð",
+    "logout": "Aftengdu",
+    "error": "villa: {error}",
+    "authErrorEmail": "Vinsamlegast sláðu inn netfangið þitt",
+    "actions": "Aðgerðir",
+    "reactions": "Viðbrögð",
+    "libraryTitle": "Verkflæði mín",
+    "servicesTitle": "Þjónusta"
 }

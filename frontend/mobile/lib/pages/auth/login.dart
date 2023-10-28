@@ -3,6 +3,7 @@ import 'package:area_mobile/components/auth/password_field.dart';
 import 'package:area_mobile/pages/auth/register.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function() onSuccess;
@@ -48,7 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               EmailField(emailController: emailController),
                               PasswordField(
-                                  passwordController: passwordController),
+                                passwordController: passwordController,
+                                label: AppLocalizations.of(context)!.password,
+                              ),
                               LoginButtons(
                                 formKey: _formKey,
                                 emailController: emailController,

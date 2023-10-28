@@ -1,11 +1,13 @@
 import 'package:area_mobile/components/activity/activity_hero.dart';
-import 'package:area_mobile/components/create/create_hero.dart';
-import 'package:area_mobile/components/explore/explore_hero.dart';
-import 'package:area_mobile/components/library/library_hero.dart';
-import 'package:area_mobile/components/user/user_hero.dart';
 import 'package:area_mobile/pages/auth/login.dart';
+import 'package:area_mobile/pages/editor.dart';
+import 'package:area_mobile/pages/library.dart';
+import 'package:area_mobile/pages/services.dart';
+import 'package:area_mobile/pages/user.dart';
 import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -77,29 +79,29 @@ class _LandingPageState extends State<LandingPage> {
           }
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.workspaces_filled),
                   label: 'Library',
                   backgroundColor: Color(0xFF516079),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.explore),
-                  label: 'Explore',
-                  backgroundColor: Color(0xFF516079),
+                  icon: const Icon(Icons.explore),
+                  label: AppLocalizations.of(context)!.servicesTitle,
+                  backgroundColor: const Color(0xFF516079),
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.create),
                   label: 'CREATE',
                   backgroundColor: Color(0xFF516079),
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.local_activity),
                   label: 'Activity',
                   backgroundColor: Color(0xFF516079),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle),
                   label: 'User',
                   backgroundColor: Color(0xFF516079),
                 ),
@@ -112,19 +114,33 @@ class _LandingPageState extends State<LandingPage> {
               index: _selectedIndex,
               children: <Widget>[
                 const Center(
-                  child: LibraryHero(),
+                  child: Library(),
                 ),
                 const Center(
-                  child: ExploreHero(),
+                  child: Services(),
                 ),
-                const Center(
-                  child: CreateHero(),
-                ),
+                Center(
+                    child: Editor(
+                  workflow: Workflow(
+                      id: "",
+                      name: "New Workflow",
+                      active: true,
+                      action: const AreaInWorkflow(
+                          id: "id",
+                          areaId: "areaId",
+                          areaServiceId: "areaServiceId"),
+                      reactions: [
+                        const AreaInWorkflow(
+                            id: "id",
+                            areaId: "areaId",
+                            areaServiceId: "areaServiceId")
+                      ]),
+                )),
                 const Center(
                   child: ActivityHero(),
                 ),
                 Center(
-                  child: UserHero(
+                  child: User(
                     onDisconnect: _onDisconnect,
                     updateSettings: _updateSettings,
                   ),
