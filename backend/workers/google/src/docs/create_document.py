@@ -36,7 +36,6 @@ def create_document():
             params = Struct()
             params.update({
                 "workflowStepId": args["workflowStepId"],
-                "docTitle": document.get('title')
             })
             AreaBackServiceStub(channel).OnReaction(
                 JobData(name="google-create-document-docs", identifier=args["identifier"], params=params))

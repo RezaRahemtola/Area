@@ -29,6 +29,10 @@ export default class Area {
 	parametersFormFlow!: ParametersFormFlowFieldDto[];
 
 	@ApiProperty()
+	@Column({ array: true, type: "text", default: [] })
+	parametersReturnFlow!: string[];
+
+	@ApiProperty()
 	@Column({ default: "An area description" })
 	description!: string;
 }
