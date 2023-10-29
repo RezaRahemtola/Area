@@ -55,6 +55,7 @@ import { CreateGitLabServiceWithScopes1698332919825 } from "./services/seed/1698
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353438280-CreateGithubCommitPRAreas";
 import { UpdateTimerServiceImage1698259539325 } from "./services/seed/1698259539325-UpdateTimerServiceImage";
+import { UpdateMiroServiceImageForMobile1698590831862 } from "./services/seed/1698590831862-UpdateMiroServiceImageForMobile";
 
 dotenv.config();
 
@@ -114,6 +115,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
 		CreateGithubCommitPRAreas1698353438280,
+		UpdateMiroServiceImageForMobile1698590831862,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
