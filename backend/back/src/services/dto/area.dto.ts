@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsBoolean, IsEnum, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
 
 export const PARAMETERS_FORM_FLOW_FIELD_TYPES = [
@@ -9,6 +9,7 @@ export const PARAMETERS_FORM_FLOW_FIELD_TYPES = [
 	"integer",
 	"text-array",
 	"boolean",
+	"select",
 ] as const;
 
 export class ParametersFormFlowFieldDto {
@@ -30,6 +31,15 @@ export class ParametersFormFlowFieldDto {
 	})
 	@IsBoolean()
 	required!: boolean;
+
+	@ApiProperty({
+		description: "Possible values for the parameter (used for select)",
+	})
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	@Type(() => String)
+	values?: string[];
 }
 
 export class AreaDto {
