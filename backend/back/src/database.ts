@@ -54,6 +54,7 @@ import { CreateLinearServiceWithScopes1698322805180 } from "./services/seed/1698
 import { CreateGitLabServiceWithScopes1698332919825 } from "./services/seed/1698332919825-CreateGitLabServiceWithScopes";
 import { CreateGithubIssuesAreas1698331915608 } from "./workflows/seed/1698331915608-CreateGithubIssuesAreas";
 import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353438280-CreateGithubCommitPRAreas";
+import { UpdateTimerServiceImage1698259539325 } from "./services/seed/1698259539325-UpdateTimerServiceImage";
 
 dotenv.config();
 
@@ -103,6 +104,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleSlideInPresentationArea1698150990404,
 		UpdateServiceImagesToBrandFetchSVGs1698161840408,
 		CreateGithubOnIssueCreationArea1698179108023,
+		UpdateTimerServiceImage1698259539325,
 		RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158,
 		CreateGoogleSharedDriveArea1698266623053,
 		CreateGoogleChangeGmailInterfaceLanguageArea1698268856232,
