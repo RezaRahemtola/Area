@@ -1,22 +1,3 @@
-// export type WorkflowAction = {
-// 	id: string;
-// 	parameters: Record<string, never>;
-// 	areaId: string;
-// 	areaServiceId: string;
-// };
-
-// export type WorkflowReaction = WorkflowAction & {
-// 	previousAreaId: string;
-// };
-
-// export type Workflow = {
-// 	id: string;
-// 	name: string;
-// 	action: WorkflowAction;
-// 	reactions: WorkflowReaction[];
-// 	active: boolean;
-// };
-
 class WorkflowAction {
   final String id;
   final String areaId;

@@ -37,7 +37,7 @@ class _UserHero extends State<User> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<ServiceReturn<UserMe>>(
-          future: services.usersService.getMe(),
+          future: services.user.getMe(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();

@@ -1,4 +1,4 @@
-import 'package:area_mobile/pages/editor.dart';
+import 'package:area_mobile/components/library/workflow_tile.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
@@ -20,7 +20,7 @@ class Library extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: FutureBuilder<ServiceReturn<List<Workflow>>>(
-            future: services.workflowsService.getAll(),
+            future: services.workflows.getAll(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -30,23 +30,12 @@ class Library extends StatelessWidget {
                       .error(snapshot.error.toString())),
                 );
               } else {
-                final List<Workflow> workflows = [...?snapshot.data?.data];
+                final List<Workflow> workflows = snapshot.data!.data!;
                 return ListView.builder(
                   itemCount: workflows.length,
                   itemBuilder: (context, index) {
-                    final workflow = workflows[index];
-                    return Card(
-                      elevation: 8,
-                      child: WorkflowTile(
-                        workflowName: workflow.name,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Editor(workflow: workflow)));
-                        },
-                      ),
+                    return WorkflowTile(
+                      workflow: workflows[index],
                     );
                   },
                 );
@@ -54,28 +43,6 @@ class Library extends StatelessWidget {
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class WorkflowTile extends StatelessWidget {
-  final String workflowName;
-  final VoidCallback? onTap;
-
-  const WorkflowTile({
-    required this.workflowName,
-    this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      child: ListTile(
-        title: Text(workflowName),
-        onTap: onTap,
       ),
     );
   }
