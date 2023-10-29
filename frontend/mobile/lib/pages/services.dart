@@ -1,5 +1,5 @@
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/services/services/areas.dart';
-import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -20,7 +20,7 @@ class Services extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: FutureBuilder<ServiceReturn<List<Service>>>(
-              future: getAll(),
+              future: services.services.getAll(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

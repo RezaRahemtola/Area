@@ -5,11 +5,9 @@ import 'package:area_mobile/types/workflows/workflows.dart';
 Future<ServiceReturn<List<Workflow>>> getAll() async {
   try {
     final response = await dio.get<List<dynamic>>('/workflows');
-    print(response.data);
     return ServiceReturn(
         data: response.data!.map((e) => Workflow.fromJson(e)).toList());
   } catch (e) {
-    print(e.toString());
     return ServiceReturn(error: e.toString());
   }
 }

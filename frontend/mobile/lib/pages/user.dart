@@ -1,5 +1,5 @@
 import 'package:area_mobile/components/user/settings.dart';
-import 'package:area_mobile/services/user/me.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/me.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _UserHero extends State<User> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<ServiceReturn<UserMe>>(
-          future: getMe(),
+          future: services.usersService.getMe(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
