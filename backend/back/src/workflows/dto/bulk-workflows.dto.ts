@@ -1,5 +1,5 @@
 import { IsBoolean, IsUUID } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, IntersectionType } from "@nestjs/swagger";
 
 export default class BulkWorkflowsDto {
 	@ApiProperty()
@@ -7,8 +7,10 @@ export default class BulkWorkflowsDto {
 	workflows!: string[];
 }
 
-export class BulkToggleWorkflowsDto extends BulkWorkflowsDto {
+export class ToggleWorkflowDto {
 	@ApiProperty()
 	@IsBoolean()
 	newState!: boolean;
 }
+
+export class BulkToggleWorkflowsDto extends IntersectionType(BulkWorkflowsDto, ToggleWorkflowDto) {}

@@ -16,13 +16,33 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			/>
 		);
 	}
-	if (["email", "short-text", "long-text", "text-array"].includes(parameter.type)) {
+	if (["email", "short-text", "text-array"].includes(parameter.type)) {
 		return (
 			<input
 				type="text"
 				className="input bg-neutral input-accent"
 				value={parameter.value ?? ""}
 				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
+			/>
+		);
+	}
+	if (parameter.type === "long-text") {
+		return (
+			<textarea
+				className="textarea bg-neutral textarea-accent"
+				value={parameter.value ?? ""}
+				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
+			/>
+		);
+	}
+	if (parameter.type === "boolean") {
+		return (
+			<input
+				type="checkbox"
+				name="workflow-running"
+				className="toggle toggle-success"
+				checked={parameter.value ?? false}
+				onChange={(e) => onValueChange(parameter.name, e.target.checked as never)}
 			/>
 		);
 	}

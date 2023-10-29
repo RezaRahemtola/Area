@@ -16,7 +16,7 @@ import { WorkflowsService } from "./workflows.service";
 import CreateWorkflowDto from "./dto/create-workflow.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { APIRequest } from "../types/request";
-import BulkWorkflowsDto, { BulkToggleWorkflowsDto } from "./dto/bulk-workflows.dto";
+import BulkWorkflowsDto, { BulkToggleWorkflowsDto, ToggleWorkflowDto } from "./dto/bulk-workflows.dto";
 import { Response } from "express";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
 import { UuidParamDto } from "../param-validators.dto";
@@ -165,8 +165,12 @@ export class WorkflowsController {
 		name: "uuid",
 	})
 	@Patch("/toggle/:uuid")
-	async toggleWorkflow(@Param() { uuid: workflowId }: UuidParamDto, @Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.toggleWorkflow(workflowId, ownerId);
+	async toggleWorkflow(
+		@Param() { uuid: workflowId }: UuidParamDto,
+		@Body() { newState }: ToggleWorkflowDto,
+		@Req() { user: { id: ownerId } }: APIRequest,
+	) {
+		return await this.workspacesService.toggleWorkflow(workflowId, newState, ownerId);
 	}
 
 	@ApiOkResponse({

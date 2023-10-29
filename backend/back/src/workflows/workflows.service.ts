@@ -250,6 +250,7 @@ export class WorkflowsService {
 					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
 			}
 			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
+			await queryRunner.commitTransaction();
 			return result;
 		} catch (exception) {
 			this.logger.error(`Failed to update workflow ${workflowId}: ${exception.message}, rolling back...`);
@@ -280,21 +281,20 @@ export class WorkflowsService {
 		return affected > 0;
 	}
 
-	async toggleWorkflow(workflowId: string, ownerId: string) {
+	async toggleWorkflow(workflowId: string, newState: boolean, ownerId: string) {
 		this.logger.log(`Toggling workflow ${workflowId}...`);
 		const workflow = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
-		const { active } = workflow;
-		await this.workflowRepository.update(workflowId, { active: !active });
-		if (active) {
+		await this.workflowRepository.update(workflowId, { active: newState });
+		if (!newState) {
 			this.logger.log(`Stopping workflow ${workflowId}...`);
 			await this.jobsService.stopWorkflowActionIfNecessary(workflowId);
 		} else {
 			this.logger.log(`Launching workflow ${workflowId}...`);
 			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
 		}
-		this.logger.log(`Toggled workflow ${workflowId} to ${!active}`);
-		return { newState: !active };
+		this.logger.log(`Toggled workflow ${workflowId} to ${newState}`);
+		return { newState };
 	}
 
 	async deleteWorkflows(workflows: string[], ownerId: string) {

@@ -14,6 +14,7 @@ import { editorWorkflowAtom } from "@/stores/editor";
 import { getEmptyEditorWorkflow } from "@/utils/workflows";
 
 import "@/styles/customCheckbox.css";
+import LibrarySearchBar from "@/layouts/library/LibrarySearchBar";
 
 const LibraryWorkflowTable = () => {
 	const [workflows, setWorkflows] = useAtom(workflowsAtom);
@@ -21,6 +22,7 @@ const LibraryWorkflowTable = () => {
 	const [globalSelect, setGlobalSelect] = useState(false);
 	const { t } = useTranslation();
 	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		(async () => {
@@ -105,51 +107,56 @@ const LibraryWorkflowTable = () => {
 					</Link>
 				</div>
 			) : (
-				<table className="table">
-					<thead className="text-neutral-content">
-						<tr>
-							<th className="table-cell " colSpan={2}>
-								<div className="flex">
-									<label className="custom-checkbox">
-										<input
-											type="checkbox"
-											className="global-workflow-selector"
-											checked={globalSelect}
-											onChange={onGlobalSelect}
-										/>
-										{selectedWorkflows.length === 0 ? (
-											<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
-										) : (
-											<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
+				<>
+					<LibrarySearchBar onSearch={(newSearch) => setSearch(newSearch)} />
+					<table className="table">
+						<thead className="text-neutral-content">
+							<tr>
+								<th className="table-cell " colSpan={2}>
+									<div className="flex">
+										<label className="custom-checkbox">
+											<input
+												type="checkbox"
+												className="global-workflow-selector"
+												checked={globalSelect}
+												onChange={onGlobalSelect}
+											/>
+											{selectedWorkflows.length === 0 ? (
+												<FontAwesomeIcon icon="square" svgProps={{ className: "unchecked h-7 w-7" }} />
+											) : (
+												<FontAwesomeIcon icon="square-minus" svgProps={{ className: "unchecked h-7 w-7" }} />
+											)}
+											<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
+										</label>
+										{selectedWorkflows.length !== 0 && (
+											<LibraryGlobalActions
+												onToggleOn={() => onToggleAll(true)}
+												onToggleOff={() => onToggleAll(false)}
+												onDelete={onDeleteAll}
+											/>
 										)}
-										<FontAwesomeIcon icon="square-check" svgProps={{ className: "checked h-7 w-7" }} />
-									</label>
-									{selectedWorkflows.length !== 0 && (
-										<LibraryGlobalActions
-											onToggleOn={() => onToggleAll(true)}
-											onToggleOff={() => onToggleAll(false)}
-											onDelete={onDeleteAll}
-										/>
-									)}
-								</div>
-							</th>
-							<th>Name</th>
-							<th>Running</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						{workflows.map((workflow) => (
-							<LibraryWorkflowLine
-								workflow={workflow}
-								key={workflow.id}
-								selected={selectedWorkflows.includes(workflow.id)}
-								onSelect={onSelectLine}
-								onWorkflowChange={onWorkflowChange}
-							/>
-						))}
-					</tbody>
-				</table>
+									</div>
+								</th>
+								<th>Name</th>
+								<th>Running</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{workflows
+								.filter((workflow) => search === "" || workflow.name.toLowerCase().includes(search.toLowerCase()))
+								.map((workflow) => (
+									<LibraryWorkflowLine
+										workflow={workflow}
+										key={workflow.id}
+										selected={selectedWorkflows.includes(workflow.id)}
+										onSelect={onSelectLine}
+										onWorkflowChange={onWorkflowChange}
+									/>
+								))}
+						</tbody>
+					</table>
+				</>
 			)}
 		</>
 	);

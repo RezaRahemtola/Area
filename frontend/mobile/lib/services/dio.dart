@@ -1,6 +1,7 @@
 import 'package:area_mobile/services/auth/index.dart';
 import 'package:area_mobile/services/services/index.dart';
 import 'package:area_mobile/services/user/index.dart';
+import 'package:area_mobile/services/workflows/index.dart';
 import 'package:area_mobile/storage/index.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,11 +21,18 @@ final dio = Dio(
 class DioServices {
   final AuthService auth;
   final ServicesService services;
-  final UserService usersService;
+  final UserService user;
+  final WorkflowsService workflows;
 
   const DioServices(
-      {required this.auth, required this.services, required this.usersService});
+      {required this.auth,
+      required this.services,
+      required this.user,
+      required this.workflows});
 }
 
 const services = DioServices(
-    auth: authService, services: servicesService, usersService: userServices);
+    auth: authService,
+    services: servicesService,
+    user: userServices,
+    workflows: workflowsService);

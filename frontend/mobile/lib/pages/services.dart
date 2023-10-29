@@ -1,5 +1,5 @@
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/services/services/areas.dart';
-import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,15 +12,15 @@ class Services extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.servicesTitle),
-        ),
+            title: Text(AppLocalizations.of(context)!.servicesTitle),
+            automaticallyImplyLeading: false),
         body: Container(
           constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
           color: const Color(0xFFC5C6C6),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: FutureBuilder<ServiceReturn<List<Service>>>(
-              future: getAll(),
+              future: services.services.getAll(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -112,8 +112,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.service.id),
-      ),
+          title: Text(widget.service.id), automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

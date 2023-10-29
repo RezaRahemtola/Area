@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, MouseEvent, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import AuthEmailField from "@/components/auth/fields/AuthEmailField";
@@ -17,7 +17,8 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 	const [errorMessage, setErrorMessage] = useState("");
 	const { t } = useTranslation();
 
-	const onLogin = async () => {
+	const onLogin = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
 		const { data: accessToken, error } = await services.auth.login({ email, password });
 		if (accessToken !== null) {
 			onAuthSuccess(accessToken);
@@ -44,7 +45,7 @@ const LoginModal = forwardRef<HTMLDialogElement, LoginModalProps>(({ onAuthTypeC
 						data-cy="login-password-input"
 					/>
 					<div>
-						<button className="btn btn-block btn-accent" onClick={onLogin} data-cy="login-action-btn">
+						<button type="submit" className="btn btn-block btn-accent" onClick={onLogin} data-cy="login-action-btn">
 							{t("auth.login.action")}
 						</button>
 					</div>

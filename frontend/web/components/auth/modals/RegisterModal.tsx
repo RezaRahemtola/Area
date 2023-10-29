@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, MouseEvent, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import AuthPasswordField from "@/components/auth/fields/AuthPasswordField";
@@ -18,7 +18,8 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 	const [errorMessage, setErrorMessage] = useState("");
 	const { t } = useTranslation();
 
-	const onRegister = async () => {
+	const onRegister = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
 		if (password !== passwordConfirmation) {
 			setErrorMessage(t("auth.register.errors.passwordsNotMatching"));
 			return;
@@ -56,7 +57,12 @@ const RegisterModal = forwardRef<HTMLDialogElement, RegisterModalProps>(({ onAut
 						data-cy="register-confirm-password-input"
 					/>
 					<div>
-						<button className="btn btn-block btn-accent " onClick={onRegister} data-cy="register-action-btn">
+						<button
+							type="submit"
+							className="btn btn-block btn-accent "
+							onClick={onRegister}
+							data-cy="register-action-btn"
+						>
 							{t("auth.register.action")}
 						</button>
 					</div>
