@@ -293,7 +293,7 @@ export class WorkflowsService {
 			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
 		}
 		this.logger.log(`Toggled workflow ${workflowId} to ${newState}`);
-		return { newState: newState };
+		return { newState };
 	}
 
 	async deleteWorkflows(workflows: string[], ownerId: string) {
