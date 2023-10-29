@@ -30,7 +30,7 @@ const AuthModal = forwardRef<HTMLDialogElement, AuthModalProps>(
 								<span>{errorMessage}</span>
 							</div>
 						)}
-						<div className="space-y-4">{formChildren}</div>
+						<form className="space-y-4">{formChildren}</form>
 						<div className="divider" />
 						<p className="text-center">
 							{switchMethodCtaText}
