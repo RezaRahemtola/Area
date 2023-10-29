@@ -21,18 +21,18 @@ final dio = Dio(
 class DioServices {
   final AuthService auth;
   final ServicesService services;
-  final UserService usersService;
-  final WorkflowsService workflowsService;
+  final UserService user;
+  final WorkflowsService workflows;
 
   const DioServices(
       {required this.auth,
       required this.services,
-      required this.usersService,
-      required this.workflowsService});
+      required this.user,
+      required this.workflows});
 }
 
 const services = DioServices(
     auth: authService,
     services: servicesService,
-    usersService: userServices,
-    workflowsService: workflowsService);
+    user: userServices,
+    workflows: workflowsService);
