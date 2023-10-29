@@ -49,7 +49,7 @@ type GithubPullRequestBody = GithubBaseBody & {
 type GithubCommitBody = GithubBaseBody & {
 	type: "commit";
 	ref: string;
-	head_commit: {
+	head_commit?: {
 		id: string;
 		url: string;
 		message: string;
@@ -161,6 +161,7 @@ export class GithubWebhookService {
 				break;
 
 			case "commit":
+				if (!body.head_commit) return;
 				await this.grpcService.onAction({
 					name: "github-on-commit",
 					identifier: this.identifierFromRepo("github-on-commit", body.repository.full_name),
