@@ -1,5 +1,5 @@
 import 'package:area_mobile/pages/editor.dart';
-import 'package:area_mobile/services/workflows/get.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class Library extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: FutureBuilder<ServiceReturn<List<Workflow>>>(
-            future: getAll(),
+            future: services.workflowsService.getAll(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
