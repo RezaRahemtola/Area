@@ -70,8 +70,8 @@ export class CreateLinearCreateIssueAreas1698614949784 implements MigrationInter
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`DELETE FROM "area" 
-                    WHERE service_id = 'github'
-                    AND id IN ('on-issue-close', 'on-issue-reopen', 'close-issue', 'reopen-issue')`,
+                    WHERE service_id = 'linear'
+                    AND id IN ('on-issue-create', 'create-issue')`,
 		);
 	}
 }
