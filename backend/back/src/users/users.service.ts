@@ -37,10 +37,10 @@ export class UsersService {
 		return user;
 	}
 
-	async updateUser(options: UserIdentification, { theme, language, ...update }: AdminUpdateUserDto): Promise<boolean> {
+	async updateUser(options: UserIdentification, updateUserDto: AdminUpdateUserDto): Promise<boolean> {
 		const user = await this.userRepository.findOne({ where: options });
 		if (!user) throw new NotFoundException(`User ${"id" in options ? options.id : options.email} not found.`);
-		if (Object.keys(update).length == 0 && !theme && !language) {
+		if (Object.keys(updateUserDto).length == 0) {
 			this.logger.log(`No changes to user ${user.id} requested.`);
 			return false;
 		}
@@ -49,10 +49,15 @@ export class UsersService {
 
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
-		this.logger.log(`Updating user ${user.id} with ${JSON.stringify(update)}...`);
+		this.logger.log(`Updating user ${user.id} with ${JSON.stringify(updateUserDto)}...`);
 
+		const { theme, language, ...update } = updateUserDto;
 		try {
-			if (update.email && (await queryRunner.manager.exists(User, { where: { email: update.email } }))) {
+			if (
+				update.email &&
+				update.email !== user.email &&
+				(await queryRunner.manager.exists(User, { where: { email: update.email } }))
+			) {
 				// noinspection ExceptionCaughtLocallyJS
 				throw new ConflictException(`User ${update.email} already exists.`);
 			}
@@ -76,6 +81,7 @@ export class UsersService {
 					).affected > 0;
 			}
 
+			await queryRunner.commitTransaction();
 			return result;
 		} catch (exception) {
 			this.logger.error(`Failed to update user ${user.id}: ${exception.message}, rolling back...`);
