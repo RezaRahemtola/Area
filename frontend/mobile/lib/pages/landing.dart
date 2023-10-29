@@ -5,7 +5,7 @@ import 'package:area_mobile/pages/library.dart';
 import 'package:area_mobile/pages/services.dart';
 import 'package:area_mobile/pages/user.dart';
 import 'package:area_mobile/storage/index.dart';
-import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -125,15 +125,18 @@ class _LandingPageState extends State<LandingPage> {
                       id: "",
                       name: "New Workflow",
                       active: true,
-                      action: const AreaInWorkflow(
+                      action: const WorkflowAction(
                           id: "id",
                           areaId: "areaId",
-                          areaServiceId: "areaServiceId"),
+                          areaServiceId: "areaServiceId",
+                          parameters: {}),
                       reactions: [
-                        const AreaInWorkflow(
+                        const WorkflowReaction(
                             id: "id",
                             areaId: "areaId",
-                            areaServiceId: "areaServiceId")
+                            areaServiceId: "areaServiceId",
+                            parameters: {},
+                            previousAreaId: "")
                       ]),
                 )),
                 const Center(
