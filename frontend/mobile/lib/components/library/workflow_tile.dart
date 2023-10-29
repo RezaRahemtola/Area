@@ -62,6 +62,14 @@ class WorkflowTile extends StatelessWidget {
                                   height: 32,
                                 ))
                       ]),
+                    ),
+                    trailing: SizedBox(
+                      height: 75,
+                      width: 75,
+                      child: Switch(
+                        value: workflow.active,
+                        onChanged: (bool value) {},
+                      ),
                     ));
               }
             }));
