@@ -30,6 +30,8 @@ var JobToImage = map[string]string{
 	"google-on-new-video":                    "supervisor-google",
 	"google-send-email":                      "supervisor-google",
 	"google-update-signature-email":          "supervisor-google",
+	"linear-create-issue":                    "supervisor-linear",
+	"linear-on-issue-create":                 "",
 	"linkedin-create-post":                   "supervisor-linkedin",
 	"timer-seconds-interval":                 "supervisor-seconds-interval",
 }
@@ -64,6 +66,8 @@ var OptArgument = map[string]string{
 	"google-on-new-video":                    "on-youtube-video",
 	"google-send-email":                      "send-email",
 	"google-update-signature-email":          "update-signature-email",
+	"linear-create-issue":                    "create-issue",
+	"linear-on-issue-create":                 "",
 	"linkedin-create-post":                   "create-post",
 	"timer-seconds-interval":                 "",
 }

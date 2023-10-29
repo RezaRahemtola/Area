@@ -155,3 +155,8 @@ export class YoutubeChannelParams {
 	@IsString()
 	channelId: string;
 }
+
+export class LinearWorkspaceParams {
+	@IsString()
+	workspace: string;
+}
