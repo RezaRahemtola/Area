@@ -1,7 +1,7 @@
-import 'package:area_mobile/components/user/settings.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/me.dart';
+import 'package:area_mobile/types/user/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -24,12 +24,9 @@ class _UserHero extends State<User> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
-                );
+                widget.onDisconnect();
               },
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.logout),
             ),
           ],
           title: Text(AppLocalizations.of(context)!.userTitle),
@@ -59,35 +56,58 @@ class _UserHero extends State<User> {
 
               return Column(
                 children: [
-                  UserTile(
-                    id: user.id,
-                    userEmail: user.email,
-                    isAdmin: user.isAdmin,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.updateSettings("fr");
-                    },
-                    child: const Text('Change locale to FR'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.updateSettings("en");
-                    },
-                    child: const Text('Change locale to EN'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.updateSettings("is");
-                    },
-                    child: const Text('Change locale to IS'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.onDisconnect();
-                    },
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
+                  const UserTile(),
+                  Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.email),
+                          initialValue: user.email,
+                        ),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                          value: user.settings.language,
+                          items: <InterfaceLanguage>[
+                            InterfaceLanguage(id: "en", text: "🇺🇸 English"),
+                            InterfaceLanguage(id: "fr", text: "🇫🇷 Francais"),
+                            InterfaceLanguage(id: "is", text: "🇮🇸 Íslenskur"),
+                          ].map((InterfaceLanguage locale) {
+                            return DropdownMenuItem<String>(
+                              value: locale.id,
+                              child: Text(locale.text),
+                            );
+                          }).toList(),
+                          onChanged: (selectedService) {},
+                          decoration: InputDecoration(
+                              labelText:
+                                  AppLocalizations.of(context)!.language),
+                        ),
+                        DropdownButtonFormField(
+                          value: user.settings.theme,
+                          items: [
+                            'auto',
+                            'dark',
+                            'light',
+                          ].map((String theme) {
+                            return DropdownMenuItem<String>(
+                              value: theme,
+                              child: Text(theme),
+                            );
+                          }).toList(),
+                          onChanged: (selectedService) {},
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.theme),
+                        ),
+                        const SizedBox(height: 16.0),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Text(AppLocalizations.of(context)!.save),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               );
             }
@@ -99,28 +119,17 @@ class _UserHero extends State<User> {
 }
 
 class UserTile extends StatelessWidget {
-  final String id;
-  final String userEmail;
-  final bool isAdmin;
-
-  const UserTile(
-      {required this.id,
-      required this.userEmail,
-      required this.isAdmin,
-      Key? key})
-      : super(key: key);
+  const UserTile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
-      child: Column(children: [
-        Image.asset('assets/default-profile-picture.webp'),
-        ListTile(
-          title: Text(userEmail),
-          subtitle: Text(id),
-        ),
-      ]),
-    );
+        elevation: 8,
+        margin: const EdgeInsets.only(bottom: 50),
+        child: Image.asset(
+          'assets/default-profile-picture.webp',
+          width: 150,
+          height: 150,
+        ));
   }
 }

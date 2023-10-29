@@ -18,5 +18,8 @@
     "editorTitle": "Éditeur",
     "userTitle": "Utilisateur",
     "activityTitle": "Activité",
-    "navbarLibrary": "Librarie"
+    "navbarLibrary": "Librarie",
+    "language": "Langage",
+    "theme": "Thème",
+    "save": "Sauvegarder"
 }
