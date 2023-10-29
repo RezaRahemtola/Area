@@ -21,5 +21,8 @@
     "navbarLibrary": "Librarie",
     "language": "Langage",
     "theme": "Thème",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "rename": "Renommer",
+    "edit": "Modifier",
+    "delete": "Supprimer"
 }

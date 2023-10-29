@@ -21,5 +21,8 @@
     "navbarLibrary": "Bókasafn",
     "language": "Tungumál",
     "theme": "Þema",
-    "save": "Vista"
+    "save": "Vista",
+    "rename": "Endurnefna",
+    "edit": "Til að breyta",
+    "delete": "EYÐA"
 }
