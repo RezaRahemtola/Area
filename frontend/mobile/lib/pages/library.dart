@@ -11,8 +11,8 @@ class Library extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.libraryTitle),
-      ),
+          title: Text(AppLocalizations.of(context)!.libraryTitle),
+          automaticallyImplyLeading: false),
       body: Container(
         constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
         color: const Color(0xFFC5C6C6),

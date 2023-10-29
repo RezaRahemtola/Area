@@ -21,19 +21,19 @@ class _UserHero extends State<User> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-        title: Text(AppLocalizations.of(context)!.userTitle),
-      ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+              icon: const Icon(Icons.settings),
+            ),
+          ],
+          title: Text(AppLocalizations.of(context)!.userTitle),
+          automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<ServiceReturn<UserMe>>(

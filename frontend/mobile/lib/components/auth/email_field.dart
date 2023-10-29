@@ -17,7 +17,7 @@ class EmailField extends StatelessWidget {
         controller: emailController,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          labelText: AppLocalizations.of(context)!.libraryTitle,
+          labelText: AppLocalizations.of(context)!.email,
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {

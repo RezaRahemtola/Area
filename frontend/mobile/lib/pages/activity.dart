@@ -8,8 +8,8 @@ class Activity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.activityTitle),
-      ),
+          title: Text(AppLocalizations.of(context)!.activityTitle),
+          automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(

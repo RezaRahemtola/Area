@@ -8,8 +8,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
-      ),
+          title: const Text("Settings"), automaticallyImplyLeading: false),
       backgroundColor: const Color(0xfff6f6f6),
       body: Center(
         child: Container(

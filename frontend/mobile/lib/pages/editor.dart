@@ -32,7 +32,9 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.editorTitle)),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.editorTitle),
+          automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Column(

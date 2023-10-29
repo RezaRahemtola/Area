@@ -12,8 +12,8 @@ class Services extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.servicesTitle),
-        ),
+            title: Text(AppLocalizations.of(context)!.servicesTitle),
+            automaticallyImplyLeading: false),
         body: Container(
           constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
           color: const Color(0xFFC5C6C6),
@@ -112,8 +112,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.service.id),
-      ),
+          title: Text(widget.service.id), automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
