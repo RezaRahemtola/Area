@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsEmail, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class UniqueJobParams {
 	@IsUUID(4)
@@ -159,4 +159,28 @@ export class YoutubeChannelParams {
 export class LinearWorkspaceParams {
 	@IsString()
 	workspace: string;
+}
+
+export enum LinearIssuePriority {
+	Low = "Low",
+	Medium = "Medium",
+	High = "High",
+	Urgent = "Urgent",
+}
+
+export class LinearCreateIssueParams extends UniqueJobParams {
+	@IsString()
+	title: string;
+
+	@IsString()
+	@IsOptional()
+	description: string;
+
+	@IsNumber()
+	@IsOptional()
+	estimate: number;
+
+	@IsEnum(LinearIssuePriority)
+	@IsOptional()
+	priority: LinearIssuePriority;
 }

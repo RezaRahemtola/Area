@@ -12,6 +12,7 @@ import {
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleYoutubeCreateCommentParams,
+	LinearCreateIssueParams,
 	LinearWorkspaceParams,
 	LinkedinCreatePostParams,
 	NameParams,
@@ -50,6 +51,7 @@ export enum Jobs {
 	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
 	"google-update-signature-email" = "google-update-signature-email",
+	"linear-create-issue" = "linear-create-issue",
 	"linear-on-issue-create" = "linear-on-issue-create",
 	"linkedin-create-post" = "linkedin-create-post",
 	"timer-seconds-interval" = "timer-seconds-interval",
@@ -91,6 +93,7 @@ export const JobParamsClasses = {
 	"google-on-new-video": YoutubeChannelParams,
 	"google-send-email": GoogleEmailParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
+	"linear-create-issue": LinearCreateIssueParams,
 	"linear-on-issue-create": LinearWorkspaceParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
@@ -126,6 +129,7 @@ export type JobsParams = Mapper<{
 	"google-on-new-video": YoutubeChannelParams;
 	"google-send-email": GoogleEmailParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
+	"linear-create-issue": LinearCreateIssueParams;
 	"linear-on-issue-create": LinearWorkspaceParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;

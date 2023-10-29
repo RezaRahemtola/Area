@@ -44,6 +44,7 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-on-new-video": ({ channelId }) => `google-on-new-video-${channelId}`,
 	"google-send-email": ({ workflowStepId }) => uniqueJobId("google-send-email", workflowStepId),
 	"google-update-signature-email": ({ workflowStepId }) => uniqueJobId("google-update-signature-email", workflowStepId),
+	"linear-create-issue": ({ workflowStepId }) => uniqueJobId("linear-create-issue", workflowStepId),
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
 	"linkedin-create-post": ({ workflowStepId }) => uniqueJobId("linkedin-create-post", workflowStepId),
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
