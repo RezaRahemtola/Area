@@ -16,3 +16,14 @@ Future<ServiceReturn<UserMe>> getMe() async {
     return ServiceReturn(error: e.toString());
   }
 }
+
+Future<ServiceReturn<void>> updateProfile(
+    String email, String language, String theme) async {
+  try {
+    await dio.patch("/me",
+        data: {"email": email, "language": language, "theme": theme});
+    return const ServiceReturn(data: null);
+  } catch (e) {
+    return ServiceReturn(error: e.toString());
+  }
+}

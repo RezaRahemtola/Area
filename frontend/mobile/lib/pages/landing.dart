@@ -39,8 +39,7 @@ class _LandingPageState extends State<LandingPage> {
     }
   }
 
-  void _updateSettings(String newLocale) async {
-    // TODO: Add theme too
+  void _updateSettings(String newLocale, String newTheme) async {
     storage.setLocale(newLocale);
     setState(() {
       locale = newLocale;
