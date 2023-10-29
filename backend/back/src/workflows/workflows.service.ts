@@ -250,6 +250,7 @@ export class WorkflowsService {
 					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
 			}
 			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
+			await queryRunner.commitTransaction();
 			return result;
 		} catch (exception) {
 			this.logger.error(`Failed to update workflow ${workflowId}: ${exception.message}, rolling back...`);
