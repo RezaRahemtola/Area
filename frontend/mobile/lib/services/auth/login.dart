@@ -6,7 +6,6 @@ Future<ServiceReturn<String>> login(String email, String password) async {
   try {
     final response = await dio
         .post('/auth/login', data: {"email": email, "password": password});
-    // TODO: "type" the data
 
     await storage.setAccessToken(response.data["accessToken"]);
     return ServiceReturn(data: response.data["accessToken"]);

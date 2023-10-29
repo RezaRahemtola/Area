@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class User extends StatefulWidget {
   final Function onDisconnect;
-  final Function(String newLocale) updateSettings;
+  final Function(String newLocale, String newTheme) updateSettings;
 
   const User(
       {super.key, required this.onDisconnect, required this.updateSettings});
@@ -17,6 +17,18 @@ class User extends StatefulWidget {
 }
 
 class _UserHero extends State<User> {
+  String newLocale = "";
+  String newTheme = "";
+  String newEmail = "";
+
+  Future<ServiceReturn<UserMe>>? future;
+
+  @override
+  void initState() {
+    future = services.user.getMe();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +46,17 @@ class _UserHero extends State<User> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<ServiceReturn<UserMe>>(
-          future: services.user.getMe(),
+          future: future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else {
               final UserMe? user = snapshot.data?.data;
+              if (user != null) {
+                newLocale = user.settings.language;
+                newTheme = user.settings.theme;
+                newEmail = user.email;
+              }
 
               if (user == null) {
                 return Column(
@@ -65,10 +82,11 @@ class _UserHero extends State<User> {
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.email),
                           initialValue: user.email,
+                          onChanged: ((value) => newEmail = value),
                         ),
                         const SizedBox(height: 16.0),
                         DropdownButtonFormField(
-                          value: user.settings.language,
+                          value: newLocale,
                           items: <InterfaceLanguage>[
                             InterfaceLanguage(id: "en", text: "🇺🇸 English"),
                             InterfaceLanguage(id: "fr", text: "🇫🇷 Francais"),
@@ -79,13 +97,17 @@ class _UserHero extends State<User> {
                               child: Text(locale.text),
                             );
                           }).toList(),
-                          onChanged: (selectedService) {},
+                          onChanged: (value) {
+                            if (value != null) {
+                              newLocale = value;
+                            }
+                          },
                           decoration: InputDecoration(
                               labelText:
                                   AppLocalizations.of(context)!.language),
                         ),
                         DropdownButtonFormField(
-                          value: user.settings.theme,
+                          value: newTheme,
                           items: [
                             'auto',
                             'dark',
@@ -96,13 +118,21 @@ class _UserHero extends State<User> {
                               child: Text(theme),
                             );
                           }).toList(),
-                          onChanged: (selectedService) {},
+                          onChanged: (value) {
+                            if (value != null) {
+                              newTheme = value;
+                            }
+                          },
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.theme),
                         ),
                         const SizedBox(height: 16.0),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.updateSettings(newLocale, newTheme);
+                            services.user
+                                .updateProfile(newEmail, newLocale, newTheme);
+                          },
                           child: Text(AppLocalizations.of(context)!.save),
                         ),
                       ],
