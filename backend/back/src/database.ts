@@ -57,6 +57,7 @@ import { CreateGithubCommitPRAreas1698353438280 } from "./workflows/seed/1698353
 import { UpdateTimerServiceImage1698259539325 } from "./services/seed/1698259539325-UpdateTimerServiceImage";
 import { UpdateMiroServiceImageForMobile1698590831862 } from "./services/seed/1698590831862-UpdateMiroServiceImageForMobile";
 import { WorkflowAreaReturnParams1698521602687 } from "./migrations/1698521602687-WorkflowAreaReturnParams";
+import { CreateGoogleFormUpdateDescriptionArea1698654637708 } from "./workflows/seed/1698654637708-CreateGoogleFormUpdateDescriptionArea";
 
 dotenv.config();
 
@@ -118,6 +119,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGithubCommitPRAreas1698353438280,
 		UpdateMiroServiceImageForMobile1698590831862,
 		WorkflowAreaReturnParams1698521602687,
+		CreateGoogleFormUpdateDescriptionArea1698654637708,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

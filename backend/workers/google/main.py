@@ -9,6 +9,7 @@ from src.drive.create_shared_drive import create_shared_drive
 from src.drive.duplicate_file import duplicate_drive_file
 from src.forms.add_youtube_item import form_add_youtube_item
 from src.forms.create_form import create_form
+from src.forms.update_form_description import update_form_description
 from src.gmail.change_interface_language import change_interface_language
 from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
@@ -63,6 +64,8 @@ def main():
             create_form()
         case "form-add-youtube-item":
             form_add_youtube_item()
+        case "form-update-description":
+            update_form_description()
 
         # Contacts
         case "create-contact":
