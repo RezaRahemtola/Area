@@ -163,3 +163,8 @@ export class GoogleFormUpdateDescriptionParams extends UniqueJobParams {
 	@IsString()
 	description: string;
 }
+
+export class GoogleFormConvertToQuizParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+}

@@ -7,6 +7,7 @@ from src.contacts.create_contact import create_contact
 from src.drive.create_folder import create_drive_folder
 from src.drive.create_shared_drive import create_shared_drive
 from src.drive.duplicate_file import duplicate_drive_file
+from src.forms.convert_form_to_quiz import convert_form_to_quiz
 from src.forms.add_youtube_item import form_add_youtube_item
 from src.forms.create_form import create_form
 from src.forms.update_form_description import update_form_description
@@ -66,6 +67,8 @@ def main():
             form_add_youtube_item()
         case "form-update-description":
             update_form_description()
+        case "form-convert-to-quiz":
+            convert_form_to_quiz()
 
         # Contacts
         case "create-contact":
