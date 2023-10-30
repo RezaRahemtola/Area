@@ -12,7 +12,9 @@
     "error": "villa: {error}",
     "authErrorEmail": "Vinsamlegast sláðu inn netfangið þitt",
     "actions": "Aðgerðir",
+    "action": "Aðgerð",
     "reactions": "Viðbrögð",
+    "reaction": "Viðbrögð",
     "libraryTitle": "Verkflæði mín",
     "servicesTitle": "Þjónusta",
     "editorTitle": "Ritstjóri",
@@ -24,5 +26,7 @@
     "save": "Vista",
     "rename": "Endurnefna",
     "edit": "Til að breyta",
-    "delete": "EYÐA"
+    "delete": "EYÐA",
+    "editorActionDescription": "Atburður sem ræsir vinnuflæðið þitt",
+    "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst"
 }

@@ -12,7 +12,9 @@
     "error": "Error: {error}",
     "authErrorEmail": "Please enter your email",
     "actions": "Actions",
+    "action": "Action",
     "reactions": "Reactions",
+    "reaction": "Reaction",
     "libraryTitle": "My workflows",
     "servicesTitle": "Services",
     "editorTitle": "Editor",
@@ -24,5 +26,7 @@
     "save": "Save",
     "rename": "Rename",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "editorActionDescription": "An event that starts your workflow",
+    "editorReactionDescription": "An event a workflow performs after it start"
 }
