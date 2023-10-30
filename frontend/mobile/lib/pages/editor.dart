@@ -1,10 +1,11 @@
 import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Editor extends StatefulWidget {
-  final Workflow workflow;
+  final EditorWorkflow workflow;
 
   const Editor({
     super.key,
@@ -16,18 +17,12 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  List<String> reactions = ["Test", "Essai"];
+  late EditorWorkflow workflow;
 
-  void updateReactions(String newReaction) {
-    setState(() {
-      reactions.add(newReaction);
-    });
-  }
-
-  void removeReaction(String newReaction) {
-    setState(() {
-      reactions.removeWhere((element) => element == newReaction);
-    });
+  @override
+  void initState() {
+    super.initState();
+    workflow = widget.workflow;
   }
 
   @override
@@ -45,11 +40,21 @@ class _EditorState extends State<Editor> {
               child: ListTile(
                 title: Row(
                   children: [
-                    Text(widget.workflow.action.id),
+                    Text(workflow.name),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                         onPressed: () {
-                          showAlert(context, updateReactions);
+                          setState(() {
+                            workflow = EditorWorkflow(
+                                id: workflow.id,
+                                name: workflow.name,
+                                active: workflow.active,
+                                action: workflow.action,
+                                reactions: [
+                                  ...workflow.reactions,
+                                  getEmptyEditorReaction("TODO")
+                                ]);
+                          });
                         },
                         child: const Text("+"))
                   ],
@@ -57,35 +62,11 @@ class _EditorState extends State<Editor> {
                 tileColor: const Color.fromARGB(255, 0, 255, 255),
               ),
             ),
-            Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: ReorderableListView(
-                    children: <Widget>[
-                      for (int index = 0; index < reactions.length; index += 1)
-                        ReactionElement(
-                            key: Key('$index'),
-                            title: reactions[index],
-                            removeReaction: removeReaction)
-                    ],
-                    onReorder: (int oldIndex, int newIndex) {
-                      setState(() {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
-                        String temp = reactions[oldIndex];
-                        reactions.removeAt(oldIndex);
-                        reactions.insert(newIndex, temp);
-                      });
-                    },
-                  )),
-            ),
-            Card(
-              margin: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
+            Column(
+              children: <Widget>[
+                Card(
+                  elevation: 4,
+                  child: ListTile(
                     // TODO: update with service logo if defined
                     leading: Image.asset(
                       'assets/bolt.png',
@@ -95,26 +76,21 @@ class _EditorState extends State<Editor> {
                     subtitle: Text(
                         AppLocalizations.of(context)!.editorActionDescription),
                   ),
-                ],
-              ),
-            ),
-            Card(
-              margin: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    // TODO: update with service logo if defined
-                    leading: Image.asset(
-                      'assets/bolt.png',
-                      color: primaryColor,
-                    ),
-                    title: Text(AppLocalizations.of(context)!.reaction),
-                    subtitle: Text(AppLocalizations.of(context)!
-                        .editorReactionDescription),
-                  ),
-                ],
-              ),
+                ),
+                ...workflow.reactions.map(((reaction) => Card(
+                      elevation: 4,
+                      child: ListTile(
+                        // TODO: update with service logo if defined
+                        leading: Image.asset(
+                          'assets/bolt.png',
+                          color: primaryColor,
+                        ),
+                        title: Text(AppLocalizations.of(context)!.reaction),
+                        subtitle: Text(AppLocalizations.of(context)!
+                            .editorReactionDescription),
+                      ),
+                    ))),
+              ],
             ),
           ],
         ),
@@ -156,48 +132,4 @@ class _ReactionElementState extends State<ReactionElement> {
       ),
     );
   }
-}
-
-class ShowAlert extends StatefulWidget {
-  final Function(String) updateReactions;
-
-  const ShowAlert({super.key, required this.updateReactions});
-
-  @override
-  State<ShowAlert> createState() => _ShowAlertState();
-}
-
-class _ShowAlertState extends State<ShowAlert> {
-  final textFieldValueHolder = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Please Enter Value in Text Field.'),
-      content: TextField(
-        controller: textFieldValueHolder,
-        decoration: const InputDecoration(hintText: 'Enter Some Text Here'),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text("OK"),
-          onPressed: () {
-            setState(() {
-              widget.updateReactions(textFieldValueHolder.text);
-            });
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
-}
-
-void showAlert(BuildContext context, Function(String) updateReactions) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return ShowAlert(updateReactions: updateReactions);
-    },
-  );
 }
