@@ -1,8 +1,14 @@
-import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { GrpcService } from "../../grpc/grpc.service";
+import {
+	BadRequestException,
+	ConflictException,
+	Injectable,
+	RawBodyRequest,
+	UnauthorizedException,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { IsNumber, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { createHmac, timingSafeEqual } from "crypto";
 
 export class FacebookChallengeHub {
 	@IsString()
@@ -14,15 +20,37 @@ export class FacebookChallengeHub {
 	"hub.challenge": number;
 }
 
+type FacebookObject = "page";
+
+type FacebookBaseBody<T> = {
+	object: FacebookObject;
+	entry: T[];
+};
+
+type FacebookFeedStatusEntry = {
+	changes: [
+		{
+			field: "feed";
+			value: {
+				item: "status";
+				created_time: number;
+				message: string;
+				from: {
+					name: string;
+				};
+			};
+		},
+	];
+};
+
+type FacebookWebhookBody = FacebookBaseBody<FacebookFeedStatusEntry>; // eslint-disable-line
+
 @Injectable()
 export class FacebookWebhookService {
 	private readonly webhookSecret: string;
 
-	constructor(
-		private readonly grpcService: GrpcService,
-		private readonly configService: ConfigService,
-	) {
-		this.webhookSecret = this.configService.getOrThrow<string>("FACEBOOK_WEBHOOK_SECRET");
+	constructor(private readonly configService: ConfigService) {
+		this.webhookSecret = this.configService.getOrThrow<string>("FACEBOOK_CLIENT_SECRET");
 	}
 
 	onChallenge(query: FacebookChallengeHub): number {
@@ -35,22 +63,21 @@ export class FacebookWebhookService {
 		return query["hub.challenge"];
 	}
 
-	/*
-    verifySignature(signature: string, body: unknown) {
-        const hmac = createHmac("sha256", this.webhookSecret).update(JSON.stringify(body)).digest("hex");
-        const trusted = Buffer.from(`sha256=${hmac}`, "ascii");
-        const untrusted = Buffer.from(signature, "ascii");
-        return  timingSafeEqual(trusted, untrusted);
-        // https://linear.app/cramptarea/issue/ARE-320/facebook-webhook-payload-validation
-    }
-    */
+	verifySignature(signature: string, body: Buffer) {
+		const hmac = createHmac("sha256", this.webhookSecret).update(body).digest("hex");
+		const trusted = Buffer.from(`sha256=${hmac}`, "utf-8");
+		const untrusted = Buffer.from(signature, "utf-8");
+		return timingSafeEqual(trusted, untrusted);
+	}
 
-	async onFacebookWebhook(signature: string, body: unknown): Promise<void> {
-		/*
-        if (!this.verifySignature(signature, body)) {
-            throw new UnauthorizedException("Invalid signature")
-        }
-        */
+	async onFacebookWebhook(signature: string, req: RawBodyRequest<unknown>): Promise<void> {
+		if (!req.rawBody) {
+			throw new BadRequestException("Missing raw body");
+		}
+		if (!this.verifySignature(signature, req.rawBody)) {
+			throw new UnauthorizedException("Invalid signature");
+		}
+		const body: unknown = JSON.parse(req.rawBody.toString());
 		console.log(body);
 	}
 }
