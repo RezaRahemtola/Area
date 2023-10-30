@@ -1,4 +1,3 @@
-import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
@@ -6,13 +5,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
-class WorkflowTile extends StatelessWidget {
+class WorkflowTile extends StatefulWidget {
   final Workflow workflow;
 
   const WorkflowTile({
     required this.workflow,
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<WorkflowTile> createState() => _WorkflowTileState();
+}
+
+class _WorkflowTileState extends State<WorkflowTile> {
+  final GlobalKey _menuKey = GlobalKey();
+
+  _showPopupMenu(Offset offset) async {
+    double left = offset.dx - 100;
+    double top = offset.dy + 25;
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, 0, 0),
+      items: [
+        PopupMenuItem(
+          value: "rename",
+          child: ListTile(
+            leading: const Icon(Icons.title),
+            title: Text(AppLocalizations.of(context)!.rename),
+          ),
+        ),
+        PopupMenuItem(
+          value: "edit",
+          child: ListTile(
+            leading: const Icon(Icons.edit),
+            title: Text(AppLocalizations.of(context)!.edit),
+          ),
+        ),
+        PopupMenuItem(
+          value: "delete",
+          child: ListTile(
+            leading: const Icon(Icons.delete),
+            title: Text(AppLocalizations.of(context)!.delete),
+          ),
+        ),
+      ],
+      elevation: 8.0,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +70,15 @@ class WorkflowTile extends StatelessWidget {
               } else {
                 final List<Service> services = snapshot.data!.data!;
                 return ListTile(
-                    title: Text(workflow.name),
+                    title: GestureDetector(
+                      onTapDown: (TapDownDetails details) {
+                        _showPopupMenu(details.globalPosition);
+                      },
+                      child: Text(widget.workflow.name),
+                    ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Editor(workflow: workflow)));
+                      dynamic popUpMenustate = _menuKey.currentState;
+                      popUpMenustate.showButtonMenu();
                     },
                     leading: SizedBox(
                       height: 128,
@@ -46,13 +87,13 @@ class WorkflowTile extends StatelessWidget {
                           ListView(scrollDirection: Axis.horizontal, children: [
                         SvgPicture.network(
                           services
-                              .firstWhere(
-                                  (s) => s.id == workflow.action.areaServiceId)
+                              .firstWhere((s) =>
+                                  s.id == widget.workflow.action.areaServiceId)
                               .imageUrl,
                           width: 32,
                           height: 32,
                         ),
-                        ...workflow.reactions
+                        ...widget.workflow.reactions
                             .map((reaction) => SvgPicture.network(
                                   services
                                       .firstWhere(
@@ -67,7 +108,7 @@ class WorkflowTile extends StatelessWidget {
                       height: 75,
                       width: 75,
                       child: Switch(
-                        value: workflow.active,
+                        value: widget.workflow.active,
                         onChanged: (bool value) {},
                       ),
                     ));
