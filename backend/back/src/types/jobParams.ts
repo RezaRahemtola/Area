@@ -155,3 +155,11 @@ export class YoutubeChannelParams {
 	@IsString()
 	channelId: string;
 }
+
+export class GoogleFormUpdateDescriptionParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+
+	@IsString()
+	description: string;
+}

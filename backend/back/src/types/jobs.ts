@@ -11,6 +11,7 @@ import {
 	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
+	GoogleFormUpdateDescriptionParams,
 	GoogleYoutubeCreateCommentParams,
 	LinkedinCreatePostParams,
 	NameParams,
@@ -46,6 +47,7 @@ export enum Jobs {
 	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
+	"google-form-update-description" = "google-form-update-description",
 	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
 	"google-update-signature-email" = "google-update-signature-email",
@@ -85,6 +87,7 @@ export const JobParamsClasses = {
 	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
+	"google-form-update-description": GoogleFormUpdateDescriptionParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-on-new-video": YoutubeChannelParams,
 	"google-send-email": GoogleEmailParams,
@@ -119,6 +122,7 @@ export type JobsParams = Mapper<{
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
+	"google-form-update-description": GoogleFormUpdateDescriptionParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-on-new-video": YoutubeChannelParams;
 	"google-send-email": GoogleEmailParams;
