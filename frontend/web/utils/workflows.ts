@@ -4,10 +4,9 @@ import { EditorWorkflow, EditorWorkflowAction, EditorWorkflowReaction, Workflow 
 import { AreaParameterWithValue } from "@/types/services";
 import services from "@/services";
 
-export const getEmptyEditorAction = (id: string): EditorWorkflowAction => ({ id, parameters: {} });
+export const getEmptyEditorAction = (id: string): EditorWorkflowAction => ({ id });
 export const getEmptyEditorReaction = (previousId: string): EditorWorkflowReaction => ({
 	id: uuidv4(),
-	parameters: {},
 	previousAreaId: previousId,
 });
 
@@ -57,7 +56,6 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 		name: workflow.name,
 		action: {
 			id: workflow.action.id,
-			parameters: workflow.action.parameters,
 			area: {
 				id: workflow.action.areaId,
 				parameters: await workflowParametersToEditorWorkflowParameters(

@@ -31,7 +31,6 @@ export type EditorWorkflowElementService = {
 
 export type EditorWorkflowAction = {
 	id: string;
-	parameters: Record<string, never>;
 	area?: EditorWorkflowElementArea;
 	areaService?: EditorWorkflowElementService;
 };
