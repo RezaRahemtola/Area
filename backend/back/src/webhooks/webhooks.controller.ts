@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Headers, Post, Query, RawBodyRequest, Req } from "@nestjs/common";
 import { ApiExcludeController } from "@nestjs/swagger";
 import { GithubWebhookService } from "./services/gihub-webhook.service";
 import { LinearWebhookService } from "./services/linear-webhook.service";
@@ -15,15 +15,18 @@ export class WebhooksController {
 		private readonly linearWebhookService: LinearWebhookService,
 	) {}
 
-    @Post("facebook")
-    async onFacebookWebhook(@Headers("X-Hub-Signature-256") signature: string, @Body() body: unknown): Promise<void> {
-        return this.facebookWebhookService.onFacebookWebhook(signature, body);
-    }
+	@Post("facebook")
+	async onFacebookWebhook(
+		@Headers("X-Hub-Signature-256") signature: string,
+		@Req() req: RawBodyRequest<unknown>,
+	): Promise<void> {
+		return this.facebookWebhookService.onFacebookWebhook(signature, req);
+	}
 
-    @Get("facebook")
-    onFacebookWebhookChallenge(@Query() query: FacebookChallengeHub): number {
-        return this.facebookWebhookService.onChallenge(query);
-    }
+	@Get("facebook")
+	onFacebookWebhookChallenge(@Query() query: FacebookChallengeHub): number {
+		return this.facebookWebhookService.onChallenge(query);
+	}
 
 	@Post("github")
 	async onGithubWebhook(@Headers("X-Hub-Signature-256") signature: string, @Body() body: unknown): Promise<void> {
