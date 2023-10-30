@@ -37,9 +37,6 @@ def setup_webhook():
             'merge_requests_events': True,
         })
 
-        print(f"Webhook created. ID: {webhook.id}, URL: {webhook.url}")
-        print(webhook)
-
     except GitlabAuthenticationError as e:
         with grpc.insecure_channel(target) as channel:
             AreaBackServiceStub(channel).OnError(
