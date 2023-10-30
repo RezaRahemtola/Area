@@ -18,5 +18,8 @@
     "editorTitle": "Ritstjóri",
     "userTitle": "Notandi",
     "activityTitle": "Virkni",
-    "navbarLibrary": "Bókasafn"
+    "navbarLibrary": "Bókasafn",
+    "language": "Tungumál",
+    "theme": "Þema",
+    "save": "Vista"
 }

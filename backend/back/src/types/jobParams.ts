@@ -156,6 +156,27 @@ export class YoutubeChannelParams {
 	channelId: string;
 }
 
+export class GoogleFormUpdateDescriptionParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+
+	@IsString()
+	description: string;
+}
+
+export class GoogleFormConvertToQuizParams extends UniqueJobParams {
+	@IsString()
+	formId: string;
+}
+
+export class GoogleFormUpdateSpreadsheetTitleParams extends UniqueJobParams {
+	@IsString()
+	spreadsheetId: string;
+
+	@IsString()
+	title: string;
+}
+
 export class LinearWorkspaceParams {
 	@IsString()
 	workspace: string;

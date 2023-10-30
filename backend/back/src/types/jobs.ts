@@ -11,6 +11,9 @@ import {
 	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
+	GoogleFormConvertToQuizParams,
+	GoogleFormUpdateDescriptionParams,
+	GoogleFormUpdateSpreadsheetTitleParams,
 	GoogleYoutubeCreateCommentParams,
 	LinearCreateIssueParams,
 	LinearWorkspaceParams,
@@ -48,8 +51,11 @@ export enum Jobs {
 	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
+	"google-form-convert-to-quiz" = "google-form-convert-to-quiz",
+	"google-form-update-description" = "google-form-update-description",
 	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
+	"google-update-spreadsheet-title" = "google-update-spreadsheet-title",
 	"google-update-signature-email" = "google-update-signature-email",
 	"linear-create-issue" = "linear-create-issue",
 	"linear-on-issue-create" = "linear-on-issue-create",
@@ -89,9 +95,12 @@ export const JobParamsClasses = {
 	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
+	"google-form-convert-to-quiz": GoogleFormConvertToQuizParams,
+	"google-form-update-description": GoogleFormUpdateDescriptionParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-on-new-video": YoutubeChannelParams,
 	"google-send-email": GoogleEmailParams,
+	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"linear-create-issue": LinearCreateIssueParams,
 	"linear-on-issue-create": LinearWorkspaceParams,
@@ -125,9 +134,12 @@ export type JobsParams = Mapper<{
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
+	"google-form-convert-to-quiz": GoogleFormConvertToQuizParams;
+	"google-form-update-description": GoogleFormUpdateDescriptionParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-on-new-video": YoutubeChannelParams;
 	"google-send-email": GoogleEmailParams;
+	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"linear-create-issue": LinearCreateIssueParams;
 	"linear-on-issue-create": LinearWorkspaceParams;

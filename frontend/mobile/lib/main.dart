@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       home: const LandingPage(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -43,9 +43,14 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-create-spreadsheet": ({ workflowStepId }) => uniqueJobId("google-create-spreadsheet", workflowStepId),
 	"google-create-task-list": ({ workflowStepId }) => uniqueJobId("google-create-task-list", workflowStepId),
 	"google-form-add-youtube-item": ({ workflowStepId }) => uniqueJobId("google-form-add-youtube-item", workflowStepId),
+	"google-form-convert-to-quiz": ({ workflowStepId }) => uniqueJobId("google-form-convert-to-quiz", workflowStepId),
+	"google-form-update-description": ({ workflowStepId }) =>
+		uniqueJobId("google-form-update-description", workflowStepId),
 	"google-duplicate-drive-file": ({ workflowStepId }) => uniqueJobId("google-duplicate-drive-file", workflowStepId),
 	"google-on-new-video": ({ channelId }) => `google-on-new-video-${channelId}`,
 	"google-send-email": ({ workflowStepId }) => uniqueJobId("google-send-email", workflowStepId),
+	"google-update-spreadsheet-title": ({ workflowStepId }) =>
+		uniqueJobId("google-update-spreadsheet-title", workflowStepId),
 	"google-update-signature-email": ({ workflowStepId }) => uniqueJobId("google-update-signature-email", workflowStepId),
 	"linear-create-issue": ({ workflowStepId }) => uniqueJobId("linear-create-issue", workflowStepId),
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
