@@ -9,8 +9,8 @@ import { GitlabWebhookService } from "./services/gitlab-webhook.service";
 export class WebhooksController {
 	constructor(
 		private readonly githubWebhookService: GithubWebhookService,
-        private readonly gitlabWebhookService: GitlabWebhookService,
-        private readonly linearWebhookService: LinearWebhookService,
+		private readonly gitlabWebhookService: GitlabWebhookService,
+		private readonly linearWebhookService: LinearWebhookService,
 	) {}
 
 	@Post("github")
@@ -18,10 +18,10 @@ export class WebhooksController {
 		return this.githubWebhookService.onGithubWebhook(signature, body);
 	}
 
-    @Post("gitlab")
-    async onGitlabWebhook(@Headers("X-Gitlab-Token") token: string, @Body() body: unknown): Promise<void> {
-        return this.gitlabWebhookService.onGitlabWebhook(token, body);
-    }
+	@Post("gitlab")
+	async onGitlabWebhook(@Headers("X-Gitlab-Token") token: string, @Body() body: unknown): Promise<void> {
+		return this.gitlabWebhookService.onGitlabWebhook(token, body);
+	}
 
 	@Post("linear")
 	async onLinearWebhook(@Headers("linear-signature") signature: string, @Body() body: unknown): Promise<void> {

@@ -61,9 +61,7 @@ import { CreateGoogleFormUpdateDescriptionArea1698654637708 } from "./workflows/
 import { CreateGoogleFormConvertToQuizArea1698655334570 } from "./workflows/seed/1698655334570-CreateGoogleFormConvertToQuizArea";
 import { CreateGoogleUpdateSpreadsheetTitleArea1698656017859 } from "./workflows/seed/1698656017859-CreateGoogleUpdateSpreadsheetTitleArea";
 import { CreateLinearCreateIssueAreas1698614949784 } from "./workflows/seed/1698614949784-CreateLinearCreateIssueAreas";
-import {
-	CreateGitlabCommitPRActions1698678924392
-} from "./workflows/seed/1698678924392-CreateGitlabCommitPRActions";
+import { CreateGitlabCommitPRActions1698678924392 } from "./workflows/seed/1698678924392-CreateGitlabCommitPRActions";
 
 dotenv.config();
 
