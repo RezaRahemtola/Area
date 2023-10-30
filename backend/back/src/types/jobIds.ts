@@ -26,6 +26,11 @@ export const JobsIdentifiers: JobsIdentifiers = {
 		uniqueWebhookId("github-on-pull-request-create", `${owner}/${repo}`),
 	"github-on-pull-request-merge": ({ owner, repo }) =>
 		uniqueWebhookId("github-on-pull-request-merge", `${owner}/${repo}`),
+	"gitlab-on-commit": ({ projectId }) => uniqueWebhookId("gitlab-on-commit", projectId),
+	"gitlab-on-pull-request-close": ({ projectId }) => uniqueWebhookId("gitlab-on-pull-request-close", projectId),
+	"gitlab-on-pull-request-create": ({ projectId }) => uniqueWebhookId("gitlab-on-pull-request-create", projectId),
+	"gitlab-on-pull-request-merge": ({ projectId }) => uniqueWebhookId("gitlab-on-pull-request-merge", projectId),
+	"gitlab-on-pull-request-reopen": ({ projectId }) => uniqueWebhookId("gitlab-on-pull-request-reopen", projectId),
 	"google-change-gmail-interface-language": ({ workflowStepId }) =>
 		uniqueJobId("google-change-gmail-interface-language", workflowStepId),
 	"google-create-calendar": ({ workflowStepId }) => uniqueJobId("google-create-calendar", workflowStepId),
