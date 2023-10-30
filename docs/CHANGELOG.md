@@ -1,3 +1,35 @@
+<a name="v1.2.0"></a>
+# [v1.2.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.2.0) - 30 Oct 2023
+
+## Changes
+
+GitHub, GitLab and Linear actions/reactions, mobile library & user settings and a few bugs fixed
+
+## 🚀 Features
+
+- Backend: Gitlab push & pull request actions [@EdenComp](https://github.com/EdenComp) ([#159](https://github.com/RezaRahemtola/Area/issues/159))
+- Mobile library popup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#157](https://github.com/RezaRahemtola/Area/issues/157))
+- Backend: Linear first AREAs [@EdenComp](https://github.com/EdenComp) ([#156](https://github.com/RezaRahemtola/Area/issues/156))
+- Mobile user settings [@RezaRahemtola](https://github.com/RezaRahemtola) ([#155](https://github.com/RezaRahemtola/Area/issues/155))
+- New google reactions [@RezaRahemtola](https://github.com/RezaRahemtola) ([#158](https://github.com/RezaRahemtola/Area/issues/158))
+- Backend: Job magic params [@EdenComp](https://github.com/EdenComp) ([#150](https://github.com/RezaRahemtola/Area/issues/150))
+- Mobile workflow library design and data fetching [@RezaRahemtola](https://github.com/RezaRahemtola) ([#152](https://github.com/RezaRahemtola/Area/issues/152))
+- Web library search bar, multine long text and boolean handling [@RezaRahemtola](https://github.com/RezaRahemtola) ([#151](https://github.com/RezaRahemtola/Area/issues/151))
+- Github Commit & Pull Request Actions [@EdenComp](https://github.com/EdenComp) ([#145](https://github.com/RezaRahemtola/Area/issues/145))
+- Mobile improvements [@RezaRahemtola](https://github.com/RezaRahemtola) ([#147](https://github.com/RezaRahemtola/Area/issues/147))
+- Github issues Actions & Reactions [@EdenComp](https://github.com/EdenComp) ([#143](https://github.com/RezaRahemtola/Area/issues/143))
+- Update changelog for "v1.1.0" [@github-actions](https://github.com/github-actions) ([#148](https://github.com/RezaRahemtola/Area/issues/148))
+
+## 🐛 Bug Fixes
+
+- Fixed workflow update [@Croos3r](https://github.com/Croos3r) ([#154](https://github.com/RezaRahemtola/Area/issues/154))
+- Fixed user update bug and some logic [@Croos3r](https://github.com/Croos3r) ([#153](https://github.com/RezaRahemtola/Area/issues/153))
+- Backend workflow toggle taking a state [@RezaRahemtola](https://github.com/RezaRahemtola) ([#149](https://github.com/RezaRahemtola/Area/issues/149))
+
+
+[Changes][v1.2.0]
+
+
 <a name="v1.1.0"></a>
 # [v1.1.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.1.0) - 28 Oct 2023
 
@@ -475,6 +507,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.2.0]: https://github.com/RezaRahemtola/Area/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/RezaRahemtola/Area/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/RezaRahemtola/Area/compare/v0.11.0...v1.0.0
 [v0.11.0]: https://github.com/RezaRahemtola/Area/compare/v0.10.0...v0.11.0
