@@ -122,10 +122,10 @@ class EditorWorkflowReaction {
 
 class EditorWorkflow {
   final String? id;
-  final String name;
-  final bool active;
-  final EditorWorkflowAction action;
-  final List<EditorWorkflowReaction> reactions;
+  String name;
+  bool active;
+  EditorWorkflowAction action;
+  List<EditorWorkflowReaction> reactions;
 
   EditorWorkflow({
     this.id,

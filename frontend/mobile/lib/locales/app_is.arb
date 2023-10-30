@@ -28,5 +28,6 @@
     "edit": "Til að breyta",
     "delete": "EYÐA",
     "editorActionDescription": "Atburður sem ræsir vinnuflæðið þitt",
-    "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst"
+    "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst",
+    "editorNameModalTitle": "Breyttu heiti verkflæðis"
 }
