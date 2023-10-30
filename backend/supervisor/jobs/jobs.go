@@ -53,6 +53,17 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 		}
 	}
 
+	image, exists := JobToImage[name]
+	if !exists {
+		log.Printf("Job %s not found\n", name)
+		return fmt.Errorf("job %s not found", name)
+	}
+
+	if image == "" {
+		log.Printf("No image associated to job %s\n", image)
+		return nil
+	}
+
 	var args []string
 	optarg := OptArgument[name]
 	if optarg != "" {
@@ -70,7 +81,7 @@ func (jm *JobManager) LaunchJob(name string, identifier string, params map[strin
 	}
 
 	cont, err := jm.dockerClient.ContainerCreate(context.Background(), &container.Config{
-		Image: JobToImage[name],
+		Image: image,
 		Cmd:   args,
 	}, &container.HostConfig{
 		NetworkMode: "host",

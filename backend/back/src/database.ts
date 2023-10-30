@@ -60,6 +60,7 @@ import { WorkflowAreaReturnParams1698521602687 } from "./migrations/169852160268
 import { CreateGoogleFormUpdateDescriptionArea1698654637708 } from "./workflows/seed/1698654637708-CreateGoogleFormUpdateDescriptionArea";
 import { CreateGoogleFormConvertToQuizArea1698655334570 } from "./workflows/seed/1698655334570-CreateGoogleFormConvertToQuizArea";
 import { CreateGoogleUpdateSpreadsheetTitleArea1698656017859 } from "./workflows/seed/1698656017859-CreateGoogleUpdateSpreadsheetTitleArea";
+import { CreateLinearCreateIssueAreas1698614949784 } from "./workflows/seed/1698614949784-CreateLinearCreateIssueAreas";
 
 dotenv.config();
 
@@ -124,6 +125,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleFormUpdateDescriptionArea1698654637708,
 		CreateGoogleFormConvertToQuizArea1698655334570,
 		CreateGoogleUpdateSpreadsheetTitleArea1698656017859,
+		CreateLinearCreateIssueAreas1698614949784,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
