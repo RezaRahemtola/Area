@@ -58,6 +58,7 @@ import { UpdateTimerServiceImage1698259539325 } from "./services/seed/1698259539
 import { UpdateMiroServiceImageForMobile1698590831862 } from "./services/seed/1698590831862-UpdateMiroServiceImageForMobile";
 import { WorkflowAreaReturnParams1698521602687 } from "./migrations/1698521602687-WorkflowAreaReturnParams";
 import { CreateGoogleFormUpdateDescriptionArea1698654637708 } from "./workflows/seed/1698654637708-CreateGoogleFormUpdateDescriptionArea";
+import { CreateGoogleFormConvertToQuizArea1698655334570 } from "./workflows/seed/1698655334570-CreateGoogleFormConvertToQuizArea";
 
 dotenv.config();
 
@@ -120,6 +121,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		UpdateMiroServiceImageForMobile1698590831862,
 		WorkflowAreaReturnParams1698521602687,
 		CreateGoogleFormUpdateDescriptionArea1698654637708,
+		CreateGoogleFormConvertToQuizArea1698655334570,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

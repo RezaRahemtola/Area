@@ -11,6 +11,7 @@ import {
 	GoogleDuplicateDriveFileParams,
 	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
+	GoogleFormConvertToQuizParams,
 	GoogleFormUpdateDescriptionParams,
 	GoogleYoutubeCreateCommentParams,
 	LinkedinCreatePostParams,
@@ -47,6 +48,7 @@ export enum Jobs {
 	"google-create-task-list" = "google-create-task-list",
 	"google-duplicate-drive-file" = "google-duplicate-drive-file",
 	"google-form-add-youtube-item" = "google-form-add-youtube-item",
+	"google-form-convert-to-quiz" = "google-form-convert-to-quiz",
 	"google-form-update-description" = "google-form-update-description",
 	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
@@ -87,6 +89,7 @@ export const JobParamsClasses = {
 	"google-create-spreadsheet": NameParams,
 	"google-create-task-list": TitleParams,
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams,
+	"google-form-convert-to-quiz": GoogleFormConvertToQuizParams,
 	"google-form-update-description": GoogleFormUpdateDescriptionParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-on-new-video": YoutubeChannelParams,
@@ -122,6 +125,7 @@ export type JobsParams = Mapper<{
 	"google-create-spreadsheet": NameParams;
 	"google-create-task-list": TitleParams;
 	"google-form-add-youtube-item": GoogleAddFormYoutubeItemParams;
+	"google-form-convert-to-quiz": GoogleFormConvertToQuizParams;
 	"google-form-update-description": GoogleFormUpdateDescriptionParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-on-new-video": YoutubeChannelParams;
