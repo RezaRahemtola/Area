@@ -1,4 +1,6 @@
 import 'package:area_mobile/colors.dart';
+import 'package:area_mobile/components/editor/action_card.dart';
+import 'package:area_mobile/components/editor/reaction_card.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
@@ -42,56 +44,47 @@ class _EditorState extends State<Editor> {
                   children: [
                     Text(workflow.name),
                     const Expanded(child: SizedBox()),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            workflow = EditorWorkflow(
-                                id: workflow.id,
-                                name: workflow.name,
-                                active: workflow.active,
-                                action: workflow.action,
-                                reactions: [
-                                  ...workflow.reactions,
-                                  getEmptyEditorReaction("TODO")
-                                ]);
-                          });
-                        },
-                        child: const Text("+"))
+                    Switch(
+                      activeColor: accentColor,
+                      value: workflow.active,
+                      onChanged: (bool value) {
+                        setState(() {
+                          workflow = EditorWorkflow(
+                              id: workflow.id,
+                              name: workflow.name,
+                              active: value,
+                              action: workflow.action,
+                              reactions: workflow.reactions);
+                        });
+                      },
+                    ),
                   ],
                 ),
-                tileColor: const Color.fromARGB(255, 0, 255, 255),
+                tileColor: secondaryColor,
               ),
             ),
             Column(
               children: <Widget>[
-                Card(
-                  elevation: 4,
-                  child: ListTile(
-                    // TODO: update with service logo if defined
-                    leading: Image.asset(
-                      'assets/bolt.png',
-                      color: primaryColor,
-                    ),
-                    title: Text(AppLocalizations.of(context)!.action),
-                    subtitle: Text(
-                        AppLocalizations.of(context)!.editorActionDescription),
-                  ),
-                ),
-                ...workflow.reactions.map(((reaction) => Card(
-                      elevation: 4,
-                      child: ListTile(
-                        // TODO: update with service logo if defined
-                        leading: Image.asset(
-                          'assets/bolt.png',
-                          color: primaryColor,
-                        ),
-                        title: Text(AppLocalizations.of(context)!.reaction),
-                        subtitle: Text(AppLocalizations.of(context)!
-                            .editorReactionDescription),
-                      ),
-                    ))),
+                EditorActionCard(action: workflow.action),
+                ...workflow.reactions.map(
+                    ((reaction) => EditorReactionCard(reaction: reaction))),
               ],
             ),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    workflow = EditorWorkflow(
+                        id: workflow.id,
+                        name: workflow.name,
+                        active: workflow.active,
+                        action: workflow.action,
+                        reactions: [
+                          ...workflow.reactions,
+                          getEmptyEditorReaction("TODO")
+                        ]);
+                  });
+                },
+                child: const Text("+"))
           ],
         ),
       ),
