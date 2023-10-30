@@ -67,7 +67,6 @@ var OptArgument = map[string]string{
 	"google-send-email":                      "send-email",
 	"google-update-signature-email":          "update-signature-email",
 	"linear-create-issue":                    "create-issue",
-	"linear-on-issue-create":                 "",
 	"linkedin-create-post":                   "create-post",
 	"timer-seconds-interval":                 "",
 }
