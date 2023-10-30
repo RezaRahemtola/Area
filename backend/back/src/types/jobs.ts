@@ -3,6 +3,7 @@ import {
 	GithubCreateIssueParams,
 	GithubReopenIssueParams,
 	GithubRepositoryActionParams,
+	GitlabRepositoryActionParams,
 	GoogleAddFormYoutubeItemParams,
 	GoogleChangeGmailLanguageParams,
 	GoogleCreateContactParams,
@@ -35,6 +36,11 @@ export enum Jobs {
 	"github-on-pull-request-close" = "github-on-pull-request-close",
 	"github-on-pull-request-create" = "github-on-pull-request-create",
 	"github-on-pull-request-merge" = "github-on-pull-request-merge",
+	"gitlab-on-commit" = "gitlab-on-commit",
+	"gitlab-on-pull-request-close" = "gitlab-on-pull-request-close",
+	"gitlab-on-pull-request-create" = "gitlab-on-pull-request-create",
+	"gitlab-on-pull-request-merge" = "gitlab-on-pull-request-merge",
+	"gitlab-on-pull-request-reopen" = "gitlab-on-pull-request-reopen",
 	"google-create-comment-youtube" = "google-create-comment-youtube",
 	"google-create-contact" = "google-create-contact",
 	"google-create-course" = "google-create-course",
@@ -80,6 +86,11 @@ export const JobParamsClasses = {
 	"github-on-pull-request-close": GithubRepositoryActionParams,
 	"github-on-pull-request-create": GithubRepositoryActionParams,
 	"github-on-pull-request-merge": GithubRepositoryActionParams,
+	"gitlab-on-commit": GitlabRepositoryActionParams,
+	"gitlab-on-pull-request-close": GitlabRepositoryActionParams,
+	"gitlab-on-pull-request-create": GitlabRepositoryActionParams,
+	"gitlab-on-pull-request-merge": GitlabRepositoryActionParams,
+	"gitlab-on-pull-request-reopen": GitlabRepositoryActionParams,
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams,
 	"google-create-calendar": TitleParams,
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams,
@@ -119,6 +130,11 @@ export type JobsParams = Mapper<{
 	"github-on-pull-request-close": GithubRepositoryActionParams;
 	"github-on-pull-request-create": GithubRepositoryActionParams;
 	"github-on-pull-request-merge": GithubRepositoryActionParams;
+	"gitlab-on-commit": GitlabRepositoryActionParams;
+	"gitlab-on-pull-request-close": GitlabRepositoryActionParams;
+	"gitlab-on-pull-request-create": GitlabRepositoryActionParams;
+	"gitlab-on-pull-request-merge": GitlabRepositoryActionParams;
+	"gitlab-on-pull-request-reopen": GitlabRepositoryActionParams;
 	"google-change-gmail-interface-language": GoogleChangeGmailLanguageParams;
 	"google-create-calendar": TitleParams;
 	"google-create-comment-youtube": GoogleYoutubeCreateCommentParams;

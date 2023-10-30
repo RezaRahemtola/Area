@@ -141,6 +141,11 @@ export class GithubRepositoryActionParams {
 	repo: string;
 }
 
+export class GitlabRepositoryActionParams {
+	@IsString()
+	projectId: string;
+}
+
 export class GoogleCreateSlideOnPresentationParams extends UniqueJobParams {
 	@IsString()
 	presentationId: string;
