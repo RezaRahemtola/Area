@@ -168,3 +168,11 @@ export class GoogleFormConvertToQuizParams extends UniqueJobParams {
 	@IsString()
 	formId: string;
 }
+
+export class GoogleFormUpdateSpreadsheetTitleParams extends UniqueJobParams {
+	@IsString()
+	spreadsheetId: string;
+
+	@IsString()
+	title: string;
+}

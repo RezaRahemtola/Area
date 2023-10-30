@@ -16,6 +16,7 @@ from src.gmail.send_email import send_email
 from src.gmail.create_draft import create_draft
 from src.gmail.update_signature import update_signature
 from src.slides.create_slide import create_slide
+from src.spreadsheets.update_spreadsheet_title import update_spreadsheet_title
 from src.tasks.create_task_list import create_task_list
 from src.youtube.create_comment import create_comment
 from src.docs.create_document import create_document
@@ -59,6 +60,8 @@ def main():
         # Spreadsheets
         case "create-spreadsheet":
             create_spreadsheet()
+        case "update-spreadsheet-title":
+            update_spreadsheet_title()
 
         # Forms
         case "create-form":

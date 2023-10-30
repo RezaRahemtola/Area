@@ -37,7 +37,7 @@ def update_form_description():
                 }
             }]
         }
-        service.forms().forms().batchUpdate(formId=args["formId"], body=body).execute()
+        service.forms().batchUpdate(formId=args["formId"], body=body).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()

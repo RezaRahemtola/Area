@@ -13,35 +13,31 @@ from src.utils.parsing import get_arguments
 from area_back_pb2_grpc import AreaBackServiceStub
 from area_types_pb2 import JobData
 
-SCOPES = ['https://www.googleapis.com/auth/forms.body']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 TARGET = "localhost:50050"
 
 
-def convert_form_to_quiz():
-    args = get_arguments({"auth", "formId", "workflowStepId", "identifier"})
+def update_spreadsheet_title():
+    args = get_arguments({"auth", "spreadsheetId", "title", "workflowStepId", "identifier"})
     target = args["target"] if args.keys().__contains__("target") else TARGET
 
     credentials = json.loads(args["auth"])
     creds = forge_credentials(credentials["refresh_token"], SCOPES)
 
     try:
-        service = build('forms', 'v1', credentials=creds)
+        service = build('sheets', 'v4', credentials=creds)
 
         body = {
-            "requests": [
-                {
-                    "updateSettings": {
-                        "settings": {
-                            "quizSettings": {
-                                "isQuiz": True
-                            }
-                        },
-                        "updateMask": "quizSettings.isQuiz"
-                    }
+            'requests': [{
+                'updateSpreadsheetProperties': {
+                    'properties': {
+                        'title': args["title"]
+                    },
+                    'fields': 'title'
                 }
-            ]
+            }]
         }
-        service.forms().batchUpdate(formId=args["formId"], body=body).execute()
+        service.spreadsheets().batchUpdate(spreadsheetId=args["spreadsheetId"], body=body).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()
@@ -49,7 +45,7 @@ def convert_form_to_quiz():
                 "workflowStepId": args["workflowStepId"],
             })
             AreaBackServiceStub(channel).OnReaction(
-                JobData(name="google-form-convert-to-quiz", identifier=args["identifier"], params=params))
+                JobData(name="google-update-spreadsheet-title", identifier=args["identifier"], params=params))
 
     except RefreshError as error:
         with grpc.insecure_channel(target) as channel:

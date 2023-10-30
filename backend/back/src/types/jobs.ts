@@ -13,6 +13,7 @@ import {
 	GoogleEmailSignatureUpdateParams,
 	GoogleFormConvertToQuizParams,
 	GoogleFormUpdateDescriptionParams,
+	GoogleFormUpdateSpreadsheetTitleParams,
 	GoogleYoutubeCreateCommentParams,
 	LinkedinCreatePostParams,
 	NameParams,
@@ -52,6 +53,7 @@ export enum Jobs {
 	"google-form-update-description" = "google-form-update-description",
 	"google-on-new-video" = "google-on-new-video",
 	"google-send-email" = "google-send-email",
+	"google-update-spreadsheet-title" = "google-update-spreadsheet-title",
 	"google-update-signature-email" = "google-update-signature-email",
 	"linkedin-create-post" = "linkedin-create-post",
 	"timer-seconds-interval" = "timer-seconds-interval",
@@ -94,6 +96,7 @@ export const JobParamsClasses = {
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-on-new-video": YoutubeChannelParams,
 	"google-send-email": GoogleEmailParams,
+	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
@@ -130,6 +133,7 @@ export type JobsParams = Mapper<{
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-on-new-video": YoutubeChannelParams;
 	"google-send-email": GoogleEmailParams;
+	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
