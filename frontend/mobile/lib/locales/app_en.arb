@@ -28,5 +28,6 @@
     "edit": "Edit",
     "delete": "Delete",
     "editorActionDescription": "An event that starts your workflow",
-    "editorReactionDescription": "An event a workflow performs after it start"
+    "editorReactionDescription": "An event a workflow performs after it start",
+    "editorNameModalTitle": "Change workflow name"
 }

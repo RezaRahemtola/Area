@@ -1,5 +1,6 @@
 import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/action_card.dart';
+import 'package:area_mobile/components/editor/modals/name_modal.dart';
 import 'package:area_mobile/components/editor/reaction_card.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
@@ -27,6 +28,12 @@ class _EditorState extends State<Editor> {
     workflow = widget.workflow;
   }
 
+  void updateName(String newName) {
+    setState(() {
+      workflow.name = newName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,27 +47,19 @@ class _EditorState extends State<Editor> {
             Card(
               elevation: 3,
               child: ListTile(
-                title: Row(
-                  children: [
-                    Text(workflow.name),
-                    const Expanded(child: SizedBox()),
-                    Switch(
-                      activeColor: accentColor,
-                      value: workflow.active,
-                      onChanged: (bool value) {
-                        setState(() {
-                          workflow = EditorWorkflow(
-                              id: workflow.id,
-                              name: workflow.name,
-                              active: value,
-                              action: workflow.action,
-                              reactions: workflow.reactions);
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                title: Text(workflow.name),
                 tileColor: secondaryColor,
+                onTap: () =>
+                    showEditorNameModal(context, workflow.name, updateName),
+                trailing: Switch(
+                  activeColor: accentColor,
+                  value: workflow.active,
+                  onChanged: (bool value) {
+                    setState(() {
+                      workflow.active = value;
+                    });
+                  },
+                ),
               ),
             ),
             Column(
@@ -71,56 +70,17 @@ class _EditorState extends State<Editor> {
               ],
             ),
             ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    workflow = EditorWorkflow(
-                        id: workflow.id,
-                        name: workflow.name,
-                        active: workflow.active,
-                        action: workflow.action,
-                        reactions: [
-                          ...workflow.reactions,
-                          getEmptyEditorReaction("TODO")
-                        ]);
-                  });
-                },
-                child: const Text("+"))
+              child: const Text("+"),
+              onPressed: () {
+                setState(() {
+                  workflow.reactions = [
+                    ...workflow.reactions,
+                    getEmptyEditorReaction("TODO")
+                  ];
+                });
+              },
+            )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ReactionElement extends StatefulWidget {
-  final String title;
-  final Function(String) removeReaction;
-
-  const ReactionElement(
-      {Key? key, required this.title, required this.removeReaction})
-      : super(key: key);
-
-  @override
-  State<ReactionElement> createState() => _ReactionElementState();
-}
-
-class _ReactionElementState extends State<ReactionElement> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          left: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
-          bottom: BorderSide(color: Color.fromARGB(255, 150, 150, 150)),
-        ),
-      ),
-      child: ListTile(
-        title: Text(widget.title),
-        trailing: ElevatedButton(
-          onPressed: () {
-            widget.removeReaction(widget.title);
-          },
-          child: const Icon(Icons.delete),
         ),
       ),
     );
