@@ -246,8 +246,7 @@ export class WorkflowsService {
 				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
 				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
 				const reactionsToSave = await this.createWorkflowReactions(ownerId, workflow.action, reactions, workflow);
-				result ||=
-					(await queryRunner.manager.update(Workflow, workflowId, { reactions: reactionsToSave })).affected > 0;
+				result ||= !!(await queryRunner.manager.save(Workflow, { id: workflowId, reactions: reactionsToSave }));
 			}
 			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
 			await queryRunner.commitTransaction();
