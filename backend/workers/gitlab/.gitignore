@@ -1,0 +1,6 @@
+/venv
+credentials.json
+token.json
+__pycache__/
+area_*.py*
+activate/
