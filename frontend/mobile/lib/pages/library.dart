@@ -5,8 +5,21 @@ import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Library extends StatelessWidget {
-  const Library({Key? key}) : super(key: key);
+class Library extends StatefulWidget {
+  const Library({super.key});
+
+  @override
+  State<Library> createState() => _LibraryState();
+}
+
+class _LibraryState extends State<Library> {
+  late List<Workflow> workflows;
+
+  @override
+  void initState() {
+    super.initState();
+    workflows = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +43,18 @@ class Library extends StatelessWidget {
                       .error(snapshot.error.toString())),
                 );
               } else {
-                final List<Workflow> workflows = snapshot.data!.data!;
+                workflows = snapshot.data!.data!;
                 return ListView.builder(
                   itemCount: workflows.length,
                   itemBuilder: (context, index) {
                     return WorkflowTile(
                       workflow: workflows[index],
+                      onUpdate: () async {
+                        final newWorkflows = await services.workflows.getAll();
+                        setState(() {
+                          workflows = newWorkflows.data!;
+                        });
+                      },
                     );
                   },
                 );

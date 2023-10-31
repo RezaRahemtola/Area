@@ -10,9 +10,11 @@ import 'package:flutter_svg/svg.dart';
 
 class WorkflowTile extends StatefulWidget {
   final Workflow workflow;
+  final Function onUpdate;
 
   const WorkflowTile({
     required this.workflow,
+    required this.onUpdate,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +24,16 @@ class WorkflowTile extends StatefulWidget {
 
 class _WorkflowTileState extends State<WorkflowTile> {
   final GlobalKey _menuKey = GlobalKey();
+
+  _renameWorkflow(String name) async {
+    await services.workflows.rename(widget.workflow, name);
+    widget.onUpdate();
+  }
+
+  _deleteWorkflow() async {
+    await services.workflows.delete(widget.workflow);
+    widget.onUpdate();
+  }
 
   _showPopupMenu(Offset offset) async {
     double left = offset.dx - 100;
@@ -35,29 +47,36 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.title),
               title: Text(AppLocalizations.of(context)!.rename),
-              onTap: (() => showEditorNameModal(context, widget.workflow.name,
-                  (name) => services.workflows.rename(widget.workflow, name)))),
+              onTap: () {
+                Navigator.pop(context);
+                showEditorNameModal(
+                    context, widget.workflow.name, _renameWorkflow);
+              }),
         ),
         PopupMenuItem(
           value: "edit",
           child: ListTile(
-            leading: const Icon(Icons.edit),
-            title: Text(AppLocalizations.of(context)!.edit),
-            // TODO - donner un vrai workflow
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Editor(workflow: getEmptyWorkflow())),
-              ),
-            ),
-          ),
+              leading: const Icon(Icons.edit),
+              title: Text(AppLocalizations.of(context)!.edit),
+              // TODO - donner un vrai workflow
+              onTap: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Editor(workflow: getEmptyWorkflow())),
+                    )
+                  }),
         ),
         PopupMenuItem(
           value: "delete",
           child: ListTile(
             leading: const Icon(Icons.delete),
             title: Text(AppLocalizations.of(context)!.delete),
-            onTap: () => services.workflows.delete(widget.workflow),
+            onTap: () {
+              Navigator.pop(context);
+              _deleteWorkflow();
+            },
           ),
         ),
       ],
@@ -89,8 +108,8 @@ class _WorkflowTileState extends State<WorkflowTile> {
                       child: Text(widget.workflow.name),
                     ),
                     onTap: () {
-                      dynamic popUpMenustate = _menuKey.currentState;
-                      popUpMenustate.showButtonMenu();
+                      dynamic menuState = _menuKey.currentState;
+                      menuState.showButtonMenu();
                     },
                     leading: SizedBox(
                       height: 128,
