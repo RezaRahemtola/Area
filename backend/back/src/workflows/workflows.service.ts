@@ -185,6 +185,7 @@ export class WorkflowsService {
 				this.logger.log(`Launching workflow ${id}'s action...`);
 				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
 			}
+			this.logger.log(`Created workflow ${id} owned by ${ownerId}.`);
 			return {
 				id,
 			};
@@ -202,6 +203,7 @@ export class WorkflowsService {
 		const workflow = await this.workflowRepository.findOne({
 			where: {
 				id: workflowId,
+				ownerId,
 			},
 			relations: {
 				action: true,
@@ -246,7 +248,11 @@ export class WorkflowsService {
 				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
 				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
 				const reactionsToSave = await this.createWorkflowReactions(ownerId, workflow.action, reactions, workflow);
-				result ||= !!(await queryRunner.manager.save(Workflow, { id: workflowId, reactions: reactionsToSave }));
+				const resultingWorkflow = await queryRunner.manager.save(Workflow, {
+					id: workflowId,
+					reactions: reactionsToSave,
+				});
+				result ||= !!resultingWorkflow;
 			}
 			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
 			await queryRunner.commitTransaction();
@@ -384,7 +390,8 @@ export class WorkflowsService {
 		isAction: boolean = false,
 		checkExist: boolean = true,
 	) {
-		if (checkExist && (await this.workflowRepository.exist({ where: { id } })))
+		this.logger.log(`Creating workflow ${isAction ? "" : "re"}action ${id}...`);
+		if (checkExist && (await this.workflowAreaRepository.exist({ where: { id } })))
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const workflowArea = new WorkflowArea();
 		workflowArea.id = id;
