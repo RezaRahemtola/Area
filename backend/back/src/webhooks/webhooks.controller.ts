@@ -9,8 +9,8 @@ import { FacebookChallengeHub, FacebookWebhookService } from "./services/faceboo
 @ApiExcludeController()
 export class WebhooksController {
 	constructor(
-        private readonly facebookWebhookService: FacebookWebhookService,
-        private readonly githubWebhookService: GithubWebhookService,
+		private readonly facebookWebhookService: FacebookWebhookService,
+		private readonly githubWebhookService: GithubWebhookService,
 		private readonly gitlabWebhookService: GitlabWebhookService,
 		private readonly linearWebhookService: LinearWebhookService,
 	) {}

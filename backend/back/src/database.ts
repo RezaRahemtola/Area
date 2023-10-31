@@ -66,6 +66,7 @@ import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/169
 import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
 import { CreateAirTableServiceAndScopes1698856388828 } from "./services/seed/1698856388828-CreateAirTableServiceAndScopes";
 import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
+import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
 
 dotenv.config();
 
@@ -136,6 +137,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		UpdateGoogleServiceScopes1698414179394,
 		CreateAirTableServiceAndScopes1698856388828,
 		FixGitLabOnPRAreasScope1698860681718,
+		CreateFacebookStatusCreateAction1698789169408,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
