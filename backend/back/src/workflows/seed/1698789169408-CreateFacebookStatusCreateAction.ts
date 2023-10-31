@@ -15,7 +15,7 @@ export class CreateFacebookStatusCreateAction1698789169408 implements MigrationI
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow", "parameters_return_flow")
-            VALUES ('on-status-create', 'facebook', true, 'Triggers when the status of a Facebook page is updated', $1, '{${this.facebookActionsParametersFormFlow
+            VALUES ('on-status-create', 'facebook', true, 'Triggers when the status of a Facebook page is updated', $1, '{${this.facebookActionsParametersReturnFlow
 							.map((v) => `"${v}"`)
 							.join(",")}}')`,
 			[JSON.stringify(this.facebookActionsParametersFormFlow)],
