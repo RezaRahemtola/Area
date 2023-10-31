@@ -39,6 +39,7 @@ const translations = {
 			title: "Viðbrögð",
 			description: "Atburður sem verkflæði keyrir þegar það er ræst",
 		},
+		chooseEvent: "Veldu viðburð",
 	},
 	library: {
 		title: "Verkflæði mín",

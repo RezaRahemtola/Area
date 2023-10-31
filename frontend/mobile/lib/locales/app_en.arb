@@ -29,5 +29,6 @@
     "delete": "Delete",
     "editorActionDescription": "An event that starts your workflow",
     "editorReactionDescription": "An event a workflow performs after it start",
-    "editorNameModalTitle": "Change workflow name"
+    "editorNameModalTitle": "Change workflow name",
+    "editorChooseService": "Choose a service"
 }

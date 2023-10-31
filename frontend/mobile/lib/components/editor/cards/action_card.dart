@@ -1,4 +1,5 @@
 import 'package:area_mobile/colors.dart';
+import 'package:area_mobile/components/editor/steps/action/select_action_service.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,6 +34,14 @@ class _EditorActionCardState extends State<EditorActionCard> {
           ),
           title: Text(AppLocalizations.of(context)!.action),
           subtitle: Text(AppLocalizations.of(context)!.editorActionDescription),
+          onTap: () {
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return const SelectActionService();
+              },
+            );
+          },
         ));
   }
 }
