@@ -101,16 +101,16 @@ class EditorWorkflowElementService {
 
 class EditorWorkflowAction {
   final String id;
-  final EditorWorkflowElementArea? area;
-  final EditorWorkflowElementService? areaService;
+  EditorWorkflowElementArea? area;
+  EditorWorkflowElementService? areaService;
 
   EditorWorkflowAction({required this.id, this.area, this.areaService});
 }
 
 class EditorWorkflowReaction {
   final String id;
-  final EditorWorkflowElementArea? area;
-  final EditorWorkflowElementService? areaService;
+  EditorWorkflowElementArea? area;
+  EditorWorkflowElementService? areaService;
   final String previousId;
 
   EditorWorkflowReaction(

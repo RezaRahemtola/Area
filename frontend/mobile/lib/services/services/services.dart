@@ -14,8 +14,8 @@ Future<ServiceReturn<List<Service>>> getAll([String? has]) async {
 
 Future<ServiceReturn<Service>> getOne(String serviceId) async {
   try {
-    final response = await dio.get<Service>('/services/$serviceId');
-    return ServiceReturn(data: response.data);
+    final response = await dio.get<dynamic>('/services/$serviceId');
+    return ServiceReturn(data: Service.fromJson(response.data));
   } catch (e) {
     return ServiceReturn(error: e.toString());
   }

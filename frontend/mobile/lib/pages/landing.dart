@@ -1,3 +1,4 @@
+import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/pages/activity.dart';
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/pages/editor.dart';
@@ -82,27 +83,27 @@ class _LandingPageState extends State<LandingPage> {
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.workspaces_filled),
                   label: AppLocalizations.of(context)!.navbarLibrary,
-                  backgroundColor: const Color(0xFF516079),
+                  backgroundColor: primaryColor,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.explore),
                   label: AppLocalizations.of(context)!.servicesTitle,
-                  backgroundColor: const Color(0xFF516079),
+                  backgroundColor: primaryColor,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.create),
                   label: AppLocalizations.of(context)!.editorTitle,
-                  backgroundColor: const Color(0xFF516079),
+                  backgroundColor: primaryColor,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.local_activity),
                   label: AppLocalizations.of(context)!.activityTitle,
-                  backgroundColor: const Color(0xFF516079),
+                  backgroundColor: primaryColor,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.account_circle),
                   label: AppLocalizations.of(context)!.userTitle,
-                  backgroundColor: const Color(0xFF516079),
+                  backgroundColor: primaryColor,
                 ),
               ],
               currentIndex: _selectedIndex,
