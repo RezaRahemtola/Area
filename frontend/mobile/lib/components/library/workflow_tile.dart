@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/editor/modals/name_modal.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
@@ -30,9 +31,10 @@ class _WorkflowTileState extends State<WorkflowTile> {
         PopupMenuItem(
           value: "rename",
           child: ListTile(
-            leading: const Icon(Icons.title),
-            title: Text(AppLocalizations.of(context)!.rename),
-          ),
+              leading: const Icon(Icons.title),
+              title: Text(AppLocalizations.of(context)!.rename),
+              onTap: (() => showEditorNameModal(context, widget.workflow.name,
+                  (name) => services.workflows.rename(widget.workflow, name)))),
         ),
         PopupMenuItem(
           value: "edit",
