@@ -1,4 +1,5 @@
 import {
+	FacebookPageParams,
 	GithubCloseIssueParams,
 	GithubCreateIssueParams,
 	GithubReopenIssueParams,
@@ -27,6 +28,7 @@ import {
 } from "./jobParams";
 
 export enum Jobs {
+	"facebook-on-status-create" = "facebook-on-status-create",
 	"github-close-issue" = "github-close-issue",
 	"github-create-issue" = "github-create-issue",
 	"github-reopen-issue" = "github-reopen-issue",
@@ -78,6 +80,7 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 }
 
 export const JobParamsClasses = {
+	"facebook-on-status-create": FacebookPageParams,
 	"github-close-issue": GithubCloseIssueParams,
 	"github-create-issue": GithubCreateIssueParams,
 	"github-reopen-issue": GithubReopenIssueParams,
@@ -123,6 +126,7 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"facebook-on-status-create": FacebookPageParams;
 	"github-close-issue": GithubCloseIssueParams;
 	"github-create-issue": GithubCreateIssueParams;
 	"github-reopen-issue": GithubReopenIssueParams;

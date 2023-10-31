@@ -218,3 +218,8 @@ export class MiroCreateBoardParams extends UniqueJobParams {
 	@IsString()
 	description: string;
 }
+
+export class FacebookPageParams {
+	@IsString()
+	pageId: string;
+}

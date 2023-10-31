@@ -1,6 +1,7 @@
 package jobs
 
 var JobToImage = map[string]string{
+	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
 	"github-reopen-issue":                    "supervisor-github",

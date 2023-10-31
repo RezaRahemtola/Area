@@ -9,6 +9,7 @@ import { ConfigService } from "@nestjs/config";
 import { IsNumber, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { createHmac, timingSafeEqual } from "crypto";
+import { GrpcService } from "../../grpc/grpc.service";
 
 export class FacebookChallengeHub {
 	@IsString()
@@ -31,26 +32,35 @@ type FacebookFeedStatusEntry = {
 	changes: [
 		{
 			field: "feed";
-			value: {
-				item: "status";
-				created_time: number;
-				message: string;
-				from: {
-					name: string;
-				};
-			};
+			value: FacebookFeedStatus;
 		},
 	];
+};
+
+type FacebookFeedStatus = {
+	item: "status";
+	verb: string;
+	created_time: number;
+	message: string;
+	from: {
+		id: string;
+		name: string;
+	};
 };
 
 type FacebookWebhookBody = FacebookBaseBody<FacebookFeedStatusEntry>; // eslint-disable-line
 
 @Injectable()
 export class FacebookWebhookService {
+	private readonly clientSecret: string;
 	private readonly webhookSecret: string;
 
-	constructor(private readonly configService: ConfigService) {
-		this.webhookSecret = this.configService.getOrThrow<string>("FACEBOOK_CLIENT_SECRET");
+	constructor(
+		private readonly configService: ConfigService,
+		private readonly grpcService: GrpcService,
+	) {
+		this.clientSecret = this.configService.getOrThrow<string>("FACEBOOK_CLIENT_SECRET");
+		this.webhookSecret = this.configService.getOrThrow<string>("FACEBOOK_WEBHOOK_SECRET");
 	}
 
 	onChallenge(query: FacebookChallengeHub): number {
@@ -64,10 +74,54 @@ export class FacebookWebhookService {
 	}
 
 	verifySignature(signature: string, body: Buffer) {
-		const hmac = createHmac("sha256", this.webhookSecret).update(body).digest("hex");
+		const hmac = createHmac("sha256", this.clientSecret).update(body).digest("hex");
 		const trusted = Buffer.from(`sha256=${hmac}`, "utf-8");
 		const untrusted = Buffer.from(signature, "utf-8");
 		return timingSafeEqual(trusted, untrusted);
+	}
+
+	identifierFromPage(action: string, pageId: string) {
+		return `${action}-${pageId}`;
+	}
+
+	getAction(item: string, verb: string): string | null {
+		if (item === "status" && verb === "add") {
+			return "facebook-on-status-create";
+		}
+		return null;
+	}
+
+	async parseFeed(feed: FacebookFeedStatus) {
+		let action: string;
+
+		switch (feed.item) {
+			case "status":
+				action = this.getAction(feed.item, feed.verb);
+				if (action) {
+					await this.grpcService.onAction({
+						name: action,
+						identifier: this.identifierFromPage(action, feed.from.id),
+						params: {
+							message: feed.message,
+							author: feed.from.name,
+							createdAt: feed.created_time,
+						},
+					});
+				}
+				break;
+		}
+	}
+
+	async parseBody(body: FacebookWebhookBody) {
+		for (const entry of body.entry) {
+			if (entry.changes) {
+				for (const change of entry.changes) {
+					if (change.field === "feed") {
+						await this.parseFeed(change.value);
+					}
+				}
+			}
+		}
 	}
 
 	async onFacebookWebhook(signature: string, req: RawBodyRequest<unknown>): Promise<void> {
@@ -78,6 +132,6 @@ export class FacebookWebhookService {
 			throw new UnauthorizedException("Invalid signature");
 		}
 		const body: unknown = JSON.parse(req.rawBody.toString());
-		console.log(body);
+		await this.parseBody(body as FacebookWebhookBody);
 	}
 }
