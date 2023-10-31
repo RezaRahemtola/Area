@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectActionService extends StatefulWidget {
-  const SelectActionService({super.key});
+  final Function(String? selectedServiceId) onSave;
+
+  const SelectActionService({super.key, required this.onSave});
 
   @override
   State<SelectActionService> createState() => _SelectActionServiceState();
@@ -43,23 +45,34 @@ class _SelectActionServiceState extends State<SelectActionService> {
               } else {
                 final List<Service> services = [...?snapshot.data?.data];
 
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: services.length,
-                  itemBuilder: (context, index) {
-                    final service = services[index];
-                    return ServiceCard(
-                      service: service,
-                      selected: service.id == selectedServiceId,
-                      onTap: () {
-                        setState(() {
-                          selectedServiceId = service.id;
-                        });
-                      },
-                    );
-                  },
-                );
+                return Column(children: [
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: services.length,
+                    itemBuilder: (context, index) {
+                      final service = services[index];
+                      return ServiceCard(
+                        service: service,
+                        selected: service.id == selectedServiceId,
+                        onTap: () {
+                          setState(() {
+                            selectedServiceId = service.id;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: selectedServiceId != null
+                        ? () {
+                            widget.onSave(selectedServiceId);
+                            Navigator.pop(context);
+                          }
+                        : null,
+                    child: Text(AppLocalizations.of(context)!.save),
+                  )
+                ]);
               }
             },
           ),

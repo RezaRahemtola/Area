@@ -1,8 +1,10 @@
 import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/steps/reaction/select_reaction_service.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 
 class EditorReactionCard extends StatefulWidget {
   final EditorWorkflowReaction reaction;
@@ -27,19 +29,40 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
     return Card(
         elevation: 4,
         child: ListTile(
-          // TODO: update with service logo if defined
-          leading: Image.asset(
-            'assets/bolt.png',
-            color: primaryColor,
-          ),
-          title: Text(AppLocalizations.of(context)!.reaction),
+          leading: reaction.areaService?.imageUrl != null
+              ? SvgPicture.network(
+                  reaction.areaService!.imageUrl,
+                  height: 64,
+                  width: 64,
+                )
+              : Image.asset(
+                  'assets/bolt.png',
+                  color: primaryColor,
+                ),
+          title: Text(reaction.areaService?.id != null
+              ? AppLocalizations.of(context)!
+                  .reactionService(reaction.areaService!.id)
+              : AppLocalizations.of(context)!.reaction),
           subtitle:
               Text(AppLocalizations.of(context)!.editorReactionDescription),
           onTap: () {
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
-                return const SelectReactionService();
+                return SelectReactionService(
+                  onSave: (String? selectedServiceId) async {
+                    if (selectedServiceId != null) {
+                      final selectedService =
+                          await services.services.getOne(selectedServiceId);
+                      // TODO: propagate change for editor saving
+                      setState(() {
+                        reaction.areaService = EditorWorkflowElementService(
+                            id: selectedServiceId,
+                            imageUrl: selectedService.data!.imageUrl);
+                      });
+                    }
+                  },
+                );
               },
             );
           },
