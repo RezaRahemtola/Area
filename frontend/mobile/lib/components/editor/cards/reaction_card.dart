@@ -1,4 +1,5 @@
 import 'package:area_mobile/colors.dart';
+import 'package:area_mobile/components/editor/steps/reaction/select_reaction_service.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,6 +35,14 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
           title: Text(AppLocalizations.of(context)!.reaction),
           subtitle:
               Text(AppLocalizations.of(context)!.editorReactionDescription),
+          onTap: () {
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return const SelectReactionService();
+              },
+            );
+          },
         ));
   }
 }

@@ -1,9 +1,10 @@
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 
-Future<ServiceReturn<List<Service>>> getAll() async {
+Future<ServiceReturn<List<Service>>> getAll([String? has]) async {
   try {
-    final response = await dio.get<List<dynamic>>('/services');
+    final query = has != null ? "?has=$has" : "";
+    final response = await dio.get<List<dynamic>>('/services$query');
     return ServiceReturn(
         data: response.data!.map((e) => Service.fromJson(e)).toList());
   } catch (e) {

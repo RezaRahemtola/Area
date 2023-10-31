@@ -3,7 +3,7 @@ import 'package:area_mobile/services/services/services.dart';
 import 'package:area_mobile/types/services.dart';
 
 class ServicesService {
-  final Future<ServiceReturn<List<Service>>> Function() getAll;
+  final Future<ServiceReturn<List<Service>>> Function([String has]) getAll;
   final Future<ServiceReturn<Service>> Function(String serviceId) getOne;
 
   final Future<ServiceReturn<List<Area>>> Function(String serviceId)

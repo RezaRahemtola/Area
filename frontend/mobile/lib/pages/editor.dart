@@ -1,7 +1,7 @@
 import 'package:area_mobile/colors.dart';
-import 'package:area_mobile/components/editor/action_card.dart';
+import 'package:area_mobile/components/editor/cards/action_card.dart';
+import 'package:area_mobile/components/editor/cards/reaction_card.dart';
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
-import 'package:area_mobile/components/editor/reaction_card.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';

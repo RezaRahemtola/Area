@@ -39,6 +39,7 @@ const translations = {
 			title: "Reaction",
 			description: "An event a workflow performs after it start",
 		},
+		chooseEvent: "Choose an event",
 	},
 	library: {
 		title: "My workflows",

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { useTranslation } from "react-i18next";
 import { Area, AreaParameterWithValue } from "@/types/services";
 import EditorStepCardWrapper from "@/components/editor/EditorStepCardWrapper";
 import { EditorCardActions } from "@/types/editor";
@@ -31,6 +32,7 @@ const EditorSelectEventAndAccount = ({
 	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>(
 		workflowArea.area?.parameters ?? [],
 	);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -83,7 +85,7 @@ const EditorSelectEventAndAccount = ({
 			<>
 				<div className="form-control w-full max-w-xs">
 					<label className="label">
-						<span className="label-text text-neutral-content">Choose an event</span>
+						<span className="label-text text-neutral-content">{t("editor.chooseEvent")}</span>
 					</label>
 					<select
 						className="select select-bordered bg-neutral"
