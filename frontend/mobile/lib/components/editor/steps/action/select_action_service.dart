@@ -67,7 +67,6 @@ class _SelectActionServiceState extends State<SelectActionService> {
                     onPressed: selectedServiceId != null
                         ? () {
                             widget.onSave(selectedServiceId);
-                            Navigator.pop(context);
                           }
                         : null,
                     child: Text(AppLocalizations.of(context)!.save),

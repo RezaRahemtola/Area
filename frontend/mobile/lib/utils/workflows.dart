@@ -1,4 +1,4 @@
-import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:uuid/v4.dart';
 
 getEmptyEditorAction(String id) {
