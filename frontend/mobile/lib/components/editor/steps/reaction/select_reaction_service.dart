@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/services/service_card.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,15 @@ class SelectReactionService extends StatefulWidget {
 }
 
 class _SelectReactionServiceState extends State<SelectReactionService> {
+  String? selectedServiceId;
+  Future<ServiceReturn<List<Service>>>? getServicesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    getServicesFuture = services.services.getAll("reactions");
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -19,8 +29,9 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseService,
               style: const TextStyle(fontSize: 25)),
+          const SizedBox(height: 25),
           FutureBuilder<ServiceReturn<List<Service>>>(
-            future: services.services.getAll("reactions"),
+            future: getServicesFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -38,7 +49,15 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
                   itemCount: services.length,
                   itemBuilder: (context, index) {
                     final service = services[index];
-                    return Text(service.id);
+                    return ServiceCard(
+                      service: service,
+                      selected: service.id == selectedServiceId,
+                      onTap: () {
+                        setState(() {
+                          selectedServiceId = service.id;
+                        });
+                      },
+                    );
                   },
                 );
               }

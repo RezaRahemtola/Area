@@ -1,9 +1,9 @@
+import 'package:area_mobile/components/services/service_card.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/services/services/areas.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Services extends StatelessWidget {
   const Services({Key? key}) : super(key: key);
@@ -36,7 +36,18 @@ class Services extends StatelessWidget {
                     itemCount: services.length,
                     itemBuilder: (context, index) {
                       final service = services[index];
-                      return ServiceCard(service: service);
+                      return ServiceCard(
+                        service: service,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ServiceDetails(service: service),
+                            ),
+                          );
+                        },
+                      );
                     },
                   );
                 }
@@ -44,35 +55,6 @@ class Services extends StatelessWidget {
             ),
           ),
         ));
-  }
-}
-
-class ServiceCard extends StatelessWidget {
-  final Service service;
-
-  const ServiceCard({Key? key, required this.service}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      child: ListTile(
-        leading: SvgPicture.network(
-          service.imageUrl,
-          width: 32,
-          height: 32,
-        ),
-        title: Text(service.id),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ServiceDetails(service: service),
-            ),
-          );
-        },
-      ),
-    );
   }
 }
 
