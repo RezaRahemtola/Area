@@ -60,5 +60,6 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"linear-create-issue": ({ workflowStepId }) => uniqueJobId("linear-create-issue", workflowStepId),
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
 	"linkedin-create-post": ({ workflowStepId }) => uniqueJobId("linkedin-create-post", workflowStepId),
+	"miro-create-board": ({ workflowStepId }) => uniqueJobId("miro-create-board", workflowStepId),
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
 };
