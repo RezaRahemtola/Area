@@ -6,6 +6,7 @@ import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uuid/v4.dart';
 
 class Editor extends StatefulWidget {
   final EditorWorkflow workflow;
@@ -75,7 +76,8 @@ class _EditorState extends State<Editor> {
                 setState(() {
                   workflow.reactions = [
                     ...workflow.reactions,
-                    getEmptyEditorReaction("TODO")
+                    getEmptyEditorReaction(workflow.reactions.lastOrNull?.id ??
+                        const UuidV4().generate().toString())
                   ];
                 });
               },
