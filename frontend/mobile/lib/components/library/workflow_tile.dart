@@ -48,6 +48,7 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
             leading: const Icon(Icons.delete),
             title: Text(AppLocalizations.of(context)!.delete),
+            onTap: () => services.workflows.delete(widget.workflow),
           ),
         ),
       ],
