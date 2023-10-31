@@ -1,7 +1,8 @@
 import 'package:area_mobile/colors.dart';
+import 'package:area_mobile/components/editor/steps/reaction/select_reaction_event.dart';
 import 'package:area_mobile/components/editor/steps/reaction/select_reaction_service.dart';
 import 'package:area_mobile/services/dio.dart';
-import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +18,7 @@ class EditorReactionCard extends StatefulWidget {
 
 class _EditorReactionCardState extends State<EditorReactionCard> {
   late EditorWorkflowReaction reaction;
+  EditorWorkflowStep step = EditorWorkflowStep.service;
 
   @override
   void initState() {
@@ -49,20 +51,45 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
-                return SelectReactionService(
-                  onSave: (String? selectedServiceId) async {
-                    if (selectedServiceId != null) {
-                      final selectedService =
-                          await services.services.getOne(selectedServiceId);
-                      // TODO: propagate change for editor saving
-                      setState(() {
-                        reaction.areaService = EditorWorkflowElementService(
-                            id: selectedServiceId,
-                            imageUrl: selectedService.data!.imageUrl);
-                      });
-                    }
-                  },
-                );
+                return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setModalState) {
+                  if (step == EditorWorkflowStep.service) {
+                    return SelectReactionService(
+                      onSave: (String? selectedServiceId) async {
+                        if (selectedServiceId != null) {
+                          final selectedService =
+                              await services.services.getOne(selectedServiceId);
+                          // TODO: propagate change for editor saving
+                          setModalState(() {
+                            step = EditorWorkflowStep.event;
+                          });
+                          setState(() {
+                            reaction.areaService = EditorWorkflowElementService(
+                                id: selectedServiceId,
+                                imageUrl: selectedService.data!.imageUrl);
+                          });
+                        }
+                      },
+                    );
+                  } else if (step == EditorWorkflowStep.event) {
+                    return SelectReactionEvent(
+                      service: reaction.areaService!,
+                      onSave: (String? selectedServiceId) async {
+                        if (selectedServiceId != null) {
+                          final selectedService =
+                              await services.services.getOne(selectedServiceId);
+                          // TODO: propagate change for editor saving
+                          setState(() {
+                            reaction.areaService = EditorWorkflowElementService(
+                                id: selectedServiceId,
+                                imageUrl: selectedService.data!.imageUrl);
+                          });
+                        }
+                      },
+                    );
+                  }
+                  return const Text("TODO");
+                });
               },
             );
           },

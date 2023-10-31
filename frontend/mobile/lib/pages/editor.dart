@@ -2,7 +2,7 @@ import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/cards/action_card.dart';
 import 'package:area_mobile/components/editor/cards/reaction_card.dart';
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
-import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
