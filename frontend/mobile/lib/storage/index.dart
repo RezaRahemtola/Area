@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Storage {
   static const _storage = FlutterSecureStorage();
   static const accessTokenKey = "accessToken";
   static const localeKey = "locale";
+  static const themeKey = "theme";
 
   Future<void> setAccessToken(String token) {
     return _storage.write(key: accessTokenKey, value: token);
@@ -23,6 +25,14 @@ class Storage {
 
   Future<String?> getLocale() {
     return _storage.read(key: localeKey);
+  }
+
+  Future<void> setTheme(String theme) {
+    return _storage.write(key: themeKey, value: theme);
+  }
+
+  Future<String?> getTheme() {
+    return _storage.read(key: themeKey);
   }
 }
 
