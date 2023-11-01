@@ -34,5 +34,8 @@
     "editorNameModalTitle": "Change workflow name",
     "editorChooseService": "Choose a service",
     "editorChooseEvent": "Choose an event",
-    "editorChooseParams": "Define the event parameters"
+    "editorChooseParams": "Define the event parameters",
+    "connectAccount": "Connect account",
+    "noAccountToConnect": "No account to connect",
+    "accountAlreadyConnected": "Account already connected"
 }

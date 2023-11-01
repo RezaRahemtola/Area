@@ -88,15 +88,29 @@ class _SelectActionEventState extends State<SelectActionEvent> {
                               labelText: AppLocalizations.of(context)!.action),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              authInProgress = true;
-                            });
-                          },
-                          child: const Text("Connect account"),
+                          onPressed: selectedEventId != null &&
+                                  oauthUrl != null &&
+                                  oauthUrl != ""
+                              ? () {
+                                  setState(() {
+                                    authInProgress = true;
+                                  });
+                                }
+                              : null,
+                          child: Text(
+                              selectedEventId != null && oauthUrl == null
+                                  ? AppLocalizations.of(context)!
+                                      .accountAlreadyConnected
+                                  : oauthUrl == ""
+                                      ? AppLocalizations.of(context)!
+                                          .noAccountToConnect
+                                      : AppLocalizations.of(context)!
+                                          .connectAccount),
                         ),
                         ElevatedButton(
-                          onPressed: selectedEventId != null
+                          onPressed: selectedEventId != null &&
+                                  !authInProgress &&
+                                  (oauthUrl == null || oauthUrl == "")
                               ? () {
                                   widget.onSave(selectedEventId);
                                 }

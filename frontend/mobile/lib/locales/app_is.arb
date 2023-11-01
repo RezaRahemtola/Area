@@ -34,5 +34,8 @@
     "editorNameModalTitle": "Breyttu heiti verkflæðis",
     "editorChooseService": "Veldu þjónustu",
     "editorChooseEvent": "Veldu viðburð",
-    "editorChooseParams": "Stilltu viðburðastillingar"
+    "editorChooseParams": "Stilltu viðburðastillingar",
+    "connectAccount": "Tengdu reikninginn þinn",
+    "noAccountToConnect": "Enginn reikningur til að tengjast",
+    "accountAlreadyConnected": "Reikningur þegar tengdur"
 }
