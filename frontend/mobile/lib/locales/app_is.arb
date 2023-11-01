@@ -39,5 +39,6 @@
     "connectAccount": "Tengdu reikninginn þinn",
     "noAccountToConnect": "Enginn reikningur til að tengjast",
     "accountAlreadyConnected": "Reikningur þegar tengdur",
-    "searchBar": "Leita..."
+    "searchBar": "Leita...",
+    "emptyNotice": "Ekkert að sýna hér..."
 }

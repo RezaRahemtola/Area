@@ -39,5 +39,6 @@
     "connectAccount": "Connect account",
     "noAccountToConnect": "No account to connect",
     "accountAlreadyConnected": "Account already connected",
-    "searchBar": "Search..."
+    "searchBar": "Search...",
+    "emptyNotice": "Nothing to show here..."
 }
