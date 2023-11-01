@@ -52,6 +52,7 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
               AppLocalizations.of(context)!.editorReactionDescription),
           onTap: () {
             showModalBottomSheet<void>(
+              isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
                 return StatefulBuilder(
