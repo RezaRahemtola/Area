@@ -33,16 +33,19 @@ class _EditorActionCardState extends State<EditorActionCard> {
   Widget build(BuildContext context) {
     return Card(
         elevation: 4,
+        color: Theme.of(context).colorScheme.primary,
         child: ListTile(
             leading: action.areaService?.imageUrl != null
                 ? SvgPicture.network(
                     action.areaService!.imageUrl,
-                    height: 64,
-                    width: 64,
+                    height: 50,
+                    width: 50,
                   )
                 : Image.asset(
                     'assets/bolt.png',
-                    color: primaryColor,
+                    height: 50,
+                    width: 50,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
             title: Text(action.areaService?.id != null
                 ? AppLocalizations.of(context)!
