@@ -2,7 +2,7 @@ class AreaParameterWithValue {
   final String name;
   final String type;
   final bool required;
-  final Object? value;
+  Object? value;
 
   AreaParameterWithValue(
       {required this.name,
@@ -13,7 +13,7 @@ class AreaParameterWithValue {
 
 class EditorWorkflowElementArea {
   final String id;
-  final List<AreaParameterWithValue> parameters;
+  List<AreaParameterWithValue> parameters;
 
   EditorWorkflowElementArea({required this.id, required this.parameters});
 }
