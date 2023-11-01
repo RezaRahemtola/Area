@@ -2,6 +2,7 @@ import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -79,10 +80,27 @@ class _SelectReactionEventState extends State<SelectReactionEvent> {
                             setState(() {
                               selectedEventId = value;
                               oauthUrl = connectOAuth.data;
+
+                              if (connectOAuth.data == null ||
+                                  connectOAuth.data == "") return;
                               webviewController = WebViewController()
                                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                                ..setNavigationDelegate(NavigationDelegate(
+                                    onNavigationRequest:
+                                        (NavigationRequest request) {
+                                  if (request.url.startsWith(
+                                      '${dotenv.env['OAUTH_REDIRECTION_URL']}')) {
+                                    setState(() {
+                                      authInProgress = false;
+                                      oauthUrl = null;
+                                    });
+                                    return NavigationDecision.prevent;
+                                  }
+                                  return NavigationDecision.navigate;
+                                }))
                                 ..setBackgroundColor(const Color(0x00000000))
-                                ..loadRequest(Uri.parse(connectOAuth.data!));
+                                ..loadRequest(Uri.parse(connectOAuth.data!))
+                                ..setUserAgent("random");
                             });
                           },
                           decoration: InputDecoration(
