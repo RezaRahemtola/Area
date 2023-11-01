@@ -88,6 +88,7 @@ class _WorkflowTileState extends State<WorkflowTile> {
   Widget build(BuildContext context) {
     return Card(
         elevation: 8,
+        color: Theme.of(context).colorScheme.primary,
         child: FutureBuilder<ServiceReturn<List<Service>>>(
             future: services.services.getAll(),
             builder: (context, snapshot) {
