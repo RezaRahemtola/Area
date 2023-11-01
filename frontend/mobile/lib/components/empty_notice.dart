@@ -8,13 +8,13 @@ class EmptyNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 25.0),
-      padding: EdgeInsets.only(left: 75.0, right: 75.0, top: 15.0, bottom: 15.0),
+      margin: const EdgeInsets.only(top: 25.0),
+      padding: const EdgeInsets.only(left: 75.0, right: 75.0, top: 15.0, bottom: 15.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(15.0)),
       ),
-      child: Text("nothing to show here"),
+      child: const Text("nothing to show here"),
     );
   }
 }
