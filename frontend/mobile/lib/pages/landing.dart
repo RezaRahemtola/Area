@@ -20,7 +20,8 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
-  String locale = "en";
+  String language = "en";
+  String theme = "light";
 
   @override
   void initState() {
@@ -30,20 +31,33 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _checkLocale() async {
-    final storageLocale = await storage.getLocale();
-    if (storageLocale == null) {
-      storage.setLocale(locale);
+    final storageLanguage = await storage.getLocale();
+    final storageTheme = await storage.getTheme();
+
+    if (storageLanguage == null) {
+      storage.setLocale(language);
     } else {
       setState(() {
-        locale = storageLocale;
+        language = storageLanguage;
+      });
+    }
+
+    if (storageTheme == null) {
+      storage.setTheme(theme);
+    } else {
+      setState(() {
+        theme = storageTheme;
       });
     }
   }
 
   void _updateSettings(String newLocale, String newTheme) async {
     storage.setLocale(newLocale);
+    storage.setTheme(newTheme);
+
     setState(() {
-      locale = newLocale;
+      language = newLocale;
+      theme = newTheme;
     });
   }
 
@@ -71,7 +85,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Localizations.override(
       context: context,
-      locale: Locale(locale),
+      locale: Locale(language),
       child: Builder(
         builder: (context) {
           if (!isLoggedIn) {
@@ -107,7 +121,7 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               ],
               currentIndex: _selectedIndex,
-              selectedItemColor: Colors.amber[800],
+              selectedItemColor: secondaryColor,
               onTap: _onItemTapped,
             ),
             body: IndexedStack(
