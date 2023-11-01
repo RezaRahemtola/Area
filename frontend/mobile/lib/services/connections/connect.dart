@@ -4,6 +4,10 @@ import 'package:dio/dio.dart';
 
 Future<ServiceReturn<String>> connect(
     String serviceId, List<String> scopes) async {
+  if (scopes.isEmpty) {
+    // Account doesn't need connection
+    return const ServiceReturn(data: "");
+  }
   try {
     final response = await dio.post('/connections/$serviceId/connect',
         data: {"scopes": scopes.toList()});
