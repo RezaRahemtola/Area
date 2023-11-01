@@ -16,14 +16,20 @@ export class UsersService {
 		private readonly userRepository: Repository<User>,
 	) {}
 
-	async createUser(email: string, passwordHash?: string, isAdmin: boolean = false): Promise<boolean> {
+	async createUser(email: string, passwordHash?: string, isAdmin: boolean = false): Promise<User> {
 		try {
-			await this.userRepository.save({ email, passwordHash, isAdmin, settings: { language: "en", theme: "auto" } });
-			this.logger.log(`Created ${isAdmin ? "admin " : " "}user with ${email}`);
-			return true;
+			this.logger.log(`Creating ${isAdmin ? "admin " : ""}user with ${email}...`);
+			const user = await this.userRepository.save({
+				email,
+				passwordHash,
+				isAdmin,
+				settings: { language: "en", theme: "auto" },
+			});
+			this.logger.log(`Created ${isAdmin ? "admin " : ""}user with ${email} and id ${user.id}`);
+			return user;
 		} catch ({ message }) {
 			this.logger.error(`Failed to create ${isAdmin ? "admin " : ""}user with ${email}: ${message}`);
-			return false;
+			return null;
 		}
 	}
 

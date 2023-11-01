@@ -7,6 +7,7 @@ import {
 	Get,
 	InternalServerErrorException,
 	Logger,
+	NotFoundException,
 	Param,
 	Post,
 	Req,
@@ -29,13 +30,11 @@ import { OauthService } from "./oauth.service";
 import { ServiceIdParamDto } from "../param-validators.dto";
 import { ServicesService } from "src/services/services.service";
 
-@ApiBearerAuth()
 @ApiTags("OAuth Connections")
 @ApiProduces("application/json")
 @ApiUnauthorizedResponse({
 	description: "The user access token was either invalid or expired",
 })
-@UseGuards(JwtAuthGuard)
 @Controller("connections")
 export class ConnectionsController {
 	private readonly logger = new Logger(ConnectionsController.name);
@@ -46,10 +45,12 @@ export class ConnectionsController {
 		private readonly servicesService: ServicesService,
 	) {}
 
+	@ApiBearerAuth()
 	@ApiOkResponse({
 		description: "Returns the available connections for the current user",
 		type: [String],
 	})
+	@UseGuards(JwtAuthGuard)
 	@Get("/available")
 	async getAvailableConnections(
 		@Req()
@@ -58,13 +59,15 @@ export class ConnectionsController {
 		return this.connectionsService.getAvailableConnections(userId);
 	}
 
+	@ApiBearerAuth()
 	@ApiOkResponse({
-		description: "The user connection was successfully created",
+		description: "The link to connect to the service",
 	})
 	@ApiParam({
 		description: "The service of the user connection to create",
 		name: "serviceId",
 	})
+	@UseGuards(JwtAuthGuard)
 	@Post("/:serviceId/connect")
 	async connect(
 		@Req()
@@ -76,7 +79,6 @@ export class ConnectionsController {
 	) {
 		if (!(await this.servicesService.getService(serviceId)).needConnection)
 			throw new ForbiddenException("This service does not need a connection");
-		scopes = [...new Set(scopes)];
 		this.logger.log(`Connecting user ${userId} to service ${serviceId} with scopes: ${scopes.join(", ")}`);
 		const missingScopes = await this.connectionsService.getNewScopesForConnection(userId, serviceId, scopes);
 		if (!missingScopes) {
@@ -96,6 +98,29 @@ export class ConnectionsController {
 	}
 
 	@ApiOkResponse({
+		description: "The link to authenticate with the service",
+	})
+	@ApiParam({
+		description: "The service to authenticate with",
+		name: "serviceId",
+	})
+	@Get("/:serviceId/authenticate")
+	async authenticate(
+		@Param()
+		{ serviceId }: ServiceIdParamDto,
+	) {
+		const service = this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId];
+		if (!service) throw new NotFoundException("This service does not exist");
+		const loginScopes = service.loginScopes ?? ["email"];
+		if (loginScopes.length === 0) throw new ForbiddenException("You cannot authenticate with this service");
+		this.logger.log(`Creating and sending an authentication url to connect to service ${serviceId}`);
+		return {
+			oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes("authenticate", serviceId, loginScopes),
+		};
+	}
+
+	@ApiBearerAuth()
+	@ApiOkResponse({
 		description: "The user connection was successfully deleted",
 	})
 	@ApiNotFoundResponse({
@@ -105,6 +130,7 @@ export class ConnectionsController {
 		description: "The service of the user connection to delete",
 		name: "serviceId",
 	})
+	@UseGuards(JwtAuthGuard)
 	@Delete("/:serviceId")
 	async deleteUserConnection(@Req() { user: { id: userId } }: APIRequest, @Param() { serviceId }: ServiceIdParamDto) {
 		if (!(await this.connectionsService.deleteUserConnection(userId, serviceId)))
