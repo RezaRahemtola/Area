@@ -1,4 +1,3 @@
-import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/pages/activity.dart';
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/pages/editor.dart';
@@ -104,31 +103,31 @@ class _LandingPageState extends State<LandingPage> {
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.workspaces_filled),
                   label: AppLocalizations.of(context)!.navbarLibrary,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.explore),
                   label: AppLocalizations.of(context)!.servicesTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.create),
                   label: AppLocalizations.of(context)!.editorTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.local_activity),
                   label: AppLocalizations.of(context)!.activityTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.account_circle),
                   label: AppLocalizations.of(context)!.userTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ],
               currentIndex: _selectedIndex,
-              selectedItemColor: secondaryColor,
+              selectedItemColor: Theme.of(context).colorScheme.secondary,
               onTap: _onItemTapped,
             ),
             body: IndexedStack(
