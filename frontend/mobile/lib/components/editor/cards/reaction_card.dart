@@ -45,8 +45,8 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
               ? AppLocalizations.of(context)!
                   .reactionService(reaction.areaService!.id)
               : AppLocalizations.of(context)!.reaction),
-          subtitle:
-              Text(AppLocalizations.of(context)!.editorReactionDescription),
+          subtitle: Text(reaction.area?.id ??
+              AppLocalizations.of(context)!.editorReactionDescription),
           onTap: () {
             showModalBottomSheet<void>(
               context: context,
@@ -74,15 +74,24 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                   } else if (step == EditorWorkflowStep.event) {
                     return SelectReactionEvent(
                       service: reaction.areaService!,
-                      onSave: (String? selectedServiceId) async {
-                        if (selectedServiceId != null) {
-                          final selectedService =
-                              await services.services.getOne(selectedServiceId);
+                      onSave: (String? selectedEventId) async {
+                        if (selectedEventId != null) {
+                          final selectedArea = (await services.services
+                                  .getServiceReactions(
+                                      reaction.areaService!.id))
+                              .data!
+                              .firstWhere(
+                                  (element) => element.id == selectedEventId);
                           // TODO: propagate change for editor saving
                           setState(() {
-                            reaction.areaService = EditorWorkflowElementService(
-                                id: selectedServiceId,
-                                imageUrl: selectedService.data!.imageUrl);
+                            reaction.area = EditorWorkflowElementArea(
+                                id: selectedEventId,
+                                parameters: selectedArea.parametersFormFlow
+                                    .map((param) => AreaParameterWithValue(
+                                        name: param.name,
+                                        type: param.type,
+                                        required: param.required))
+                                    .toList());
                           });
                         }
                       },
