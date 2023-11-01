@@ -61,6 +61,9 @@ export const update = async (
 		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
+		if (isAxiosError(error)) {
+			return { data: null, error: error.response?.data?.message ?? SERVICE_ERROR_UNKNOWN };
+		}
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
 	}
 };
@@ -72,6 +75,9 @@ export const rename = async (id: string, name: string) => {
 		});
 		return { data: response.data, error: undefined };
 	} catch (error) {
+		if (isAxiosError(error)) {
+			return { data: null, error: error.response?.data?.message ?? SERVICE_ERROR_UNKNOWN };
+		}
 		return { data: null, error: SERVICE_ERROR_UNKNOWN };
 	}
 };
