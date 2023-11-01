@@ -32,5 +32,6 @@
     "editorActionDescription": "An event that starts your workflow",
     "editorReactionDescription": "An event a workflow performs after it start",
     "editorNameModalTitle": "Change workflow name",
-    "editorChooseService": "Choose a service"
+    "editorChooseService": "Choose a service",
+    "editorChooseEvent": "Choose an event"
 }

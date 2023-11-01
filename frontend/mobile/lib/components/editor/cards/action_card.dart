@@ -45,8 +45,8 @@ class _EditorActionCardState extends State<EditorActionCard> {
                 ? AppLocalizations.of(context)!
                     .actionService(action.areaService!.id)
                 : AppLocalizations.of(context)!.action),
-            subtitle:
-                Text(AppLocalizations.of(context)!.editorActionDescription),
+            subtitle: Text(action.area?.id ??
+                AppLocalizations.of(context)!.editorActionDescription),
             onTap: () {
               showModalBottomSheet<void>(
                   context: context,
@@ -76,17 +76,24 @@ class _EditorActionCardState extends State<EditorActionCard> {
                       } else if (step == EditorWorkflowStep.event) {
                         return SelectActionEvent(
                           service: action.areaService!,
-                          onSave: (String? selectedServiceId) async {
-                            if (selectedServiceId != null) {
-                              final selectedService = await services.services
-                                  .getOne(selectedServiceId);
+                          onSave: (String? selectedEventId) async {
+                            if (selectedEventId != null) {
+                              final selectedArea = (await services.services
+                                      .getServiceActions(
+                                          action.areaService!.id))
+                                  .data!
+                                  .firstWhere((element) =>
+                                      element.id == selectedEventId);
                               // TODO: propagate change for editor saving
                               setState(() {
-                                action.areaService =
-                                    EditorWorkflowElementService(
-                                        id: selectedServiceId,
-                                        imageUrl:
-                                            selectedService.data!.imageUrl);
+                                action.area = EditorWorkflowElementArea(
+                                    id: selectedEventId,
+                                    parameters: selectedArea.parametersFormFlow
+                                        .map((param) => AreaParameterWithValue(
+                                            name: param.name,
+                                            type: param.type,
+                                            required: param.required))
+                                        .toList());
                               });
                             }
                           },

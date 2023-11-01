@@ -31,7 +31,7 @@ class _SelectActionEventState extends State<SelectActionEvent> {
         height: 700,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
-          Text(AppLocalizations.of(context)!.editorChooseService,
+          Text(AppLocalizations.of(context)!.editorChooseEvent,
               style: const TextStyle(fontSize: 25)),
           const SizedBox(height: 25),
           FutureBuilder<ServiceReturn<List<Area>>>(
