@@ -8,48 +8,79 @@ class Activity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(AppLocalizations.of(context)!.activityTitle),
           automaticallyImplyLeading: false),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: const <Widget>[
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-            ActivityEntry(
-              time: '10:00 AM',
-              description: 'Workflow: Spotify -> YouTube',
-            ),
-            Divider(),
-          ],
+      body: Container(
+        color: Theme.of(context).colorScheme.onSecondary,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: <Widget>[
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+              const Divider(),
+              Card(
+                elevation: 4,
+                color: Theme.of(context).colorScheme.primary,
+                child: const ActivityEntry(
+                  time: '10:00 AM',
+                  description: 'Workflow: Spotify -> YouTube',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
