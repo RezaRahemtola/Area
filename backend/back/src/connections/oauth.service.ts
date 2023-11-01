@@ -76,6 +76,23 @@ export class OauthService {
 		};
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForGitHubConnection({ token_type, access_token }: Record<string, any>) {
+		const {
+			data: [{ email }],
+		} = await this.httpService.axiosRef.get<[{ email: string }]>("https://api.github.com/user/emails", {
+			headers: {
+				Accept: "application/vnd.github.v3+json",
+				Authorization: `${token_type} ${access_token}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			data: {
+				per_page: 1,
+			},
+		});
+		return email;
+	}
+
 	async createGoogleConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
@@ -102,7 +119,7 @@ export class OauthService {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async getEmailForGoogleConnection({ token_type, access_token }: any) {
+	async getEmailForGoogleConnection({ token_type, access_token }: Record<string, any>) {
 		const {
 			data: { email },
 		} = await this.httpService.axiosRef.get<{ email: string }>("https://www.googleapis.com/userinfo/v2/me", {
@@ -354,6 +371,7 @@ export class OauthService {
 				)}&state=${userId}&redirect_uri=${oauthCallbackUrlFactory("github")}`,
 			connectionFactory: this.createGitHubConnection.bind(this),
 			loginScopes: ["user:email"],
+			getEmailForConnectionData: this.getEmailForGitHubConnection.bind(this),
 		},
 		google: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
