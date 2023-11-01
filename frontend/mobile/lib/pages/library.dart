@@ -25,7 +25,6 @@ class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
-    String actualSearch = "";
 
     return Scaffold(
       appBar: AppBar(
