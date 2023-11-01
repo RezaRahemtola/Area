@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final Function(String theme) updateTheme;
+
+  const RegisterPage({super.key, required this.updateTheme});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -61,7 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   formKey: _formKey,
                                   emailController: emailController,
                                   passwordController: passwordController,
-                                  passwordReController: passwordReController)
+                                  passwordReController: passwordReController,
+                                  updateTheme: widget.updateTheme)
                             ],
                           ),
                         ))))));
@@ -69,14 +72,16 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class RegisterButton extends StatelessWidget {
-  const RegisterButton({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required this.emailController,
-    required this.passwordController,
-    required this.passwordReController,
-  }) : _formKey = formKey;
+  const RegisterButton(
+      {super.key,
+      required GlobalKey<FormState> formKey,
+      required this.emailController,
+      required this.passwordController,
+      required this.passwordReController,
+      required this.updateTheme})
+      : _formKey = formKey;
 
+  final Function(String theme) updateTheme;
   final GlobalKey<FormState> _formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -90,8 +95,11 @@ class RegisterButton extends StatelessWidget {
       children: [
         ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LandingPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LandingPage(updateTheme: updateTheme)));
             },
             child: Row(
               children: [
@@ -126,7 +134,9 @@ class RegisterButton extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const LandingPage()),
+                          builder: (context) => LandingPage(
+                                updateTheme: updateTheme,
+                              )),
                     );
                   } else if (result.error != null) {
                     ScaffoldMessenger.of(context).showSnackBar(

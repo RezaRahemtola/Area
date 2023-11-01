@@ -32,12 +32,6 @@ ThemeData _buildDarkTheme() {
   );
 }
 
-bool isDarkMode = false;
-
-void toogleThemeMode() {
-  isDarkMode = !isDarkMode;
-}
-
 class MyApp extends StatefulWidget {
   final ThemeData _lightTheme = _buildLightTheme();
   final ThemeData _darkTheme = _buildDarkTheme();
@@ -45,21 +39,31 @@ class MyApp extends StatefulWidget {
   MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String darkTheme = "auto";
+
+  void toggleThemeMode(String theme) {
+    setState(() {
+      darkTheme = theme;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AREA',
-      theme: _lightTheme,
-      darkTheme: _darkTheme,
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: const LandingPage(),
+      theme: widget._lightTheme,
+      darkTheme: widget._darkTheme,
+      themeMode: darkTheme == "auto"
+          ? ThemeMode.system
+          : (darkTheme == "dark" ? ThemeMode.dark : ThemeMode.light),
+      home: LandingPage(updateTheme: toggleThemeMode),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    throw UnimplementedError();
   }
 }
