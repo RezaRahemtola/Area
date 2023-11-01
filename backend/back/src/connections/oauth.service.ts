@@ -209,6 +209,18 @@ export class OauthService {
 		};
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForMicrosoftGraphConnection({ token_type, access_token }: Record<string, any>) {
+		const {
+			data: { mail },
+		} = await this.httpService.axiosRef.get<{ mail: string }>("https://graph.microsoft.com/v1.0/me", {
+			headers: {
+				Authorization: `${token_type} ${access_token}`,
+			},
+		});
+		return mail;
+	}
+
 	async createFacebookConnection(code: string, granted_scopes?: string) {
 		const {
 			data: { ...connectionData },
@@ -424,7 +436,11 @@ export class OauthService {
 				)}&redirect_uri=${oauthCallbackUrlFactory("miro")}&state=${userId}`,
 			connectionFactory: this.createMiroConnection.bind(this),
 		},
-		"microsoft-graph": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("graph"),
+		"microsoft-graph": {
+			...this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("graph"),
+			getEmailForConnectionData: this.getEmailForMicrosoftGraphConnection.bind(this),
+			loginScopes: ["User.Read"],
+		},
 		"microsoft-onenote": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("onenote"),
 		"microsoft-outlook": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("outlook"),
 		linear: {
