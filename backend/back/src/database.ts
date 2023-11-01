@@ -64,6 +64,7 @@ import { CreateLinearCreateIssueAreas1698614949784 } from "./workflows/seed/1698
 import { CreateGitlabCommitPRActions1698678924392 } from "./workflows/seed/1698678924392-CreateGitlabCommitPRActions";
 import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/1698793446046-CreateMiroCreateBoardReaction";
 import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
+import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
 
 dotenv.config();
 
@@ -132,6 +133,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGitlabCommitPRActions1698678924392,
 		CreateMiroCreateBoardReaction1698793446046,
 		UpdateGoogleServiceScopes1698414179394,
+		FixGitLabOnPRAreasScope1698860681718,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
