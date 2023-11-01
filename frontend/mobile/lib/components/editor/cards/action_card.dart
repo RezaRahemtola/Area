@@ -10,8 +10,10 @@ import 'package:flutter_svg/svg.dart';
 
 class EditorActionCard extends StatefulWidget {
   final EditorWorkflowAction action;
+  final Function(EditorWorkflowAction updatedAction) onUpdate;
 
-  const EditorActionCard({super.key, required this.action});
+  const EditorActionCard(
+      {super.key, required this.action, required this.onUpdate});
 
   @override
   State<EditorActionCard> createState() => _EditorActionCardState();
@@ -60,7 +62,6 @@ class _EditorActionCardState extends State<EditorActionCard> {
                             if (selectedServiceId != null) {
                               final selectedService = await services.services
                                   .getOne(selectedServiceId);
-                              // TODO: propagate change for editor saving
                               setModalState(() {
                                 step = EditorWorkflowStep.event;
                               });
@@ -71,6 +72,7 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                         imageUrl:
                                             selectedService.data!.imageUrl);
                               });
+                              widget.onUpdate(action);
                             }
                           },
                         );
@@ -85,7 +87,6 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                   .data!
                                   .firstWhere((element) =>
                                       element.id == selectedEventId);
-                              // TODO: propagate change for editor saving
                               setModalState(() {
                                 step = EditorWorkflowStep.parameters;
                               });
@@ -99,6 +100,7 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                             required: param.required))
                                         .toList());
                               });
+                              widget.onUpdate(action);
                             }
                           },
                         );
@@ -109,6 +111,7 @@ class _EditorActionCardState extends State<EditorActionCard> {
                             setState(() {
                               action.area!.parameters = params;
                             });
+                            widget.onUpdate(action);
                           },
                         );
                       }
