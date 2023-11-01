@@ -28,6 +28,13 @@ class _EditorParamFieldState extends State<EditorParamField> {
         initialValue: parameter.value as String?,
         onChanged: ((String value) => parameter.value = value),
       );
+    } else if (parameter.type == "long-text") {
+      return TextFormField(
+          decoration: InputDecoration(labelText: parameter.name),
+          initialValue: parameter.value as String?,
+          onChanged: ((String value) => parameter.value = value),
+          keyboardType: TextInputType.multiline,
+          maxLines: null);
     } else if (parameter.type == "integer") {
       return TextFormField(
           decoration: InputDecoration(labelText: parameter.name),
