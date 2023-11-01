@@ -8,6 +8,10 @@ type CheckConnectionReturn = {
 	oauthUrl: string | null;
 };
 const connect = async (serviceId: string, scopes: string[]): Promise<ServiceReturn<CheckConnectionReturn>> => {
+	if (scopes.length === 0) {
+		// Account doesn't need connection
+		return { data: { oauthUrl: "" }, error: undefined };
+	}
 	try {
 		const response = await axiosInstance.post<CheckConnectionReturn>(`/connections/${serviceId}/connect`, {
 			scopes,
