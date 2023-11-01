@@ -7,7 +7,6 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { IsNumber, IsString } from "class-validator";
-import { Type } from "class-transformer";
 import { createHmac, timingSafeEqual } from "crypto";
 import { GrpcService } from "../../grpc/grpc.service";
 
@@ -16,7 +15,6 @@ export class FacebookChallengeHub {
 	"hub.mode": string;
 	@IsString()
 	"hub.verify_token": string;
-	@Type(() => Number)
 	@IsNumber()
 	"hub.challenge": number;
 }
@@ -48,7 +46,7 @@ type FacebookFeedStatus = {
 	};
 };
 
-type FacebookWebhookBody = FacebookBaseBody<FacebookFeedStatusEntry>; // eslint-disable-line
+type FacebookWebhookBody = FacebookBaseBody<FacebookFeedStatusEntry>;
 
 @Injectable()
 export class FacebookWebhookService {
