@@ -33,6 +33,7 @@ class _UserHero extends State<User> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           actions: [
             IconButton(
               onPressed: () {
@@ -43,33 +44,35 @@ class _UserHero extends State<User> {
           ],
           title: Text(AppLocalizations.of(context)!.userTitle),
           automaticallyImplyLeading: false),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<ServiceReturn<UserMe>>(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              final UserMe? user = snapshot.data?.data;
-              if (user != null) {
-                newLocale = user.settings.language;
-                newTheme = user.settings.theme;
-                newEmail = user.email;
-              }
+      body: Container(
+        color: Theme.of(context).colorScheme.onSecondary,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: FutureBuilder<ServiceReturn<UserMe>>(
+            future: future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else {
+                final UserMe? user = snapshot.data?.data;
+                if (user != null) {
+                  newLocale = user.settings.language;
+                  newTheme = user.settings.theme;
+                  newEmail = user.email;
+                }
 
-              if (user == null) {
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.onDisconnect();
-                      },
-                      child: Text(AppLocalizations.of(context)!.logout),
-                    ),
-                  ],
-                );
-              }
+                if (user == null) {
+                  return Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          widget.onDisconnect();
+                        },
+                        child: Text(AppLocalizations.of(context)!.logout),
+                      ),
+                    ],
+                  );
+                }
 
               return Column(
                 children: [
