@@ -1,9 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ConnectionsService } from "./connections.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ServiceName, ServicesService, SubServiceNameFromServiceName } from "../services/services.service";
-import UserConnection from "./entities/user-connection.entity";
 
 type OAuthResponse = {
 	access_token: string;
@@ -19,6 +17,12 @@ type MiroOAuthResponse = {
 	user_id: string;
 } & OAuthResponse;
 
+export type UserConnectionData = {
+	scopes: string[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	data: Record<string, any>;
+};
+
 type OAuthCallbackUrlFactory<TWantedService extends ServiceName> = <TActualService extends TWantedService>(
 	service: TActualService,
 ) => `${string}/connections/oauth/${TActualService}/callback`;
@@ -30,7 +34,9 @@ type ServiceOAuthUrlFactory<TService extends ServiceName> = <TBaseUrl extends st
 ) => `${TBaseUrl}${string}`;
 type ServiceOAuthFactory<TService extends ServiceName> = {
 	urlFactory: ServiceOAuthUrlFactory<TService>;
-	connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
+	connectionFactory: (code: string, granted_scopes?: string) => Promise<UserConnectionData>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	getEmailForConnectionData?: (data: Record<string, any>) => Promise<string>;
 	loginScopes?: string[];
 };
 type ServiceOAuthFactories<TServices extends ServiceName> = {
@@ -42,13 +48,12 @@ export class OauthService {
 	private readonly logger = new Logger(OauthService.name);
 
 	constructor(
-		private readonly connectionsService: ConnectionsService,
 		private readonly httpService: HttpService,
 		private readonly configService: ConfigService,
 		private readonly servicesService: ServicesService,
 	) {}
 
-	async createGitHubConnection(userId: string, code: string) {
+	async createGitHubConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -65,15 +70,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(
-			userId,
-			"github",
-			scope !== "" ? scope.split(",") : [],
-			connectionData,
-		);
+		return {
+			scopes: scope !== " " ? scope.split(",") : [],
+			data: connectionData,
+		};
 	}
 
-	async createGoogleConnection(userId: string, code: string) {
+	async createGoogleConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -92,10 +95,25 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "google", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createTwitterConnection(userId: string, code: string) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForGoogleConnection({ token_type, access_token }: any) {
+		const {
+			data: { email },
+		} = await this.httpService.axiosRef.get<{ email: string }>("https://www.googleapis.com/userinfo/v2/me", {
+			headers: {
+				Authorization: `${token_type} ${access_token}`,
+			},
+		});
+		return email;
+	}
+
+	async createTwitterConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -118,10 +136,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "twitter", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createLinkedInConnection(userId: string, code: string) {
+	async createLinkedInConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -140,14 +161,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(","), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createMicrosoftConnection(
-		userId: string,
-		code: string,
-		subservice: SubServiceNameFromServiceName<ServiceName, "microsoft">,
-	) {
+	async createMicrosoftConnection(code: string, subService: SubServiceNameFromServiceName<ServiceName, "microsoft">) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -157,7 +177,7 @@ export class OauthService {
 				client_secret: this.configService.getOrThrow<string>("MICROSOFT_CLIENT_SECRET"),
 				code,
 				grant_type: "authorization_code",
-				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY(`microsoft-${subservice}`),
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY(`microsoft-${subService}`),
 			},
 			{
 				headers: {
@@ -166,15 +186,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(
-			userId,
-			`microsoft-${subservice}`,
-			scope.split(" "),
-			connectionData,
-		);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createFacebookConnection(userId: string, code: string, granted_scopes?: string) {
+	async createFacebookConnection(code: string, granted_scopes?: string) {
 		const {
 			data: { ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -192,10 +210,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "facebook", granted_scopes.split(","), connectionData);
+		return {
+			scopes: granted_scopes.split(","),
+			data: connectionData,
+		};
 	}
 
-	async createMiroConnection(userId: string, code: string) {
+	async createMiroConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<MiroOAuthResponse>(
@@ -214,10 +235,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "miro", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createLinearConnection(userId: string, code: string) {
+	async createLinearConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<Omit<OAuthResponse, "scope"> & { scope: string[] }>(
@@ -236,10 +260,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "linear", scope, connectionData);
+		return {
+			scopes: scope,
+			data: connectionData,
+		};
 	}
 
-	async createDiscordConnection(userId: string, code: string) {
+	async createDiscordConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -260,10 +287,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "discord", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createGitlabConnection(userId: string, code: string) {
+	async createGitlabConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -282,7 +312,10 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
@@ -310,7 +343,7 @@ export class OauthService {
 			)}&prompt=consent&response_mode=query&state=${userId}&response_type=code&redirect_uri=${oauthCallbackUrlFactory(
 				`microsoft-${subService}`,
 			)}`,
-		connectionFactory: (userId, code) => this.createMicrosoftConnection(userId, code, subService),
+		connectionFactory: (code) => this.createMicrosoftConnection(code, subService),
 	});
 
 	public readonly SERVICE_OAUTH_FACTORIES: ServiceOAuthFactories<ServiceName> = {
@@ -330,6 +363,7 @@ export class OauthService {
 					"google",
 				)}`,
 			connectionFactory: this.createGoogleConnection.bind(this),
+			getEmailForConnectionData: this.getEmailForGoogleConnection.bind(this),
 		},
 		twitter: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>

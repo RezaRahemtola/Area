@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, isUUID, Validate } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export default class OauthDto {
@@ -20,9 +20,11 @@ export class OauthCallbackDto {
 	code!: string;
 
 	@ApiProperty({
-		description: "The user identifier to connect (stored in oauth state)",
+		description: "The user identifier or 'authentification' to connect (stored in oauth state)",
 	})
-	@IsUUID(4)
+	@IsString()
+	@IsNotEmpty()
+	@Validate((value: unknown) => isUUID(value) || value === "authentification")
 	state!: string;
 
 	@ApiPropertyOptional({
@@ -72,4 +74,19 @@ export class OauthCallbackDto {
 	@IsOptional()
 	@IsString()
 	client_id!: string;
+
+	@ApiPropertyOptional({
+		description: "The Google user auth state",
+	})
+	@IsOptional()
+	@IsNumber()
+	authuser!: number;
+
+	@ApiPropertyOptional({
+		description: "The Google prompt state",
+	})
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	prompt!: string;
 }
