@@ -89,4 +89,20 @@ export class OauthCallbackDto {
 	@IsString()
 	@IsNotEmpty()
 	prompt!: string;
+
+	@ApiPropertyOptional({
+		description: "The code challenge sent to the OAuth provider",
+	})
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	code_challenge!: string;
+
+	@ApiPropertyOptional({
+		description: "The code challenge method sent to the OAuth provider",
+	})
+	@IsOptional()
+	@IsString()
+	@IsNotEmpty()
+	code_challenge_method!: string;
 }
