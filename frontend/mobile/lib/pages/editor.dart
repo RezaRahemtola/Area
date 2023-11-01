@@ -2,6 +2,7 @@ import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/cards/action_card.dart';
 import 'package:area_mobile/components/editor/cards/reaction_card.dart';
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
+import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,12 @@ import 'package:uuid/v4.dart';
 
 class Editor extends StatefulWidget {
   final EditorWorkflow workflow;
+  final Function onSave;
 
   const Editor({
     super.key,
     required this.workflow,
+    required this.onSave,
   });
 
   @override
@@ -21,7 +24,7 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  late EditorWorkflow workflow;
+  EditorWorkflow workflow = getEmptyWorkflow();
 
   @override
   void initState() {
@@ -67,6 +70,7 @@ class _EditorState extends State<Editor> {
               children: <Widget>[
                 EditorActionCard(
                   action: workflow.action,
+                  key: ValueKey(workflow.action.id),
                   onUpdate: (EditorWorkflowAction updatedAction) {
                     setState(() {
                       workflow.action = updatedAction;
@@ -75,6 +79,7 @@ class _EditorState extends State<Editor> {
                 ),
                 ...workflow.reactions.map(((reaction) => EditorReactionCard(
                       reaction: reaction,
+                      key: ValueKey(reaction.id),
                       onUpdate: (EditorWorkflowReaction updatedReaction) {
                         setState(() {
                           workflow.reactions = workflow.reactions.map((r) {
@@ -96,6 +101,18 @@ class _EditorState extends State<Editor> {
                         const UuidV4().generate().toString())
                   ];
                 });
+              },
+            ),
+            ElevatedButton(
+              child: Text(AppLocalizations.of(context)!.save),
+              onPressed: () async {
+                final response = await services.workflows.create(workflow);
+                if (response.data != null) {
+                  setState(() {
+                    workflow = getEmptyWorkflow();
+                  });
+                  widget.onSave();
+                }
               },
             )
           ],

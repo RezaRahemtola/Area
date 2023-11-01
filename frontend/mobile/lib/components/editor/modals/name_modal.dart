@@ -13,7 +13,13 @@ class EditorNameModal extends StatefulWidget {
 }
 
 class _EditorNameModalState extends State<EditorNameModal> {
-  final valueController = TextEditingController();
+  late TextEditingController valueController;
+
+  @override
+  void initState() {
+    super.initState();
+    valueController = TextEditingController(text: widget.currentName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,6 @@ class _EditorNameModalState extends State<EditorNameModal> {
       title: Text(AppLocalizations.of(context)!.editorNameModalTitle),
       content: TextField(
         controller: valueController,
-        decoration: InputDecoration(hintText: widget.currentName),
       ),
       actions: <Widget>[
         TextButton(
