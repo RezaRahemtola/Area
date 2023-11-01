@@ -2,6 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ServiceName, ServicesService, SubServiceNameFromServiceName } from "../services/services.service";
+import { createHash } from "node:crypto";
 
 type OAuthResponse = {
 	access_token: string;
@@ -46,12 +47,17 @@ type ServiceOAuthFactories<TServices extends ServiceName> = {
 @Injectable()
 export class OauthService {
 	private readonly logger = new Logger(OauthService.name);
+	private readonly OAUTH_CODE_CHALLENGE = this.configService.getOrThrow<string>("OAUTH_CODE_CHALLENGE");
+	private readonly OAUTH_CODE_CHALLENGE_S265_HASH: string;
 
 	constructor(
 		private readonly httpService: HttpService,
 		private readonly configService: ConfigService,
 		private readonly servicesService: ServicesService,
-	) {}
+	) {
+		const sha256Hash = createHash("sha256").update(this.OAUTH_CODE_CHALLENGE);
+		this.OAUTH_CODE_CHALLENGE_S265_HASH = sha256Hash.digest("base64url");
+	}
 
 	async createGitHubConnection(code: string) {
 		const {
@@ -347,6 +353,43 @@ export class OauthService {
 		};
 	}
 
+	async createAirTableConnection(code: string) {
+		this.logger.debug(`Code verifier is: ${this.OAUTH_CODE_CHALLENGE}`);
+		try {
+			const {
+				data: { scope, ...connectionData },
+			} = await this.httpService.axiosRef.post<OAuthResponse>(
+				"https://airtable.com/oauth2/v1/token",
+				{
+					code,
+					client_id: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID"),
+					client_secret: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_SECRET"),
+					redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("airtable"),
+					grant_type: "authorization_code",
+					code_verifier: this.OAUTH_CODE_CHALLENGE,
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/x-www-form-urlencoded",
+						Authorization: `Basic ${Buffer.from(
+							`${this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID")}:${this.configService.getOrThrow<string>(
+								"AIRTABLE_CLIENT_SECRET",
+							)}`,
+						).toString("base64")}`,
+					},
+				},
+			);
+			return {
+				scopes: scope.split(" "),
+				data: connectionData,
+			};
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	}
+
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
 		const { oauthUrl } = await this.servicesService.getService(serviceId);
 		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
@@ -411,7 +454,6 @@ export class OauthService {
 			connectionFactory: () => {
 				throw new Error("Cannot create OAuth connection for timer service");
 			},
-			loginScopes: [],
 		},
 		linkedin: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
@@ -465,6 +507,15 @@ export class OauthService {
 					scopes.join("+"),
 				)}&redirect_uri=${oauthCallbackUrlFactory("gitlab")}&state=${userId}`,
 			connectionFactory: this.createGitlabConnection.bind(this),
+		},
+		airtable: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"AIRTABLE_CLIENT_ID",
+				)}&scope=${encodeURI(scopes.join(" "))}&redirect_uri=${oauthCallbackUrlFactory("airtable")}&code_challenge=${
+					this.OAUTH_CODE_CHALLENGE_S265_HASH
+				}&code_challenge_method=S256&state=${userId}`,
+			connectionFactory: this.createAirTableConnection.bind(this),
 		},
 	};
 }
