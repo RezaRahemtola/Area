@@ -1,4 +1,3 @@
-import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/pages/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,10 +12,10 @@ ThemeData _buildLightTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
       colorScheme: base.colorScheme.copyWith(
-    primary: primaryColor,
-    secondary: secondaryColor,
-    onPrimary: accentColor,
-    onSecondary: accentColor,
+    primary: const Color(0xFF718099),
+    secondary: const Color(0xFFF1895C),
+    onPrimary: const Color(0xFFFFFFFF),
+    onSecondary: const Color(0xFFC5C6C6),
   ));
 }
 
@@ -24,11 +23,11 @@ ThemeData _buildDarkTheme() {
   final ThemeData base = ThemeData.dark();
   return base.copyWith(
     colorScheme: base.colorScheme.copyWith(
-      primary: Colors.teal, // Personnalisez les couleurs selon vos besoins
-      secondary: Colors.orange,
-      onPrimary: Colors.white,
-      onSecondary: Colors.black,
-    ),
+        primary: const Color(
+            0xFF516079), // Personnalisez les couleurs selon vos besoins
+        secondary: const Color(0xFFF1895C),
+        onPrimary: const Color(0xFFC5C6C6),
+        onSecondary: const Color(0xFF2E3244)),
   );
 }
 
