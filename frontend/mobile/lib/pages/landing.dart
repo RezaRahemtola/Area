@@ -11,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  final Function(String theme) updateTheme;
+
+  const LandingPage({super.key, required this.updateTheme});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -28,10 +30,10 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     _checkAuth();
-    _checkLocale();
+    _checkSettings();
   }
 
-  void _checkLocale() async {
+  void _checkSettings() async {
     final storageLanguage = await storage.getLocale();
     final storageTheme = await storage.getTheme();
 
@@ -49,6 +51,7 @@ class _LandingPageState extends State<LandingPage> {
       setState(() {
         theme = storageTheme;
       });
+      widget.updateTheme(theme);
     }
   }
 
@@ -60,6 +63,7 @@ class _LandingPageState extends State<LandingPage> {
       language = newLocale;
       theme = newTheme;
     });
+    widget.updateTheme(newTheme);
   }
 
   void _checkAuth() async {
@@ -90,7 +94,10 @@ class _LandingPageState extends State<LandingPage> {
       child: Builder(
         builder: (context) {
           if (!isLoggedIn) {
-            return LoginPage(onSuccess: _checkAuth);
+            return LoginPage(
+              onSuccess: _checkAuth,
+              updateTheme: widget.updateTheme,
+            );
           }
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
