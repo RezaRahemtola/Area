@@ -20,8 +20,8 @@ class _LibraryState extends State<Library> {
     workflows = [];
   }
 
-    bool needRefresh = true;
-    List<Workflow> initialWorkflows = [];
+  bool needRefresh = true;
+  List<Workflow> initialWorkflows = [];
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
