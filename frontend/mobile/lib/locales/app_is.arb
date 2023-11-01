@@ -38,5 +38,6 @@
     "editorChooseParams": "Stilltu viðburðastillingar",
     "connectAccount": "Tengdu reikninginn þinn",
     "noAccountToConnect": "Enginn reikningur til að tengjast",
-    "accountAlreadyConnected": "Reikningur þegar tengdur"
+    "accountAlreadyConnected": "Reikningur þegar tengdur",
+    "searchBar": "Leita..."
 }

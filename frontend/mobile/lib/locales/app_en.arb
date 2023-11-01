@@ -38,5 +38,6 @@
     "editorChooseParams": "Define the event parameters",
     "connectAccount": "Connect account",
     "noAccountToConnect": "No account to connect",
-    "accountAlreadyConnected": "Account already connected"
+    "accountAlreadyConnected": "Account already connected",
+    "searchBar": "Search..."
 }

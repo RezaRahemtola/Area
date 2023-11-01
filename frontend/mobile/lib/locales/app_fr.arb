@@ -38,5 +38,6 @@
     "editorChooseParams": "Définissez les paramètres de l'événement",
     "connectAccount": "Connectez votre compte",
     "noAccountToConnect": "Aucun compte à connecter",
-    "accountAlreadyConnected": "Compte déjà connecté"
+    "accountAlreadyConnected": "Compte déjà connecté",
+    "searchBar": "Rechercher..."
 }
