@@ -1,9 +1,7 @@
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
-import 'package:area_mobile/pages/editor.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
-import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,15 +56,8 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.edit),
               title: Text(AppLocalizations.of(context)!.edit),
-              // TODO - donner un vrai workflow
-              onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              Editor(workflow: getEmptyWorkflow())),
-                    )
-                  }),
+              // TODO - open workflow editor
+              onTap: () => {}),
         ),
         PopupMenuItem(
           value: "delete",
