@@ -44,7 +44,7 @@ class _LibraryState extends State<Library> {
                   child: TextField(
                     controller: searchController,
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: AppLocalizations.of(context)!.searchBar,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.clear),
                         onPressed: () => searchController.clear(),
@@ -81,8 +81,10 @@ class _LibraryState extends State<Library> {
                     } else {
                       if (needRefresh) {
                         needRefresh = false;
-                        initialWorkflows = snapshot.data!.data!;
-                        workflows = snapshot.data!.data!;
+                        if (snapshot.data!.data != null) {
+                          initialWorkflows = snapshot.data!.data!;
+                          workflows = snapshot.data!.data!;
+                        }
                       }
                       return ListView.builder(
                         itemCount: workflows.length,
