@@ -19,13 +19,11 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 		name: string;
 		imageUrl: string;
 		scopes: Array<string>;
-		prefix: string;
 	}> = [
 		{
 			name: "microsoft-graph",
 			imageUrl: "https://asset.brandfetch.io/idchmboHEZ/iduap5ndHF.svg",
 			scopes: ["User.Read", "Mail.Read"],
-			prefix: "https://graph.microsoft.com/",
 		},
 		{
 			name: "microsoft-onenote",
@@ -39,7 +37,6 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 				"Notes.ReadWrite.All",
 				"Notes.ReadWrite.CreatedByApp",
 			],
-			prefix: "https://onenote.com/",
 		},
 		{
 			name: "microsoft-outlook",
@@ -75,7 +72,6 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 				"User.ReadBasic.All",
 				"User.ReadWrite",
 			],
-			prefix: "https://outlook.office.com/",
 		},
 	];
 
@@ -91,7 +87,7 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
        WHERE "service_id" = 'microsoft'`,
 		);
 		await Promise.all(
-			this.MICROSOFT_SUBSERVICES.map(async ({ name, imageUrl, scopes, prefix }) => {
+			this.MICROSOFT_SUBSERVICES.map(async ({ name, imageUrl, scopes }) => {
 				await queryRunner.query(
 					`INSERT INTO "service" ("id", "image_url", "oauth_url")
            VALUES ('${name}',
@@ -101,7 +97,7 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 				await queryRunner.query(
 					`INSERT INTO "service_scope" ("id", "service_id")
           VALUES
-          ${[...scopes.map((scope) => `${prefix}${scope}`), ...["profile", "openid", "email"]]
+          ${[...scopes.map((scope) => `${scope}`), ...["profile", "openid", "email"]]
 						.map((scope) => `('${scope}', '${name}')`)
 						.join(", ")}`,
 				);
@@ -122,7 +118,7 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
       ${this.OLD_MICROSOFT_SERVICE_SCOPES.map((scope) => `('${scope}', 'microsoft')`).join(", ")}`,
 		);
 		await Promise.all(
-			this.MICROSOFT_SUBSERVICES.map(async ({ name, scopes, prefix }) => {
+			this.MICROSOFT_SUBSERVICES.map(async ({ name, scopes }) => {
 				await queryRunner.query(
 					`DELETE
            FROM "service"
@@ -132,7 +128,7 @@ export class RemoveMicrosoftServiceAndCreateMicrosoftSubServices1698260218158 im
 					`DELETE
            FROM "service_scope"
            WHERE "service_id" = '${name}'
-             AND "id" IN (${scopes.map((scope) => `'${prefix}${scope}'`).join(",")})`,
+             AND "id" IN (${scopes.map((scope) => `'${scope}'`).join(",")})`,
 				);
 			}),
 		);
