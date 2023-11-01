@@ -29,7 +29,7 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
         height: 700,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
-          Text(AppLocalizations.of(context)!.editorChooseEvent,
+          Text(AppLocalizations.of(context)!.editorChooseParams,
               style: const TextStyle(fontSize: 25)),
           const SizedBox(height: 25),
           Column(

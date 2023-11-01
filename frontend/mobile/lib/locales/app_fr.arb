@@ -33,5 +33,6 @@
     "editorReactionDescription": "Un événement qu'un workflow exécutes une fois lancé",
     "editorNameModalTitle": "Changez le nom du workflow",
     "editorChooseService": "Choisissez un service",
-    "editorChooseEvent": "Choisissez un événement"
+    "editorChooseEvent": "Choisissez un événement",
+    "editorChooseParams": "Définissez les paramètres de l'événement"
 }

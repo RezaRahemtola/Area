@@ -113,7 +113,7 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                       },
                     );
                   }
-                  return const Text("TODO");
+                  return const Text("Never displayed");
                 });
               },
             );
