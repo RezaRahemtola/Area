@@ -51,7 +51,6 @@ export class OauthController {
 				token = await this.authService.loginUserViaOauthForServiceId(email, serviceId);
 			}
 			queryParams.append("token", token);
-			queryParams.append("success", "1");
 		} else {
 			const connection = await this.connectionService.createUserConnection(userId, serviceId, scopes, data);
 			if (!connection) throw new InternalServerErrorException("Failed to create connection");
