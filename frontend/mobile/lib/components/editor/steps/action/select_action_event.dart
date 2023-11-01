@@ -71,7 +71,6 @@ class _SelectActionEventState extends State<SelectActionEvent> {
                     onPressed: selectedEventId != null
                         ? () {
                             widget.onSave(selectedEventId);
-                            Navigator.pop(context);
                           }
                         : null,
                     child: Text(AppLocalizations.of(context)!.save),

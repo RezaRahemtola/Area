@@ -1,6 +1,7 @@
 import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_event.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_service.dart';
+import 'package:area_mobile/components/editor/steps/select_area_params.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,9 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                   .firstWhere((element) =>
                                       element.id == selectedEventId);
                               // TODO: propagate change for editor saving
+                              setModalState(() {
+                                step = EditorWorkflowStep.parameters;
+                              });
                               setState(() {
                                 action.area = EditorWorkflowElementArea(
                                     id: selectedEventId,
@@ -98,8 +102,17 @@ class _EditorActionCardState extends State<EditorActionCard> {
                             }
                           },
                         );
+                      } else if (step == EditorWorkflowStep.parameters) {
+                        return SelectAreaParams(
+                          area: action.area!,
+                          onSave: (List<AreaParameterWithValue> params) async {
+                            setState(() {
+                              action.area!.parameters = params;
+                            });
+                          },
+                        );
                       }
-                      return const Text("TODO");
+                      return const Text("Never displayed");
                     });
                   });
             }));
