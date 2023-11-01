@@ -354,40 +354,34 @@ export class OauthService {
 	}
 
 	async createAirTableConnection(code: string) {
-		this.logger.debug(`Code verifier is: ${this.OAUTH_CODE_CHALLENGE}`);
-		try {
-			const {
-				data: { scope, ...connectionData },
-			} = await this.httpService.axiosRef.post<OAuthResponse>(
-				"https://airtable.com/oauth2/v1/token",
-				{
-					code,
-					client_id: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID"),
-					client_secret: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_SECRET"),
-					redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("airtable"),
-					grant_type: "authorization_code",
-					code_verifier: this.OAUTH_CODE_CHALLENGE,
+		const {
+			data: { scope, ...connectionData },
+		} = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://airtable.com/oauth2/v1/token",
+			{
+				code,
+				client_id: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_SECRET"),
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("airtable"),
+				grant_type: "authorization_code",
+				code_verifier: this.OAUTH_CODE_CHALLENGE,
+			},
+			{
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
+					Authorization: `Basic ${Buffer.from(
+						`${this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID")}:${this.configService.getOrThrow<string>(
+							"AIRTABLE_CLIENT_SECRET",
+						)}`,
+					).toString("base64")}`,
 				},
-				{
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/x-www-form-urlencoded",
-						Authorization: `Basic ${Buffer.from(
-							`${this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID")}:${this.configService.getOrThrow<string>(
-								"AIRTABLE_CLIENT_SECRET",
-							)}`,
-						).toString("base64")}`,
-					},
-				},
-			);
-			return {
-				scopes: scope.split(" "),
-				data: connectionData,
-			};
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
+			},
+		);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
