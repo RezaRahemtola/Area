@@ -1,4 +1,13 @@
-import { Controller, Get, InternalServerErrorException, Logger, Param, Query, Res } from "@nestjs/common";
+import {
+	Controller,
+	ForbiddenException,
+	Get,
+	InternalServerErrorException,
+	Logger,
+	Param,
+	Query,
+	Res,
+} from "@nestjs/common";
 import { OauthService } from "./oauth.service";
 import { OauthCallbackDto } from "./dto/oauth.dto";
 import { Response } from "express";
@@ -38,7 +47,9 @@ export class OauthController {
 		);
 		const queryParams: URLSearchParams = new URLSearchParams();
 		if (userId === "authenticate") {
-			const email = await this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId].getEmailForConnectionData(data);
+			const emailGetter = this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId].getEmailForConnectionData;
+			if (!emailGetter) throw new ForbiddenException("You cannot authenticate with this service");
+			const email = await emailGetter(data);
 			if (!email) throw new InternalServerErrorException("Failed to get email from connection data");
 
 			const user = await this.usersService.getUser({ email }).catch(() => null);
