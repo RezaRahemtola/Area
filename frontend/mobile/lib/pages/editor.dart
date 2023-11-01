@@ -65,9 +65,25 @@ class _EditorState extends State<Editor> {
             ),
             Column(
               children: <Widget>[
-                EditorActionCard(action: workflow.action),
-                ...workflow.reactions.map(
-                    ((reaction) => EditorReactionCard(reaction: reaction))),
+                EditorActionCard(
+                  action: workflow.action,
+                  onUpdate: (EditorWorkflowAction updatedAction) {
+                    setState(() {
+                      workflow.action = updatedAction;
+                    });
+                  },
+                ),
+                ...workflow.reactions.map(((reaction) => EditorReactionCard(
+                      reaction: reaction,
+                      onUpdate: (EditorWorkflowReaction updatedReaction) {
+                        setState(() {
+                          workflow.reactions = workflow.reactions.map((r) {
+                            if (r.id == reaction.id) return updatedReaction;
+                            return r;
+                          }).toList();
+                        });
+                      },
+                    ))),
               ],
             ),
             ElevatedButton(

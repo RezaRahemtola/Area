@@ -1,5 +1,6 @@
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditorParamField extends StatefulWidget {
   final AreaParameterWithValue parameter;
@@ -21,12 +22,21 @@ class _EditorParamFieldState extends State<EditorParamField> {
 
   @override
   Widget build(BuildContext context) {
-    if (parameter.type == "short-text") {
+    if (["short-text", "email"].contains(parameter.type)) {
       return TextFormField(
         decoration: InputDecoration(labelText: parameter.name),
         initialValue: parameter.value as String?,
         onChanged: ((String value) => parameter.value = value),
       );
+    } else if (parameter.type == "integer") {
+      return TextFormField(
+          decoration: InputDecoration(labelText: parameter.name),
+          initialValue: parameter.value as String?,
+          onChanged: ((String value) => parameter.value = value),
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ]);
     }
     return const Text("Never displayed");
   }

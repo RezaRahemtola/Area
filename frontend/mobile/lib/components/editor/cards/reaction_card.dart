@@ -10,8 +10,10 @@ import 'package:flutter_svg/svg.dart';
 
 class EditorReactionCard extends StatefulWidget {
   final EditorWorkflowReaction reaction;
+  final Function(EditorWorkflowReaction updatedReaction) onUpdate;
 
-  const EditorReactionCard({super.key, required this.reaction});
+  const EditorReactionCard(
+      {super.key, required this.reaction, required this.onUpdate});
 
   @override
   State<EditorReactionCard> createState() => _EditorReactionCardState();
@@ -60,7 +62,6 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                         if (selectedServiceId != null) {
                           final selectedService =
                               await services.services.getOne(selectedServiceId);
-                          // TODO: propagate change for editor saving
                           setModalState(() {
                             step = EditorWorkflowStep.event;
                           });
@@ -69,6 +70,7 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                                 id: selectedServiceId,
                                 imageUrl: selectedService.data!.imageUrl);
                           });
+                          widget.onUpdate(reaction);
                         }
                       },
                     );
@@ -83,7 +85,6 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                               .data!
                               .firstWhere(
                                   (element) => element.id == selectedEventId);
-                          // TODO: propagate change for editor saving
                           setModalState(() {
                             step = EditorWorkflowStep.parameters;
                           });
@@ -97,6 +98,7 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                                         required: param.required))
                                     .toList());
                           });
+                          widget.onUpdate(reaction);
                         }
                       },
                     );
@@ -107,6 +109,7 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                         setState(() {
                           reaction.area!.parameters = params;
                         });
+                        widget.onUpdate(reaction);
                       },
                     );
                   }
