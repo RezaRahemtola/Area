@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/components/library/workflow_tile.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
@@ -67,43 +68,47 @@ class _LibraryState extends State<Library> {
                   ),
                 ),
               ),
-              Expanded(
-                child: FutureBuilder<ServiceReturn<List<Workflow>>>(
-                  future: services.workflows.getAll(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(AppLocalizations.of(context)!
-                            .error(snapshot.error.toString())),
-                      );
-                    } else {
-                      if (needRefresh) {
-                        needRefresh = false;
-                        if (snapshot.data!.data != null) {
-                          initialWorkflows = snapshot.data!.data!;
-                          workflows = snapshot.data!.data!;
-                        }
+              FutureBuilder<ServiceReturn<List<Workflow>>>(
+                future: services.workflows.getAll(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!
+                          .error(snapshot.error.toString())),
+                    );
+                  } else {
+                    if (needRefresh) {
+                      needRefresh = false;
+                      if (snapshot.data!.data != null) {
+                        initialWorkflows = snapshot.data!.data!;
+                        workflows = snapshot.data!.data!;
                       }
-                      return ListView.builder(
-                        itemCount: workflows.length,
-                        itemBuilder: (context, index) {
-                          return WorkflowTile(
-                            workflow: workflows[index],
-                            onUpdate: () async {
-                              final newWorkflows =
-                                  await services.workflows.getAll();
-                              setState(() {
-                                workflows = newWorkflows.data!;
-                              });
-                            },
-                          );
-                        },
+                    }
+                    if (workflows.isEmpty) {
+                      return const EmptyNotice();
+                    } else {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: workflows.length,
+                          itemBuilder: (context, index) {
+                            return WorkflowTile(
+                              workflow: workflows[index],
+                              onUpdate: () async {
+                                final newWorkflows =
+                                    await services.workflows.getAll();
+                                setState(() {
+                                  workflows = newWorkflows.data!;
+                                });
+                              },
+                            );
+                          },
+                        ),
                       );
                     }
-                  },
-                ),
+                  }
+                },
               ),
             ],
           ),
