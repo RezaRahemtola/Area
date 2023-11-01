@@ -20,8 +20,13 @@ class _LibraryState extends State<Library> {
     super.initState();
   }
 
+  bool needRefresh = true;
+  List<Workflow> initialWorkflows = [];
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+    String actualSearch = "";
+
     return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.libraryTitle),
@@ -31,34 +36,76 @@ class _LibraryState extends State<Library> {
         color: const Color(0xFFC5C6C6),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: FutureBuilder<ServiceReturn<List<Workflow>>>(
-            future: services.workflows.getAll(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text(AppLocalizations.of(context)!
-                      .error(snapshot.error.toString())),
-                );
-              } else {
-                workflows = snapshot.data!.data!;
-                return ListView.builder(
-                  itemCount: workflows.length,
-                  itemBuilder: (context, index) {
-                    return WorkflowTile(
-                      workflow: workflows[index],
-                      onUpdate: () async {
-                        final newWorkflows = await services.workflows.getAll();
-                        setState(() {
-                          workflows = newWorkflows.data!;
-                        });
-                      },
-                    );
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Container(
+                  color: Colors.white,
+                  child: TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () => searchController.clear(),
+                      ),
+                      prefixIcon: IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () async {
+                          actualSearch = searchController.text;
+                          setState(() {
+                            workflows = initialWorkflows
+                                .where((element) => element.name
+                                    .contains(searchController.text))
+                                .toList();
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: FutureBuilder<ServiceReturn<List<Workflow>>>(
+                  future: services.workflows.getAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(AppLocalizations.of(context)!
+                            .error(snapshot.error.toString())),
+                      );
+                    } else {
+                      if (needRefresh) {
+                        needRefresh = false;
+                        initialWorkflows = snapshot.data!.data!;
+                        workflows = snapshot.data!.data!;
+                      }
+                      return ListView.builder(
+                        itemCount: workflows.length,
+                        itemBuilder: (context, index) {
+                          return WorkflowTile(
+                            workflow: workflows[index],
+                            onUpdate: () async {
+                              final newWorkflows =
+                                  await services.workflows.getAll();
+                              setState(() {
+                                workflows = newWorkflows.data!;
+                              });
+                            },
+                          );
+                        },
+                      );
+                    }
                   },
-                );
-              }
-            },
+                ),
+              ),
+            ],
           ),
         ),
       ),
