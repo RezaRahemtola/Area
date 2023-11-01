@@ -48,6 +48,7 @@ export class WorkflowsService {
 			where: { id, ownerId, active: isActive },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
+		this.logger.debug(`Got workflow: ${JSON.stringify(workflow)}`);
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const {
 			name,
