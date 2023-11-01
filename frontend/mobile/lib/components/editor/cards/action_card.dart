@@ -1,4 +1,3 @@
-import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_event.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_service.dart';
 import 'package:area_mobile/components/editor/steps/select_area_params.dart';

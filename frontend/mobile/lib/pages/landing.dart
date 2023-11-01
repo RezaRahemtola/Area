@@ -22,7 +22,7 @@ class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
   int libraryKey = 0;
-  String language = "en";
+  String locale = "en";
   String theme = "light";
 
   @override
@@ -33,14 +33,14 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _checkSettings() async {
-    final storageLanguage = await storage.getLocale();
+    final storageLocale = await storage.getLocale();
     final storageTheme = await storage.getTheme();
 
-    if (storageLanguage == null) {
-      storage.setLocale(language);
+    if (storageLocale == null) {
+      storage.setLocale(locale);
     } else {
       setState(() {
-        language = storageLanguage;
+        locale = storageLocale;
       });
     }
 
@@ -59,7 +59,7 @@ class _LandingPageState extends State<LandingPage> {
     storage.setTheme(newTheme);
 
     setState(() {
-      language = newLocale;
+      locale = newLocale;
       theme = newTheme;
     });
     widget.updateTheme(newTheme);
@@ -89,7 +89,7 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Localizations.override(
       context: context,
-      locale: Locale(language),
+      locale: Locale(locale),
       child: Builder(
         builder: (context) {
           if (!isLoggedIn) {

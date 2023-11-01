@@ -1,4 +1,3 @@
-import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,16 +14,20 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.primary,
       elevation: 8,
       child: ListTile(
         selected: selected,
-        selectedTileColor: secondaryColor,
+        selectedTileColor: Theme.of(context).colorScheme.secondary,
         leading: SvgPicture.network(
           service.imageUrl,
           width: 32,
           height: 32,
         ),
-        title: Text(service.id),
+        title: Text(service.id,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            )),
         onTap: onTap,
       ),
     );
