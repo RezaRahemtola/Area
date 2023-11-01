@@ -8,10 +8,16 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class SelectActionEvent extends StatefulWidget {
   final Function(String? selectedEventId) onSave;
+  final Function onBack;
   final EditorWorkflowElementService service;
+  final EditorWorkflowElementArea? area;
 
   const SelectActionEvent(
-      {super.key, required this.onSave, required this.service});
+      {super.key,
+      required this.onSave,
+      required this.service,
+      required this.onBack,
+      required this.area});
 
   @override
   State<SelectActionEvent> createState() => _SelectActionEventState();
@@ -30,6 +36,7 @@ class _SelectActionEventState extends State<SelectActionEvent> {
   void initState() {
     super.initState();
     getActionsFuture = services.services.getServiceActions(widget.service.id);
+    selectedEventId = widget.area?.id;
   }
 
   @override
@@ -125,16 +132,24 @@ class _SelectActionEventState extends State<SelectActionEvent> {
                                       : AppLocalizations.of(context)!
                                           .connectAccount),
                         ),
-                        ElevatedButton(
-                          onPressed: selectedEventId != null &&
-                                  !authInProgress &&
-                                  (oauthUrl == null || oauthUrl == "")
-                              ? () {
-                                  widget.onSave(selectedEventId);
-                                }
-                              : null,
-                          child: Text(AppLocalizations.of(context)!.save),
-                        )
+                        ButtonBar(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ElevatedButton(
+                                onPressed: () => widget.onBack(),
+                                child: Text(AppLocalizations.of(context)!.back),
+                              ),
+                              ElevatedButton(
+                                onPressed: selectedEventId != null &&
+                                        !authInProgress &&
+                                        (oauthUrl == null || oauthUrl == "")
+                                    ? () {
+                                        widget.onSave(selectedEventId);
+                                      }
+                                    : null,
+                                child: Text(AppLocalizations.of(context)!.save),
+                              )
+                            ])
                       ]);
                     }
                   },

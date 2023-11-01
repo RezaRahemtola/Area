@@ -6,8 +6,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SelectAreaParams extends StatefulWidget {
   final Function(List<AreaParameterWithValue> params) onSave;
   final EditorWorkflowElementArea area;
+  final Function onBack;
 
-  const SelectAreaParams({super.key, required this.onSave, required this.area});
+  const SelectAreaParams(
+      {super.key,
+      required this.onSave,
+      required this.area,
+      required this.onBack});
 
   @override
   State<SelectAreaParams> createState() => _SelectAreaParamsState();
@@ -26,7 +31,7 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 700,
+        height: 600,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseParams,
@@ -37,13 +42,19 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
                 .map((param) => EditorParamField(parameter: param))
                 .toList(),
           ),
-          ElevatedButton(
-            onPressed: () {
-              widget.onSave(parameters);
-              Navigator.pop(context);
-            },
-            child: Text(AppLocalizations.of(context)!.save),
-          )
+          ButtonBar(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            ElevatedButton(
+              onPressed: () => widget.onBack(),
+              child: Text(AppLocalizations.of(context)!.back),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                widget.onSave(parameters);
+                Navigator.pop(context);
+              },
+              child: Text(AppLocalizations.of(context)!.save),
+            )
+          ])
         ]));
   }
 }
