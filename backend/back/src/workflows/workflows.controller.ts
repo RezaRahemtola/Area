@@ -84,7 +84,22 @@ export class WorkflowsController {
 	})
 	@Get()
 	async getWorkflows(@Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.getWorkflowsWithAreas(ownerId);
+		return (await this.workspacesService.getWorkflowsWithAreas(ownerId)).map(
+			({
+				action: {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					parameters: { workflowStepId, ...parameters },
+					...action
+				},
+				reactions,
+				...workflow
+			}) => ({
+				action: { ...action, parameters },
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				reactions: reactions.map(({ parameters: { workflowStepId, ...parameters } }) => ({ ...parameters })),
+				workflow,
+			}),
+		);
 	}
 
 	@ApiOkResponse({

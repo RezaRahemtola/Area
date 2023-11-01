@@ -109,7 +109,7 @@ export class WorkflowsService {
 				action: {
 					id: actionId,
 					// eslint-disable-next-line @typescript-eslint/no-unused-vars
-					parameters: { workflowStepId, ...actionParameters },
+					parameters: actionParameters,
 					area: { id: areaId, serviceId: areaServiceId },
 					jobId,
 				},
@@ -130,7 +130,7 @@ export class WorkflowsService {
 					({
 						id,
 						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						parameters: { workflowStepId, ...parameters },
+						parameters: parameters,
 						previousWorkflowArea: { id: previousAreaId },
 						area: { id: areaId, serviceId: areaServiceId },
 						jobId,
