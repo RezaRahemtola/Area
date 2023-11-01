@@ -185,7 +185,7 @@ export class OauthService {
 			},
 		);
 		return {
-			scopes: scope.split(" "),
+			scopes: scope.includes(" ") ? scope.split(" ") : scope.split(","),
 			data: connectionData,
 		};
 	}
