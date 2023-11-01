@@ -52,7 +52,6 @@ class _LibraryState extends State<Library> {
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: () async {
-                          actualSearch = searchController.text;
                           setState(() {
                             workflows = initialWorkflows
                                 .where((element) => element.name
