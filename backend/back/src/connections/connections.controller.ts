@@ -112,7 +112,8 @@ export class ConnectionsController {
 		const service = this.oauthService.SERVICE_OAUTH_FACTORIES[serviceId];
 		if (!service) throw new NotFoundException("This service does not exist");
 		const loginScopes = service.loginScopes ?? ["email"];
-		if (loginScopes.length === 0) throw new ForbiddenException("You cannot authenticate with this service");
+		if (loginScopes.length === 0 || !service.getEmailForConnectionData)
+			throw new ForbiddenException("You cannot authenticate with this service");
 		this.logger.log(`Creating and sending an authentication url to connect to service ${serviceId}`);
 		return {
 			oauthUrl: await this.oauthService.getOAuthUrlForServiceUserAndScopes("authenticate", serviceId, loginScopes),
