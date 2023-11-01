@@ -1,13 +1,16 @@
 import 'package:area_mobile/components/services/service_card.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectReactionService extends StatefulWidget {
   final Function(String? selectedServiceId) onSave;
+  final EditorWorkflowElementService? service;
 
-  const SelectReactionService({super.key, required this.onSave});
+  const SelectReactionService(
+      {super.key, required this.onSave, required this.service});
 
   @override
   State<SelectReactionService> createState() => _SelectReactionServiceState();
@@ -21,12 +24,13 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
   void initState() {
     super.initState();
     getServicesFuture = services.services.getAll("reactions");
+    selectedServiceId = widget.service?.id;
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 700,
+        height: 600,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseService,

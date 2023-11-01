@@ -59,6 +59,7 @@ class _EditorActionCardState extends State<EditorActionCard> {
                         (BuildContext context, StateSetter setModalState) {
                       if (step == EditorWorkflowStep.service) {
                         return SelectActionService(
+                          service: action.areaService,
                           onSave: (String? selectedServiceId) async {
                             if (selectedServiceId != null) {
                               final selectedService = await services.services
@@ -80,6 +81,7 @@ class _EditorActionCardState extends State<EditorActionCard> {
                       } else if (step == EditorWorkflowStep.event) {
                         return SelectActionEvent(
                           service: action.areaService!,
+                          area: action.area,
                           onSave: (String? selectedEventId) async {
                             if (selectedEventId != null) {
                               final selectedArea = (await services.services
@@ -104,17 +106,27 @@ class _EditorActionCardState extends State<EditorActionCard> {
                               widget.onUpdate(action);
                             }
                           },
+                          onBack: () {
+                            setModalState(() {
+                              step = EditorWorkflowStep.service;
+                            });
+                          },
                         );
                       } else if (step == EditorWorkflowStep.parameters) {
                         return SelectAreaParams(
-                          area: action.area!,
-                          onSave: (List<AreaParameterWithValue> params) async {
-                            setState(() {
-                              action.area!.parameters = params;
+                            area: action.area!,
+                            onSave:
+                                (List<AreaParameterWithValue> params) async {
+                              setState(() {
+                                action.area!.parameters = params;
+                              });
+                              widget.onUpdate(action);
+                            },
+                            onBack: () {
+                              setModalState(() {
+                                step = EditorWorkflowStep.event;
+                              });
                             });
-                            widget.onUpdate(action);
-                          },
-                        );
                       }
                       return const Text("Never displayed");
                     });
