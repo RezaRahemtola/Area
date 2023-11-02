@@ -25,9 +25,9 @@ FETCH_URL = "https://www.youtube.com/feeds/videos.xml?channel_id="
 WATCH_URL = "https://www.youtube.com/watch?v="
 
 
-def search_last_video(channelId):
+def search_last_video(channel_id: str):
     video = None
-    res = urllib3.request("GET", FETCH_URL + channelId)
+    res = urllib3.request("GET", FETCH_URL + channel_id)
     xml = ET.fromstring(res.data.decode("utf-8"))
     for child in xml:
         if child.tag == "{http://www.w3.org/2005/Atom}entry":
