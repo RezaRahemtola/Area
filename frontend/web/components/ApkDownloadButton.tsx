@@ -25,7 +25,7 @@ const ApkDownloadButton = () => {
 				return statusCode !== StatusCodes.NOT_FOUND;
 			};
 
-			const isAvailable = await isFileAvailable("/apk/area.apk");
+			const isAvailable = await isFileAvailable("/apk/Area.apk");
 			setIsApkAvailable(isAvailable);
 		})();
 	}, []);
@@ -34,7 +34,7 @@ const ApkDownloadButton = () => {
 		<>
 			{isApkAvailable ? (
 				<nav>
-					<a href="/apk/area.apk" download>
+					<a href="/apk/Area.apk" download>
 						<button className="btn btn-accent">
 							<FontAwesomeIcon icon="android" />
 							{t("landing.actions.downloadApk")}

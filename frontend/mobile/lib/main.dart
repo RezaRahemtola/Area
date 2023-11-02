@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AREA',
+      title: 'Area',
       theme: widget._lightTheme,
       darkTheme: widget._darkTheme,
       themeMode: darkTheme == "auto"

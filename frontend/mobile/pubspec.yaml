@@ -1,5 +1,5 @@
 name: area_mobile
-description: Mobile app for AREA.
+description: Mobile app for Area.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -78,6 +78,7 @@ flutter:
     - ./.env
     - ./assets/default-profile-picture.webp
     - ./assets/bolt.png
+    - ./assets/Area_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
