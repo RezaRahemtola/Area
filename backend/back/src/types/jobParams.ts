@@ -210,3 +210,11 @@ export class LinearCreateIssueParams extends UniqueJobParams {
 	@IsOptional()
 	priority: LinearIssuePriority;
 }
+
+export class MiroCreateBoardParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	description: string;
+}

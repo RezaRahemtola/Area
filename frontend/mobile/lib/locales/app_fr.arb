@@ -26,6 +26,7 @@
     "language": "Langage",
     "theme": "Thème",
     "save": "Sauvegarder",
+    "back": "Précédent",
     "rename": "Renommer",
     "edit": "Modifier",
     "delete": "Supprimer",
@@ -34,4 +35,9 @@
     "editorNameModalTitle": "Changez le nom du workflow",
     "editorChooseService": "Choisissez un service",
     "searchBar": "Rechercher..."
+    "editorChooseEvent": "Choisissez un événement",
+    "editorChooseParams": "Définissez les paramètres de l'événement",
+    "connectAccount": "Connectez votre compte",
+    "noAccountToConnect": "Aucun compte à connecter",
+    "accountAlreadyConnected": "Compte déjà connecté"
 }

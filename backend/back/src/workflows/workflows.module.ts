@@ -8,12 +8,14 @@ import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
 import { JobsModule } from "../jobs/jobs.module";
 import { ConnectionsModule } from "../connections/connections.module";
+import { ServicesModule } from "../services/services.module";
 
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Workflow, WorkflowArea, Area, User]),
 		forwardRef(() => JobsModule),
 		ConnectionsModule,
+		ServicesModule,
 	],
 	controllers: [WorkflowsController],
 	providers: [WorkflowsService],

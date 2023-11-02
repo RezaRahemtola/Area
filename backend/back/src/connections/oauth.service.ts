@@ -1,9 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ConnectionsService } from "./connections.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ServiceName, ServicesService, SubServiceNameFromServiceName } from "../services/services.service";
-import UserConnection from "./entities/user-connection.entity";
+import { createHash } from "node:crypto";
 
 type OAuthResponse = {
 	access_token: string;
@@ -19,6 +18,12 @@ type MiroOAuthResponse = {
 	user_id: string;
 } & OAuthResponse;
 
+export type UserConnectionData = {
+	scopes: string[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	data: Record<string, any>;
+};
+
 type OAuthCallbackUrlFactory<TWantedService extends ServiceName> = <TActualService extends TWantedService>(
 	service: TActualService,
 ) => `${string}/connections/oauth/${TActualService}/callback`;
@@ -28,25 +33,33 @@ type ServiceOAuthUrlFactory<TService extends ServiceName> = <TBaseUrl extends st
 	scopes: string[],
 	oauthCallbackUrlFactory: OAuthCallbackUrlFactory<TService>,
 ) => `${TBaseUrl}${string}`;
+type ServiceOAuthFactory<TService extends ServiceName> = {
+	urlFactory: ServiceOAuthUrlFactory<TService>;
+	connectionFactory: (code: string, granted_scopes?: string) => Promise<UserConnectionData>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	getEmailForConnectionData?: (data: Record<string, any>) => Promise<string>;
+	loginScopes?: string[];
+};
 type ServiceOAuthFactories<TServices extends ServiceName> = {
-	[TService in TServices]: {
-		urlFactory: ServiceOAuthUrlFactory<TService>;
-		connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
-	};
+	[TService in TServices]: ServiceOAuthFactory<TService>;
 };
 
 @Injectable()
 export class OauthService {
 	private readonly logger = new Logger(OauthService.name);
+	private readonly OAUTH_CODE_CHALLENGE = this.configService.getOrThrow<string>("OAUTH_CODE_CHALLENGE");
+	private readonly OAUTH_CODE_CHALLENGE_S265_HASH: string;
 
 	constructor(
-		private readonly connectionsService: ConnectionsService,
 		private readonly httpService: HttpService,
 		private readonly configService: ConfigService,
 		private readonly servicesService: ServicesService,
-	) {}
+	) {
+		const sha256Hash = createHash("sha256").update(this.OAUTH_CODE_CHALLENGE);
+		this.OAUTH_CODE_CHALLENGE_S265_HASH = sha256Hash.digest("base64url");
+	}
 
-	async createGitHubConnection(userId: string, code: string) {
+	async createGitHubConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -63,15 +76,30 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(
-			userId,
-			"github",
-			scope !== "" ? scope.split(",") : [],
-			connectionData,
-		);
+		return {
+			scopes: scope !== " " ? scope.split(",") : [],
+			data: connectionData,
+		};
 	}
 
-	async createGoogleConnection(userId: string, code: string) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForGitHubConnection({ token_type, access_token }: Record<string, any>) {
+		const {
+			data: [{ email }],
+		} = await this.httpService.axiosRef.get<[{ email: string }]>("https://api.github.com/user/emails", {
+			headers: {
+				Accept: "application/vnd.github.v3+json",
+				Authorization: `${token_type} ${access_token}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			data: {
+				per_page: 1,
+			},
+		});
+		return email;
+	}
+
+	async createGoogleConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -90,10 +118,25 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "google", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createTwitterConnection(userId: string, code: string) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForGoogleConnection({ token_type, access_token }: Record<string, any>) {
+		const {
+			data: { email },
+		} = await this.httpService.axiosRef.get<{ email: string }>("https://www.googleapis.com/userinfo/v2/me", {
+			headers: {
+				Authorization: `${token_type} ${access_token}`,
+			},
+		});
+		return email;
+	}
+
+	async createTwitterConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -116,10 +159,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "twitter", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createLinkedInConnection(userId: string, code: string) {
+	async createLinkedInConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -138,14 +184,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "linkedin", scope.split(","), connectionData);
+		return {
+			scopes: scope.includes(" ") ? scope.split(" ") : scope.split(","),
+			data: connectionData,
+		};
 	}
 
-	async createMicrosoftConnection(
-		userId: string,
-		code: string,
-		subservice: SubServiceNameFromServiceName<ServiceName, "microsoft">,
-	) {
+	async createMicrosoftConnection(code: string, subService: SubServiceNameFromServiceName<ServiceName, "microsoft">) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -155,7 +200,7 @@ export class OauthService {
 				client_secret: this.configService.getOrThrow<string>("MICROSOFT_CLIENT_SECRET"),
 				code,
 				grant_type: "authorization_code",
-				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY(`microsoft-${subservice}`),
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY(`microsoft-${subService}`),
 			},
 			{
 				headers: {
@@ -164,15 +209,25 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(
-			userId,
-			`microsoft-${subservice}`,
-			scope.split(" "),
-			connectionData,
-		);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createFacebookConnection(userId: string, code: string, granted_scopes?: string) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async getEmailForMicrosoftGraphConnection({ token_type, access_token }: Record<string, any>) {
+		const {
+			data: { mail },
+		} = await this.httpService.axiosRef.get<{ mail: string }>("https://graph.microsoft.com/v1.0/me", {
+			headers: {
+				Authorization: `${token_type} ${access_token}`,
+			},
+		});
+		return mail;
+	}
+
+	async createFacebookConnection(code: string, granted_scopes?: string) {
 		const {
 			data: { ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -190,10 +245,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "facebook", granted_scopes.split(","), connectionData);
+		return {
+			scopes: granted_scopes.split(","),
+			data: connectionData,
+		};
 	}
 
-	async createMiroConnection(userId: string, code: string) {
+	async createMiroConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<MiroOAuthResponse>(
@@ -212,10 +270,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "miro", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createLinearConnection(userId: string, code: string) {
+	async createLinearConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<Omit<OAuthResponse, "scope"> & { scope: string[] }>(
@@ -234,10 +295,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "linear", scope, connectionData);
+		return {
+			scopes: scope,
+			data: connectionData,
+		};
 	}
 
-	async createDiscordConnection(userId: string, code: string) {
+	async createDiscordConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -258,10 +322,13 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "discord", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
 	}
 
-	async createGitlabConnection(userId: string, code: string) {
+	async createGitlabConnection(code: string) {
 		const {
 			data: { scope, ...connectionData },
 		} = await this.httpService.axiosRef.post<OAuthResponse>(
@@ -280,7 +347,47 @@ export class OauthService {
 				},
 			},
 		);
-		return this.connectionsService.createUserConnection(userId, "gitlab", scope.split(" "), connectionData);
+		return {
+			scopes: scope.split(" "),
+			data: connectionData,
+		};
+	}
+
+	async createAirTableConnection(code: string) {
+		this.logger.debug(`Code verifier is: ${this.OAUTH_CODE_CHALLENGE}`);
+		try {
+			const {
+				data: { scope, ...connectionData },
+			} = await this.httpService.axiosRef.post<OAuthResponse>(
+				"https://airtable.com/oauth2/v1/token",
+				{
+					code,
+					client_id: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID"),
+					client_secret: this.configService.getOrThrow<string>("AIRTABLE_CLIENT_SECRET"),
+					redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("airtable"),
+					grant_type: "authorization_code",
+					code_verifier: this.OAUTH_CODE_CHALLENGE,
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/x-www-form-urlencoded",
+						Authorization: `Basic ${Buffer.from(
+							`${this.configService.getOrThrow<string>("AIRTABLE_CLIENT_ID")}:${this.configService.getOrThrow<string>(
+								"AIRTABLE_CLIENT_SECRET",
+							)}`,
+						).toString("base64")}`,
+					},
+				},
+			);
+			return {
+				scopes: scope.split(" "),
+				data: connectionData,
+			};
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	}
 
 	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
@@ -301,17 +408,14 @@ export class OauthService {
 		TSubService extends SubServiceNameFromServiceName<ServiceName, "microsoft">,
 	>(
 		subService: TSubService,
-	) => {
-		urlFactory: ServiceOAuthUrlFactory<`microsoft-${TSubService}`>;
-		connectionFactory: (userId: string, code: string, granted_scopes?: string) => Promise<UserConnection>;
-	} = (subService) => ({
+	) => ServiceOAuthFactory<`microsoft-${TSubService}`> = (subService) => ({
 		urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
 			`${baseUrl}?client_id=${this.configService.getOrThrow("MICROSOFT_CLIENT_ID")}&scope=${encodeURI(
 				["offline_access", ...scopes].join(" "),
 			)}&prompt=consent&response_mode=query&state=${userId}&response_type=code&redirect_uri=${oauthCallbackUrlFactory(
 				`microsoft-${subService}`,
 			)}`,
-		connectionFactory: (userId, code) => this.createMicrosoftConnection(userId, code, subService),
+		connectionFactory: (code) => this.createMicrosoftConnection(code, subService),
 	});
 
 	public readonly SERVICE_OAUTH_FACTORIES: ServiceOAuthFactories<ServiceName> = {
@@ -321,6 +425,8 @@ export class OauthService {
 					",",
 				)}&state=${userId}&redirect_uri=${oauthCallbackUrlFactory("github")}`,
 			connectionFactory: this.createGitHubConnection.bind(this),
+			loginScopes: ["user:email"],
+			getEmailForConnectionData: this.getEmailForGitHubConnection.bind(this),
 		},
 		google: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
@@ -330,6 +436,7 @@ export class OauthService {
 					"google",
 				)}`,
 			connectionFactory: this.createGoogleConnection.bind(this),
+			getEmailForConnectionData: this.getEmailForGoogleConnection.bind(this),
 		},
 		twitter: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
@@ -371,7 +478,11 @@ export class OauthService {
 				)}&redirect_uri=${oauthCallbackUrlFactory("miro")}&state=${userId}`,
 			connectionFactory: this.createMiroConnection.bind(this),
 		},
-		"microsoft-graph": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("graph"),
+		"microsoft-graph": {
+			...this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("graph"),
+			getEmailForConnectionData: this.getEmailForMicrosoftGraphConnection.bind(this),
+			loginScopes: ["User.Read"],
+		},
 		"microsoft-onenote": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("onenote"),
 		"microsoft-outlook": this.MICROSOFT_SUBSERVICES_OAUTH_FACTORY_FACTORY("outlook"),
 		linear: {
@@ -396,6 +507,15 @@ export class OauthService {
 					scopes.join("+"),
 				)}&redirect_uri=${oauthCallbackUrlFactory("gitlab")}&state=${userId}`,
 			connectionFactory: this.createGitlabConnection.bind(this),
+		},
+		airtable: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"AIRTABLE_CLIENT_ID",
+				)}&scope=${encodeURI(scopes.join(" "))}&redirect_uri=${oauthCallbackUrlFactory("airtable")}&code_challenge=${
+					this.OAUTH_CODE_CHALLENGE_S265_HASH
+				}&code_challenge_method=S256&state=${userId}`,
+			connectionFactory: this.createAirTableConnection.bind(this),
 		},
 	};
 }

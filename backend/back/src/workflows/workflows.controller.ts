@@ -84,7 +84,22 @@ export class WorkflowsController {
 	})
 	@Get()
 	async getWorkflows(@Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.getWorkflowsWithAreas(ownerId);
+		return (await this.workspacesService.getWorkflowsWithAreas(ownerId)).map(
+			({
+				action: {
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					parameters: { workflowStepId, ...parameters },
+					...action
+				},
+				reactions,
+				...workflow
+			}) => ({
+				action: { ...action, parameters },
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				reactions: reactions.map(({ parameters: { workflowStepId, ...parameters } }) => ({ ...parameters })),
+				...workflow,
+			}),
+		);
 	}
 
 	@ApiOkResponse({
@@ -97,7 +112,21 @@ export class WorkflowsController {
 	})
 	@Get(":uuid")
 	async getWorkflow(@Param() { uuid: workflowId }: UuidParamDto, @Req() { user: { id: ownerId } }: APIRequest) {
-		return await this.workspacesService.getWorkflowWithAreas(workflowId, ownerId);
+		const {
+			action: {
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				parameters: { workflowStepId, ...actionParameters },
+				...action
+			},
+			reactions,
+			...workflow
+		} = await this.workspacesService.getWorkflowWithAreas(workflowId, ownerId);
+		return {
+			...workflow,
+			action: { ...action, parameters: actionParameters },
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			reactions: reactions.map(({ parameters: { workflowStepId, ...parameters } }) => ({ ...parameters })),
+		};
 	}
 
 	@ApiOkResponse({

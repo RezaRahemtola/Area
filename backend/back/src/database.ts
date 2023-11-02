@@ -62,6 +62,10 @@ import { CreateGoogleFormConvertToQuizArea1698655334570 } from "./workflows/seed
 import { CreateGoogleUpdateSpreadsheetTitleArea1698656017859 } from "./workflows/seed/1698656017859-CreateGoogleUpdateSpreadsheetTitleArea";
 import { CreateLinearCreateIssueAreas1698614949784 } from "./workflows/seed/1698614949784-CreateLinearCreateIssueAreas";
 import { CreateGitlabCommitPRActions1698678924392 } from "./workflows/seed/1698678924392-CreateGitlabCommitPRActions";
+import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/1698793446046-CreateMiroCreateBoardReaction";
+import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
+import { CreateAirTableServiceAndScopes1698856388828 } from "./services/seed/1698856388828-CreateAirTableServiceAndScopes";
+import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
 
 dotenv.config();
 
@@ -128,6 +132,10 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGoogleUpdateSpreadsheetTitleArea1698656017859,
 		CreateLinearCreateIssueAreas1698614949784,
 		CreateGitlabCommitPRActions1698678924392,
+		CreateMiroCreateBoardReaction1698793446046,
+		UpdateGoogleServiceScopes1698414179394,
+		CreateAirTableServiceAndScopes1698856388828,
+		FixGitLabOnPRAreasScope1698860681718,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
