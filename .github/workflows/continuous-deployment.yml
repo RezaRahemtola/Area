@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ${{ secrets.SCP_TARGET }}
-            docker volume rm area_apk_volume -f && docker compose down --remove-orphans && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
+            docker compose down --remove-orphans && docker volume rm area_apk_volume -f && cd ~ && rm -rf ${{ secrets.SCP_TARGET }}
 
       - name: Deploying the new supervisor & workers
         uses: kostya-ten/ssh-server-deploy@v4
