@@ -17,7 +17,6 @@ class _LibraryState extends State<Library> {
   @override
   void initState() {
     super.initState();
-    workflows = [];
   }
 
   bool needRefresh = true;
