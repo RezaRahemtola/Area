@@ -87,7 +87,7 @@ class _LibraryState extends State<Library> {
                       }
                     }
                     if (workflows.isEmpty) {
-                      return const EmptyNotice();
+                      return EmptyNotice(message: AppLocalizations.of(context)!.emptyNotice,);
                     } else {
                       return Expanded(
                         child: ListView.builder(

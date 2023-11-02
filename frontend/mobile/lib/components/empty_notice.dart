@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmptyNotice extends StatelessWidget {
+  final String message;
+
   const EmptyNotice({
     super.key,
+    required this.message,
   });
 
   @override
@@ -17,7 +19,7 @@ class EmptyNotice extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(15.0)),
         ),
         child: Text(
-          AppLocalizations.of(context)!.emptyNotice,
+          message,
         ));
   }
 }
