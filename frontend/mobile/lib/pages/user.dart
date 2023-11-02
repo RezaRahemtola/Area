@@ -103,9 +103,8 @@ class _UserHero extends State<User> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              if (value != null) {
-                                newLocale = value;
-                              }
+                              if (value == null) return;
+                              newLocale = value;
                             },
                             decoration: InputDecoration(
                                 labelText:
@@ -124,9 +123,8 @@ class _UserHero extends State<User> {
                               );
                             }).toList(),
                             onChanged: (value) {
-                              if (value != null) {
-                                newTheme = value;
-                              }
+                              if (value == null) return;
+                              newTheme = value;
                             },
                             decoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)!.theme),

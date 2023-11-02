@@ -1,14 +1,18 @@
+import 'package:area_mobile/components/editor/steps/action/select_action_event.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_service.dart';
+import 'package:area_mobile/components/editor/steps/select_area_params.dart';
 import 'package:area_mobile/services/dio.dart';
-import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
 class EditorActionCard extends StatefulWidget {
   final EditorWorkflowAction action;
+  final Function(EditorWorkflowAction updatedAction) onUpdate;
 
-  const EditorActionCard({super.key, required this.action});
+  const EditorActionCard(
+      {super.key, required this.action, required this.onUpdate});
 
   @override
   State<EditorActionCard> createState() => _EditorActionCardState();
@@ -16,6 +20,7 @@ class EditorActionCard extends StatefulWidget {
 
 class _EditorActionCardState extends State<EditorActionCard> {
   late EditorWorkflowAction action;
+  EditorWorkflowStep step = EditorWorkflowStep.service;
 
   @override
   void initState() {
@@ -45,28 +50,89 @@ class _EditorActionCardState extends State<EditorActionCard> {
                 ? AppLocalizations.of(context)!
                     .actionService(action.areaService!.id)
                 : AppLocalizations.of(context)!.action),
-            subtitle:
-                Text(AppLocalizations.of(context)!.editorActionDescription),
+            subtitle: Text(action.area?.id ??
+                AppLocalizations.of(context)!.editorActionDescription),
             onTap: () {
               showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return SelectActionService(
-                    onSave: (String? selectedServiceId) async {
-                      if (selectedServiceId != null) {
-                        final selectedService =
-                            await services.services.getOne(selectedServiceId);
-                        // TODO: propagate change for editor saving
-                        setState(() {
-                          action.areaService = EditorWorkflowElementService(
-                              id: selectedServiceId,
-                              imageUrl: selectedService.data!.imageUrl);
-                        });
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(builder:
+                        (BuildContext context, StateSetter setModalState) {
+                      if (step == EditorWorkflowStep.service) {
+                        return SelectActionService(
+                          service: action.areaService,
+                          onSave: (String? selectedServiceId) async {
+                            if (selectedServiceId != null) {
+                              final selectedService = await services.services
+                                  .getOne(selectedServiceId);
+                              setModalState(() {
+                                step = EditorWorkflowStep.event;
+                              });
+                              setState(() {
+                                action.areaService =
+                                    EditorWorkflowElementService(
+                                        id: selectedServiceId,
+                                        imageUrl:
+                                            selectedService.data!.imageUrl);
+                              });
+                              widget.onUpdate(action);
+                            }
+                          },
+                        );
+                      } else if (step == EditorWorkflowStep.event) {
+                        return SelectActionEvent(
+                          service: action.areaService!,
+                          area: action.area,
+                          onSave: (String? selectedEventId) async {
+                            if (selectedEventId != null) {
+                              final selectedArea = (await services.services
+                                      .getServiceActions(
+                                          action.areaService!.id))
+                                  .data!
+                                  .firstWhere((element) =>
+                                      element.id == selectedEventId);
+                              setModalState(() {
+                                step = EditorWorkflowStep.parameters;
+                              });
+                              setState(() {
+                                action.area = EditorWorkflowElementArea(
+                                    id: selectedEventId,
+                                    parameters: selectedArea.parametersFormFlow
+                                        .map((param) => AreaParameterWithValue(
+                                            name: param.name,
+                                            type: param.type,
+                                            required: param.required))
+                                        .toList());
+                              });
+                              widget.onUpdate(action);
+                            }
+                          },
+                          onBack: () {
+                            setModalState(() {
+                              step = EditorWorkflowStep.service;
+                            });
+                          },
+                        );
+                      } else if (step == EditorWorkflowStep.parameters) {
+                        return SelectAreaParams(
+                            area: action.area!,
+                            onSave:
+                                (List<AreaParameterWithValue> params) async {
+                              setState(() {
+                                action.area!.parameters = params;
+                              });
+                              widget.onUpdate(action);
+                            },
+                            onBack: () {
+                              setModalState(() {
+                                step = EditorWorkflowStep.event;
+                              });
+                            });
                       }
-                    },
-                  );
-                },
-              );
+                      return const Text("Never displayed");
+                    });
+                  });
             }));
   }
 }

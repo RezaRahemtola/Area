@@ -61,10 +61,13 @@ class Area {
       required this.description});
 
   factory Area.fromJson(Map<String, dynamic> json) {
+    final parametersFormFlowData = json['parametersFormFlow'] as List<dynamic>?;
+
     return Area(
         id: json['id'],
         serviceScopesNeeded: List<String>.from(json['serviceScopesNeeded']),
-        parametersFormFlow: [],
+        parametersFormFlow: List<FlowParams>.from(
+            parametersFormFlowData!.map((data) => FlowParams.fromJson(data))),
         description: json['description']);
   }
 }

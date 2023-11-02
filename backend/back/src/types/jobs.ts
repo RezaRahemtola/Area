@@ -19,6 +19,7 @@ import {
 	LinearCreateIssueParams,
 	LinearWorkspaceParams,
 	LinkedinCreatePostParams,
+	MiroCreateBoardParams,
 	NameParams,
 	TimerSecondIntervalParams,
 	TitleParams,
@@ -66,6 +67,7 @@ export enum Jobs {
 	"linear-create-issue" = "linear-create-issue",
 	"linear-on-issue-create" = "linear-on-issue-create",
 	"linkedin-create-post" = "linkedin-create-post",
+	"miro-create-board" = "miro-create-board",
 	"timer-seconds-interval" = "timer-seconds-interval",
 }
 
@@ -116,6 +118,7 @@ export const JobParamsClasses = {
 	"linear-create-issue": LinearCreateIssueParams,
 	"linear-on-issue-create": LinearWorkspaceParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
+	"miro-create-board": MiroCreateBoardParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
 };
 
@@ -160,5 +163,6 @@ export type JobsParams = Mapper<{
 	"linear-create-issue": LinearCreateIssueParams;
 	"linear-on-issue-create": LinearWorkspaceParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
+	"miro-create-board": MiroCreateBoardParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
 }>;

@@ -4,6 +4,7 @@ import UserConnection from "./entities/user-connection.entity";
 import { In, Repository } from "typeorm";
 import { ServiceName, ServicesService } from "../services/services.service";
 import ServiceScope from "../services/entities/service-scope.entity";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class ConnectionsService {
@@ -15,6 +16,7 @@ export class ConnectionsService {
 		private readonly servicesService: ServicesService,
 		@InjectRepository(ServiceScope)
 		private readonly serviceScopesRepository: Repository<ServiceScope>,
+		private readonly usersService: UsersService,
 	) {}
 
 	async getNewScopesForConnection(userId: string, serviceId: ServiceName, scopes: string[]): Promise<string[] | null> {
@@ -97,5 +99,16 @@ export class ConnectionsService {
 				this.logger.error(`Error deleting connection ${serviceId} for user ${userId}: ${message}`);
 				return false;
 			});
+	}
+
+	async createUserAndConnectionForData(
+		userEmail: string,
+		serviceId: ServiceName,
+		scopes: string[],
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		data: Record<string, any>,
+	) {
+		const user = await this.usersService.createUser(userEmail);
+		return [user, await this.createUserConnection(user.id, serviceId, scopes, data)] as const;
 	}
 }

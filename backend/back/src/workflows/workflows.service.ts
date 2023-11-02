@@ -9,19 +9,17 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Workflow from "./entities/workflow.entity";
-import { In, Repository } from "typeorm";
+import { In, QueryRunner, Repository } from "typeorm";
 import WorkflowArea from "./entities/workflow-area.entity";
 import WorkflowReactionDto, { WorkflowActionDto } from "./dto/workflow-reaction.dto";
 import Area from "../services/entities/area.entity";
 import { User } from "../users/entities/user.entity";
 import UpdateWorkflowDto from "./dto/update-workflow.dto";
-import UserConnection from "../connections/entities/user-connection.entity";
 import { JobsIdentifiers } from "../types/jobIds";
 import { JobsService } from "../jobs/jobs.service";
 import { JobParamsClasses, JobsType } from "../types/jobs";
-import Service from "../services/entities/service.entity";
 import { ConnectionsService } from "../connections/connections.service";
-import { ServiceName } from "../services/services.service";
+import { ServiceName, ServicesService } from "../services/services.service";
 import { UniqueJobParams } from "../types/jobParams";
 import { plainToInstance } from "class-transformer";
 
@@ -39,6 +37,7 @@ export class WorkflowsService {
 		@Inject(forwardRef(() => JobsService))
 		private readonly jobsService: JobsService,
 		private readonly connectionsService: ConnectionsService,
+		private readonly servicesService: ServicesService,
 	) {}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
@@ -49,6 +48,7 @@ export class WorkflowsService {
 			where: { id, ownerId, active: isActive },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
+		this.logger.debug(`Got workflow: ${JSON.stringify(workflow)}`);
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const {
 			name,
@@ -109,7 +109,8 @@ export class WorkflowsService {
 				ownerId,
 				action: {
 					id: actionId,
-					parameters: actionParamaters,
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					parameters: actionParameters,
 					area: { id: areaId, serviceId: areaServiceId },
 					jobId,
 				},
@@ -123,13 +124,14 @@ export class WorkflowsService {
 					id: actionId,
 					areaId,
 					areaServiceId,
-					parameters: actionParamaters,
+					parameters: actionParameters,
 					jobId,
 				},
 				reactions: reactions.map(
 					({
 						id,
-						parameters,
+						// eslint-disable-next-line @typescript-eslint/no-unused-vars
+						parameters: parameters,
 						previousWorkflowArea: { id: previousAreaId },
 						area: { id: areaId, serviceId: areaServiceId },
 						jobId,
@@ -176,8 +178,14 @@ export class WorkflowsService {
 			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
 
-			const actionToSave = await this.createWorkflowArea(ownerId, action, workflow, true);
-			const reactionsToSave = await this.createWorkflowReactions(ownerId, actionToSave, reactions, workflow);
+			const actionToSave = await this.createWorkflowArea(queryRunner, ownerId, action, workflow, true);
+			const reactionsToSave = await this.createWorkflowReactions(
+				queryRunner,
+				ownerId,
+				actionToSave,
+				reactions,
+				workflow,
+			);
 			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
 			await queryRunner.commitTransaction();
 
@@ -185,6 +193,7 @@ export class WorkflowsService {
 				this.logger.log(`Launching workflow ${id}'s action...`);
 				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
 			}
+			this.logger.log(`Created workflow ${id} owned by ${ownerId}.`);
 			return {
 				id,
 			};
@@ -202,6 +211,7 @@ export class WorkflowsService {
 		const workflow = await this.workflowRepository.findOne({
 			where: {
 				id: workflowId,
+				ownerId,
 			},
 			relations: {
 				action: true,
@@ -209,7 +219,7 @@ export class WorkflowsService {
 			},
 		});
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
-		if (workflow.active) throw new ConflictException(`Workflow ${workflowId} is active, you cannot update it.`);
+		if (workflow.active) throw new ConflictException(`Workflow ${workflow.name} is active, you cannot update it.`);
 		if (!name && !action && !reactions) {
 			this.logger.log(`No changes to workflow ${workflowId} requested.`);
 			return false;
@@ -238,15 +248,38 @@ export class WorkflowsService {
 					);
 				}
 				this.logger.log(`Updating workflow ${workflowId} action from ${workflow.action.id} to ${action.id}...`);
-				const updatedWorkflowAction = await this.createWorkflowArea(ownerId, action, workflow, true, false);
+				const updatedWorkflowAction = await this.createWorkflowArea(
+					queryRunner,
+					ownerId,
+					action,
+					workflow,
+					true,
+					false,
+				);
 				result ||= (await queryRunner.manager.update(WorkflowArea, action.id, updatedWorkflowAction)).affected > 0;
 			}
 
 			if (reactions) {
 				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
-				await queryRunner.manager.delete(WorkflowArea, { id: In(workflow.reactions.map((reaction) => reaction.id)) });
-				const reactionsToSave = await this.createWorkflowReactions(ownerId, workflow.action, reactions, workflow);
-				result ||= !!(await queryRunner.manager.save(Workflow, { id: workflowId, reactions: reactionsToSave }));
+				this.logger.debug(
+					`Deleted workflow reactions: ${JSON.stringify(
+						await queryRunner.manager.delete(WorkflowArea, {
+							id: In(workflow.reactions.map((reaction) => reaction.id)),
+						}),
+					)}`,
+				);
+				const reactionsToSave = await this.createWorkflowReactions(
+					queryRunner,
+					ownerId,
+					workflow.action,
+					reactions,
+					workflow,
+				);
+				const resultingWorkflow = await queryRunner.manager.save(Workflow, {
+					id: workflowId,
+					reactions: reactionsToSave,
+				});
+				result ||= !!resultingWorkflow;
 			}
 			this.logger.log(`Updated workflow ${workflowId} owned by ${ownerId}.`);
 			await queryRunner.commitTransaction();
@@ -322,13 +355,14 @@ export class WorkflowsService {
 	}
 
 	private async createWorkflowReactions(
+		queryRunner: QueryRunner,
 		ownerId: string,
 		action: WorkflowArea,
 		reactions: WorkflowReactionDto[],
 		workflow: Workflow,
 	) {
 		const dbReactions = await Promise.all(
-			reactions.map(async (reaction) => await this.createWorkflowArea(ownerId, reaction, workflow, false)),
+			reactions.map(async (reaction) => await this.createWorkflowArea(queryRunner, ownerId, reaction, workflow, false)),
 		);
 		for (const dbReaction of dbReactions) {
 			if (!dbReaction.previousWorkflowArea) {
@@ -346,18 +380,10 @@ export class WorkflowsService {
 		serviceId: ServiceName,
 		neededScopeIds: string[],
 	): Promise<string[] | null> {
-		const service = await this.workflowRepository.manager.findOneBy(Service, { id: serviceId });
+		const service = await this.servicesService.getService(serviceId);
 		if (!service) throw new NotFoundException(`Service ${serviceId} not found.`);
 		if (!service.needConnection) return [];
-		const userConnection = await this.workflowRepository.manager.findOne(UserConnection, {
-			where: {
-				userId,
-				serviceId,
-			},
-			relations: {
-				scopes: true,
-			},
-		});
+		const userConnection = await this.connectionsService.getUserConnectionForService(userId, serviceId);
 		if (!userConnection) return neededScopeIds;
 		return this.connectionsService.getNewScopesForConnection(
 			userId,
@@ -378,13 +404,15 @@ export class WorkflowsService {
 	}
 
 	private async createWorkflowArea(
+		queryRunner: QueryRunner,
 		userId: string,
 		{ id, areaId, areaServiceId, parameters }: Partial<WorkflowReactionDto>,
 		workflow: Workflow,
 		isAction: boolean = false,
 		checkExist: boolean = true,
 	) {
-		if (checkExist && (await this.workflowRepository.exist({ where: { id } })))
+		this.logger.log(`Creating workflow ${isAction ? "" : "re"}action ${id}...`);
+		if (checkExist && (await queryRunner.manager.exists(WorkflowArea, { where: { id } })))
 			throw new ConflictException(`Workflow area ${id} already exists.`);
 		const workflowArea = new WorkflowArea();
 		workflowArea.id = id;

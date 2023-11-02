@@ -1,4 +1,5 @@
 import 'package:area_mobile/services/auth/index.dart';
+import 'package:area_mobile/services/connections/index.dart';
 import 'package:area_mobile/services/services/index.dart';
 import 'package:area_mobile/services/user/index.dart';
 import 'package:area_mobile/services/workflows/index.dart';
@@ -23,16 +24,19 @@ class DioServices {
   final ServicesService services;
   final UserService user;
   final WorkflowsService workflows;
+  final ConnectionsService connections;
 
   const DioServices(
       {required this.auth,
       required this.services,
       required this.user,
-      required this.workflows});
+      required this.workflows,
+      required this.connections});
 }
 
 const services = DioServices(
     auth: authService,
     services: servicesService,
     user: userServices,
-    workflows: workflowsService);
+    workflows: workflowsService,
+    connections: connectionsService);

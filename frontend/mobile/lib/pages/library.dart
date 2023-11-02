@@ -6,19 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Library extends StatefulWidget {
-  const Library({super.key});
+  const Library({Key? key}) : super(key: key);
 
   @override
   State<Library> createState() => _LibraryState();
 }
 
 class _LibraryState extends State<Library> {
-  late List<Workflow> workflows;
+  List<Workflow> workflows = [];
 
   @override
   void initState() {
     super.initState();
-    workflows = [];
   }
 
   @override
@@ -44,21 +43,30 @@ class _LibraryState extends State<Library> {
                       .error(snapshot.error.toString())),
                 );
               } else {
-                workflows = snapshot.data!.data!;
-                return ListView.builder(
-                  itemCount: workflows.length,
-                  itemBuilder: (context, index) {
-                    return WorkflowTile(
-                      workflow: workflows[index],
-                      onUpdate: () async {
-                        final newWorkflows = await services.workflows.getAll();
-                        setState(() {
-                          workflows = newWorkflows.data!;
-                        });
+                if (snapshot.hasData) {
+                  if (snapshot.data!.data != null) {
+                    workflows = snapshot.data!.data!;
+                    return ListView.builder(
+                      itemCount: workflows.length,
+                      itemBuilder: (context, index) {
+                        return WorkflowTile(
+                          workflow: workflows[index],
+                          onUpdate: () async {
+                            final newWorkflows =
+                                await services.workflows.getAll();
+                            setState(() {
+                              workflows = newWorkflows.data!;
+                            });
+                          },
+                        );
                       },
                     );
-                  },
-                );
+                  } else {
+                    return const Text("No datas available");
+                  }
+                } else {
+                  return const Text("No datas available");
+                }
               }
             },
           ),

@@ -45,6 +45,11 @@ services:
     build:
       context: ../workers/linkedin
 
+  miro:
+    container_name: miro
+    build:
+      context: ../workers/miro
+
   seconds-interval:
     container_name: seconds-interval
     build: ../workers/seconds-interval

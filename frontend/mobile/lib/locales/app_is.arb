@@ -26,11 +26,17 @@
     "language": "Tungumál",
     "theme": "Þema",
     "save": "Vista",
+    "back": "Fyrri",
     "rename": "Endurnefna",
     "edit": "Til að breyta",
     "delete": "EYÐA",
     "editorActionDescription": "Atburður sem ræsir vinnuflæðið þitt",
     "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst",
     "editorNameModalTitle": "Breyttu heiti verkflæðis",
-    "editorChooseService": "Veldu þjónustu"
+    "editorChooseService": "Veldu þjónustu",
+    "editorChooseEvent": "Veldu viðburð",
+    "editorChooseParams": "Stilltu viðburðastillingar",
+    "connectAccount": "Tengdu reikninginn þinn",
+    "noAccountToConnect": "Enginn reikningur til að tengjast",
+    "accountAlreadyConnected": "Reikningur þegar tengdur"
 }

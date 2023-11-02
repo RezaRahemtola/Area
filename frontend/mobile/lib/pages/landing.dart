@@ -23,6 +23,8 @@ class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 2;
   String language = "en";
   String theme = "light";
+  String locale = "en";
+  int libraryKey = 0;
 
   @override
   void initState() {
@@ -133,14 +135,17 @@ class _LandingPageState extends State<LandingPage> {
             body: IndexedStack(
               index: _selectedIndex,
               children: <Widget>[
-                const Center(
-                  child: Library(),
+                Center(
+                  child: Library(key: ValueKey(libraryKey)),
                 ),
                 const Center(
                   child: Services(),
                 ),
                 Center(
-                  child: Editor(workflow: getEmptyWorkflow()),
+                  child: Editor(
+                    workflow: getEmptyWorkflow(),
+                    onSave: () => _onItemTapped(0),
+                  ),
                 ),
                 const Center(
                   child: Activity(),

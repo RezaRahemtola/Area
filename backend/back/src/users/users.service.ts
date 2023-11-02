@@ -16,17 +16,21 @@ export class UsersService {
 		private readonly userRepository: Repository<User>,
 	) {}
 
-	createUser(email: string, passwordHash: string, isAdmin: boolean = false): Promise<boolean> {
-		return this.userRepository
-			.save({ email, passwordHash, isAdmin, settings: { language: "en", theme: "auto" } })
-			.then(() => {
-				this.logger.log(`Created ${isAdmin ? "admin " : " "}user with ${email}`);
-				return true;
-			})
-			.catch(({ message }) => {
-				this.logger.error(`Failed to create ${isAdmin ? "admin " : ""}user with ${email}: ${message}`);
-				return false;
+	async createUser(email: string, passwordHash?: string, isAdmin: boolean = false): Promise<User> {
+		try {
+			this.logger.log(`Creating ${isAdmin ? "admin " : ""}user with ${email}...`);
+			const user = await this.userRepository.save({
+				email,
+				passwordHash,
+				isAdmin,
+				settings: { language: "en", theme: "auto" },
 			});
+			this.logger.log(`Created ${isAdmin ? "admin " : ""}user with ${email} and id ${user.id}`);
+			return user;
+		} catch ({ message }) {
+			this.logger.error(`Failed to create ${isAdmin ? "admin " : ""}user with ${email}: ${message}`);
+			return null;
+		}
 	}
 
 	async getUser(options: UserIdentification) {

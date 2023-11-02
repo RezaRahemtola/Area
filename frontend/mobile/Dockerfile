@@ -62,6 +62,8 @@ RUN flutter pub get
 
 RUN flutter build apk
 
+RUN cp build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/area.apk
+
 # Non-root user
 RUN useradd -u 8877 user
 RUN chown -R user:user /app
