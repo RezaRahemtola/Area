@@ -62,7 +62,7 @@ export class AuthService {
 			serviceId: ServiceName;
 		},
 	): Promise<string> {
-		if (!!(await this.usersService.getUser({ email }).catch(() => null)))
+		if (await this.usersService.getUser({ email }).catch(() => null))
 			throw new ConflictException("An user already exists with this email.");
 		const [user, connection] = await this.connectionsService.createUserAndConnectionForData(
 			email,
