@@ -39,7 +39,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const FlutterLogo(size: 100),
+                              const Image(
+                                image: AssetImage('assets/Area_logo.png'),
+                                height: 150,
+                                width: 150,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(

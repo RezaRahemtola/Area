@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Area",
+	title: "AREA",
 	description: "Create, Automate, Succeed!",
 };
 

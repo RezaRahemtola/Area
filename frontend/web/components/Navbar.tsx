@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { useAtom } from "jotai";
 import ThemeSelector from "@/components/ThemeSelector";
@@ -29,6 +30,7 @@ const Navbar = ({ beforeLogoContent, hasLogo = true, centerContent, endContent }
 				{beforeLogoContent}
 				{hasLogo ? (
 					<Link className="btn btn-ghost normal-case text-xl" href="/">
+						<Image src={"/Area_logo.png"}  alt={""} width={42} height={42} />
 						Area
 					</Link>
 				) : (
