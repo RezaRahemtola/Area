@@ -62,10 +62,10 @@ class _LibraryState extends State<Library> {
                       },
                     );
                   } else {
-                    return const Text("No datas available");
+                    return const Center(child: Text("No datas available 1"));
                   }
                 } else {
-                  return const Text("No datas available");
+                  return const Center(child: Text("No datas available 2"));
                 }
               }
             },
