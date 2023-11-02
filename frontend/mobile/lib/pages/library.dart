@@ -13,14 +13,15 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
-  late List<Workflow> workflows;
+  List<Workflow> workflows = [];
+  bool needRefresh = true;
+  List<Workflow> initialWorkflows = [];
+
   @override
   void initState() {
     super.initState();
   }
 
-  bool needRefresh = true;
-  List<Workflow> initialWorkflows = [];
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
