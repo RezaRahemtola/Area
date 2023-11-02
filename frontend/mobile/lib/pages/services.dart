@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/components/services/service_card.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/services/services/areas.dart';
@@ -101,9 +102,11 @@ class _ServiceDetailsState extends State<ServiceDetails> {
           child: Column(
             children: [
               SectionTitle(title: AppLocalizations.of(context)!.actions),
+              if (actions.isEmpty) EmptyNotice(message: AppLocalizations.of(context)!.noActions),
               for (var action in actions) ActionOrReactionItem(item: action),
               const SizedBox(height: 16),
               SectionTitle(title: AppLocalizations.of(context)!.reactions),
+              if (reactions.isEmpty) EmptyNotice(message: AppLocalizations.of(context)!.noReactions),
               for (var reaction in reactions)
                 ActionOrReactionItem(item: reaction),
             ],
