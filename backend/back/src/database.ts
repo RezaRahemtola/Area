@@ -66,6 +66,7 @@ import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/169
 import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
 import { CreateAirTableServiceAndScopes1698856388828 } from "./services/seed/1698856388828-CreateAirTableServiceAndScopes";
 import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
+import { MakePasswordHashNullable1698408481880 } from "./migrations/1698408481880-MakePasswordHashNullable";
 import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
 
 dotenv.config();
@@ -126,6 +127,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
 		CreateGithubCommitPRAreas1698353438280,
+		MakePasswordHashNullable1698408481880,
 		UpdateMiroServiceImageForMobile1698590831862,
 		WorkflowAreaReturnParams1698521602687,
 		CreateGoogleFormUpdateDescriptionArea1698654637708,
