@@ -23,8 +23,7 @@ ThemeData _buildDarkTheme() {
   final ThemeData base = ThemeData.dark();
   return base.copyWith(
     colorScheme: base.colorScheme.copyWith(
-        primary: const Color(
-            0xFF516079), // Personnalisez les couleurs selon vos besoins
+        primary: const Color(0xFF516079),
         secondary: const Color(0xFFF1895C),
         onPrimary: const Color(0xFFC5C6C6),
         onSecondary: const Color(0xFF2E3244)),

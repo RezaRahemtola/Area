@@ -3,10 +3,10 @@ import ApkDownloadButton from "@/components/ApkDownloadButton";
 
 const Footer = () => (
 	<footer className="footer p-10 bg-primary text-primary-content">
-		<aside>
+		<aside className="row flex">
 			<svg
-				width="50"
-				height="50"
+				width="42"
+				height="42"
 				viewBox="0 0 24 24"
 				xmlns="http://www.w3.org/2000/svg"
 				fillRule="evenodd"
@@ -21,8 +21,7 @@ const Footer = () => (
 				Providing reliable tech since 2023
 			</p>
 		</aside>
-		<nav>
-			<header className="footer-title">Social</header>
+		<nav className="row flex content-center align-middle">
 			<div className="grid grid-flow-col gap-4">
 				<a href="https://github.com/RezaRahemtola/Area" target="_blank">
 					<FontAwesomeIcon icon="github" svgProps={{ width: "24", height: "24" }} />

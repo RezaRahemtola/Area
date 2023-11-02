@@ -13,20 +13,20 @@ const config: Config = {
 			{
 				light: {
 					"color-scheme": "light",
-					primary: "#C5C6C6",
+					primary: "#718099",
 					secondary: "#F1895C",
-					accent: "#FFFFFF",
-					neutral: "#516079",
+					accent: "#C5C6C6",
+					neutral: "#FFFFFF",
 
 					"base-100": "#FFFFFF",
 					"base-content": "#1f2937",
 				},
 				dark: {
 					"color-scheme": "dark",
-					primary: "#2E3244",
+					primary: "#516079",
 					secondary: "#F1895C",
-					accent: "#516079",
-					neutral: "#C5C6C6",
+					accent: "#2E3244",
+					neutral: "#718099",
 
 					"base-100": "#2E3244",
 					"base-content": "#FFFFFF",
@@ -36,3 +36,4 @@ const config: Config = {
 	},
 };
 export default config;
+
