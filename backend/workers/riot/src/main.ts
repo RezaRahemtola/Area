@@ -1,7 +1,9 @@
 import onLolMatch from "./lol/match";
+import onLolLevelUp from "./lol/level";
 
 const areas: Record<string, () => Promise<void>> = {
-    "on-lol-match": onLolMatch,
+    "on-level-up": onLolLevelUp,
+    "on-game-end": onLolMatch,
 }
 async function main() {
     const job = process.argv[2];

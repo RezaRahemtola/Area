@@ -1,4 +1,14 @@
-import { IsBoolean, IsEmail, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import {
+	IsBoolean,
+	IsEmail,
+	IsEnum,
+	IsNumber,
+	IsOptional,
+	IsString,
+	IsUUID,
+	MaxLength,
+	MinLength,
+} from "class-validator";
 
 export class UniqueJobParams {
 	@IsUUID(4)
@@ -222,4 +232,29 @@ export class MiroCreateBoardParams extends UniqueJobParams {
 export class FacebookPageParams {
 	@IsString()
 	pageId: string;
+}
+
+enum RiotRegion {
+	"br",
+	"eun",
+	"euw",
+	"jp",
+	"kr",
+	"la",
+	"la2",
+	"na",
+	"oc",
+	"tr",
+	"ru",
+}
+type RiotRegionType = keyof typeof RiotRegion;
+
+export class RiotActionsParams extends UniqueJobParams {
+	@IsEnum(RiotRegion)
+	region: RiotRegionType;
+
+	@IsString()
+	@MinLength(3)
+	@MaxLength(16)
+	summoner: string;
 }

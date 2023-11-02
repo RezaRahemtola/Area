@@ -1,6 +1,10 @@
+import { z } from "zod";
 import { PlatformId, RiotAPITypes } from "@fightmegg/riot-api";
 import LoLRegion = RiotAPITypes.LoLRegion;
 import Cluster = RiotAPITypes.Cluster;
+import { RiotAuthSchema } from "./params";
+import { onError } from "./grpc";
+import { AreaBackServiceClient } from "../proto/area_back";
 
 export const RiotRegion = ["br", "eun", "euw", "jp", "kr", "la", "la2", "na", "oc", "tr", "ru"] as const;
 export type RiotRegionType = (typeof RiotRegion)[number];
@@ -34,7 +38,24 @@ export const RiotRegionToLolCluster: Record<RiotRegionType, LolCluster> = {
 	ru: PlatformId.EUROPE,
 };
 
+export const LolDataSchema = z.object({
+	auth: RiotAuthSchema,
+	target: z.string().optional(),
+	identifier: z.string(),
+	region: z.enum(RiotRegion),
+	summoner: z.string(),
+});
+export type LolDataType = z.infer<typeof LolDataSchema>;
+
 export type RiotGamesError = {
 	status: number;
 	statusText: string;
 };
+
+export async function handleRiotError(error: RiotGamesError, client: AreaBackServiceClient, identifier: string) {
+	await onError(client, {
+		identifier,
+		error: error.statusText,
+		isAuthError: false,
+	});
+}

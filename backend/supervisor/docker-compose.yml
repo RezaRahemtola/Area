@@ -50,6 +50,13 @@ services:
     build:
       context: ../workers/miro
 
+  riot:
+    container_name: riot
+    build:
+      context: ../workers/riot
+      args:
+        - RIOT_API_KEY=${RIOT_API_KEY}
+
   seconds-interval:
     container_name: seconds-interval
     build: ../workers/seconds-interval
