@@ -128,7 +128,10 @@ export class WorkflowsController {
 			...workflow,
 			action: { ...action, parameters: actionParameters },
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			reactions: reactions.map(({ parameters: { workflowStepId, ...parameters } }) => ({ ...parameters })),
+			reactions: reactions.map(({ parameters: { workflowStepId, ...parameters }, ...reaction }) => ({
+				...reaction,
+				parameters,
+			})),
 		};
 	}
 
