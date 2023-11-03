@@ -39,5 +39,8 @@
     "editorChooseParams": "Stilltu viðburðastillingar",
     "connectAccount": "Tengdu reikninginn þinn",
     "noAccountToConnect": "Enginn reikningur til að tengjast",
-    "accountAlreadyConnected": "Reikningur þegar tengdur"
+    "accountAlreadyConnected": "Reikningur þegar tengdur",
+    "noWorkflows": "Engin verkflæði fundust",
+    "noActions": "Engin aðgerð möguleg fyrir þessa þjónustu",
+    "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu"
 }
