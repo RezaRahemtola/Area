@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 import { ParametersFormFlowFieldDto } from "../../services/dto/area.dto";
 
-export class CreateRiotServiceAndActions1698964479850 implements MigrationInterface {
+export class CreateRiotGamesActions1698964479850 implements MigrationInterface {
 	private readonly riotActionParametersFormFlow: ParametersFormFlowFieldDto[] = [
 		{
 			name: "region",
@@ -28,14 +28,6 @@ export class CreateRiotServiceAndActions1698964479850 implements MigrationInterf
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
-			`INSERT INTO "service" ("id", "image_url", "oauth_url", "need_connection")
-             VALUES ('riot',
-                     'https://i.pinimg.com/originals/90/6d/23/906d231cbaff55c77fb97191592e1c76.png',
-                     '',
-                     false)`,
-		);
-
-		await queryRunner.query(
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow", "parameters_return_flow")
             VALUES ('on-game-end', 'riot', true, 'Triggers when a player ends a LoL match', $1, '{${this.riotGameActionsParametersReturnFlow
 							.map((v) => `"${v}"`)
@@ -55,8 +47,10 @@ export class CreateRiotServiceAndActions1698964479850 implements MigrationInterf
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
-			`DELETE FROM "service"
-             WHERE id = 'riot'`,
+			`DELETE FROM "area"
+             WHERE service_id = 'riot'
+				AND id IN ('on-game-end', 'on-game-loss', 'on-game-win', 'on-level-up');
+             `,
 		);
 	}
 }

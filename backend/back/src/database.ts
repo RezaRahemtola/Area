@@ -73,6 +73,8 @@ import { ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue
 import ActivityLog from "./activity/entities/activity-log.entity";
 import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
 import { CreateRiotServiceAndActions1698964479850 } from "./workflows/seed/1698964479850-CreateRiotServiceAndActions";
+import { CreateRiotGamesService1698964479750 } from "./services/seed/1698964479750-CreateRiotGamesService";
+import { CreateRiotGamesActions1698964479850 } from "./workflows/seed/1698964479850-CreateRiotGamesActions";
 
 dotenv.config();
 
@@ -149,6 +151,8 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624,
 		AddActivityLogEntity1698986590525,
 		CreateRiotServiceAndActions1698964479850,
+		CreateRiotGamesService1698964479750,
+		CreateRiotGamesActions1698964479850,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
