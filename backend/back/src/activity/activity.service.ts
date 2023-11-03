@@ -20,17 +20,6 @@ export class ActivityService {
 	}
 
 	async getActivityLogs({ since, page, itemsPerPage, type }: ActivityLogGetterParamsDto, ownerId: string) {
-		this.logger.debug(
-			`Getting activity logs for owner ${ownerId}, options are: ${JSON.stringify({
-				since,
-				page,
-				itemsPerPage,
-				type,
-			})} find options are ${JSON.stringify({
-				take: page !== undefined ? itemsPerPage ?? 10 : undefined,
-				skip: (page ?? 0) * (itemsPerPage ?? 10),
-			})}`,
-		);
 		const logs = await this.activityLogRepository.find({
 			where: { createdAt: since && MoreThan(since), type, workflow: { owner: { id: ownerId } } },
 			take: page !== undefined ? itemsPerPage ?? 10 : undefined,
