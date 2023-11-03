@@ -53,7 +53,7 @@ async function sendNewMatchData({ riot, client, identifier, cluster, matchId, pl
 		},
 	});
 
-	const altName = `riot-on-game-${player.win ? "win" : "loss"}`;
+	const altName = `riot-lol-on-game-${player.win ? "win" : "loss"}`;
 	const altIdentifer = `${altName}-${identifier.substring(17)}`;
 
 	await onReaction(client, {
