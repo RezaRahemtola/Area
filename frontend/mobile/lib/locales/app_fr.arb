@@ -40,7 +40,7 @@
     "noAccountToConnect": "Aucun compte à connecter",
     "accountAlreadyConnected": "Compte déjà connecté",
     "searchBar": "Rechercher...",
-    "emptyNotice": "Rien à montrer ici...",
+    "emptyNotice": "Aucun workflow trouvé...",
     "noActions": "Aucune action possible pour ce service...",
     "noReactions": "Aucune réaction possible pour ce service..."
 }
