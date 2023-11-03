@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Image(
-                                image: AssetImage('assets/Area_logo.png'),
+                                image: AssetImage('assets/logo.png'),
                                 height: 150,
                                 width: 150,
                               ),
