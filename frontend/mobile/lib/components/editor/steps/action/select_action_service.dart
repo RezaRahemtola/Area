@@ -23,7 +23,7 @@ class _SelectActionServiceState extends State<SelectActionService> {
   @override
   void initState() {
     super.initState();
-    getServicesFuture = services.services.getAll("actions");
+    getServicesFuture = services.services.getAll(has: "actions");
     selectedServiceId = widget.service?.id;
   }
 
