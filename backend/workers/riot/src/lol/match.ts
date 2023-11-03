@@ -45,7 +45,7 @@ async function sendNewMatchData({ riot, client, identifier, cluster, matchId, pl
 	};
 
 	await onReaction(client, {
-		name: "riot-on-game-end",
+		name: "riot-lol-on-game-end",
 		identifier,
 		params: {
 			win: player.win,

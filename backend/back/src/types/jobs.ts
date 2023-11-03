@@ -71,10 +71,10 @@ export enum Jobs {
 	"linear-on-issue-create" = "linear-on-issue-create",
 	"linkedin-create-post" = "linkedin-create-post",
 	"miro-create-board" = "miro-create-board",
-	"riot-on-game-end" = "riot-on-game-end",
-	"riot-on-game-loss" = "riot-on-game-loss",
-	"riot-on-game-win" = "riot-on-game-win",
-	"riot-on-level-up" = "riot-on-level-up",
+	"riot-lol-on-game-end" = "riot-lol-on-game-end",
+	"riot-lol-on-game-loss" = "riot-lol-on-game-loss",
+	"riot-lol-on-game-win" = "riot-lol-on-game-win",
+	"riot-lol-on-level-up" = "riot-lol-on-level-up",
 	"timer-seconds-interval" = "timer-seconds-interval",
 }
 
@@ -127,10 +127,10 @@ export const JobParamsClasses = {
 	"linear-on-issue-create": LinearWorkspaceParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
 	"miro-create-board": MiroCreateBoardParams,
-	"riot-on-game-end": RiotActionsParams,
-	"riot-on-game-loss": RiotActionsParams,
-	"riot-on-game-win": RiotActionsParams,
-	"riot-on-level-up": RiotActionsParams,
+	"riot-lol-on-game-end": RiotActionsParams,
+	"riot-lol-on-game-loss": RiotActionsParams,
+	"riot-lol-on-game-win": RiotActionsParams,
+	"riot-lol-on-level-up": RiotActionsParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
 };
 
@@ -177,9 +177,9 @@ export type JobsParams = Mapper<{
 	"linear-on-issue-create": LinearWorkspaceParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
 	"miro-create-board": MiroCreateBoardParams;
-	"riot-on-game-end": RiotActionsParams;
-	"riot-on-game-loss": RiotActionsParams;
-	"riot-on-game-win": RiotActionsParams;
-	"riot-on-level-up": RiotActionsParams;
+	"riot-lol-on-game-end": RiotActionsParams;
+	"riot-lol-on-game-loss": RiotActionsParams;
+	"riot-lol-on-game-win": RiotActionsParams;
+	"riot-lol-on-level-up": RiotActionsParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
 }>;
