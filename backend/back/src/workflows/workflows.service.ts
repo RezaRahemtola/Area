@@ -48,7 +48,6 @@ export class WorkflowsService {
 			where: { id, ownerId, active: isActive },
 			relations: { action: { area: true }, reactions: { previousWorkflowArea: true, area: true } },
 		});
-		this.logger.debug(`Got workflow: ${JSON.stringify(workflow)}`);
 		if (!workflow) throw new NotFoundException(`Workflow ${id} not found.`);
 		const {
 			name,
@@ -260,13 +259,6 @@ export class WorkflowsService {
 
 			if (reactions) {
 				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
-				this.logger.debug(
-					`Deleted workflow reactions: ${JSON.stringify(
-						await queryRunner.manager.delete(WorkflowArea, {
-							id: In(workflow.reactions.map((reaction) => reaction.id)),
-						}),
-					)}`,
-				);
 				const reactionsToSave = await this.createWorkflowReactions(
 					queryRunner,
 					ownerId,
