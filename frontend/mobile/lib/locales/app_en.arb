@@ -34,6 +34,7 @@
     "editorReactionDescription": "An event a workflow performs after it start",
     "editorNameModalTitle": "Change workflow name",
     "editorChooseService": "Choose a service",
+    "searchBar": "Search...",
     "editorChooseEvent": "Choose an event",
     "editorChooseParams": "Define the event parameters",
     "connectAccount": "Connect account",
