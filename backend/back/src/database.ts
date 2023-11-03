@@ -69,6 +69,7 @@ import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/169886068
 import { CreateSlackServiceWithScopes1698870517052 } from "./services/seed/1698870517052-CreateSlackServiceWithScopes";
 import { MakePasswordHashNullable1698408481880 } from "./migrations/1698408481880-MakePasswordHashNullable";
 import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
+import { CreateTodoistServiceWithScopes1698981275393 } from "./services/seed/1698981275393-CreateTodoistServiceWithScopes";
 import { ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624 } from "./migrations/1698986506624-ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue";
 import ActivityLog from "./activity/entities/activity-log.entity";
 import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
@@ -145,6 +146,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		FixGitLabOnPRAreasScope1698860681718,
 		CreateFacebookStatusCreateAction1698789169408,
 		CreateSlackServiceWithScopes1698870517052,
+		CreateTodoistServiceWithScopes1698981275393,
 		ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624,
 		AddActivityLogEntity1698986590525,
 	],
