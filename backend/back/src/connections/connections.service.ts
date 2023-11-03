@@ -59,31 +59,8 @@ export class ConnectionsService {
 		return await this.userConnectionRepository.save(userConnection);
 	}
 
-	async getUserConnections(userId: string) {
-		return (
-			await this.userConnectionRepository.find({
-				where: { userId },
-				relations: { scopes: true },
-				select: {
-					serviceId: true,
-					scopes: true,
-					createdAt: true,
-				},
-			})
-		).map(({ serviceId, scopes, createdAt }) => ({ serviceId, scopes: scopes.map(({ id }) => id), createdAt }));
-	}
-
 	async getUserConnectionForService(userId: string, serviceId: ServiceName) {
 		return this.userConnectionRepository.findOne({ where: { userId, serviceId }, relations: { scopes: true } });
-	}
-
-	async getAvailableConnections(userId: string): Promise<string[]> {
-		const services = await this.servicesService.getServices();
-		const userConnections = await this.getUserConnections(userId);
-		const availableServices = services
-			.filter((service) => !userConnections.some((userConnection) => userConnection.serviceId === service.id))
-			.filter(({ needConnection }) => needConnection);
-		return availableServices.map((service) => service.id);
 	}
 
 	async deleteUserConnection(userId: string, serviceId: ServiceName) {

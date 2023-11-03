@@ -47,20 +47,6 @@ export class ConnectionsController {
 
 	@ApiBearerAuth()
 	@ApiOkResponse({
-		description: "Returns the available connections for the current user",
-		type: [String],
-	})
-	@UseGuards(JwtAuthGuard)
-	@Get("/available")
-	async getAvailableConnections(
-		@Req()
-		{ user: { id: userId } }: APIRequest,
-	): ReturnType<ConnectionsService["getAvailableConnections"]> {
-		return this.connectionsService.getAvailableConnections(userId);
-	}
-
-	@ApiBearerAuth()
-	@ApiOkResponse({
 		description: "The link to connect to the service",
 	})
 	@ApiParam({
