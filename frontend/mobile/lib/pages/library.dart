@@ -17,15 +17,24 @@ class _LibraryState extends State<Library> {
   bool needRefresh = true;
   List<Workflow> initialWorkflows = [];
 
+  final TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
   }
 
+  void _updateSearch(String search) {
+    setState(() {
+      workflows = initialWorkflows
+          .where((element) =>
+              element.name.toLowerCase().contains(search.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.libraryTitle),
@@ -43,6 +52,8 @@ class _LibraryState extends State<Library> {
                   color: Colors.white,
                   child: TextField(
                     controller: searchController,
+                    onEditingComplete: () =>
+                        _updateSearch(searchController.text),
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.searchBar,
                       suffixIcon: IconButton(
@@ -51,13 +62,8 @@ class _LibraryState extends State<Library> {
                       ),
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search),
-                        onPressed: () async {
-                          setState(() {
-                            workflows = initialWorkflows
-                                .where((element) => element.name
-                                    .contains(searchController.text))
-                                .toList();
-                          });
+                        onPressed: () {
+                          _updateSearch(searchController.text);
                         },
                       ),
                       border: OutlineInputBorder(
@@ -95,8 +101,9 @@ class _LibraryState extends State<Library> {
                               final newWorkflows =
                                   await services.workflows.getAll();
                               setState(() {
-                                workflows = newWorkflows.data!;
+                                initialWorkflows = newWorkflows.data!;
                               });
+                              _updateSearch(searchController.text);
                             },
                           );
                         },
