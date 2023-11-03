@@ -401,15 +401,25 @@ export class OauthService {
 		};
 	}
 
-	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
-		const { oauthUrl } = await this.servicesService.getService(serviceId);
-		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
-		return this.SERVICE_OAUTH_FACTORIES[serviceId].urlFactory(
-			oauthUrl,
-			userId,
-			scopes,
-			this.OAUTH_CALLBACK_URL_FACTORY,
+	async createTodoistConnection(code: string) {
+		const { data } = await this.httpService.axiosRef.post<OAuthResponse>(
+			"https://todoist.com/oauth/access_token",
+			{
+				code,
+				client_id: this.configService.getOrThrow<string>("TODOIST_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("TODOIST_CLIENT_SECRET"),
+			},
+			{
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					Accept: "application/json",
+				},
+			},
 		);
+		return {
+			scopes: ["task:add", "data:read", "data:read_write", "data:delete", "project:delete"],
+			data,
+		};
 	}
 
 	async createSlackConnection(code: string) {
@@ -438,6 +448,17 @@ export class OauthService {
 			scopes: scope.split(","),
 			data: { ...connectionData, authed_user: authedUserConnectionData },
 		};
+	}
+
+	async getOAuthUrlForServiceUserAndScopes(userId: string, serviceId: ServiceName, scopes: string[]) {
+		const { oauthUrl } = await this.servicesService.getService(serviceId);
+		this.logger.log(`Creating OAuth URL for service ${serviceId} and user ${userId} with scopes ${scopes.join(", ")}`);
+		return this.SERVICE_OAUTH_FACTORIES[serviceId].urlFactory(
+			oauthUrl,
+			userId,
+			scopes,
+			this.OAUTH_CALLBACK_URL_FACTORY,
+		);
 	}
 
 	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory<ServiceName> = (service) =>
@@ -555,6 +576,15 @@ export class OauthService {
 					this.OAUTH_CODE_CHALLENGE_S265_HASH
 				}&code_challenge_method=S256&state=${userId}`,
 			connectionFactory: this.createAirTableConnection.bind(this),
+		},
+		todoist: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"TODOIST_CLIENT_ID",
+				)}&scope=${encodeURI(
+					["task:add", "data:read", "data:read_write", "data:delete", "project:delete"].join(","),
+				)}&redirect_uri=${oauthCallbackUrlFactory("todoist")}&state=${userId}`,
+			connectionFactory: this.createTodoistConnection.bind(this),
 		},
 		slack: {
 			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
