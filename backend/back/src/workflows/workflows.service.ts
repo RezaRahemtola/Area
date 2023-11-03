@@ -259,6 +259,9 @@ export class WorkflowsService {
 
 			if (reactions) {
 				this.logger.log(`Updating ${reactions.length} workflow ${workflowId} reactions...`);
+				await queryRunner.manager.delete(WorkflowArea, {
+					id: In(workflow.reactions.map((reaction) => reaction.id)),
+				});
 				const reactionsToSave = await this.createWorkflowReactions(
 					queryRunner,
 					ownerId,
