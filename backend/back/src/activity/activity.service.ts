@@ -13,9 +13,27 @@ export class ActivityService {
 	constructor(
 		@InjectRepository(ActivityLog)
 		private readonly activityLogRepository: Repository<ActivityLog>,
+		@InjectRepository(WorkflowArea)
+		private readonly workflowAreaRepository: Repository<WorkflowArea>,
 	) {}
 
-	async createActivityLog(type: ActivityLogType, workflow: Workflow, workflowArea: WorkflowArea): Promise<ActivityLog> {
+	async createActivityLogsForJobIdentifier(type: ActivityLogType, jobId: string) {
+		this.logger.log(`Creating ${type} activity logs for job ${jobId}`);
+		const areas = await this.workflowAreaRepository.find({
+			where: { jobId },
+			relations: { workflow: true, actionOfWorkflow: true },
+		});
+		this.logger.log(`Found ${areas.length} areas for job ${jobId}, registering activity logs...`);
+		return Promise.all(
+			areas.map(async (area) => await this.createActivityLog(type, area.workflow ?? area.actionOfWorkflow, area)),
+		);
+	}
+
+	async createActivityLog(
+		type: ActivityLogType,
+		workflow: Partial<Workflow>,
+		workflowArea: Partial<WorkflowArea>,
+	): Promise<ActivityLog> {
 		return this.activityLogRepository.save({ type, workflow, workflowArea });
 	}
 
@@ -35,6 +53,14 @@ export class ActivityService {
 				workflow: { id: true, name: true },
 			},
 		});
+		this.logger.log(
+			`Found ${logs.length} activity logs for user ${ownerId} with options: ${JSON.stringify({
+				since,
+				page,
+				itemsPerPage,
+				type,
+			})}`,
+		);
 		return logs.map(
 			({
 				workflowArea: {
