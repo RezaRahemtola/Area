@@ -45,7 +45,7 @@ var JobToImage = map[string]string{
 	"riot-lol-on-game-end":                   "supervisor-riot",
 	"riot-lol-on-game-loss":                  "supervisor-riot",
 	"riot-lol-on-game-win":                   "supervisor-riot",
-	"riot-lol-on-level-up":                       "supervisor-riot",
+	"riot-lol-on-level-up":                   "supervisor-riot",
 	"timer-seconds-interval":                 "supervisor-seconds-interval",
 }
 
