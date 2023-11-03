@@ -27,7 +27,7 @@ export default async function onLolLevelUp() {
 
 				if (newLevel !== summonerLevel) {
 					await onReaction(client, {
-						name: "riot-on-level-up",
+						name: "riot-lol-on-level-up",
 						identifier: params.identifier,
 						params: {
 							level: newLevel,

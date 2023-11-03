@@ -42,10 +42,10 @@ var JobToImage = map[string]string{
 	"linear-on-issue-create":                 "",
 	"linkedin-create-post":                   "supervisor-linkedin",
 	"miro-create-board":                      "supervisor-miro",
-	"riot-on-game-end":                       "supervisor-riot",
-	"riot-on-game-loss":                      "supervisor-riot",
-	"riot-on-game-win":                       "supervisor-riot",
-	"riot-on-level-up":                       "supervisor-riot",
+	"riot-lol-on-game-end":                   "supervisor-riot",
+	"riot-lol-on-game-loss":                  "supervisor-riot",
+	"riot-lol-on-game-win":                   "supervisor-riot",
+	"riot-lol-on-level-up":                       "supervisor-riot",
 	"timer-seconds-interval":                 "supervisor-seconds-interval",
 }
 
@@ -89,10 +89,10 @@ var OptArgument = map[string]string{
 	"linear-create-issue":                    "create-issue",
 	"linkedin-create-post":                   "create-post",
 	"miro-create-board":                      "create-board",
-	"riot-on-game-end":                       "on-game-end",
-	"riot-on-game-loss":                      "on-game-end",
-	"riot-on-game-win":                       "on-game-end",
-	"riot-on-level-up":                       "on-level-up",
+	"riot-lol-on-game-end":                   "lol-on-game-end",
+	"riot-lol-on-game-loss":                  "lol-on-game-end",
+	"riot-lol-on-game-win":                   "lol-on-game-end",
+	"riot-lol-on-level-up":                   "lol-on-level-up",
 	"timer-seconds-interval":                 "",
 }
 

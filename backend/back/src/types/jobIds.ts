@@ -62,9 +62,9 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
 	"linkedin-create-post": ({ workflowStepId }) => uniqueJobId("linkedin-create-post", workflowStepId),
 	"miro-create-board": ({ workflowStepId }) => uniqueJobId("miro-create-board", workflowStepId),
-	"riot-on-game-end": ({ region, summoner }) => `riot-on-game-end-${region}-${summoner}`,
-	"riot-on-game-loss": ({ region, summoner }) => `riot-on-game-loss-${region}-${summoner}`,
-	"riot-on-game-win": ({ region, summoner }) => `riot-on-game-win-${region}-${summoner}`,
-	"riot-on-level-up": ({ region, summoner }) => `riot-on-level-up-${region}-${summoner}`,
+	"riot-lol-on-game-end": ({ region, summoner }) => `riot-lol-on-game-end-${region}-${summoner}`,
+	"riot-lol-on-game-loss": ({ region, summoner }) => `riot-lol-on-game-loss-${region}-${summoner}`,
+	"riot-lol-on-game-win": ({ region, summoner }) => `riot-lol-on-game-win-${region}-${summoner}`,
+	"riot-lol-on-level-up": ({ region, summoner }) => `riot-lol-on-level-up-${region}-${summoner}`,
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
 };
