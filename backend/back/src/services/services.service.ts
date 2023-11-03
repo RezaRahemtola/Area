@@ -1,10 +1,11 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import Service from "./entities/service.entity";
 import { Repository } from "typeorm";
 import Area from "./entities/area.entity";
 import { AreaDto } from "./dto/area.dto";
-import { ServiceHasFilter } from "./dto/service-query-filter.dto";
+import ServiceQueryFilterDto from "./dto/service-query-filter.dto";
+import { OauthService } from "../connections/oauth.service";
 
 export const SERVICE_NAMES = [
 	"timer",
@@ -37,9 +38,14 @@ export class ServicesService {
 		private readonly serviceRepository: Repository<Service>,
 		@InjectRepository(Area)
 		private readonly areaRepository: Repository<Area>,
+		@Inject(forwardRef(() => OauthService))
+		private readonly oauthService: OauthService,
 	) {}
 
-	async getServices(withScopes: boolean = false, has?: ServiceHasFilter) {
+	async getServices(withScopes: boolean = false, serviceQueryFilterDto?: ServiceQueryFilterDto) {
+		const servicesHave = serviceQueryFilterDto?.has;
+		const servicesNeedConnection = serviceQueryFilterDto?.needConnection;
+		const servicesAreAuthenticator = serviceQueryFilterDto?.isAuthenticator;
 		const services = (
 			await this.serviceRepository.find({
 				relations: {
@@ -49,11 +55,27 @@ export class ServicesService {
 			})
 		).map(({ scopes, ...service }) => ({ ...service, scopes: scopes?.map(({ id }) => id) }));
 		const servicesToReturn = services
-			.filter(({ areas }) => !has || areas.some(({ isAction }) => (has === "actions" ? isAction : !isAction)))
+			.filter(
+				({ areas }) =>
+					!servicesHave || areas.some(({ isAction }) => (servicesHave === "actions" ? isAction : !isAction)),
+			)
+			.filter(({ needConnection }) => !servicesNeedConnection || needConnection === (servicesNeedConnection === "true"))
+			.filter(
+				({ id }) =>
+					!servicesAreAuthenticator ||
+					(servicesAreAuthenticator === "true") ===
+						!!this.oauthService.SERVICE_OAUTH_FACTORIES[id].getEmailForConnectionData,
+			)
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			.map(({ areas, ...service }) => ({ ...service }));
 		this.logger.log(`Found ${servicesToReturn.length} services`);
-		if (has) this.logger.log(`Theses services are all ${has}`);
+		if (servicesHave) this.logger.log(`Theses services have ${servicesHave}`);
+		if (servicesNeedConnection)
+			this.logger.log(`Theses services all ${servicesNeedConnection === "false" ? "do not " : ""}need a connection`);
+		if (servicesAreAuthenticator)
+			this.logger.log(
+				`Theses services can${servicesAreAuthenticator === "false" ? "not" : ""} be used for user authentication`,
+			);
 		return servicesToReturn;
 	}
 

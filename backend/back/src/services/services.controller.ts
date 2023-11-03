@@ -17,8 +17,8 @@ export class ServicesController {
 		type: [ServiceDto],
 	})
 	@Get()
-	async getServices(@Query() { has }: ServiceQueryFilterDto) {
-		return this.servicesService.getServices(true, has);
+	async getServices(@Query() serviceQueryFilterDto: ServiceQueryFilterDto) {
+		return this.servicesService.getServices(true, serviceQueryFilterDto);
 	}
 
 	@ApiOkResponse({
