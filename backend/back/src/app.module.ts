@@ -11,6 +11,7 @@ import { WorkflowsModule } from "./workflows/workflows.module";
 import { DATA_SOURCE_OPTIONS } from "./database";
 import { AboutModule } from "./about/about.module";
 import { WebhooksModule } from "./webhooks/webhooks.module";
+import { ActivityModule } from "./activity/activity.module";
 
 @Module({
 	imports: [
@@ -28,6 +29,7 @@ import { WebhooksModule } from "./webhooks/webhooks.module";
 		ServicesModule,
 		WebhooksModule,
 		WorkflowsModule,
+		ActivityModule,
 	],
 	controllers: [],
 	providers: [],
