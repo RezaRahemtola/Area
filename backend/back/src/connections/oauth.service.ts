@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, Logger } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ServiceName, ServicesService, SubServiceNameFromServiceName } from "../services/services.service";
@@ -70,6 +70,7 @@ export class OauthService {
 	constructor(
 		private readonly httpService: HttpService,
 		private readonly configService: ConfigService,
+		@Inject(forwardRef(() => ServicesService))
 		private readonly servicesService: ServicesService,
 	) {
 		const sha256Hash = createHash("sha256").update(this.OAUTH_CODE_CHALLENGE);

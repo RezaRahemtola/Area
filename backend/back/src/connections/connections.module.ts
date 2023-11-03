@@ -14,13 +14,13 @@ import { AuthModule } from "../auth/auth.module";
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([UserConnection, ServiceScope]),
-		ServicesModule,
+		forwardRef(() => ServicesModule),
 		HttpModule,
 		UsersModule,
 		forwardRef(() => AuthModule),
 	],
 	controllers: [ConnectionsController, OauthController],
 	providers: [ConnectionsService, OauthService],
-	exports: [ConnectionsService],
+	exports: [ConnectionsService, OauthService],
 })
 export class ConnectionsModule {}
