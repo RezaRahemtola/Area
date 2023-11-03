@@ -13,7 +13,7 @@ const EditorStepCardWrapper = ({ title, children, actions }: EditorStepCardWrapp
 	const { t } = useTranslation();
 
 	return (
-		<div className="card mx-auto w-2/3 shadow-2xl bg-accent">
+		<div className="card mx-auto w-2/3 shadow-2xl">
 			<div className="card-body items-center pt-3">
 				<div className="flex w-full mb-5">
 					<p className="card-title justify-center text-2xl ml-2">

@@ -30,7 +30,7 @@ const Navbar = ({ beforeLogoContent, hasLogo = true, centerContent, endContent }
 				{beforeLogoContent}
 				{hasLogo ? (
 					<Link className="btn btn-ghost normal-case text-xl" href="/">
-						<Image src={"/Area_logo.png"}  alt={""} width={42} height={42} />
+						<Image src="/logo.png" alt="Area logo" width={42} height={42} />
 						Area
 					</Link>
 				) : (

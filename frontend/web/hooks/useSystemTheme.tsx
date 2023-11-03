@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useSystemTheme = (): "dark" | "light" => {
-	if (typeof window === "undefined") return "dark";
+	if (typeof window === "undefined") return "light";
 	const getCurrentTheme = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
 	const [isDarkTheme, setIsDarkTheme] = useState(getCurrentTheme());
 	const mqListener = (e: MediaQueryListEvent) => {
