@@ -18,6 +18,23 @@ type MiroOAuthResponse = {
 	user_id: string;
 } & OAuthResponse;
 
+type SlackOAuthResponse = {
+	ok?: boolean;
+	bot_user_id?: string;
+	app_id?: string;
+	team?: {
+		id: string;
+		name: string;
+	};
+	enterprise?: {
+		id: string;
+		name: string;
+	};
+	authed_user?: {
+		id: string;
+	} & OAuthResponse;
+} & OAuthResponse;
+
 export type UserConnectionData = {
 	scopes: string[];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -395,6 +412,34 @@ export class OauthService {
 		);
 	}
 
+	async createSlackConnection(code: string) {
+		const {
+			data: {
+				authed_user: { scope, ...authedUserConnectionData },
+				...connectionData
+			},
+		} = await this.httpService.axiosRef.post<SlackOAuthResponse>(
+			"https://slack.com/api/oauth.v2.access",
+			{
+				code,
+				client_id: this.configService.getOrThrow<string>("SLACK_CLIENT_ID"),
+				client_secret: this.configService.getOrThrow<string>("SLACK_CLIENT_SECRET"),
+				grant_type: "authorization_code",
+				redirect_uri: this.OAUTH_CALLBACK_URL_FACTORY("slack"),
+			},
+			{
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					Accept: "application/json",
+				},
+			},
+		);
+		return {
+			scopes: scope.split(","),
+			data: { ...connectionData, authed_user: authedUserConnectionData },
+		};
+	}
+
 	private readonly OAUTH_CALLBACK_URL_FACTORY: OAuthCallbackUrlFactory<ServiceName> = (service) =>
 		`${this.configService.getOrThrow<string>("BACK_BASE_URL")}/connections/oauth/${service}/callback`;
 
@@ -510,6 +555,15 @@ export class OauthService {
 					this.OAUTH_CODE_CHALLENGE_S265_HASH
 				}&code_challenge_method=S256&state=${userId}`,
 			connectionFactory: this.createAirTableConnection.bind(this),
+		},
+		slack: {
+			urlFactory: (baseUrl, userId, scopes, oauthCallbackUrlFactory) =>
+				`${baseUrl}?response_type=code&client_id=${this.configService.getOrThrow(
+					"SLACK_CLIENT_ID",
+				)}&user_scope=${encodeURI(scopes.join(","))}&redirect_uri=${encodeURI(
+					oauthCallbackUrlFactory("slack"),
+				)}&state=${userId}`,
+			connectionFactory: this.createSlackConnection.bind(this),
 		},
 	};
 }

@@ -21,6 +21,7 @@ export const SERVICE_NAMES = [
 	"discord",
 	"gitlab",
 	"airtable",
+	"slack",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 
