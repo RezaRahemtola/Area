@@ -68,6 +68,7 @@ import { CreateAirTableServiceAndScopes1698856388828 } from "./services/seed/169
 import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
 import { MakePasswordHashNullable1698408481880 } from "./migrations/1698408481880-MakePasswordHashNullable";
 import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
+import ActivityLog from "./activity/entities/activity-log.entity";
 
 dotenv.config();
 
@@ -79,7 +80,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 	username: process.env.POSTGRES_USER,
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
-	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea, UserSettings],
+	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea, UserSettings, ActivityLog],
 	migrations: [
 		Seeding1696697017387,
 		CreateGithubService1696697379896,
