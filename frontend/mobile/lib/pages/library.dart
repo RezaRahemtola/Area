@@ -76,43 +76,49 @@ class _LibraryState extends State<Library> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder<ServiceReturn<List<Workflow>>>(
-                  future: services.workflows.getAll(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(AppLocalizations.of(context)!
-                            .error(snapshot.error.toString())),
-                      );
-                    } else {
-                      if (needRefresh) {
-                        needRefresh = false;
-                        if (snapshot.data!.data != null) {
-                          initialWorkflows = snapshot.data!.data!;
-                          workflows = snapshot.data!.data!;
-                        }
-                      }
-                      return ListView.builder(
-                        itemCount: workflows.length,
-                        itemBuilder: (context, index) {
-                          return WorkflowTile(
-                            workflow: workflows[index],
-                            onUpdate: () async {
-                              final newWorkflows =
-                                  await services.workflows.getAll();
-                              setState(() {
-                                initialWorkflows = newWorkflows.data!;
-                              });
-                              _updateSearch(searchController.text);
-                            },
-                          );
+                child: workflows.isEmpty
+                    ? EmptyNotice(
+                        message: AppLocalizations.of(context)!.noWorkflows,
+                      )
+                    : FutureBuilder<ServiceReturn<List<Workflow>>>(
+                        future: services.workflows.getAll(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text(AppLocalizations.of(context)!
+                                  .error(snapshot.error.toString())),
+                            );
+                          } else {
+                            if (needRefresh) {
+                              needRefresh = false;
+                              if (snapshot.data!.data != null) {
+                                initialWorkflows = snapshot.data!.data!;
+                                workflows = snapshot.data!.data!;
+                              }
+                            }
+                            return ListView.builder(
+                              itemCount: workflows.length,
+                              itemBuilder: (context, index) {
+                                return WorkflowTile(
+                                  workflow: workflows[index],
+                                  onUpdate: () async {
+                                    final newWorkflows =
+                                        await services.workflows.getAll();
+                                    setState(() {
+                                      initialWorkflows = newWorkflows.data!;
+                                    });
+                                    _updateSearch(searchController.text);
+                                  },
+                                );
+                              },
+                            );
+                          }
                         },
-                      );
-                    }
-                  },
-                ),
+                      ),
               ),
             ],
           ),

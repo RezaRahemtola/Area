@@ -66,8 +66,7 @@ class ServiceDetails extends StatefulWidget {
   const ServiceDetails({Key? key, required this.service}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ServiceDetailsState createState() => _ServiceDetailsState();
+  State<ServiceDetails> createState() => _ServiceDetailsState();
 }
 
 class _ServiceDetailsState extends State<ServiceDetails> {

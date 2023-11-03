@@ -40,8 +40,7 @@
     "connectAccount": "Tengdu reikninginn þinn",
     "noAccountToConnect": "Enginn reikningur til að tengjast",
     "accountAlreadyConnected": "Reikningur þegar tengdur",
-    "searchBar": "Leita...",
-    "emptyNotice": "Engin verkflæði fundust...",
-    "noActions": "Engin aðgerð möguleg fyrir þessa þjónustu...",
-    "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu..."
+    "noWorkflows": "Engin verkflæði fundust",
+    "noActions": "Engin aðgerð möguleg fyrir þessa þjónustu",
+    "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu"
 }
