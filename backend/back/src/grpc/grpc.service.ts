@@ -6,11 +6,15 @@ import { JobsParams, JobsType } from "../types/jobs";
 import { JobsIdentifiers } from "../types/jobIds";
 import "../types/struct";
 import { JobsService } from "../jobs/jobs.service";
+import { ActivityService } from "../activity/activity.service";
 
 interface AreaSupervisorService {
 	launchJob(data: AuthenticatedJobData): Observable<GrpcResponse>;
+
 	killJob(job: JobId): Observable<GrpcResponse>;
+
 	killAllJobs(_: object): Observable<GrpcResponse>;
+
 	listJobs(_: object): Observable<JobList>;
 }
 
@@ -22,6 +26,7 @@ export class GrpcService implements OnModuleInit {
 	constructor(
 		@Inject("AREA_SUPERVISOR_PACKAGE") private readonly client: ClientGrpc,
 		@Inject(forwardRef(() => JobsService)) private readonly jobsService: JobsService,
+		private readonly activityService: ActivityService,
 	) {}
 
 	async onModuleInit() {
@@ -72,15 +77,18 @@ export class GrpcService implements OnModuleInit {
 
 	async onAction(data: JobData) {
 		this.logger.log(`Received action job data ${JSON.stringify(data, undefined, 2)}`);
+		await this.activityService.createActivityLogsForJobIdentifier("ran", data.identifier);
 		await this.jobsService.launchNextJob(data);
 	}
 
 	async onReaction(data: JobData) {
 		this.logger.log(`Received reaction job data ${JSON.stringify(data, undefined, 2)}`);
+		await this.activityService.createActivityLogsForJobIdentifier("ran", data.identifier);
 		await this.jobsService.launchNextJob(data);
 	}
 
 	async onError(data: JobData) {
 		this.logger.error(`Received error job data ${JSON.stringify(data, undefined, 2)}`);
+		await this.activityService.createActivityLogsForJobIdentifier("error", data.identifier);
 	}
 }

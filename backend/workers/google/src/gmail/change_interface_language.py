@@ -33,7 +33,7 @@ def change_interface_language():
         body = {
             'displayLanguage': args["language"]
         }
-        draft = service.users().settings().updateLanguage(userId="me", body=body).execute()
+        service.users().settings().updateLanguage(userId="me", body=body).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()

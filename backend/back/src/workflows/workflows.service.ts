@@ -130,8 +130,7 @@ export class WorkflowsService {
 				reactions: reactions.map(
 					({
 						id,
-						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						parameters: parameters,
+						parameters,
 						previousWorkflowArea: { id: previousAreaId },
 						area: { id: areaId, serviceId: areaServiceId },
 						jobId,

@@ -66,6 +66,11 @@ import { CreateMiroCreateBoardReaction1698793446046 } from "./workflows/seed/169
 import { UpdateGoogleServiceScopes1698414179394 } from "./services/seed/1698414179394-UpdateGoogleServiceScopes";
 import { CreateAirTableServiceAndScopes1698856388828 } from "./services/seed/1698856388828-CreateAirTableServiceAndScopes";
 import { FixGitLabOnPRAreasScope1698860681718 } from "./workflows/seed/1698860681718-FixGitLabOnPRAreasScope";
+import { MakePasswordHashNullable1698408481880 } from "./migrations/1698408481880-MakePasswordHashNullable";
+import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
+import { ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624 } from "./migrations/1698986506624-ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue";
+import ActivityLog from "./activity/entities/activity-log.entity";
+import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
 
 dotenv.config();
 
@@ -77,7 +82,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 	username: process.env.POSTGRES_USER,
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
-	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea, UserSettings],
+	entities: [User, Service, ServiceScope, UserConnection, Area, Workflow, WorkflowArea, UserSettings, ActivityLog],
 	migrations: [
 		Seeding1696697017387,
 		CreateGithubService1696697379896,
@@ -125,6 +130,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateGitLabServiceWithScopes1698332919825,
 		CreateGithubIssuesAreas1698331915608,
 		CreateGithubCommitPRAreas1698353438280,
+		MakePasswordHashNullable1698408481880,
 		UpdateMiroServiceImageForMobile1698590831862,
 		WorkflowAreaReturnParams1698521602687,
 		CreateGoogleFormUpdateDescriptionArea1698654637708,
@@ -136,6 +142,9 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		UpdateGoogleServiceScopes1698414179394,
 		CreateAirTableServiceAndScopes1698856388828,
 		FixGitLabOnPRAreasScope1698860681718,
+		CreateFacebookStatusCreateAction1698789169408,
+		ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624,
+		AddActivityLogEntity1698986590525,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

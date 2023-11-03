@@ -30,7 +30,7 @@ def create_document():
         body = {
             'title': args["name"]
         }
-        document = service.documents().create(body=body).execute()
+        service.documents().create(body=body).execute()
 
         with grpc.insecure_channel(target) as channel:
             params = Struct()

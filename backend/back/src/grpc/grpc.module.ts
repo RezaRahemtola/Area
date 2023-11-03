@@ -4,6 +4,7 @@ import { GrpcService } from "./grpc.service";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JobsModule } from "../jobs/jobs.module";
+import { ActivityModule } from "../activity/activity.module";
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { JobsModule } from "../jobs/jobs.module";
 			},
 		]),
 		forwardRef(() => JobsModule),
+		ActivityModule,
 	],
 	controllers: [GrpcController],
 	providers: [GrpcService],
