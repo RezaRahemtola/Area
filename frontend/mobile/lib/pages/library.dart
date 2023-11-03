@@ -50,7 +50,7 @@ class _LibraryState extends State<Library> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Container(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   child: TextField(
                     controller: searchController,
                     onEditingComplete: () =>
