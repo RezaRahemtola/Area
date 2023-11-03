@@ -93,8 +93,6 @@ export class JobsService {
 		const data = plainToInstance<object, unknown>(JobParamsClasses[job], params);
 		let errors = [];
 
-		this.logger.debug(`Validating job parameters: ${JSON.stringify(data)}`);
-
 		try {
 			errors = await validate(data, {
 				whitelist: true,
