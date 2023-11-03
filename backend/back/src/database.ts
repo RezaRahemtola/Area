@@ -70,6 +70,7 @@ import { MakePasswordHashNullable1698408481880 } from "./migrations/169840848188
 import { CreateFacebookStatusCreateAction1698789169408 } from "./workflows/seed/1698789169408-CreateFacebookStatusCreateAction";
 import { ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624 } from "./migrations/1698986506624-ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue";
 import ActivityLog from "./activity/entities/activity-log.entity";
+import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
 
 dotenv.config();
 
@@ -143,6 +144,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		FixGitLabOnPRAreasScope1698860681718,
 		CreateFacebookStatusCreateAction1698789169408,
 		ChangeUserSettingsLanguageEnumAndAddAreaDefaultParameterReturnFlowValue1698986506624,
+		AddActivityLogEntity1698986590525,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
