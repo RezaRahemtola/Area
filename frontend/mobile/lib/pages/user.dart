@@ -32,117 +32,125 @@ class _UserHero extends State<User> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                widget.onDisconnect();
-              },
-              icon: const Icon(Icons.logout),
-            ),
-          ],
-          title: Text(AppLocalizations.of(context)!.userTitle),
-          automaticallyImplyLeading: false),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<ServiceReturn<UserMe>>(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              final UserMe? user = snapshot.data?.data;
-              if (user != null) {
-                newLocale = user.settings.language;
-                newTheme = user.settings.theme;
-                newEmail = user.email;
-              }
+        appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  widget.onDisconnect();
+                },
+                icon: const Icon(Icons.logout),
+              ),
+            ],
+            title: Text(AppLocalizations.of(context)!.userTitle),
+            automaticallyImplyLeading: false),
+        body: Container(
+          color: Theme.of(context).colorScheme.onSecondary,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FutureBuilder<ServiceReturn<UserMe>>(
+              future: future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  final UserMe? user = snapshot.data?.data;
+                  if (user != null) {
+                    newLocale = user.settings.language;
+                    newTheme = user.settings.theme;
+                    newEmail = user.email;
+                  }
 
-              if (user == null) {
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.onDisconnect();
-                      },
-                      child: Text(AppLocalizations.of(context)!.logout),
-                    ),
-                  ],
-                );
-              }
-
-              return Column(
-                children: [
-                  const UserTile(),
-                  Form(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context)!.email),
-                          initialValue: user.email,
-                          onChanged: ((value) => newEmail = value),
-                        ),
-                        const SizedBox(height: 16.0),
-                        DropdownButtonFormField(
-                          value: newLocale,
-                          items: <InterfaceLanguage>[
-                            InterfaceLanguage(id: "en", text: "🇺🇸 English"),
-                            InterfaceLanguage(id: "fr", text: "🇫🇷 Francais"),
-                            InterfaceLanguage(id: "is", text: "🇮🇸 Íslenskur"),
-                          ].map((InterfaceLanguage locale) {
-                            return DropdownMenuItem<String>(
-                              value: locale.id,
-                              child: Text(locale.text),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            if (value == null) return;
-                            newLocale = value;
-                          },
-                          decoration: InputDecoration(
-                              labelText:
-                                  AppLocalizations.of(context)!.language),
-                        ),
-                        DropdownButtonFormField(
-                          value: newTheme,
-                          items: [
-                            'auto',
-                            'dark',
-                            'light',
-                          ].map((String theme) {
-                            return DropdownMenuItem<String>(
-                              value: theme,
-                              child: Text(theme),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            if (value == null) return;
-                            newTheme = value;
-                          },
-                          decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context)!.theme),
-                        ),
-                        const SizedBox(height: 16.0),
+                  if (user == null) {
+                    return Column(
+                      children: [
                         ElevatedButton(
                           onPressed: () {
-                            widget.updateSettings(newLocale, newTheme);
-                            services.user
-                                .updateProfile(newEmail, newLocale, newTheme);
+                            widget.onDisconnect();
                           },
-                          child: Text(AppLocalizations.of(context)!.save),
+                          child: Text(AppLocalizations.of(context)!.logout),
                         ),
                       ],
-                    ),
-                  )
-                ],
-              );
-            }
-          },
-        ),
-      ),
-    );
+                    );
+                  }
+
+                  return Column(
+                    children: [
+                      const UserTile(),
+                      Form(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  labelText:
+                                      AppLocalizations.of(context)!.email),
+                              initialValue: user.email,
+                              onChanged: ((value) => newEmail = value),
+                            ),
+                            const SizedBox(height: 16.0),
+                            DropdownButtonFormField(
+                              value: newLocale,
+                              items: <InterfaceLanguage>[
+                                InterfaceLanguage(
+                                    id: "en", text: "🇺🇸 English"),
+                                InterfaceLanguage(
+                                    id: "fr", text: "🇫🇷 Francais"),
+                                InterfaceLanguage(
+                                    id: "is", text: "🇮🇸 Íslenskur"),
+                              ].map((InterfaceLanguage locale) {
+                                return DropdownMenuItem<String>(
+                                  value: locale.id,
+                                  child: Text(locale.text),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                if (value == null) return;
+                                newLocale = value;
+                              },
+                              decoration: InputDecoration(
+                                  labelText:
+                                      AppLocalizations.of(context)!.language),
+                            ),
+                            DropdownButtonFormField(
+                              value: newTheme,
+                              items: [
+                                'auto',
+                                'dark',
+                                'light',
+                              ].map((String theme) {
+                                return DropdownMenuItem<String>(
+                                  value: theme,
+                                  child: Text(theme),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                if (value == null) return;
+                                newTheme = value;
+                              },
+                              decoration: InputDecoration(
+                                  labelText:
+                                      AppLocalizations.of(context)!.theme),
+                            ),
+                            const SizedBox(height: 16.0),
+                            ElevatedButton(
+                              onPressed: () {
+                                widget.updateSettings(newLocale, newTheme);
+                                services.user.updateProfile(
+                                    newEmail, newLocale, newTheme);
+                              },
+                              child: Text(AppLocalizations.of(context)!.save),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+        ));
   }
 }
 

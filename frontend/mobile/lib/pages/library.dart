@@ -15,25 +15,35 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   List<Workflow> workflows = [];
+  bool needRefresh = true;
+  List<Workflow> initialWorkflows = [];
+
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
   }
 
-  bool needRefresh = true;
-  List<Workflow> initialWorkflows = [];
+  void _updateSearch(String search) {
+    setState(() {
+      workflows = initialWorkflows
+          .where((element) =>
+              element.name.toLowerCase().contains(search.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(AppLocalizations.of(context)!.libraryTitle),
           automaticallyImplyLeading: false),
       body: Container(
         constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
-        color: const Color(0xFFC5C6C6),
+        color: Theme.of(context).colorScheme.onSecondary,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -41,9 +51,11 @@ class _LibraryState extends State<Library> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Container(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   child: TextField(
                     controller: searchController,
+                    onEditingComplete: () =>
+                        _updateSearch(searchController.text),
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.searchBar,
                       suffixIcon: IconButton(
@@ -52,13 +64,8 @@ class _LibraryState extends State<Library> {
                       ),
                       prefixIcon: IconButton(
                         icon: const Icon(Icons.search),
-                        onPressed: () async {
-                          setState(() {
-                            workflows = initialWorkflows
-                                .where((element) => element.name
-                                    .contains(searchController.text))
-                                .toList();
-                          });
+                        onPressed: () {
+                          _updateSearch(searchController.text);
                         },
                       ),
                       border: OutlineInputBorder(
@@ -68,47 +75,44 @@ class _LibraryState extends State<Library> {
                   ),
                 ),
               ),
-              FutureBuilder<ServiceReturn<List<Workflow>>>(
-                future: services.workflows.getAll(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(AppLocalizations.of(context)!
-                          .error(snapshot.error.toString())),
-                    );
-                  } else {
-                    if (needRefresh) {
-                      needRefresh = false;
-                      if (snapshot.data!.data != null) {
-                        initialWorkflows = snapshot.data!.data!;
-                        workflows = snapshot.data!.data!;
-                      }
-                    }
-                    if (workflows.isEmpty) {
-                      return EmptyNotice(message: AppLocalizations.of(context)!.emptyNotice,);
+              Expanded(
+                child: FutureBuilder<ServiceReturn<List<Workflow>>>(
+                  future: services.workflows.getAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(AppLocalizations.of(context)!
+                            .error(snapshot.error.toString())),
+                      );
                     } else {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: workflows.length,
-                          itemBuilder: (context, index) {
-                            return WorkflowTile(
-                              workflow: workflows[index],
-                              onUpdate: () async {
-                                final newWorkflows =
-                                    await services.workflows.getAll();
-                                setState(() {
-                                  workflows = newWorkflows.data!;
-                                });
-                              },
-                            );
-                          },
-                        ),
+                      if (needRefresh) {
+                        needRefresh = false;
+                        if (snapshot.data!.data != null) {
+                          initialWorkflows = snapshot.data!.data!;
+                          workflows = snapshot.data!.data!;
+                        }
+                      }
+                      return ListView.builder(
+                        itemCount: workflows.length,
+                        itemBuilder: (context, index) {
+                          return WorkflowTile(
+                            workflow: workflows[index],
+                            onUpdate: () async {
+                              final newWorkflows =
+                                  await services.workflows.getAll();
+                              setState(() {
+                                initialWorkflows = newWorkflows.data!;
+                              });
+                              _updateSearch(searchController.text);
+                            },
+                          );
+                        },
                       );
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),

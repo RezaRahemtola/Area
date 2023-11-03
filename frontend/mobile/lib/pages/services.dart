@@ -13,11 +13,12 @@ class Services extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             title: Text(AppLocalizations.of(context)!.servicesTitle),
             automaticallyImplyLeading: false),
         body: Container(
           constraints: const BoxConstraints(maxWidth: 450, maxHeight: 800),
-          color: const Color(0xFFC5C6C6),
+          color: Theme.of(context).colorScheme.onSecondary,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: FutureBuilder<ServiceReturn<List<Service>>>(
@@ -95,18 +96,22 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.service.id), automaticallyImplyLeading: false),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(widget.service.id),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               SectionTitle(title: AppLocalizations.of(context)!.actions),
-              if (actions.isEmpty) EmptyNotice(message: AppLocalizations.of(context)!.noActions),
+              if (actions.isEmpty)
+                EmptyNotice(message: AppLocalizations.of(context)!.noActions),
               for (var action in actions) ActionOrReactionItem(item: action),
               const SizedBox(height: 16),
               SectionTitle(title: AppLocalizations.of(context)!.reactions),
-              if (reactions.isEmpty) EmptyNotice(message: AppLocalizations.of(context)!.noReactions),
+              if (reactions.isEmpty)
+                EmptyNotice(message: AppLocalizations.of(context)!.noReactions),
               for (var reaction in reactions)
                 ActionOrReactionItem(item: reaction),
             ],

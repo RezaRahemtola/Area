@@ -7,6 +7,7 @@ import { editorWorkflowAtom } from "@/stores/editor";
 import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import services from "@/services";
 import { emitToastError } from "@/utils/toast";
+import ThemeSelector from "@/components/ThemeSelector";
 
 type EditorNavbarProps = {
 	isAuthenticated: boolean;
@@ -56,6 +57,9 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 			endContent={
 				isAuthenticated ? (
 					<>
+						<div style={{ display: "none" }}>
+							<ThemeSelector />
+						</div>
 						<input
 							type="checkbox"
 							name="workflow-running"

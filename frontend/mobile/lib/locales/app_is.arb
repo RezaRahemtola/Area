@@ -1,5 +1,5 @@
 {
-    "welcome": "Velkomin á svæðið!",
+    "welcome": "Velkomin á Area!",
     "email": "Tölvupóstur",
     "password": "Lykilorð",
     "confirmPassword": "Staðfesta lykilorð",
@@ -34,6 +34,7 @@
     "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst",
     "editorNameModalTitle": "Breyttu heiti verkflæðis",
     "editorChooseService": "Veldu þjónustu",
+    "searchBar": "Leita...",
     "editorChooseEvent": "Veldu viðburð",
     "editorChooseParams": "Stilltu viðburðastillingar",
     "connectAccount": "Tengdu reikninginn þinn",

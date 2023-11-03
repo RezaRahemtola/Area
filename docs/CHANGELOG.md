@@ -1,3 +1,42 @@
+<a name="v1.3.0"></a>
+# [v1.3.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.3.0) - 03 Nov 2023
+
+## Changes
+
+Mobile improvements (editor, theme), new services and actions/reactions, advanced features bug fixed
+
+## 🚀 Features
+
+- Setup mobile theme [@Tomi-Tom](https://github.com/Tomi-Tom) ([#179](https://github.com/RezaRahemtola/Area/issues/179))
+- Added activity logging in the backend [@Croos3r](https://github.com/Croos3r) ([#185](https://github.com/RezaRahemtola/Area/issues/185))
+- Backend: Facebook webhook action and copy_proto update [@EdenComp](https://github.com/EdenComp) ([#166](https://github.com/RezaRahemtola/Area/issues/166))
+- Mobile editor OAuth webview [@RezaRahemtola](https://github.com/RezaRahemtola) ([#174](https://github.com/RezaRahemtola/Area/issues/174))
+- Added AirTable to the list of supported oauth services [@Croos3r](https://github.com/Croos3r) ([#171](https://github.com/RezaRahemtola/Area/issues/171))
+- Mobile editor: Events and params steps, workflow creation [@RezaRahemtola](https://github.com/RezaRahemtola) ([#167](https://github.com/RezaRahemtola/Area/issues/167))
+- Added oauth authentication (login & register) for Google, GitHub \& Microsoft [@Croos3r](https://github.com/Croos3r) ([#170](https://github.com/RezaRahemtola/Area/issues/170))
+- Backend: Miro Create a board Reaction [@EdenComp](https://github.com/EdenComp) ([#168](https://github.com/RezaRahemtola/Area/issues/168))
+- Mobile library dropdown menu actions [@axel-denis](https://github.com/axel-denis) ([#165](https://github.com/RezaRahemtola/Area/issues/165))
+- Mobile editor service selection [@RezaRahemtola](https://github.com/RezaRahemtola) ([#164](https://github.com/RezaRahemtola/Area/issues/164))
+- Fix misc things on back [@EdenComp](https://github.com/EdenComp) ([#163](https://github.com/RezaRahemtola/Area/issues/163))
+- Workflow editor setup [@RezaRahemtola](https://github.com/RezaRahemtola) ([#160](https://github.com/RezaRahemtola/Area/issues/160))
+
+## 🐛 Bug Fixes
+
+- Fixed broken job launch [@Croos3r](https://github.com/Croos3r) ([#176](https://github.com/RezaRahemtola/Area/issues/176))
+- LinkedIn service: I want to break free [@Croos3r](https://github.com/Croos3r) ([#175](https://github.com/RezaRahemtola/Area/issues/175))
+- Fix some scopes that were miss-configured and migrated for GitLab areas [@Croos3r](https://github.com/Croos3r) ([#173](https://github.com/RezaRahemtola/Area/issues/173))
+- Fixed some bugs in workflows functions [@Croos3r](https://github.com/Croos3r) ([#169](https://github.com/RezaRahemtola/Area/issues/169))
+- Fixed workflow update bug, was not saving reactions correctly [@Croos3r](https://github.com/Croos3r) ([#162](https://github.com/RezaRahemtola/Area/issues/162))
+- Fix SonarQube code smells [@RezaRahemtola](https://github.com/RezaRahemtola) ([#178](https://github.com/RezaRahemtola/Area/issues/178))
+
+## 📄 Documentation
+
+- Update changelog for "v1.2.0" [@github-actions](https://github.com/github-actions) ([#161](https://github.com/RezaRahemtola/Area/issues/161))
+
+
+[Changes][v1.3.0]
+
+
 <a name="v1.2.0"></a>
 # [v1.2.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.2.0) - 30 Oct 2023
 
@@ -507,6 +546,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.3.0]: https://github.com/RezaRahemtola/Area/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/RezaRahemtola/Area/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/RezaRahemtola/Area/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/RezaRahemtola/Area/compare/v0.11.0...v1.0.0

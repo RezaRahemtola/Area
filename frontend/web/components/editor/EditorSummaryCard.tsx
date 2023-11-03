@@ -13,8 +13,8 @@ type EditorSummaryCardProps = {
 };
 const EditorSummaryCard = ({ title, description, onClick, icon, service }: EditorSummaryCardProps) => (
 	<div className="card mx-auto w-96 shadow-2xl cursor-pointer" onClick={onClick}>
-		<div className="card-body">
-			<div className="flex">
+		<div className="card-body bg-pimary">
+			<div className="flex bg-pimary">
 				<div className="card shadow-xl">
 					{service ? (
 						<div className="card-body p-3">

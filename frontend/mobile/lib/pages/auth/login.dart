@@ -7,7 +7,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Function() onSuccess;
-  const LoginPage({super.key, required this.onSuccess});
+  final Function(String theme) updateTheme;
+
+  const LoginPage(
+      {super.key, required this.onSuccess, required this.updateTheme});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -37,7 +40,11 @@ class _LoginPageState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const FlutterLogo(size: 100),
+                              const Image(
+                                image: AssetImage('assets/logo.png'),
+                                height: 150,
+                                width: 150,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
@@ -53,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                                 label: AppLocalizations.of(context)!.password,
                               ),
                               LoginButtons(
-                                formKey: _formKey,
-                                emailController: emailController,
-                                passwordController: passwordController,
-                                onSuccess: widget.onSuccess,
-                              )
+                                  formKey: _formKey,
+                                  emailController: emailController,
+                                  passwordController: passwordController,
+                                  onSuccess: widget.onSuccess,
+                                  updateTheme: widget.updateTheme)
                             ],
                           ),
                         ))))));
@@ -69,13 +76,15 @@ class LoginButtons extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final Function() onSuccess;
+  final Function(String theme) updateTheme;
 
   const LoginButtons(
       {super.key,
       required GlobalKey<FormState> formKey,
       required this.emailController,
       required this.passwordController,
-      required this.onSuccess})
+      required this.onSuccess,
+      required this.updateTheme})
       : _formKey = formKey;
 
   @override
@@ -89,7 +98,9 @@ class LoginButtons extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const RegisterPage()));
+                      builder: (context) => RegisterPage(
+                            updateTheme: updateTheme,
+                          )));
             },
             child: Row(
               children: [

@@ -146,7 +146,7 @@ export class JobsService {
 
 	async launchNextJob(data: JobData): Promise<void> {
 		const jobs = await this.getReactionsForJob(data.identifier);
-		this.logger.log(`Launching next ${jobs} jobs for job ${data.identifier}`);
+		this.logger.log(`Launching next ${jobs.length} jobs for job ${data.identifier}`);
 		for (const job of jobs) {
 			job.params = this.replaceParamsInJob(data.params, job.params);
 		}

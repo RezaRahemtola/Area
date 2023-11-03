@@ -1,4 +1,3 @@
-import 'package:area_mobile/colors.dart';
 import 'package:area_mobile/pages/activity.dart';
 import 'package:area_mobile/pages/auth/login.dart';
 import 'package:area_mobile/pages/editor.dart';
@@ -11,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  final Function(String theme) updateTheme;
+
+  const LandingPage({super.key, required this.updateTheme});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -20,18 +21,21 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
-  String locale = "en";
   int libraryKey = 0;
+  String locale = "en";
+  String theme = "light";
 
   @override
   void initState() {
     super.initState();
     _checkAuth();
-    _checkLocale();
+    _checkSettings();
   }
 
-  void _checkLocale() async {
+  void _checkSettings() async {
     final storageLocale = await storage.getLocale();
+    final storageTheme = await storage.getTheme();
+
     if (storageLocale == null) {
       storage.setLocale(locale);
     } else {
@@ -39,13 +43,26 @@ class _LandingPageState extends State<LandingPage> {
         locale = storageLocale;
       });
     }
+
+    if (storageTheme == null) {
+      storage.setTheme(theme);
+    } else {
+      setState(() {
+        theme = storageTheme;
+      });
+      widget.updateTheme(theme);
+    }
   }
 
   void _updateSettings(String newLocale, String newTheme) async {
     storage.setLocale(newLocale);
+    storage.setTheme(newTheme);
+
     setState(() {
       locale = newLocale;
+      theme = newTheme;
     });
+    widget.updateTheme(newTheme);
   }
 
   void _checkAuth() async {
@@ -76,7 +93,10 @@ class _LandingPageState extends State<LandingPage> {
       child: Builder(
         builder: (context) {
           if (!isLoggedIn) {
-            return LoginPage(onSuccess: _checkAuth);
+            return LoginPage(
+              onSuccess: _checkAuth,
+              updateTheme: widget.updateTheme,
+            );
           }
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
@@ -84,31 +104,31 @@ class _LandingPageState extends State<LandingPage> {
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.workspaces_filled),
                   label: AppLocalizations.of(context)!.navbarLibrary,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.explore),
                   label: AppLocalizations.of(context)!.servicesTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.create),
                   label: AppLocalizations.of(context)!.editorTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.local_activity),
                   label: AppLocalizations.of(context)!.activityTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.account_circle),
                   label: AppLocalizations.of(context)!.userTitle,
-                  backgroundColor: primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ],
               currentIndex: _selectedIndex,
-              selectedItemColor: Colors.amber[800],
+              selectedItemColor: Theme.of(context).colorScheme.secondary,
               onTap: _onItemTapped,
             ),
             body: IndexedStack(
