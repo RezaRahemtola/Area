@@ -79,6 +79,7 @@ import { CreateTodoistCreateTaskReaction1699101589099 } from "./workflows/seed/1
 import { CreateAirtableDeleteRecordReaction1699107944021 } from "./workflows/seed/1699107944021-CreateAirtableDeleteRecordReaction";
 import { CreateTwitterCreateTweetReaction1699115775099 } from "./workflows/seed/1699115775099-CreateTwitterCreateTweetReaction";
 import { ChangeRiotLogoToSvg1699116526789 } from "./services/seed/1699116526789-ChangeRiotLogoToSvg";
+import { CreateOutlookSendEmailReaction1699126617355 } from "./workflows/seed/1699126617355-CreateOutlookSendEmailReaction";
 
 dotenv.config();
 
@@ -161,6 +162,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateAirtableDeleteRecordReaction1699107944021,
 		CreateTwitterCreateTweetReaction1699115775099,
 		ChangeRiotLogoToSvg1699116526789,
+		CreateOutlookSendEmailReaction1699126617355,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

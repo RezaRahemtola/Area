@@ -1,5 +1,6 @@
 import {
 	AirtableDeleteRecordParams,
+	EmailParams,
 	FacebookPageParams,
 	GithubCloseIssueParams,
 	GithubCreateIssueParams,
@@ -12,7 +13,6 @@ import {
 	GoogleCreateCourseParams,
 	GoogleCreateSlideOnPresentationParams,
 	GoogleDuplicateDriveFileParams,
-	GoogleEmailParams,
 	GoogleEmailSignatureUpdateParams,
 	GoogleFormConvertToQuizParams,
 	GoogleFormUpdateDescriptionParams,
@@ -74,6 +74,7 @@ export enum Jobs {
 	"linear-create-issue" = "linear-create-issue",
 	"linear-on-issue-create" = "linear-on-issue-create",
 	"linkedin-create-post" = "linkedin-create-post",
+	"microsoft-outlook-send-email" = "microsoft-outlook-send-email",
 	"miro-create-board" = "miro-create-board",
 	"riot-lol-on-game-end" = "riot-lol-on-game-end",
 	"riot-lol-on-game-loss" = "riot-lol-on-game-loss",
@@ -114,7 +115,7 @@ export const JobParamsClasses = {
 	"google-create-contact": GoogleCreateContactParams,
 	"google-create-course": GoogleCreateCourseParams,
 	"google-create-document-docs": NameParams,
-	"google-create-draft-email": GoogleEmailParams,
+	"google-create-draft-email": EmailParams,
 	"google-create-drive-folder": NameParams,
 	"google-create-form": NameParams,
 	"google-create-presentation": NameParams,
@@ -127,12 +128,13 @@ export const JobParamsClasses = {
 	"google-form-update-description": GoogleFormUpdateDescriptionParams,
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams,
 	"google-on-new-video": YoutubeChannelParams,
-	"google-send-email": GoogleEmailParams,
+	"google-send-email": EmailParams,
 	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams,
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams,
 	"linear-create-issue": LinearCreateIssueParams,
 	"linear-on-issue-create": LinearWorkspaceParams,
 	"linkedin-create-post": LinkedinCreatePostParams,
+	"microsoft-outlook-send-email": EmailParams,
 	"miro-create-board": MiroCreateBoardParams,
 	"riot-lol-on-game-end": RiotActionsParams,
 	"riot-lol-on-game-loss": RiotActionsParams,
@@ -167,7 +169,7 @@ export type JobsParams = Mapper<{
 	"google-create-contact": GoogleCreateContactParams;
 	"google-create-course": GoogleCreateCourseParams;
 	"google-create-document-docs": NameParams;
-	"google-create-draft-email": GoogleEmailParams;
+	"google-create-draft-email": EmailParams;
 	"google-create-drive-folder": NameParams;
 	"google-create-form": NameParams;
 	"google-create-presentation": NameParams;
@@ -180,12 +182,13 @@ export type JobsParams = Mapper<{
 	"google-form-update-description": GoogleFormUpdateDescriptionParams;
 	"google-duplicate-drive-file": GoogleDuplicateDriveFileParams;
 	"google-on-new-video": YoutubeChannelParams;
-	"google-send-email": GoogleEmailParams;
+	"google-send-email": EmailParams;
 	"google-update-spreadsheet-title": GoogleFormUpdateSpreadsheetTitleParams;
 	"google-update-signature-email": GoogleEmailSignatureUpdateParams;
 	"linear-create-issue": LinearCreateIssueParams;
 	"linear-on-issue-create": LinearWorkspaceParams;
 	"linkedin-create-post": LinkedinCreatePostParams;
+	"microsoft-outlook-send-email": EmailParams;
 	"miro-create-board": MiroCreateBoardParams;
 	"riot-lol-on-game-end": RiotActionsParams;
 	"riot-lol-on-game-loss": RiotActionsParams;
