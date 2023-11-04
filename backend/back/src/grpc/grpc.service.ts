@@ -35,11 +35,7 @@ export class GrpcService implements OnModuleInit {
 		await this.jobsService.synchronizeJobs();
 	}
 
-	launchJob<TJob extends JobsType, TParams extends JobsParams["mappings"][TJob]>(
-		name: TJob,
-		params: TParams,
-		auth: unknown,
-	): Promise<GrpcResponse> {
+	launchJob<TJob extends JobsType>(name: TJob, params: JobsParams[TJob], auth: unknown): Promise<GrpcResponse> {
 		const identifier = JobsIdentifiers[name](params);
 		this.logger.log(
 			`Launching job ${identifier} with name ${name} and params ${JSON.stringify({

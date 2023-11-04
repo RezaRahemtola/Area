@@ -1,7 +1,7 @@
 import { JobsParams, JobsType } from "./jobs";
 
 type JobsIdentifiers = {
-	[key in JobsType]: (obj: JobsParams["mappings"][key]) => string;
+	[key in JobsType]: (obj: JobsParams[key]) => string;
 };
 
 function uniqueJobId(jobId: string, workflowStepId: string) {

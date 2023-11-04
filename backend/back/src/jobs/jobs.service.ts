@@ -89,7 +89,7 @@ export class JobsService {
 		return reactionJobs;
 	}
 
-	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams["mappings"][TJobs]> {
+	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams[TJobs]> {
 		const data = plainToInstance<object, unknown>(JobParamsClasses[job], params);
 		let errors = [];
 
@@ -109,7 +109,7 @@ export class JobsService {
 			const message = Object.values(errors[0].constraints)[0] as string;
 			throw new BadRequestException(`Invalid job parameters: ${message}`);
 		}
-		return data as JobsParams["mappings"][TJobs];
+		return data as JobsParams[TJobs];
 	}
 
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
