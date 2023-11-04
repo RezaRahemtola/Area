@@ -1,3 +1,43 @@
+<a name="v1.4.0"></a>
+# [v1.4.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.4.0) - 04 Nov 2023
+
+## Changes
+
+New areas,  backend cleanup, mobile OAuth login and web landing page small fixes
+
+## 🚀 Features
+
+- Backend: Riot icon to SVG [@EdenComp](https://github.com/EdenComp) ([#197](https://github.com/RezaRahemtola/Area/issues/197))
+- Backend: Twitter first reaction: post a tweet [@EdenComp](https://github.com/EdenComp) ([#196](https://github.com/RezaRahemtola/Area/issues/196))
+- Web documentation link and documentation favicon [@RezaRahemtola](https://github.com/RezaRahemtola) ([#194](https://github.com/RezaRahemtola/Area/issues/194))
+- Mobile OAuth login (RER C), WebView optimizations and small mobile fixes [@RezaRahemtola](https://github.com/RezaRahemtola) ([#182](https://github.com/RezaRahemtola/Area/issues/182))
+- Backend: Airtable first reaction: delete a record [@EdenComp](https://github.com/EdenComp) ([#193](https://github.com/RezaRahemtola/Area/issues/193))
+- Backend: Todoist reaction - Create a task [@EdenComp](https://github.com/EdenComp) ([#191](https://github.com/RezaRahemtola/Area/issues/191))
+- Backend: League of Legends Actions [@EdenComp](https://github.com/EdenComp) ([#177](https://github.com/RezaRahemtola/Area/issues/177))
+- Added 12th and last todoist service to the list of supported ones [@Croos3r](https://github.com/Croos3r) ([#184](https://github.com/RezaRahemtola/Area/issues/184))
+- Removed useless endpoint in connections controller and added more ways to filter services [@Croos3r](https://github.com/Croos3r) ([#187](https://github.com/RezaRahemtola/Area/issues/187))
+- Added Slack to the list of supported service [@Croos3r](https://github.com/Croos3r) ([#183](https://github.com/RezaRahemtola/Area/issues/183))
+- Update logo and web theme [@Tomi-Tom](https://github.com/Tomi-Tom) ([#180](https://github.com/RezaRahemtola/Area/issues/180))
+- Backend: fixed database migrations [@EdenComp](https://github.com/EdenComp) ([#188](https://github.com/RezaRahemtola/Area/issues/188))
+- Mobile empty states [@axel-denis](https://github.com/axel-denis) ([#181](https://github.com/RezaRahemtola/Area/issues/181))
+- Mobile library search bar [@axel-denis](https://github.com/axel-denis) ([#172](https://github.com/RezaRahemtola/Area/issues/172))
+
+## 🐛 Bug Fixes
+
+- Fixed bug that was denying oauth users to update their settings and forbid them to change email [@Croos3r](https://github.com/Croos3r) ([#195](https://github.com/RezaRahemtola/Area/issues/195))
+- Backend: Fixed reactions not properly handled by the back [@EdenComp](https://github.com/EdenComp) ([#192](https://github.com/RezaRahemtola/Area/issues/192))
+- Fix OAuth factory for Riot service [@EdenComp](https://github.com/EdenComp) ([#190](https://github.com/RezaRahemtola/Area/issues/190))
+- Fix riot missing service in class validator [@EdenComp](https://github.com/EdenComp) ([#189](https://github.com/RezaRahemtola/Area/issues/189))
+
+## 📄 Documentation
+
+- Web documentation link and documentation favicon [@RezaRahemtola](https://github.com/RezaRahemtola) ([#194](https://github.com/RezaRahemtola/Area/issues/194))
+- Update changelog for "v1.3.0" [@github-actions](https://github.com/github-actions) ([#186](https://github.com/RezaRahemtola/Area/issues/186))
+
+
+[Changes][v1.4.0]
+
+
 <a name="v1.3.0"></a>
 # [v1.3.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.3.0) - 03 Nov 2023
 
@@ -546,6 +586,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.4.0]: https://github.com/RezaRahemtola/Area/compare/v1.3.0...v1.4.0
 [v1.3.0]: https://github.com/RezaRahemtola/Area/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/RezaRahemtola/Area/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/RezaRahemtola/Area/compare/v1.0.0...v1.1.0
