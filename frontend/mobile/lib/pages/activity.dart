@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/activity.dart';
@@ -42,41 +43,50 @@ class _ActivitiesState extends State<Activities> {
                           children: [Text("Page $page")])),
                   IconButton(
                       onPressed: () => setState(() {
-                            // TODO - protect to prevent going too far
                             page += 1;
                           }),
                       icon: const Icon(Icons.arrow_right)),
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FutureBuilder<ServiceReturn<List<Activity>>>(
-                      future: services.user.getActivity(page - 1),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text(AppLocalizations.of(context)!
-                                .error(snapshot.error.toString())),
-                          );
-                        } else {
-                          final List<Activity> activities = [
-                            ...?snapshot.data?.data
-                          ];
-                          return ListView.builder(
+            Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: FutureBuilder<ServiceReturn<List<Activity>>>(
+                    future: services.user.getActivity(page - 1),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!
+                              .error(snapshot.error.toString())),
+                        );
+                      } else {
+                        final List<Activity> activities = [
+                          ...?snapshot.data?.data
+                        ];
+                        if (activities.isEmpty && page != 1) {
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            setState(() {
+                              page -= 1;
+                            });
+                          });
+                        } else if (activities.isEmpty) {
+                          return EmptyNotice(
+                              message:
+                                  AppLocalizations.of(context)!.noActivity);
+                        }
+                        return Expanded(
+                          child: ListView.builder(
                               itemCount: activities.length,
                               itemBuilder: (context, index) {
                                 final activity = activities[index];
                                 return ActivityEntry(activity: activity);
-                              });
-                        }
-                      })),
-            ),
+                              }),
+                        );
+                      }
+                    })),
           ],
         ));
   }
