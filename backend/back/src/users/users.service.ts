@@ -55,40 +55,32 @@ export class UsersService {
 		await queryRunner.startTransaction();
 		this.logger.log(`Updating user ${user.id} with ${JSON.stringify(updateUserDto)}...`);
 
-		const { theme, language, ...update } = updateUserDto;
+		const { theme, language, ...informations } = updateUserDto;
+		const settings = { theme, language };
 		try {
 			if (
-				update.email &&
-				update.email !== user.email &&
-				(await queryRunner.manager.exists(User, { where: { email: update.email } }))
+				informations.email &&
+				informations.email !== user.email &&
+				(await queryRunner.manager.exists(User, { where: { email: informations.email } }))
 			) {
 				// noinspection ExceptionCaughtLocallyJS
-				throw new ConflictException(`User ${update.email} already exists.`);
+				throw new ConflictException(`User ${informations.email} already exists.`);
 			}
 
-			if (!user.passwordHash && update.email) {
+			if (!user.passwordHash && informations.email) {
 				// noinspection ExceptionCaughtLocallyJS
 				throw new ForbiddenException(`You cannot change an OAuth authenticated user's email`);
 			}
 
-			if (Object.keys(update).length > 0) {
-				this.logger.log(`Updating user ${user.id} with ${JSON.stringify(update)}...`);
-				result ||= (await queryRunner.manager.update(User, { id: user.id }, { ...update })).affected > 0;
+			if (Object.keys(informations).length > 0) {
+				this.logger.log(`Updating user ${user.id} informations with ${JSON.stringify(informations)}...`);
+				result ||= (await queryRunner.manager.update(User, { id: user.id }, { ...informations })).affected > 0;
 			}
 
-			if (theme || language) {
-				this.logger.log(`Updating user ${user.id} settings with ${JSON.stringify({ theme, language })}...`);
-				result ||=
-					(
-						await queryRunner.manager.update(
-							UserSettings,
-							{ userId: user.id },
-							{
-								theme,
-								language,
-							},
-						)
-					).affected > 0;
+			if (Object.keys(settings).length > 0) {
+				this.logger.log(`Updating user ${user.id} settings with ${JSON.stringify(settings)}...`);
+				const res = await queryRunner.manager.update(UserSettings, { userId: user.id }, settings);
+				result ||= res.affected > 0;
 			}
 
 			await queryRunner.commitTransaction();
