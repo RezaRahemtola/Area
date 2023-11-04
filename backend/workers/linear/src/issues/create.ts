@@ -48,6 +48,7 @@ export default async function createIssue() {
 			name: "linear-create-issue",
 			identifier: params.identifier,
 			params: {
+				workflowStepId: params.workflowStepId,
 				url: issue?.url,
 			},
 		});
