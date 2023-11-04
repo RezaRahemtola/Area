@@ -2,7 +2,7 @@ class Activity {
   String id;
   String type;
   String createdAt;
-  WorkflowArea workflowArea;
+  ActivityWorkflowArea workflowArea;
   ActivityWorkflow workflow;
 
   Activity(
@@ -10,33 +10,32 @@ class Activity {
       required this.type,
       required this.createdAt,
       required this.workflowArea,
-      required this.workflow
-      });
+      required this.workflow});
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
       id: json['id'],
       type: json['type'],
       createdAt: json['createdAt'],
-      workflowArea: WorkflowArea.fromJson(json['workflowArea']),
+      workflowArea: ActivityWorkflowArea.fromJson(json['workflowArea']),
       workflow: ActivityWorkflow.fromJson(json['workflow']),
     );
   }
 }
 
-class WorkflowArea {
+class ActivityWorkflowArea {
   String id;
-  ActivityArea area;
+  ActivityWorkflowArea area;
 
-  WorkflowArea(
-      {required this.id,
-      required this.area,
-      });
+  ActivityWorkflowArea({
+    required this.id,
+    required this.area,
+  });
 
-  factory WorkflowArea.fromJson(Map<String, dynamic> json) {
-    return WorkflowArea(
+  factory ActivityWorkflowArea.fromJson(Map<String, dynamic> json) {
+    return ActivityWorkflowArea(
       id: json['id'],
-      area: ActivityArea.fromJson(json['area']),
+      area: ActivityWorkflowArea.fromJson(json['area']),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:area_mobile/pages/activity.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/activity.dart';
@@ -34,11 +33,13 @@ Future<ServiceReturn<void>> updateProfile(String language, String theme,
 
 Future<ServiceReturn<List<Activity>>> getActivity(int page) async {
   try {
-    final response = await dio.get<List<dynamic>>('/activity?page=$page&itemsPerPage=20');
+    final response =
+        await dio.get<List<dynamic>>('/activity?page=$page&itemsPerPage=20');
 
     final responseData = response.data;
     if (responseData != null) {
-      return ServiceReturn(data: response.data!.map((e) => Activity.fromJson(e)).toList());
+      return ServiceReturn(
+          data: response.data!.map((e) => Activity.fromJson(e)).toList());
     } else {
       return const ServiceReturn(data: []);
     }

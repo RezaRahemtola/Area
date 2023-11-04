@@ -45,6 +45,7 @@
     "noWorkflows": "No workflows found",
     "noActions": "No actions for this service",
     "noReactions": "No reactions for this service",
+    "noActivity": "No activity",
     "returnParameters": "The following data is returned by this area and can be used in the next one:",
     "ran": "Ran ",
     "errorOn": "Error on "
