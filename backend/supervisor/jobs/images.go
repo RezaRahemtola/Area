@@ -2,7 +2,7 @@ package jobs
 
 var JobToImage = map[string]string{
 	"airtable-delete-record":                 "supervisor-airtable",
-	"discord-on-guild-join":                  "supervisor-discord"
+	"discord-on-guild-join":                  "supervisor-discord",
 	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
