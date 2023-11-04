@@ -68,6 +68,7 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"riot-lol-on-game-loss": ({ region, summoner }) => `riot-lol-on-game-loss-${region}-${summoner}`,
 	"riot-lol-on-game-win": ({ region, summoner }) => `riot-lol-on-game-win-${region}-${summoner}`,
 	"riot-lol-on-level-up": ({ region, summoner }) => `riot-lol-on-level-up-${region}-${summoner}`,
+	"slack-create-message": ({ workflowStepId }) => uniqueJobId("slack-create-message", workflowStepId),
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
 	"todoist-create-task": ({ workflowStepId }) => uniqueJobId("todoist-create-task", workflowStepId),
 	"twitter-create-tweet": ({ workflowStepId }) => uniqueJobId("twitter-create-tweet", workflowStepId),

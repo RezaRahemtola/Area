@@ -71,6 +71,10 @@ services:
     container_name: seconds-interval
     build: ../workers/seconds-interval
 
+  slack:
+    container_name: slack
+    build: ../workers/slack
+
   todoist:
     container_name: todoist
     build: ../workers/todoist
