@@ -41,6 +41,7 @@ export default async function createIssue() {
 			name: "github-create-issue",
 			identifier: params.identifier,
 			params: {
+				workflowStepId: params.workflowStepId,
 				url: res.data.url,
 			},
 		});

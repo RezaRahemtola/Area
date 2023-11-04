@@ -38,6 +38,7 @@ export default async function closeIssue() {
 			name: "github-close-issue",
 			identifier: params.identifier,
 			params: {
+				workflowStepId: params.workflowStepId,
 				url: res.data.url,
 			},
 		});
