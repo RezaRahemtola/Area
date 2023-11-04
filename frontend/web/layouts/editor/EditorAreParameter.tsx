@@ -63,6 +63,24 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			/>
 		);
 	}
+	if (parameter.type === "select") {
+		return (
+			<select
+				className="select select-bordered bg-neutral"
+				value={value}
+				onChange={(e) => setValue(e.target.value as never)}
+			>
+				<option value={undefined} hidden>
+					Pick one
+				</option>
+				{parameter.values!.map((choice) => (
+					<option value={choice} key={choice}>
+						{choice}
+					</option>
+				))}
+			</select>
+		);
+	}
 	return <></>;
 };
 

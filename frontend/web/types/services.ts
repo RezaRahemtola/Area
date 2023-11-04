@@ -5,12 +5,13 @@ export type Service = {
 	scopes: string[];
 };
 
-export type AreaParameterType = "email" | "short-text" | "long-text" | "integer" | "text-array" | "boolean";
+export type AreaParameterType = "email" | "short-text" | "long-text" | "integer" | "text-array" | "boolean" | "select";
 
 export type AreaParameter = {
 	name: string;
 	type: AreaParameterType;
 	required: boolean;
+	values?: string[];
 };
 
 export type AreaParameterWithValue = AreaParameter & {
