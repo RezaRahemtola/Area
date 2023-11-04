@@ -23,28 +23,31 @@ class _ActivitiesState extends State<Activities> {
             automaticallyImplyLeading: false),
         body: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () => setState(() {
-                      if (page > 1) {
-                        page -= 1;
-                      }
-                    }), icon: const Icon(Icons.arrow_left)),
-                Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 16.0),
+            Container(
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black45))),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () => setState(() {
+                            if (page > 1) {
+                              page -= 1;
+                            }
+                          }),
+                      icon: const Icon(Icons.arrow_left)),
+                  Expanded(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("Page $page")]),
-                    )),
-                IconButton(
-                    onPressed: () => setState(() {
-                      // TODO - protect to prevent going too far
-                      page += 1;
-                    }), icon: const Icon(Icons.arrow_right)),
-              ],
+                          children: [Text("Page $page")])),
+                  IconButton(
+                      onPressed: () => setState(() {
+                            // TODO - protect to prevent going too far
+                            page += 1;
+                          }),
+                      icon: const Icon(Icons.arrow_right)),
+                ],
+              ),
             ),
             Expanded(
               child: Padding(
@@ -90,14 +93,17 @@ class ActivityEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
         backgroundColor: Colors.blue,
         child: Icon(
-          Icons.check,
+          activity.type == "ran" ? Icons.check : Icons.error,
           color: Colors.white,
         ),
       ),
-      title: Text(activity.workflow.name),
+      title: Text((activity.type == "ran"
+              ? AppLocalizations.of(context)!.ran
+              : AppLocalizations.of(context)!.errorOn) +
+          activity.workflow.name),
       subtitle: Text(activity.createdAt),
     );
   }

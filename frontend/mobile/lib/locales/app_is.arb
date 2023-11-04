@@ -45,5 +45,7 @@
     "noWorkflows": "Engin verkflæði fundust",
     "noActions": "Engin aðgerð möguleg fyrir þessa þjónustu",
     "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu",
-    "returnParameters": "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:"
+    "returnParameters": "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:",
+    "ran": "byrjaði: ",
+    "errorOn": "Villa:  "
 }
