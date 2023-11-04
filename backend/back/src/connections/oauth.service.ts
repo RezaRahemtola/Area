@@ -596,5 +596,13 @@ export class OauthService {
 				)}&state=${userId}`,
 			connectionFactory: this.createSlackConnection.bind(this),
 		},
+		riot: {
+			urlFactory: () => {
+				throw new Error("Cannot create OAuth URL for riot service");
+			},
+			connectionFactory: () => {
+				throw new Error("Cannot create OAuth connection for riot service");
+			},
+		},
 	};
 }

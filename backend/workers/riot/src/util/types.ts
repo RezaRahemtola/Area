@@ -58,4 +58,5 @@ export async function handleRiotError(error: RiotGamesError, client: AreaBackSer
 		error: error.statusText,
 		isAuthError: false,
 	});
+	process.exit(1);
 }
