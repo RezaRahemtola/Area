@@ -30,7 +30,7 @@ export class CreateTodoistCreateTaskReaction1699101589099 implements MigrationIn
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			`INSERT INTO "area" ("id", "service_id", "is_action", "description", "parameters_form_flow", "parameters_return_flow")
-            VALUES ('todoist-create-task', 'todoist', false, 'Create a task on Todoist', $1, '{${this.todoistCreateTaskParametersReturnFlow
+            VALUES ('create-task', 'todoist', false, 'Create a task on Todoist', $1, '{${this.todoistCreateTaskParametersReturnFlow
 							.map((v) => `"${v}"`)
 							.join(",")}}')`,
 			[JSON.stringify(this.todoistCreateTaskParametersFormFlow)],
