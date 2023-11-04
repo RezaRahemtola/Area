@@ -12,7 +12,9 @@ const LandingNavbar = () => (
 					<Link href="/pricing">Pricing</Link>
 				</li>
 				<li>
-					<Link href="/documentation">Documentation</Link>
+					<Link href="https://docs.area.rezar.fr" target="_blank">
+						Documentation
+					</Link>
 				</li>
 				<li>
 					<Link href="/team">Team</Link>
