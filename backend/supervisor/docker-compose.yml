@@ -60,3 +60,7 @@ services:
   seconds-interval:
     container_name: seconds-interval
     build: ../workers/seconds-interval
+
+  todoist:
+    container_name: todoist
+    build: ../workers/todoist
