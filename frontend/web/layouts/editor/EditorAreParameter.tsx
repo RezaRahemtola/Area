@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { AreaParameterWithValue } from "@/types/services";
 
 type EditorAreaParameterProps = {
@@ -6,13 +7,29 @@ type EditorAreaParameterProps = {
 };
 
 const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParameterProps) => {
+	const [value, setValue] = useState<never | undefined>(parameter.value);
+
+	useEffect(() => {
+		if (parameter.value === undefined) {
+			if (parameter.type === "boolean") {
+				setValue(false as never);
+			} else if (parameter.type === "integer") {
+				setValue(0 as never);
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		onValueChange(parameter.name, value as never);
+	}, [value]);
+
 	if (parameter.type === "integer") {
 		return (
 			<input
 				type="number"
 				className="input bg-neutral input-accent"
-				value={parameter.value ?? 0}
-				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
+				value={value}
+				onChange={(e) => setValue(e.target.value as never)}
 			/>
 		);
 	}
@@ -21,8 +38,8 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 			<input
 				type="text"
 				className="input bg-neutral input-accent"
-				value={parameter.value ?? ""}
-				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
+				value={value ?? ""}
+				onChange={(e) => setValue(e.target.value as never)}
 			/>
 		);
 	}
@@ -30,8 +47,8 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 		return (
 			<textarea
 				className="textarea bg-neutral textarea-accent"
-				value={parameter.value ?? ""}
-				onChange={(e) => onValueChange(parameter.name, e.target.value as never)}
+				value={value ?? ""}
+				onChange={(e) => setValue(e.target.value as never)}
 			/>
 		);
 	}
@@ -41,8 +58,8 @@ const EditorAreaParameterInput = ({ parameter, onValueChange }: EditorAreaParame
 				type="checkbox"
 				name="workflow-running"
 				className="toggle toggle-success"
-				checked={parameter.value ?? false}
-				onChange={(e) => onValueChange(parameter.name, e.target.checked as never)}
+				checked={value}
+				onChange={(e) => setValue(e.target.checked as never)}
 			/>
 		);
 	}

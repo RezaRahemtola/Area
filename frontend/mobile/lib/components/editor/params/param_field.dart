@@ -13,11 +13,20 @@ class EditorParamField extends StatefulWidget {
 
 class _EditorParamFieldState extends State<EditorParamField> {
   late AreaParameterWithValue parameter;
+  dynamic stateValue;
 
   @override
   void initState() {
     super.initState();
     parameter = widget.parameter;
+    if (parameter.value == null) {
+      if (parameter.type == "boolean") {
+        parameter.value = false;
+      } else if (parameter.type == "integer") {
+        parameter.value = "0";
+      }
+    }
+    stateValue = widget.parameter.value;
   }
 
   @override
@@ -44,6 +53,17 @@ class _EditorParamFieldState extends State<EditorParamField> {
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly
           ]);
+    } else if (parameter.type == "boolean") {
+      return SwitchListTile(
+        title: Text(parameter.name),
+        value: stateValue,
+        onChanged: (bool value) {
+          parameter.value = value;
+          setState(() {
+            stateValue = value;
+          });
+        },
+      );
     }
     return const Text("Never displayed");
   }
