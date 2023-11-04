@@ -167,7 +167,7 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 const Center(
-                  child: Activity(),
+                  child: Activities(),
                 ),
                 Center(
                   child: User(
