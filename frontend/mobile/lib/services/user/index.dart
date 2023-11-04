@@ -4,8 +4,8 @@ import 'package:area_mobile/types/user/me.dart';
 
 class UserService {
   final Future<ServiceReturn<UserMe>> Function() getMe;
-  final Future<ServiceReturn<void>> Function(
-      String email, String language, String theme) updateProfile;
+  final Future<ServiceReturn<void>> Function(String language, String theme,
+      {String? email}) updateProfile;
 
   const UserService({
     required this.getMe,
