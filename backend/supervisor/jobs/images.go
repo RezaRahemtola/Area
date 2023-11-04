@@ -49,6 +49,7 @@ var JobToImage = map[string]string{
 	"riot-lol-on-level-up":                   "supervisor-riot",
 	"timer-seconds-interval":                 "supervisor-seconds-interval",
 	"todoist-create-task":                    "supervisor-todoist",
+	"twitter-create-tweet":                   "supervisor-twitter",
 }
 
 var OptArgument = map[string]string{
@@ -99,6 +100,7 @@ var OptArgument = map[string]string{
 	"riot-lol-on-level-up":                   "lol-on-level-up",
 	"timer-seconds-interval":                 "",
 	"todoist-create-task":                    "create-task",
+	"twitter-create-tweet":                   "create-tweet",
 }
 
 func GetImages() []string {

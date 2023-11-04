@@ -69,3 +69,7 @@ services:
   todoist:
     container_name: todoist
     build: ../workers/todoist
+
+  twitter:
+    container_name: twitter
+    build: ../workers/twitter
