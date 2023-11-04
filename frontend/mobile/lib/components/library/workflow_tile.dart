@@ -24,12 +24,17 @@ class _WorkflowTileState extends State<WorkflowTile> {
   final GlobalKey _menuKey = GlobalKey();
 
   _renameWorkflow(String name) async {
-    await services.workflows.rename(widget.workflow, name);
+    await services.workflows.rename(widget.workflow.id, name);
     widget.onUpdate();
   }
 
   _deleteWorkflow() async {
-    await services.workflows.delete(widget.workflow);
+    await services.workflows.deleteOne(widget.workflow.id);
+    widget.onUpdate();
+  }
+
+  _toggleWorkflow(bool newState) async {
+    await services.workflows.toggleOne(widget.workflow.id, newState);
     widget.onUpdate();
   }
 
@@ -132,7 +137,9 @@ class _WorkflowTileState extends State<WorkflowTile> {
                       width: 75,
                       child: Switch(
                         value: widget.workflow.active,
-                        onChanged: (bool value) {},
+                        onChanged: (bool value) {
+                          _toggleWorkflow(value);
+                        },
                       ),
                     ));
               }

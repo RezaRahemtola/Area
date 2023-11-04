@@ -1,7 +1,6 @@
-import 'package:area_mobile/services/workflows/delete.dart';
+import 'package:area_mobile/services/workflows/actions.dart';
 import 'package:area_mobile/services/workflows/editor.dart';
 import 'package:area_mobile/services/workflows/get.dart';
-import 'package:area_mobile/services/workflows/patch.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
@@ -9,22 +8,26 @@ import 'package:area_mobile/types/workflows/workflows.dart';
 class WorkflowsService {
   final Future<ServiceReturn<List<Workflow>>> Function() getAll;
   final Future<ServiceReturn<Workflow>> Function(String serviceId) getOne;
-  final Future<ServiceReturn<int>> Function(Workflow old, String newName)
+  final Future<ServiceReturn<int>> Function(String workflowId, String newName)
       rename;
-  final Future<ServiceReturn<int>> Function(Workflow old) delete;
+  final Future<ServiceReturn<int>> Function(String workflowId) deleteOne;
   final Future<ServiceReturn<int>> Function(EditorWorkflow workflow) create;
+  final Future<ServiceReturn<bool>> Function(String workflowId, bool active)
+      toggleOne;
 
   const WorkflowsService(
       {required this.getAll,
       required this.getOne,
       required this.rename,
-      required this.delete,
-      required this.create});
+      required this.deleteOne,
+      required this.create,
+      required this.toggleOne});
 }
 
 const workflowsService = WorkflowsService(
     getAll: getAll,
     getOne: getOne,
     rename: rename,
-    delete: delete,
-    create: create);
+    deleteOne: deleteOne,
+    create: create,
+    toggleOne: toggleOne);
