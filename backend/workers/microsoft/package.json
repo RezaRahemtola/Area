@@ -1,7 +1,7 @@
 {
-  "name": "twitter-area-worker",
+  "name": "microsoft-area-worker",
   "version": "1.0.0",
-  "description": "Twitter AREA worker",
+  "description": "Microsoft AREA worker",
   "main": "dist/main.js",
   "type": "module",
   "private": true,
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.7",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "dotenv": "^16.3.1",
     "twitter-api-sdk": "^1.2.1",
     "zod": "^3.22.4"

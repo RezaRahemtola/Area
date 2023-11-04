@@ -18,6 +18,7 @@ rm -rf $GIT_ROOT_PATH/backend/workers/gitlab/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/google/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/linear/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/linkedin/proto
+rm -rf $GIT_ROOT_PATH/backend/workers/microsoft/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/seconds-interval/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/todoist/proto
 rm -rf $GIT_ROOT_PATH/backend/workers/twitter/proto
@@ -30,6 +31,7 @@ cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/gitlab/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/google/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/linear/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/linkedin/proto
+cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/microsoft/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/seconds-interval/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/todoist/proto
 cp -rf $PROTO_PATH $GIT_ROOT_PATH/backend/workers/twitter/proto

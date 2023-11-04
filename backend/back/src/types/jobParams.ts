@@ -22,7 +22,7 @@ export class TimerSecondIntervalParams extends UniqueJobParams {
 	seconds: number;
 }
 
-export class GoogleEmailParams extends UniqueJobParams {
+export class EmailParams extends UniqueJobParams {
 	@IsEmail()
 	to: string;
 

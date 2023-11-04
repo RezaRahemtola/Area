@@ -50,6 +50,11 @@ services:
     build:
       context: ../workers/linkedin
 
+  microsoft:
+    container_name: microsoft
+    build:
+      context: ../workers/microsoft
+
   miro:
     container_name: miro
     build:

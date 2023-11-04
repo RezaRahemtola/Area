@@ -62,6 +62,7 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"linear-create-issue": ({ workflowStepId }) => uniqueJobId("linear-create-issue", workflowStepId),
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
 	"linkedin-create-post": ({ workflowStepId }) => uniqueJobId("linkedin-create-post", workflowStepId),
+	"microsoft-outlook-send-email": ({ workflowStepId }) => uniqueJobId("microsoft-outlook-send-email", workflowStepId),
 	"miro-create-board": ({ workflowStepId }) => uniqueJobId("miro-create-board", workflowStepId),
 	"riot-lol-on-game-end": ({ region, summoner }) => `riot-lol-on-game-end-${region}-${summoner}`,
 	"riot-lol-on-game-loss": ({ region, summoner }) => `riot-lol-on-game-loss-${region}-${summoner}`,
