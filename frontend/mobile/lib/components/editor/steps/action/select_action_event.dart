@@ -44,7 +44,19 @@ class _SelectActionEventState extends State<SelectActionEvent> {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
       return authInProgress
-          ? WebViewWidget(controller: webviewController!)
+          ? Scaffold(
+              appBar: AppBar(
+                  title: Text(AppLocalizations.of(context)!.register),
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () async {
+                      setState(() {
+                        authInProgress = false;
+                      });
+                    },
+                  ),
+                  automaticallyImplyLeading: false),
+              body: WebViewWidget(controller: webviewController!))
           : SizedBox(
               height: 600,
               child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[

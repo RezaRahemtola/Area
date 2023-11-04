@@ -71,7 +71,22 @@ class _LoginPageState extends State<LoginPage> {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
       return authInProgress
-          ? WebViewWidget(controller: webviewController!)
+          ? Scaffold(
+              appBar: AppBar(
+                  title: Text(isLogin
+                      ? AppLocalizations.of(context)!.login
+                      : AppLocalizations.of(context)!.register),
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () async {
+                      setState(() {
+                        authInProgress = false;
+                        oauthUrl = null;
+                      });
+                    },
+                  ),
+                  automaticallyImplyLeading: false),
+              body: WebViewWidget(controller: webviewController!))
           : isLogin
               ? Scaffold(
                   body: Container(
