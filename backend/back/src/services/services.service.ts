@@ -24,7 +24,7 @@ export const SERVICE_NAMES = [
 	"airtable",
 	"todoist",
 	"slack",
-	"riot"
+	"riot",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 
