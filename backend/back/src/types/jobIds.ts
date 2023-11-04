@@ -71,6 +71,10 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"riot-lol-on-level-up": ({ region, summoner }) => `riot-lol-on-level-up-${region}-${summoner}`,
 	"slack-create-message": ({ workflowStepId }) => uniqueJobId("slack-create-message", workflowStepId),
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
+	"todoist-close-task": ({ workflowStepId }) => uniqueJobId("todoist-close-task", workflowStepId),
 	"todoist-create-task": ({ workflowStepId }) => uniqueJobId("todoist-create-task", workflowStepId),
+	"todoist-delete-task": ({ workflowStepId }) => uniqueJobId("todoist-delete-task", workflowStepId),
+	"todoist-reopen-task": ({ workflowStepId }) => uniqueJobId("todoist-reopen-task", workflowStepId),
+	"todoist-update-task": ({ workflowStepId }) => uniqueJobId("todoist-update-task", workflowStepId),
 	"twitter-create-tweet": ({ workflowStepId }) => uniqueJobId("twitter-create-tweet", workflowStepId),
 };
