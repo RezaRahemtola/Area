@@ -1,99 +1,49 @@
+import 'package:area_mobile/services/dio.dart';
+import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/user/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Activity extends StatelessWidget {
-  const Activity({Key? key}) : super(key: key);
+class Activities extends StatelessWidget {
+  const Activities({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(AppLocalizations.of(context)!.activityTitle),
-          automaticallyImplyLeading: false),
-      body: Container(
-        color: Theme.of(context).colorScheme.onSecondary,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            children: <Widget>[
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-              const Divider(),
-              Card(
-                elevation: 4,
-                color: Theme.of(context).colorScheme.primary,
-                child: const ActivityEntry(
-                  time: '10:00 AM',
-                  description: 'Workflow: Spotify -> YouTube',
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: Text(AppLocalizations.of(context)!.activityTitle),
+            automaticallyImplyLeading: false),
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FutureBuilder<ServiceReturn<List<Activity>>>(
+                future: services.user.getActivity(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(AppLocalizations.of(context)!
+                          .error(snapshot.error.toString())),
+                    );
+                  } else {
+                    final List<Activity> activities = [...?snapshot.data?.data];
+                    return ListView.builder(
+                        itemCount: activities.length,
+                        itemBuilder: (context, index) {
+                          final activity = activities[index];
+                          return ActivityEntry(activity: activity);
+                        });
+                  }
+                })));
   }
 }
 
 class ActivityEntry extends StatelessWidget {
-  final String time;
-  final String description;
+  final Activity activity;
 
   const ActivityEntry({
-    required this.time,
-    required this.description,
+    required this.activity,
     Key? key,
   }) : super(key: key);
 
@@ -107,8 +57,8 @@ class ActivityEntry extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      title: Text(time),
-      subtitle: Text(description),
+      title: Text(activity.workflow.name),
+      subtitle: Text(activity.createdAt),
     );
   }
 }
