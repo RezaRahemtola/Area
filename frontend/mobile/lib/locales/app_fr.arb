@@ -45,5 +45,7 @@
     "noWorkflows": "Aucun workflow trouvé",
     "noActions": "Aucune action possible pour ce service",
     "noReactions": "Aucune réaction possible pour ce service",
-    "returnParameters": "Les données suivantes sont renvoyées par cette area et peuvent être utilisées dans la suivante :"
+    "returnParameters": "Les données suivantes sont renvoyées par cette area et peuvent être utilisées dans la suivante :",
+    "ran": "Lancé: ",
+    "errorOn": "Erreur: "
 }
