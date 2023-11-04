@@ -10,16 +10,12 @@ class RegisterPage extends StatefulWidget {
   final Function(String url) onOAuthRegister;
   final Function(bool isRegister) onAuthSwitch;
   final Function() onSuccess;
-  final Function(String theme) updateTheme;
-
 
   const RegisterPage(
       {super.key,
       required this.onOAuthRegister,
       required this.onAuthSwitch,
-      required this.onSuccess,
-       required this.updateTheme});
-
+      required this.onSuccess});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -35,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            constraints: const BoxConstraints(maxWidth: 450, maxHeight: 1000),
+            constraints: const BoxConstraints(maxWidth: 450, maxHeight: 1200),
             color: const Color(0xFF516079),
             child: Form(
                 key: _formKey,
@@ -44,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         elevation: 8,
                         child: Container(
                           constraints: const BoxConstraints(
-                              maxWidth: 400, maxHeight: 600),
+                              maxWidth: 400, maxHeight: 800),
                           padding: const EdgeInsets.all(32.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,

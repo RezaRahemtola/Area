@@ -95,7 +95,6 @@ class _LandingPageState extends State<LandingPage> {
           if (!isLoggedIn) {
             return LoginPage(
               onSuccess: _checkAuth,
-              updateTheme: widget.updateTheme,
             );
           }
           return Scaffold(
