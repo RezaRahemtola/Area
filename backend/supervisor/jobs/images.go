@@ -84,6 +84,7 @@ var OptArgument = map[string]string{
 	"google-form-convert-to-quiz":            "form-convert-to-quiz",
 	"google-form-update-description":         "form-update-description",
 	"google-on-new-video":                    "on-youtube-video",
+	"google-send-email":                      "send-email",
 	"google-update-spreadsheet-title":        "update-spreadsheet-title",
 	"google-update-signature-email":          "update-signature-email",
 	"linear-create-issue":                    "create-issue",
