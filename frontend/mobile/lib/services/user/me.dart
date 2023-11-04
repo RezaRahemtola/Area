@@ -32,9 +32,9 @@ Future<ServiceReturn<void>> updateProfile(String language, String theme,
   }
 }
 
-Future<ServiceReturn<List<Activity>>> getActivity() async {
+Future<ServiceReturn<List<Activity>>> getActivity(int page) async {
   try {
-    final response = await dio.get<List<dynamic>>('/activity');
+    final response = await dio.get<List<dynamic>>('/activity?page=$page&itemsPerPage=20');
 
     final responseData = response.data;
     if (responseData != null) {

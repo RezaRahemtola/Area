@@ -7,7 +7,7 @@ class UserService {
   final Future<ServiceReturn<UserMe>> Function() getMe;
   final Future<ServiceReturn<void>> Function(String language, String theme,
       {String? email}) updateProfile;
-  final Future<ServiceReturn<List<Activity>>> Function() getActivity;
+  final Future<ServiceReturn<List<Activity>>> Function(int page) getActivity;
 
   const UserService({
     required this.getMe,
