@@ -29,11 +29,13 @@ import {
 	TitleParams,
 	TodoistCreateTaskParams,
 	TwitterCreateTweetParams,
+	UniqueJobParams,
 	YoutubeChannelParams,
 } from "./jobParams";
 
 export const JobParamsClasses = {
 	"airtable-delete-record": AirtableDeleteRecordParams,
+	"discord-on-guild-join": UniqueJobParams,
 	"facebook-on-status-create": FacebookPageParams,
 	"github-close-issue": GithubCloseIssueParams,
 	"github-create-issue": GithubCreateIssueParams,

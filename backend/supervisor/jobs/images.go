@@ -2,6 +2,7 @@ package jobs
 
 var JobToImage = map[string]string{
 	"airtable-delete-record":                 "supervisor-airtable",
+	"discord-on-guild-join":                  "supervisor-discord"
 	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
@@ -56,6 +57,7 @@ var JobToImage = map[string]string{
 
 var OptArgument = map[string]string{
 	"airtable-delete-record":                 "delete-record",
+	"discord-on-guild-join":                  "on-guild-join",
 	"github-close-issue":                     "close-issue",
 	"github-create-issue":                    "create-issue",
 	"github-reopen-issue":                    "reopen-issue",
