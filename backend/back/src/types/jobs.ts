@@ -24,6 +24,7 @@ import {
 	MiroCreateBoardParams,
 	NameParams,
 	RiotActionsParams,
+	SlackCreateMessageParams,
 	TimerSecondIntervalParams,
 	TitleParams,
 	TodoistCreateTaskParams,
@@ -80,6 +81,7 @@ export enum Jobs {
 	"riot-lol-on-game-loss" = "riot-lol-on-game-loss",
 	"riot-lol-on-game-win" = "riot-lol-on-game-win",
 	"riot-lol-on-level-up" = "riot-lol-on-level-up",
+	"slack-create-message" = "slack-create-message",
 	"timer-seconds-interval" = "timer-seconds-interval",
 	"todoist-create-task" = "todoist-create-task",
 	"twitter-create-tweet" = "twitter-create-tweet",
@@ -140,6 +142,7 @@ export const JobParamsClasses = {
 	"riot-lol-on-game-loss": RiotActionsParams,
 	"riot-lol-on-game-win": RiotActionsParams,
 	"riot-lol-on-level-up": RiotActionsParams,
+	"slack-create-message": SlackCreateMessageParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
 	"todoist-create-task": TodoistCreateTaskParams,
 	"twitter-create-tweet": TwitterCreateTweetParams,
@@ -194,6 +197,7 @@ export type JobsParams = Mapper<{
 	"riot-lol-on-game-loss": RiotActionsParams;
 	"riot-lol-on-game-win": RiotActionsParams;
 	"riot-lol-on-level-up": RiotActionsParams;
+	"slack-create-message": SlackCreateMessageParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
 	"todoist-create-task": TodoistCreateTaskParams;
 	"twitter-create-tweet": TwitterCreateTweetParams;

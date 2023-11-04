@@ -294,3 +294,11 @@ export class TwitterCreateTweetParams extends UniqueJobParams {
 	@IsString()
 	text: string;
 }
+
+export class SlackCreateMessageParams extends UniqueJobParams {
+	@IsString()
+	channelId: string;
+
+	@IsString()
+	text: string;
+}
