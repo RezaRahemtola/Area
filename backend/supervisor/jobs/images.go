@@ -1,6 +1,7 @@
 package jobs
 
 var JobToImage = map[string]string{
+	"airtable-delete-record":                 "supervisor-airtable",
 	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
@@ -51,6 +52,7 @@ var JobToImage = map[string]string{
 }
 
 var OptArgument = map[string]string{
+	"airtable-delete-record":                 "delete-record",
 	"github-close-issue":                     "close-issue",
 	"github-create-issue":                    "create-issue",
 	"github-reopen-issue":                    "reopen-issue",

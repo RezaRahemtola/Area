@@ -1,4 +1,5 @@
 import {
+	AirtableDeleteRecordParams,
 	FacebookPageParams,
 	GithubCloseIssueParams,
 	GithubCreateIssueParams,
@@ -30,6 +31,7 @@ import {
 } from "./jobParams";
 
 export enum Jobs {
+	"airtable-delete-record" = "airtable-delete-record",
 	"facebook-on-status-create" = "facebook-on-status-create",
 	"github-close-issue" = "github-close-issue",
 	"github-create-issue" = "github-create-issue",
@@ -87,6 +89,7 @@ interface Mapper<TMappings extends Record<JobsType, object>> {
 }
 
 export const JobParamsClasses = {
+	"airtable-delete-record": AirtableDeleteRecordParams,
 	"facebook-on-status-create": FacebookPageParams,
 	"github-close-issue": GithubCloseIssueParams,
 	"github-create-issue": GithubCreateIssueParams,
@@ -138,6 +141,7 @@ export const JobParamsClasses = {
 };
 
 export type JobsParams = Mapper<{
+	"airtable-delete-record": AirtableDeleteRecordParams;
 	"facebook-on-status-create": FacebookPageParams;
 	"github-close-issue": GithubCloseIssueParams;
 	"github-create-issue": GithubCreateIssueParams;

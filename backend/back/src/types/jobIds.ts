@@ -13,6 +13,7 @@ function uniqueWebhookId(service: string, webhookId: string) {
 }
 
 export const JobsIdentifiers: JobsIdentifiers = {
+	"airtable-delete-record": ({ workflowStepId }) => uniqueJobId("airtable-delete-record", workflowStepId),
 	"facebook-on-status-create": ({ pageId }) => uniqueWebhookId("facebook-on-status-create", pageId),
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
