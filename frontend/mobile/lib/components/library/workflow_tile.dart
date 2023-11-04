@@ -9,10 +9,12 @@ import 'package:flutter_svg/svg.dart';
 class WorkflowTile extends StatefulWidget {
   final Workflow workflow;
   final Function onUpdate;
+  final Function(Workflow workflow) onOpenEditor;
 
   const WorkflowTile({
     required this.workflow,
     required this.onUpdate,
+    required this.onOpenEditor,
     Key? key,
   }) : super(key: key);
 
@@ -61,8 +63,7 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.edit),
               title: Text(AppLocalizations.of(context)!.edit),
-              // TODO - open workflow editor
-              onTap: () => {}),
+              onTap: () => {widget.onOpenEditor(widget.workflow)}),
         ),
         PopupMenuItem(
           value: "delete",

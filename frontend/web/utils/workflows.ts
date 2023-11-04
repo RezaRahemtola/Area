@@ -81,11 +81,10 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 			},
 		},
 		reactions: await Promise.all(
-			workflow.reactions.map(async (baseReaction) => {
+			workflow.reactions.map(async (baseReaction): Promise<EditorWorkflowReaction> => {
 				const reactionService = await services.services.getOne(baseReaction.areaServiceId);
 				return {
 					id: baseReaction.id,
-					parameters: baseReaction.parameters,
 					area: {
 						id: baseReaction.areaId,
 						parameters: await workflowParametersToEditorWorkflowParameters(
