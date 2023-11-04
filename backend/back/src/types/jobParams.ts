@@ -289,3 +289,8 @@ export class AirtableDeleteRecordParams extends UniqueJobParams {
 	@IsString()
 	recordId: string;
 }
+
+export class TwitterCreateTweetParams extends UniqueJobParams {
+	@IsString()
+	text: string;
+}

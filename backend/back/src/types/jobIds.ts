@@ -69,4 +69,5 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"riot-lol-on-level-up": ({ region, summoner }) => `riot-lol-on-level-up-${region}-${summoner}`,
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
 	"todoist-create-task": ({ workflowStepId }) => uniqueJobId("todoist-create-task", workflowStepId),
+	"twitter-create-tweet": ({ workflowStepId }) => uniqueJobId("twitter-create-tweet", workflowStepId),
 };
