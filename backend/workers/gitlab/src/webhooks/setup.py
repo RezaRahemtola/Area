@@ -29,7 +29,7 @@ def setup_webhook():
             if hook.url == os.environ["GITLAB_WEBHOOK_URL"]:
                 return
 
-        webhook = project.hooks.create({
+        project.hooks.create({
             'url': os.environ["GITLAB_WEBHOOK_URL"],
             'token': os.environ["GITLAB_WEBHOOK_SECRET"],
             'push_events': True,
