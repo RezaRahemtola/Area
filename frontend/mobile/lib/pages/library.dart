@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Library extends StatefulWidget {
-  const Library({Key? key}) : super(key: key);
+  final Function(Workflow workflow) onOpenEditor;
+
+  const Library({required this.onOpenEditor, Key? key}) : super(key: key);
 
   @override
   State<Library> createState() => _LibraryState();
@@ -112,6 +114,7 @@ class _LibraryState extends State<Library> {
                                     });
                                     _updateSearch(searchController.text);
                                   },
+                                  onOpenEditor: widget.onOpenEditor,
                                 );
                               },
                             );

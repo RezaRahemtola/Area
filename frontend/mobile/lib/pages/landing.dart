@@ -5,6 +5,8 @@ import 'package:area_mobile/pages/library.dart';
 import 'package:area_mobile/pages/services.dart';
 import 'package:area_mobile/pages/user.dart';
 import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
+import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,6 +26,7 @@ class _LandingPageState extends State<LandingPage> {
   int libraryKey = 0;
   String locale = "en";
   String theme = "light";
+  EditorWorkflow editorWorkflow = getEmptyWorkflow();
 
   @override
   void initState() {
@@ -134,14 +137,23 @@ class _LandingPageState extends State<LandingPage> {
               index: _selectedIndex,
               children: <Widget>[
                 Center(
-                  child: Library(key: ValueKey(libraryKey)),
+                  child: Library(
+                    key: ValueKey(libraryKey),
+                    onOpenEditor: (Workflow workflowToOpen) async {
+                      final newEditorWorkflow =
+                          await convertWorkflowToEditorWorkflow(workflowToOpen);
+                      setState(() {
+                        editorWorkflow = newEditorWorkflow;
+                      });
+                    },
+                  ),
                 ),
                 const Center(
                   child: Services(),
                 ),
                 Center(
                   child: Editor(
-                    workflow: getEmptyWorkflow(),
+                    workflow: editorWorkflow,
                     onSave: () => _onItemTapped(0),
                   ),
                 ),
