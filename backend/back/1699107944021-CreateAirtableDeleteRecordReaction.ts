@@ -30,7 +30,7 @@ export class CreateAirtableDeleteRecordReaction1699107944021 implements Migratio
 
         await queryRunner.query(
             `INSERT INTO "area_service_scopes_needed_service_scope" ("area_id", "area_service_id", "service_scope_id", "service_scope_service_id")
-            VALUES ('create-task', 'airtable', 'task:add', 'airtable')`,
+            VALUES ('delete-record', 'airtable', 'data.records:write', 'airtable')`,
         );
     }
 
