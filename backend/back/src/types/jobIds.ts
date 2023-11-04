@@ -1,19 +1,20 @@
 import { JobsParams, JobsType } from "./jobs";
 
 type JobsIdentifiers = {
-	[key in JobsType]: (obj: JobsParams[key]) => string;
+	[key in JobsType]: (obj: JobsParams[key]) => `${key}-${string}`;
 };
 
-function uniqueJobId(jobId: string, workflowStepId: string) {
+function uniqueJobId<TJobType extends JobsType>(jobId: TJobType, workflowStepId: string): `${TJobType}-${string}` {
 	return `${jobId}-${workflowStepId}`;
 }
 
-function uniqueWebhookId(service: string, webhookId: string) {
-	return `${service}-${webhookId}`;
+function uniqueWebhookId<TJobType extends JobsType>(jobId: TJobType, webhookId: string): `${TJobType}-${string}` {
+	return `${jobId}-${webhookId}`;
 }
 
 export const JobsIdentifiers: JobsIdentifiers = {
 	"airtable-delete-record": ({ workflowStepId }) => uniqueJobId("airtable-delete-record", workflowStepId),
+	"discord-on-guild-join": ({ workflowStepId }) => uniqueJobId("discord-on-guild-join", workflowStepId),
 	"facebook-on-status-create": ({ pageId }) => uniqueWebhookId("facebook-on-status-create", pageId),
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),

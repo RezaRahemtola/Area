@@ -15,6 +15,11 @@ services:
     build:
       context: ../workers/airtable
 
+  discord:
+    container_name: discord
+    build:
+      context: ../workers/discord
+
   github:
     container_name: github
     build:
@@ -82,3 +87,4 @@ services:
   twitter:
     container_name: twitter
     build: ../workers/twitter
+
