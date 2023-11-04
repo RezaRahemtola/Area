@@ -63,7 +63,10 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.edit),
               title: Text(AppLocalizations.of(context)!.edit),
-              onTap: () => {widget.onOpenEditor(widget.workflow)}),
+              onTap: () {
+                Navigator.pop(context);
+                widget.onOpenEditor(widget.workflow);
+              }),
         ),
         PopupMenuItem(
           value: "delete",

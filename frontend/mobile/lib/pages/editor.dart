@@ -1,6 +1,8 @@
 import 'package:area_mobile/components/editor/cards/action_card.dart';
 import 'package:area_mobile/components/editor/cards/reaction_card.dart';
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
+import 'package:area_mobile/services/dio.dart';
+import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  EditorWorkflow workflow = getEmptyWorkflow();
+  late EditorWorkflow workflow;
 
   @override
   void initState() {
@@ -70,6 +72,7 @@ class _EditorState extends State<Editor> {
               Column(
                 children: <Widget>[
                   EditorActionCard(
+                    workflowId: workflow.id,
                     action: workflow.action,
                     key: ValueKey(workflow.action.id),
                     onUpdate: (EditorWorkflowAction updatedAction) {
@@ -79,6 +82,7 @@ class _EditorState extends State<Editor> {
                     },
                   ),
                   ...workflow.reactions.map(((reaction) => EditorReactionCard(
+                        workflowId: workflow.id,
                         reaction: reaction,
                         key: ValueKey(reaction.id),
                         onUpdate: (EditorWorkflowReaction updatedReaction) {
@@ -103,6 +107,22 @@ class _EditorState extends State<Editor> {
                               const UuidV4().generate().toString())
                     ];
                   });
+                },
+              ),
+              ElevatedButton(
+                child: Text(AppLocalizations.of(context)!.save),
+                onPressed: () async {
+                  late ServiceReturn<int> response;
+                  if (workflow.id != null) {
+                    response = await services.workflows.update(workflow);
+                    await services.workflows
+                        .toggleOne(workflow.id!, workflow.active);
+                  } else {
+                    response = await services.workflows.create(workflow);
+                  }
+                  if (response.data != null) {
+                    widget.onSave();
+                  }
                 },
               )
             ],

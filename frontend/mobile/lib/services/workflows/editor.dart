@@ -31,3 +31,31 @@ Future<ServiceReturn<int>> create(EditorWorkflow workflow) async {
     return ServiceReturn(error: e.toString());
   }
 }
+
+Future<ServiceReturn<int>> update(EditorWorkflow workflow) async {
+  try {
+    final response = await dio.patch('/workflows/${workflow.id}', data: {
+      "name": workflow.name,
+      "action": {
+        "id": workflow.action.id,
+        "parameters": convertAreaParamsToWorkflowPayloadParams(
+            workflow.action.area!.parameters),
+        "areaId": workflow.action.area?.id,
+        "areaServiceId": workflow.action.areaService?.id,
+      },
+      "reactions": workflow.reactions
+          .map((reaction) => ({
+                "id": reaction.id,
+                "parameters": convertAreaParamsToWorkflowPayloadParams(
+                    reaction.area!.parameters),
+                "areaId": reaction.area?.id,
+                "areaServiceId": reaction.areaService?.id,
+                "previousAreaId": reaction.previousId,
+              }))
+          .toList(),
+    });
+    return ServiceReturn(data: response.statusCode);
+  } catch (e) {
+    return ServiceReturn(error: e.toString());
+  }
+}

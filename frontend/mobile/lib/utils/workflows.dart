@@ -46,7 +46,9 @@ Future<List<AreaParameterWithValue>>
   return area.parametersFormFlow.map((formFlowParam) {
     var value = parameters[formFlowParam.name];
     if (formFlowParam.type == "text-array") {
-      value = (value as List<String>).join(",");
+      value = (value as List<dynamic>).join(",");
+    } else if (formFlowParam.type == "integer") {
+      value = value.toString();
     }
     return AreaParameterWithValue(
         name: formFlowParam.name,
@@ -65,12 +67,12 @@ Future<EditorWorkflow> convertWorkflowToEditorWorkflow(
       id: workflow.id,
       name: workflow.name,
       action: EditorWorkflowAction(
-          id: workflow.action.areaId,
+          id: workflow.action.id,
           area: EditorWorkflowElementArea(
               id: workflow.action.areaId,
               parameters: await workflowParametersToEditorWorkflowParameters(
                   workflow.action.areaServiceId,
-                  workflow.action.id,
+                  workflow.action.areaId,
                   true,
                   workflow.action.parameters)),
           areaService: EditorWorkflowElementService(

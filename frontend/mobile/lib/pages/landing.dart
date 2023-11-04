@@ -24,6 +24,7 @@ class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
   int libraryKey = 0;
+  int editorKey = 0;
   String locale = "en";
   String theme = "light";
   EditorWorkflow editorWorkflow = getEmptyWorkflow();
@@ -144,6 +145,8 @@ class _LandingPageState extends State<LandingPage> {
                           await convertWorkflowToEditorWorkflow(workflowToOpen);
                       setState(() {
                         editorWorkflow = newEditorWorkflow;
+                        editorKey++;
+                        _selectedIndex = 2;
                       });
                     },
                   ),
@@ -153,8 +156,16 @@ class _LandingPageState extends State<LandingPage> {
                 ),
                 Center(
                   child: Editor(
+                    key: ValueKey(editorWorkflow.id),
                     workflow: editorWorkflow,
-                    onSave: () => _onItemTapped(0),
+                    onSave: () {
+                      setState(() {
+                        editorKey++;
+                        libraryKey++;
+                        editorWorkflow = getEmptyWorkflow();
+                      });
+                      _onItemTapped(0);
+                    },
                   ),
                 ),
                 const Center(
