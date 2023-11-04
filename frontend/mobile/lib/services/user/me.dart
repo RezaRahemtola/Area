@@ -17,11 +17,13 @@ Future<ServiceReturn<UserMe>> getMe() async {
   }
 }
 
-Future<ServiceReturn<void>> updateProfile(
-    String email, String language, String theme) async {
+Future<ServiceReturn<void>> updateProfile(String language, String theme,
+    {String? email}) async {
   try {
-    await dio.patch("/me",
-        data: {"email": email, "language": language, "theme": theme});
+    var data = {"language": language, "theme": theme};
+    if (email != null) data["email"] = email;
+
+    await dio.patch("/me", data: data);
     return const ServiceReturn(data: null);
   } catch (e) {
     return ServiceReturn(error: e.toString());

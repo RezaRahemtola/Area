@@ -136,8 +136,10 @@ class _UserHero extends State<User> {
                             ElevatedButton(
                               onPressed: () {
                                 widget.updateSettings(newLocale, newTheme);
-                                services.user.updateProfile(
-                                    newEmail, newLocale, newTheme);
+                                services.user.updateProfile(newLocale, newTheme,
+                                    email: newEmail != user.email
+                                        ? newEmail
+                                        : null);
                               },
                               child: Text(AppLocalizations.of(context)!.save),
                             ),
