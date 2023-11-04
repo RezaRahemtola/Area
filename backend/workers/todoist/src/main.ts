@@ -1,7 +1,15 @@
 import createTask from "./tasks/create";
+import updateTask from "./tasks/update";
+import closeTask from "./tasks/close";
+import reopenTask from "./tasks/reopen";
+import deleteTask from "./tasks/delete";
 
 const areas: Record<string, () => Promise<void>> = {
+    "close-task": closeTask,
     "create-task": createTask,
+    "delete-task": deleteTask,
+    "reopen-task": reopenTask,
+    "update-task": updateTask,
 }
 async function main() {
     const job = process.argv[2];

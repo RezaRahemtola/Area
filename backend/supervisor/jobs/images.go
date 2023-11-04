@@ -51,7 +51,11 @@ var JobToImage = map[string]string{
 	"riot-lol-on-level-up":                   "supervisor-riot",
 	"slack-create-message":                   "supervisor-slack",
 	"timer-seconds-interval":                 "supervisor-seconds-interval",
+	"todoist-close-task":                     "supervisor-todoist",
 	"todoist-create-task":                    "supervisor-todoist",
+	"todoist-delete-task":                    "supervisor-todoist",
+	"todoist-reopen-task":                    "supervisor-todoist",
+	"todoist-update-task":                    "supervisor-todoist",
 	"twitter-create-tweet":                   "supervisor-twitter",
 }
 
@@ -105,7 +109,11 @@ var OptArgument = map[string]string{
 	"riot-lol-on-level-up":                   "lol-on-level-up",
 	"slack-create-message":                   "create-message",
 	"timer-seconds-interval":                 "",
+	"todoist-close-task":                     "close-task",
 	"todoist-create-task":                    "create-task",
+	"todoist-delete-task":                    "delete-task",
+	"todoist-reopen-task":                    "reopen-task",
+	"todoist-update-task":                    "update-task",
 	"twitter-create-tweet":                   "create-tweet",
 }
 

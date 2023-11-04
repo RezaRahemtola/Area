@@ -28,6 +28,8 @@ import {
 	TimerSecondIntervalParams,
 	TitleParams,
 	TodoistCreateTaskParams,
+	TodoistTaskParams,
+	TodoistUpdateTaskParams,
 	TwitterCreateTweetParams,
 	UniqueJobParams,
 	YoutubeChannelParams,
@@ -85,7 +87,11 @@ export const JobParamsClasses = {
 	"riot-lol-on-level-up": RiotActionsParams,
 	"slack-create-message": SlackCreateMessageParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
+	"todoist-close-task": TodoistTaskParams,
 	"todoist-create-task": TodoistCreateTaskParams,
+	"todoist-delete-task": TodoistTaskParams,
+	"todoist-reopen-task": TodoistTaskParams,
+	"todoist-update-task": TodoistUpdateTaskParams,
 	"twitter-create-tweet": TwitterCreateTweetParams,
 };
 
