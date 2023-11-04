@@ -2,7 +2,7 @@ class AreaParameterWithValue {
   final String name;
   final String type;
   final bool required;
-  Object? value;
+  dynamic value;
 
   AreaParameterWithValue(
       {required this.name,

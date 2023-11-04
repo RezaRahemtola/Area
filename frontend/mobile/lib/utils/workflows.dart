@@ -22,13 +22,19 @@ EditorWorkflow getEmptyWorkflow() {
       active: false);
 }
 
-Map<String, Object> convertAreaParamsToWorkflowPayloadParams(
+Map<String, dynamic> convertAreaParamsToWorkflowPayloadParams(
     List<AreaParameterWithValue> parameters) {
-  Map<String, Object> result = {};
+  Map<String, dynamic> result = {};
   for (var param in parameters) {
-    Object value = param.value ?? "";
+    Object? value = param.value;
     if (param.type == "integer") {
       value = int.parse(param.value as String);
+    } else if (param.type == "text-array") {
+      if (value == null) {
+        value = [];
+      } else {
+        value = (value as String).split(",");
+      }
     }
     result[param.name] = value;
   }
