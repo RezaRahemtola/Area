@@ -30,7 +30,7 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 600,
+        height: 650,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseService,
@@ -49,14 +49,10 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
               } else {
                 final List<Service> services = [...?snapshot.data?.data];
 
-                return Column(children: [
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: services.length,
-                    itemBuilder: (context, index) {
-                      final service = services[index];
-                      return ServiceCard(
+                return Expanded(
+                    child: SingleChildScrollView(
+                        child: Column(children: [
+                  ...services.map((service) => ServiceCard(
                         service: service,
                         selected: service.id == selectedServiceId,
                         onTap: () {
@@ -64,9 +60,7 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
                             selectedServiceId = service.id;
                           });
                         },
-                      );
-                    },
-                  ),
+                      )),
                   ElevatedButton(
                     onPressed: selectedServiceId != null
                         ? () {
@@ -75,7 +69,7 @@ class _SelectReactionServiceState extends State<SelectReactionService> {
                         : null,
                     child: Text(AppLocalizations.of(context)!.save),
                   )
-                ]);
+                ])));
               }
             },
           ),

@@ -31,7 +31,7 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 600,
+        height: 650,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseParams,

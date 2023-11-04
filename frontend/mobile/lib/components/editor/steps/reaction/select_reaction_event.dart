@@ -59,7 +59,7 @@ class _SelectReactionEventState extends State<SelectReactionEvent> {
                   automaticallyImplyLeading: false),
               body: WebViewWidget(controller: webviewController!))
           : SizedBox(
-              height: 600,
+              height: 650,
               child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 const SizedBox(height: 25),
                 Text(AppLocalizations.of(context)!.editorChooseEvent,
