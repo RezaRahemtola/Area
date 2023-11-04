@@ -6,7 +6,9 @@ import {
 	IsOptional,
 	IsString,
 	IsUUID,
+	Max,
 	MaxLength,
+	Min,
 	MinLength,
 } from "class-validator";
 
@@ -247,14 +249,32 @@ enum RiotRegion {
 	"tr",
 	"ru",
 }
-type RiotRegionType = keyof typeof RiotRegion;
 
 export class RiotActionsParams extends UniqueJobParams {
 	@IsEnum(RiotRegion)
-	region: RiotRegionType;
+	region: RiotRegion;
 
 	@IsString()
 	@MinLength(3)
 	@MaxLength(16)
 	summoner: string;
+}
+
+export class TodoistCreateTaskParams extends UniqueJobParams {
+	@IsString()
+	content: string;
+
+	@IsString()
+	@IsOptional()
+	description: string;
+
+	@IsNumber()
+	@IsOptional()
+	@Min(1)
+	@Max(4)
+	priority: number;
+
+	@IsString()
+	@IsOptional()
+	dueDate: string;
 }

@@ -25,6 +25,7 @@ import {
 	RiotActionsParams,
 	TimerSecondIntervalParams,
 	TitleParams,
+	TodoistCreateTaskParams,
 	YoutubeChannelParams,
 } from "./jobParams";
 
@@ -76,6 +77,7 @@ export enum Jobs {
 	"riot-lol-on-game-win" = "riot-lol-on-game-win",
 	"riot-lol-on-level-up" = "riot-lol-on-level-up",
 	"timer-seconds-interval" = "timer-seconds-interval",
+	"todoist-create-task" = "todoist-create-task",
 }
 
 export type JobsType = keyof typeof Jobs;
@@ -132,6 +134,7 @@ export const JobParamsClasses = {
 	"riot-lol-on-game-win": RiotActionsParams,
 	"riot-lol-on-level-up": RiotActionsParams,
 	"timer-seconds-interval": TimerSecondIntervalParams,
+	"todoist-create-task": TodoistCreateTaskParams,
 };
 
 export type JobsParams = Mapper<{
@@ -182,4 +185,5 @@ export type JobsParams = Mapper<{
 	"riot-lol-on-game-win": RiotActionsParams;
 	"riot-lol-on-level-up": RiotActionsParams;
 	"timer-seconds-interval": TimerSecondIntervalParams;
+	"todoist-create-task": TodoistCreateTaskParams;
 }>;

@@ -75,6 +75,7 @@ import ActivityLog from "./activity/entities/activity-log.entity";
 import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
 import { CreateRiotGamesService1698964479750 } from "./services/seed/1698964479750-CreateRiotGamesService";
 import { CreateRiotGamesActions1698964479850 } from "./workflows/seed/1698964479850-CreateRiotGamesActions";
+import { CreateTodoistCreateTaskReaction1699101589099 } from "./workflows/seed/1699101589099-CreateTodoistCreateTaskReaction";
 
 dotenv.config();
 
@@ -153,6 +154,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		AddActivityLogEntity1698986590525,
 		CreateRiotGamesService1698964479750,
 		CreateRiotGamesActions1698964479850,
+		CreateTodoistCreateTaskReaction1699101589099,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
