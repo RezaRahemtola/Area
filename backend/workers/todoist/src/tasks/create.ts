@@ -35,6 +35,7 @@ export default async function createTask() {
 			name: "todoist-create-task",
 			identifier: params.identifier,
 			params: {
+				workflowStepId: params.workflowStepId,
 				url: task.url,
 			},
 		});
