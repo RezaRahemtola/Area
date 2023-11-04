@@ -12,6 +12,7 @@ class WorkflowsService {
       rename;
   final Future<ServiceReturn<int>> Function(String workflowId) deleteOne;
   final Future<ServiceReturn<int>> Function(EditorWorkflow workflow) create;
+  final Future<ServiceReturn<int>> Function(EditorWorkflow workflow) update;
   final Future<ServiceReturn<bool>> Function(String workflowId, bool active)
       toggleOne;
 
@@ -21,6 +22,7 @@ class WorkflowsService {
       required this.rename,
       required this.deleteOne,
       required this.create,
+      required this.update,
       required this.toggleOne});
 }
 
@@ -30,4 +32,5 @@ const workflowsService = WorkflowsService(
     rename: rename,
     deleteOne: deleteOne,
     create: create,
+    update: update,
     toggleOne: toggleOne);

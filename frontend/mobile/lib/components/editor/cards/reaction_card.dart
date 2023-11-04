@@ -8,11 +8,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
 class EditorReactionCard extends StatefulWidget {
+  final String? workflowId;
+
   final EditorWorkflowReaction reaction;
   final Function(EditorWorkflowReaction updatedReaction) onUpdate;
 
   const EditorReactionCard(
-      {super.key, required this.reaction, required this.onUpdate});
+      {super.key,
+      required this.workflowId,
+      required this.reaction,
+      required this.onUpdate});
 
   @override
   State<EditorReactionCard> createState() => _EditorReactionCardState();
@@ -20,12 +25,15 @@ class EditorReactionCard extends StatefulWidget {
 
 class _EditorReactionCardState extends State<EditorReactionCard> {
   late EditorWorkflowReaction reaction;
-  EditorWorkflowStep step = EditorWorkflowStep.service;
+  late EditorWorkflowStep step;
 
   @override
   void initState() {
     super.initState();
     reaction = widget.reaction;
+    step = widget.workflowId != null
+        ? EditorWorkflowStep.parameters
+        : EditorWorkflowStep.service;
   }
 
   @override
