@@ -27,7 +27,11 @@ export const convertAreaParamsToWorkflowPayloadParams = (parameters: AreaParamet
 		if (param.type === "integer") {
 			value = parseInt(value as unknown as string, 10) as never;
 		} else if (param.type === "text-array") {
-			value = (value as unknown as string).split(",") as never;
+			if (value === undefined) {
+				value = [] as never;
+			} else {
+				value = (value as unknown as string).split(",") as never;
+			}
 		}
 		// eslint-disable-next-line no-param-reassign
 		result[param.name] = value as never;
@@ -45,7 +49,13 @@ const workflowParametersToEditorWorkflowParameters = async (
 		: await services.services.getServiceReactions(serviceId);
 	const { parametersFormFlow } = areas.data!.find((a) => a.id === areaId)!;
 
-	return parametersFormFlow.map((formFlowParam) => ({ ...formFlowParam, value: parameters[formFlowParam.name] }));
+	return parametersFormFlow.map((formFlowParam) => {
+		let value = parameters[formFlowParam.name];
+		if (formFlowParam.type === "text-array") {
+			value = (value as unknown as string[]).join(",") as never;
+		}
+		return { ...formFlowParam, value };
+	});
 };
 
 export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promise<EditorWorkflow> => {
