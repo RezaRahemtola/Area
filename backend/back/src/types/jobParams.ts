@@ -278,3 +278,14 @@ export class TodoistCreateTaskParams extends UniqueJobParams {
 	@IsOptional()
 	dueDate: string;
 }
+
+export class AirtableDeleteRecordParams extends UniqueJobParams {
+	@IsString()
+	baseId: string;
+
+	@IsString()
+	tableId: string;
+
+	@IsString()
+	recordId: string;
+}

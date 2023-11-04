@@ -76,6 +76,7 @@ import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-Ad
 import { CreateRiotGamesService1698964479750 } from "./services/seed/1698964479750-CreateRiotGamesService";
 import { CreateRiotGamesActions1698964479850 } from "./workflows/seed/1698964479850-CreateRiotGamesActions";
 import { CreateTodoistCreateTaskReaction1699101589099 } from "./workflows/seed/1699101589099-CreateTodoistCreateTaskReaction";
+import { CreateAirtableDeleteRecordReaction1699107944021 } from "../1699107944021-CreateAirtableDeleteRecordReaction";
 
 dotenv.config();
 
@@ -155,6 +156,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateRiotGamesService1698964479750,
 		CreateRiotGamesActions1698964479850,
 		CreateTodoistCreateTaskReaction1699101589099,
+		CreateAirtableDeleteRecordReaction1699107944021,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
