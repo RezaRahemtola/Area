@@ -3,7 +3,7 @@ import { credentials } from "@grpc/grpc-js";
 import parseArguments, { getFromEnv } from "../util/params";
 import { AreaBackServiceClient } from "../proto/area_back";
 import "../proto/google/protobuf/struct";
-import {onAction, onReaction} from "../util/grpc";
+import { onAction } from "../util/grpc";
 import {
 	handleRiotError,
 	LolCluster,
