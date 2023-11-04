@@ -12,10 +12,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   final Function() onSuccess;
-  final Function(String theme) updateTheme;
 
-  const LoginPage(
-      {super.key, required this.onSuccess, required this.updateTheme});
+  const LoginPage({super.key, required this.onSuccess});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -109,10 +107,10 @@ class _LoginPageState extends State<LoginPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         const Image(
-                                image: AssetImage('assets/logo.png'),
-                                height: 150,
-                                width: 150,
-                              ),
+                                          image: AssetImage('assets/logo.png'),
+                                          height: 150,
+                                          width: 150,
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Text(
@@ -140,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                                           onSuccess: widget.onSuccess,
                                           onOAuthLogin: _onOAuthLogin,
                                           onAuthSwitch: _onAuthSwitch,
-                                          updateTheme: widget.updateTheme
                                         )
                                       ],
                                     ),
@@ -149,7 +146,6 @@ class _LoginPageState extends State<LoginPage> {
                   onSuccess: widget.onSuccess,
                   onAuthSwitch: _onAuthSwitch,
                   onOAuthRegister: _onOAuthLogin,
-        updateTheme: widget.updateTheme
                 );
     });
   }
@@ -162,7 +158,6 @@ class LoginButtons extends StatelessWidget {
   final Function() onSuccess;
   final Function(String url) onOAuthLogin;
   final Function(bool isRegister) onAuthSwitch;
-  final Function(String theme) updateTheme;
 
   const LoginButtons(
       {super.key,
@@ -171,8 +166,7 @@ class LoginButtons extends StatelessWidget {
       required this.passwordController,
       required this.onSuccess,
       required this.onOAuthLogin,
-      required this.onAuthSwitch,
-      required this.updateTheme})
+      required this.onAuthSwitch})
       : _formKey = formKey;
 
   @override
