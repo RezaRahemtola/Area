@@ -86,6 +86,7 @@ class _LandingPageState extends State<LandingPage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (editorWorkflow.id != null) editorWorkflow = getEmptyWorkflow();
     });
   }
 

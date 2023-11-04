@@ -22,7 +22,7 @@ class _EditorParamFieldState extends State<EditorParamField> {
 
   @override
   Widget build(BuildContext context) {
-    if (["short-text", "email"].contains(parameter.type)) {
+    if (["short-text", "email", "text-array"].contains(parameter.type)) {
       return TextFormField(
         decoration: InputDecoration(labelText: parameter.name),
         initialValue: parameter.value as String?,
