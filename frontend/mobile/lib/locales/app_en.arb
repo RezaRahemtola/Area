@@ -185,4 +185,17 @@
 
     "on-guild-join": "On guild join",
     "on-guild-join-sub": "Fired when the user join a guild on discord.",
+
+    "on-action": "on action",
+    "on-action-sub": "Triggers when a workflow's action is triggered",
+    "on-account-connect": "on account connect",
+    "on-account-connect-sub": "Triggers when a new OAuth account is connected",
+    "on-workflow-create": "on workflow create",
+    "on-workflow-create-sub": "Triggers when a new workflow is created",
+    "on-workflow-toggle": "on workflow toggle",
+    "on-workflow-toggle-sub": "Triggers when a workflow is enabled",
+    "disable-workflow": "disable workflow",
+    "disable-workflow-sub": "Disable a workflow",
+    "enable-workflow": "enable workflow",
+    "enable-workflow-sub": "Enable a workflow",
 }

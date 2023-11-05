@@ -183,4 +183,17 @@
 
     "on-guild-join": "En cas d'entrée sur un serveur",
     "on-guild-join-sub": "Lancé quand l'utilisateur rejoint un serveur discord.",
+
+    "on-action": "En cas d'action",
+    "on-action-sub": "Se déclenche lorsque l'action d'un workflow est déclenchée.",
+    "on-account-connect": "En cas de connexion",
+    "on-account-connect-sub": "Se déclenche lorsqu'un nouveau compte OAuth est connecté",
+    "on-workflow-create": "Création d'un workflow",
+    "on-workflow-create-sub": "Se déclenche lors de la création d'un nouveau workflow",
+    "on-workflow-toggle": "Si activation d'un workflow",
+    "on-workflow-toggle-sub": "Se déclenche lorsqu'un workflow est activé",
+    "disable-workflow": "Désactiver un workflow",
+    "disable-workflow-sub": "Désactive un workflow",
+    "enable-workflow": "Activer un workflow",
+    "enable-workflow-sub": "Activer un workflow",
 }
