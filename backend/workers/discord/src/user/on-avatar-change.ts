@@ -22,7 +22,7 @@ export default async function onAvatarChange(discordClient: DiscordOauth2) {
 				name: "discord-on-avatar-change",
 				identifier: params.identifier,
 				params: {
-					newAvatarUrl: `${newAvatarHash}`,
+					newAvatarHash,
 				},
 			});
 		}

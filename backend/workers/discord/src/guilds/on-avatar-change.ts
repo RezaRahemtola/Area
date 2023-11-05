@@ -29,7 +29,7 @@ export default async function onGuildAvatarChange(discordClient: DiscordOauth2) 
 				name: "discord-on-guild-avatar-change",
 				identifier: params.identifier,
 				params: {
-					newAvatarUrl: `${newAvatarHash}`,
+					newAvatarHash,
 				},
 			});
 		}
