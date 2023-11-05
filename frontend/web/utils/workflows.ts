@@ -106,6 +106,36 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 	};
 };
 
+export const convertWorkflowToDuplicateEditorWorkflow = async (
+	workflow: Workflow,
+	copyText: string,
+): Promise<EditorWorkflow> => {
+	const editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
+
+	const idMapping: Record<string, string> = {};
+	[editorWorkflow.action.id, ...editorWorkflow.reactions.map((e) => e.id)].forEach((id) => (idMapping[id] = uuidv4()));
+
+	const newAction: EditorWorkflowAction = {
+		id: idMapping[editorWorkflow.action.id],
+		area: editorWorkflow.action.area,
+		areaService: editorWorkflow.action.areaService,
+	};
+
+	const newReactions: EditorWorkflowReaction[] = editorWorkflow.reactions.map((reaction) => ({
+		id: idMapping[reaction.id],
+		area: reaction.area,
+		areaService: reaction.areaService,
+		previousAreaId: idMapping[editorWorkflow.reactions.find((e) => e.id === reaction.id)!.previousAreaId],
+	}));
+
+	return {
+		name: `${editorWorkflow.name} (${copyText})`,
+		action: newAction,
+		reactions: newReactions,
+		active: editorWorkflow.active,
+	};
+};
+
 export const getSortedReactions = <T extends { previousAreaId: string; id: string }>(
 	reactions: T[],
 	basePreviousId: string,
