@@ -29,7 +29,7 @@ const EditorSeparator = ({ previousId }: { previousId: string }) => {
 			</div>
 
 			<div className="flex w-full justify-center">
-				<button className="btn btn-circle btn-sm" onClick={onClick}>
+				<button className="btn btn-circle btn-sm bg-accent border-accent" onClick={onClick}>
 					<FontAwesomeIcon icon="plus" svgProps={{ className: "h-6 w-6" }} />
 				</button>
 			</div>

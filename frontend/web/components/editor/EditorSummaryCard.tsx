@@ -12,14 +12,14 @@ type EditorSummaryCardProps = {
 	service?: EditorWorkflowElementService;
 };
 const EditorSummaryCard = ({ title, description, onClick, icon, service }: EditorSummaryCardProps) => (
-	<div className="card mx-auto w-96 shadow-2xl cursor-pointer" onClick={onClick}>
+	<div className="card mx-auto w-96 shadow-2xl cursor-pointer bg-neutral" onClick={onClick}>
 		<div className="card-body bg-pimary">
 			<div className="flex bg-pimary">
-				<div className="card shadow-xl">
+				<div className="card shadow-xl bg-primary">
 					{service ? (
-						<div className="card-body p-3">
+						<div className="card-body p-3 bg-primary">
 							<div className="avatar m-auto">
-								<div className="mask mask-squircle w-16 h-16">
+								<div className="mask mask-squircle w-16 h-16 bg-primary">
 									<Image src={service.imageUrl} alt="Service logo" width={300} height={300} />
 								</div>
 							</div>

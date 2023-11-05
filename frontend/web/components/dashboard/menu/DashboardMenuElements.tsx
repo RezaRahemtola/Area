@@ -13,7 +13,7 @@ type DashboardMenuElementProps = {
 
 const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementProps) => (
 	<li>
-		<Link className={isFull ? "" : "justify-center"} href={href}>
+		<Link className={isFull ? "" : "justify-center text-base-100"} href={href}>
 			<FontAwesomeIcon icon={icon} svgProps={isFull ? undefined : { className: "h-6 w-6" }} />
 			{isFull ? title : ""}
 		</Link>
@@ -22,7 +22,7 @@ const DashboardMenuLink = ({ icon, title, href, isFull }: DashboardMenuElementPr
 
 const DashboardMenuButton = ({ icon, title, href, isFull, onClick }: DashboardMenuElementProps) => (
 	<Link className="justify-center" href={href} onClick={onClick}>
-		<button className={`btn btn-secondary ${isFull ? "btn-wide" : ""}`}>
+		<button className={`btn btn-secondary text-base-100 ${isFull ? "btn-wide" : ""}`}>
 			<FontAwesomeIcon icon={icon} /> {isFull ? title : ""}
 		</button>
 	</Link>

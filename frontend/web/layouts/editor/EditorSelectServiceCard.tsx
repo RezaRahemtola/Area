@@ -32,7 +32,7 @@ const EditorSelectServiceCard = ({
 
 			<div className="card-actions">
 				<button
-					className="btn btn-primary btn-wide disabled:bg-accent"
+					className="btn btn-primary btn-wide disabled:bg-primary"
 					disabled={!selectedServiceId}
 					onClick={() => onNextStep(serviceChoices.find((s) => s.id === selectedServiceId)!)}
 				>

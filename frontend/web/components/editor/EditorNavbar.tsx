@@ -45,7 +45,7 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 						<FontAwesomeIcon icon="chevron-left" />
 					</button>
 					<input
-						className="input w-full max-w-xs"
+						className="input w-full max-w-xs bg-primary"
 						type="text"
 						value={workflow.name}
 						onChange={(e) => setWorkflow((prev) => ({ ...prev, name: e.target.value }))}
@@ -63,11 +63,11 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 						<input
 							type="checkbox"
 							name="workflow-running"
-							className="toggle toggle-success mr-6"
+							className="toggle toggle-success mr-6 bg-primary"
 							checked={workflow.active}
 							onChange={onToggleWorkflow}
 						/>
-						<button className="btn btn-secondary" onClick={onSaveWorkflow}>
+						<button className="btn btn-secondary text-base-100" onClick={onSaveWorkflow}>
 							{t("actions.save")}
 						</button>
 					</>

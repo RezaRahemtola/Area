@@ -142,13 +142,13 @@ const EditorSelectEventAndAccount = ({
 
 				<div className="card-actions">
 					<button
-						className="btn btn-outline btn-neutral text-neutral-content hover:text-neutral-content"
+						className="btn btn-outline btn-base-100 text-neutral-content hover:text-neutral-content"
 						onClick={() => onEvent("back")}
 					>
 						Back
 					</button>
 					<button
-						className="btn btn-primary btn-wide disabled:bg-accent"
+						className="btn btn-primary btn-wide disabled:bg-primary"
 						disabled={!selectedEventId}
 						onClick={() => onEvent("next", { id: selectedEventId!, parameters: selectedParameters })}
 					>

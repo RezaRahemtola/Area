@@ -25,7 +25,7 @@ const Navbar = ({ beforeLogoContent, hasLogo = true, centerContent, endContent }
 	}, [interfaceLanguage]);
 
 	return (
-		<div className="navbar bg-primary">
+		<div className="navbar bg-neutral">
 			<div className="navbar-start">
 				{beforeLogoContent}
 				{hasLogo ? (

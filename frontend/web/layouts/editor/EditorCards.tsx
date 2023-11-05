@@ -28,7 +28,7 @@ const EditorCards = () => {
 	};
 
 	return (
-		<div className="bg-neutral">
+		<div>
 			<ActionCard />
 			<EditorSeparator previousId={workflow.action.id} />
 			{getSortedReactions(workflow.reactions, workflow.action.id).map((reaction) => (
