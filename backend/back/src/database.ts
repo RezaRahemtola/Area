@@ -85,6 +85,7 @@ import { CreateDiscordOnGuildJoinAction1699140593736 } from "./workflows/seed/16
 import { CreateTodoistTaskReactions1699140054686 } from "./workflows/seed/1699140054686-CreateTodoistTaskReactions";
 import { CreateAreaService1699143731594 } from "./services/seed/1699143731594-CreateAreaService";
 import { CreateAreaOnActionAction1699145276143 } from "./workflows/seed/1699145276143-CreateAreaOnActionAction";
+import { CreateDiscordNewActions1699165196600 } from "./workflows/seed/1699165196600-CreateDiscordNewActions";
 import { CreateAreaAreas1699152935342 } from "./workflows/seed/1699152935342-CreateAreaAreas";
 import { FixAddScopeToLinearOnIssueCreate1699190007820 } from "./workflows/seed/1699190007820-FixAddScopeToLinearOnIssueCreate";
 
@@ -175,6 +176,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateTodoistTaskReactions1699140054686,
 		CreateAreaService1699143731594,
 		CreateAreaOnActionAction1699145276143,
+		CreateDiscordNewActions1699165196600,
 		CreateAreaAreas1699152935342,
 		FixAddScopeToLinearOnIssueCreate1699190007820,
 	],
