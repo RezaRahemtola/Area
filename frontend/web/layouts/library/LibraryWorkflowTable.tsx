@@ -137,8 +137,8 @@ const LibraryWorkflowTable = () => {
 										)}
 									</div>
 								</th>
-								<th>Name</th>
-								<th>Running</th>
+								<th>{t("library.name")}</th>
+								<th>{t("library.running")}</th>
 								<th></th>
 							</tr>
 						</thead>

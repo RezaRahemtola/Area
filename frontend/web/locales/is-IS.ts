@@ -62,6 +62,8 @@ const translations = {
 				successMessage: "Verkflæði breytt nafni!",
 			},
 		},
+		name: "Nafn",
+		running: "Staða",
 	},
 	user: {
 		settings: {
@@ -84,6 +86,8 @@ const translations = {
 	},
 	activity: {
 		title: "Virkni",
+		time: "Dagsetning",
+		workflow: "Verkflæði",
 	},
 	landing: {
 		actions: {
