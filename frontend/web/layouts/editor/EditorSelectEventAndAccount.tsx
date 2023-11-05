@@ -32,6 +32,7 @@ const EditorSelectEventAndAccount = ({
 	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>(
 		workflowArea.area?.parameters ?? [],
 	);
+	const [returnParameters, setReturnParameters] = useState<string[]>([]);
 	const { t } = useTranslation();
 
 	useEffect(() => {
@@ -42,6 +43,7 @@ const EditorSelectEventAndAccount = ({
 					workflowArea.areaService!.id,
 					chosenArea.serviceScopesNeeded,
 				);
+				setReturnParameters(chosenArea.parametersReturnFlow);
 				setConnectAccountUrl(connectService.data ? connectService.data.oauthUrl : null);
 			}
 		})();
@@ -137,6 +139,18 @@ const EditorSelectEventAndAccount = ({
 							</button>
 						) : (
 							<span>{noAccountMessage}</span>
+						)}
+						{returnParameters.length > 0 && (
+							<>
+								<label className="label mt-5">
+									<span className="label-text text-neutral-content">{t("editor.returnParameters")}</span>
+								</label>
+								{returnParameters.map((returnParam) => (
+									<kbd className="kbd kbd-sm bg-neutral" key={returnParam}>
+										${returnParam}
+									</kbd>
+								))}
+							</>
 						)}
 					</>
 				)}

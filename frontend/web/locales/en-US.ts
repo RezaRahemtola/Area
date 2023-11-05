@@ -46,6 +46,7 @@ const translations = {
 		connectAccount: "Connect your account",
 		back: "Back",
 		next: "Next",
+		returnParameters: "The following data is returned by this area and can be used in the next one:",
 	},
 	library: {
 		title: "My workflows",

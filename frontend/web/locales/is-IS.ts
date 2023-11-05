@@ -46,6 +46,7 @@ const translations = {
 		connectAccount: "Tengdu reikninginn þinn",
 		back: "Til baka",
 		next: "Næst",
+		returnParameters: "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:",
 	},
 	library: {
 		title: "Verkflæði mín",
