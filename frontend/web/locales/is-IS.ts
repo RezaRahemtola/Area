@@ -93,6 +93,10 @@ const translations = {
 		actions: {
 			downloadApk: " Sækja APK",
 		},
+		workflows: "Verkflæði",
+		active: "Virk vinnuflæði",
+		errors: "Verkflæðisvillur",
+		runs: "Verkflæði sett af stað",
 	},
 	actions: {
 		rename: "Endurnefna",

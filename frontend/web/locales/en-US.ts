@@ -93,6 +93,10 @@ const translations = {
 		actions: {
 			downloadApk: " Download APK",
 		},
+		workflows: "Workflows",
+		active: "Active workflows",
+		errors: "Workflow errors",
+		runs: "Workflow runs",
 	},
 	actions: {
 		rename: "Rename",
