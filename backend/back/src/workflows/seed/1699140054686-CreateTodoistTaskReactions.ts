@@ -46,10 +46,7 @@ export class CreateTodoistTaskReactions1699140054686 implements MigrationInterfa
                    ('delete-task', 'todoist', false, 'Delete a task on Todoist', $2, '{}'),
                    ('reopen-task', 'todoist', false, 'Reopen a task on Todoist', $2, '{}')
                    `,
-			[
-				JSON.stringify(this.todoistUpdateTaskParametersFormFlow),
-				JSON.stringify(this.todoistIdParametersFormFlow),
-			],
+			[JSON.stringify(this.todoistUpdateTaskParametersFormFlow), JSON.stringify(this.todoistIdParametersFormFlow)],
 		);
 
 		await queryRunner.query(
