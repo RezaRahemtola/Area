@@ -58,9 +58,7 @@ export default async function onGuildBoost(discordClient: DiscordOauth2) {
 			await onAction(client, {
 				name: "discord-on-guild-boost",
 				identifier: params.identifier,
-				params: {
-					guildName: guild.name,
-				},
+				params: {},
 			});
 		}
 	}, REFRESH_TIMEOUT_SECONDS * 1000);
