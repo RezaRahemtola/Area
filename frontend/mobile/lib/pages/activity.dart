@@ -49,44 +49,47 @@ class _ActivitiesState extends State<Activities> {
                 ],
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FutureBuilder<ServiceReturn<List<Activity>>>(
-                    future: services.user.getActivity(page - 1),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(AppLocalizations.of(context)!
-                              .error(snapshot.error.toString())),
-                        );
-                      } else {
-                        final List<Activity> activities = [
-                          ...?snapshot.data?.data
-                        ];
-                        if (activities.isEmpty && page != 1) {
-                          WidgetsBinding.instance
-                              .addPostFrameCallback((timeStamp) {
-                            setState(() {
-                              page -= 1;
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FutureBuilder<ServiceReturn<List<Activity>>>(
+                      future: services.user.getActivity(page - 1),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text(AppLocalizations.of(context)!
+                                .error(snapshot.error.toString())),
+                          );
+                        } else {
+                          final List<Activity> activities = [
+                            ...?snapshot.data?.data
+                          ];
+                          if (activities.isEmpty && page != 1) {
+                              print("page-re");
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((timeStamp) {
+                              setState(() {
+                                page -= 1;
+                              });
                             });
-                          });
-                        } else if (activities.isEmpty) {
-                          return EmptyNotice(
-                              message:
-                                  AppLocalizations.of(context)!.noActivity);
-                        }
-                        return Expanded(
-                          child: ListView.builder(
+                          } else if (activities.isEmpty) {
+                              print("empty");
+                            return EmptyNotice(
+                                message:
+                                    AppLocalizations.of(context)!.noActivity);
+                          }
+                              print("listview");
+                          return ListView.builder(
                               itemCount: activities.length,
                               itemBuilder: (context, index) {
                                 final activity = activities[index];
                                 return ActivityEntry(activity: activity);
-                              }),
-                        );
-                      }
-                    })),
+                              });
+                        }
+                      })),
+            ),
           ],
         ));
   }
