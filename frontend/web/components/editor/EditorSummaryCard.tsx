@@ -17,7 +17,7 @@ const EditorSummaryCard = ({ title, description, onClick, icon, service }: Edito
 			<div className="flex bg-pimary">
 				<div className="card shadow-xl bg-primary">
 					{service ? (
-						<div className="card-body p-3 bg-primary">
+						<div className="card-body p-3 bg-primary rounded-xl">
 							<div className="avatar m-auto">
 								<div className="mask mask-squircle w-16 h-16 bg-primary">
 									<Image src={service.imageUrl} alt="Service logo" width={300} height={300} />
