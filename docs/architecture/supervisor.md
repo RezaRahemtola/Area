@@ -13,7 +13,7 @@ The job parameters are passed using the command arguments of the container.
 
 Workers communicate directly with the backend to send data and errors.
 
-## Requirements 
+## Requirements
 
 The supervisor runs in a **Docker container** and is connected to the **Docker Engine API**, allowing it to create and remove containers.
 > :warn: As the supervisor is running in a Docker container, it needs the access of the Docker Socket, which you need to mount in the container.
@@ -68,4 +68,4 @@ For example, for a job that fetches the weather in Paris:
 
 The unique identifier for this job will be: `weather-fetch-weather-Paris`
 
-> :warn: Reaction jobs cannot be grouped as their purpose is to execute and action and exit right after. 
+> :warn: Reaction jobs cannot be grouped as their purpose is to execute and action and exit right after.
