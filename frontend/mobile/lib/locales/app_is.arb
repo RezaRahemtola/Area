@@ -142,4 +142,10 @@
     "on-pull-request-merge-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
     "on-pull-request-reopen": "á pull beiðni opna aftur",
     "on-pull-request-reopen-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
+
+    "on-status-create": "Á stöðu búin til",
+    "on-status-create-sub": "Virkar þegar staða Facebook-síðu er uppfærð",
+
+    "create-board": "Búðu til borð",
+    "create-board-sub": "Búðu til borð",
 }

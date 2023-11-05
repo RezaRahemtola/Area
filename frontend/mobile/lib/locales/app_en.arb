@@ -119,7 +119,7 @@
     "on-issue-create-sub": Triggers when an issue is created on a Github repository,
 
     "create-issue": "create issue",
-    "create-issue-sub": "Create an issue on a Github repository",
+    "create-issue-sub": "Creates an issue on a Github repository",
     "reopen-issue": "reopen issue",
     "reopen-issue-sub": "Reopen an issue on a Github repository",
     "close-issue": "close issue",
@@ -144,4 +144,10 @@
     "on-pull-request-merge-sub": "Triggers when a merge request is merged on a Gitlab project",
     "on-pull-request-reopen": "on pull request reopen",
     "on-pull-request-reopen-sub": "Triggers when a merge request is merged on a Gitlab project",
+
+    "on-status-create": "On status created",
+    "on-status-create-sub": "Triggers when the status of a Facebook page is updated",
+
+    "create-board": "Create a board",
+    "create-board-sub": "Creates a new board",
 }
