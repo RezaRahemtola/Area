@@ -45,7 +45,7 @@ The supervisor will stop all running jobs.<br/>
 
 ## Debug
 
-The ``GO_ENV`` variable can be used to enable development or production mode.
+The `GO_ENV` variable can be used to enable development or production mode.
 
 The production mode removes automatically all docker containers when exited, while the development mode won't remove exited containers and add a count to the container name to avoid conflicts.
 
