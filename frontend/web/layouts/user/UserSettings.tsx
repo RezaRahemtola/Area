@@ -32,7 +32,7 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 		<div className="w-fit ml-4">
 			<div className="mb-4">
 				<label className="label">
-					<span className="text-primary label-text">{t("user.settings.email")}</span>
+					<span className="text-base-100 label-text">{t("user.settings.email")}</span>
 				</label>
 				<input
 					type="text"
@@ -44,7 +44,7 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 
 			<div className="mb-4">
 				<label className="label">
-					<span className="text-primary label-text">{t("user.settings.theme")}</span>
+					<span className="text-base-100 label-text">{t("user.settings.theme")}</span>
 				</label>
 				<select
 					className="select select-bordered select-primary bg-neutral"
@@ -63,7 +63,7 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 
 			<div className="mb-6">
 				<label className="label">
-					<span className="text-primary label-text">{t("user.settings.language")}</span>
+					<span className="text-base-100 label-text">{t("user.settings.language")}</span>
 				</label>
 				<select
 					className="select select-bordered select-primary bg-neutral"
@@ -81,7 +81,7 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 			</div>
 
 			<button
-				className="btn"
+				className="btn btn-secondary"
 				onClick={async () => {
 					const settings = {
 						...userSettings,

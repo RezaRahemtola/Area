@@ -40,7 +40,7 @@ const ServiceLine = ({
 				onChange={() => setSelectedServiceId(service.id)}
 			/>
 
-			<div className="collapse-title text-2xl font-medium flex">
+			<div className="m-2 collapse-title text-2xl font-medium flex bg-neutral rounded-lg w-full">
 				<div className="avatar">
 					<div className="mask mask-squircle w-8 h-8">
 						<Image src={service.imageUrl} alt="Service logo" width={500} height={500} />
