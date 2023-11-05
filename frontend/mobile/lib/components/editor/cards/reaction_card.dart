@@ -109,7 +109,9 @@ class _EditorReactionCardState extends State<EditorReactionCard> {
                                         name: param.name,
                                         type: param.type,
                                         required: param.required))
-                                    .toList());
+                                    .toList(),
+                                returnParameters:
+                                    selectedArea.parametersReturnFlow);
                           });
                           widget.onUpdate(reaction);
                         }

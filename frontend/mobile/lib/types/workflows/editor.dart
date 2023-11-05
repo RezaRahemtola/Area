@@ -16,8 +16,12 @@ class AreaParameterWithValue {
 class EditorWorkflowElementArea {
   final String id;
   List<AreaParameterWithValue> parameters;
+  List<String> returnParameters;
 
-  EditorWorkflowElementArea({required this.id, required this.parameters});
+  EditorWorkflowElementArea(
+      {required this.id,
+      required this.parameters,
+      this.returnParameters = const []});
 }
 
 class EditorWorkflowElementService {

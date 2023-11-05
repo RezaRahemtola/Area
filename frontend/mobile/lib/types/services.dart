@@ -53,12 +53,14 @@ class Area {
   final String id;
   final List<String> serviceScopesNeeded;
   final List<FlowParams> parametersFormFlow;
+  final List<String> parametersReturnFlow;
   final String description;
 
   const Area(
       {required this.id,
       required this.serviceScopesNeeded,
       required this.parametersFormFlow,
+      required this.parametersReturnFlow,
       required this.description});
 
   factory Area.fromJson(Map<String, dynamic> json) {
@@ -69,6 +71,7 @@ class Area {
         serviceScopesNeeded: List<String>.from(json['serviceScopesNeeded']),
         parametersFormFlow: List<FlowParams>.from(
             parametersFormFlowData!.map((data) => FlowParams.fromJson(data))),
+        parametersReturnFlow: List<String>.from(json["parametersReturnFlow"]),
         description: json['description']);
   }
 }
