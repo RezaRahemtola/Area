@@ -29,7 +29,6 @@ export default async function onGuildNicknameChange(discordClient: DiscordOauth2
 				name: "discord-on-guild-nickname-change",
 				identifier: params.identifier,
 				params: {
-					lastNickname: initialNickname,
 					newNickname,
 				},
 			});
