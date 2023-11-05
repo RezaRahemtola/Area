@@ -64,6 +64,23 @@ class _EditorParamFieldState extends State<EditorParamField> {
           });
         },
       );
+    } else if (parameter.type == "select") {
+      return DropdownButtonFormField(
+          value: stateValue,
+          items: parameter.values!.map((dynamic v) {
+            return DropdownMenuItem<String>(
+              value: v,
+              child: Text(v),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value == null) return;
+            parameter.value = value;
+            setState(() {
+              stateValue = value;
+            });
+          },
+          decoration: InputDecoration(labelText: parameter.name));
     }
     return const Text("Never displayed");
   }

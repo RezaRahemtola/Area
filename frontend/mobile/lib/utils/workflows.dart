@@ -60,6 +60,7 @@ Future<List<AreaParameterWithValue>>
         name: formFlowParam.name,
         type: formFlowParam.type,
         required: formFlowParam.required,
+        values: formFlowParam.values,
         value: value);
   }).toList();
 }
