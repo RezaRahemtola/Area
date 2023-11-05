@@ -310,38 +310,9 @@ export class WorkflowsService {
 
 	async toggleWorkflows(workflowIds: string[], newState: boolean, ownerId: string) {
 		this.logger.log(`Toggling ${workflowIds.length} workflows to ${newState}`);
-		const { affected } = await this.workflowRepository.update(
-			{
-				id: In(workflowIds),
-				active: !newState,
-				ownerId,
-			},
-			{ active: () => `${newState}` },
-		);
-		if (newState) {
-			this.logger.log(`Launching ${workflowIds.length} workflows...`);
-			await Promise.all(
-				workflowIds.map(async (workflowId) => {
-					const workflow = await this.workflowRepository.findOne({
-						where: { id: workflowId, ownerId },
-						relations: { action: { area: true } },
-					});
-					await this.jobsService.launchWorkflowAction(workflow, ownerId);
-					await this.grpcService.onAction({
-						name: "area-on-workflow-toggle",
-						identifier: `area-on-workflow-toggle-${ownerId}`,
-						params: {
-							name: workflow.name,
-						},
-					});
-				}),
-			);
-		} else {
-			this.logger.log(`Stopping ${workflowIds.length} workflows...`);
-			const workflows = await this.workflowRepository.find({ where: { id: In(workflowIds) } });
-			await Promise.all(workflows.map(this.jobsService.stopWorkflowActionIfNecessary));
-		}
-		return affected > 0;
+		await Promise.all(workflowIds.map((workflowId) => this.toggleWorkflow(workflowId, newState, ownerId)));
+		this.logger.log(`Toggled ${workflowIds.length} workflows to ${newState}`);
+		return true;
 	}
 
 	async toggleWorkflow(workflowId: string, newState: boolean, ownerId: string) {
