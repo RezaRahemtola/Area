@@ -30,6 +30,11 @@ RUN addgroup -S user \
 RUN chown -R user:user /app
 USER user
 
+ARG DISCORD_CLIENT_ID
+ARG DISCORD_CLIENT_SECRET
+ENV DISCORD_CLIENT_ID=$DISCORD_CLIENT_ID
+ENV DISCORD_CLIENT_SECRET=$DISCORD_CLIENT_SECRET
+
 COPY --from=builder /app/dist ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json

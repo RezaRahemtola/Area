@@ -19,6 +19,9 @@ services:
     container_name: discord
     build:
       context: ../workers/discord
+      args:
+        - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+        - DISCORD_CLIENT_SECRET=$[DISCORD_CLIENT_SECRET}
 
   github:
     container_name: github
