@@ -22,7 +22,7 @@ export default async function deleteTask() {
 	try {
 		const todoist = new TodoistApi(params.auth.access_token);
 
-		await todoist.closeTask(params.id);
+		await todoist.deleteTask(params.id);
 		await onReaction(client, {
 			name: "todoist-delete-task",
 			identifier: params.identifier,

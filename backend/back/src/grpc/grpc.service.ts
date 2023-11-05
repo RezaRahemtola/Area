@@ -77,7 +77,7 @@ export class GrpcService implements OnModuleInit {
 		await this.jobsService.launchNextJob(data);
 
 		if (data.name === "area-on-action") return;
-		const owners = await this.jobsService.getWorkflowOwnersForJob(data.identifier);
+		const owners = await this.jobsService.getWorkflowOwnersForAction(data.identifier);
 		for (const owner of owners) {
 			await this.onAction({
 				name: "area-on-action",

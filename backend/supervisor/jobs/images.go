@@ -12,6 +12,7 @@ var JobToImage = map[string]string{
 	"github-on-issue-reopen":                 "supervisor-github",
 	"github-on-pull-request-close":           "supervisor-github",
 	"github-on-pull-request-create":          "supervisor-github",
+	"github-on-pull-request-merge":           "supervisor-github",
 	"gitlab-on-commit":                       "supervisor-gitlab",
 	"gitlab-on-pull-request-close":           "supervisor-gitlab",
 	"gitlab-on-pull-request-create":          "supervisor-gitlab",
