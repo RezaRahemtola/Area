@@ -63,6 +63,8 @@ const translations = {
 				successMessage: "Workflow renommé avec succès !",
 			},
 		},
+		name: "Nom",
+		running: "Status",
 	},
 	user: {
 		settings: {
@@ -85,6 +87,8 @@ const translations = {
 	},
 	activity: {
 		title: "Activité",
+		time: "Date",
+		workflow: "Workflow",
 	},
 	landing: {
 		actions: {
