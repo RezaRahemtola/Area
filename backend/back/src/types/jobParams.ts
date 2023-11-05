@@ -253,7 +253,7 @@ export class LinearCreateCommentParams extends UniqueJobParams {
 	body: string;
 
 	@IsNumber()
-	issueId: number;
+	issueNumber: number;
 }
 
 export class MiroCreateBoardParams extends UniqueJobParams {
