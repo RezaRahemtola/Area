@@ -6,7 +6,7 @@ import { AreaBackServiceClient } from "../proto/area_back";
 import { DiscordDataSchema, DiscordSnowFlakeSchema } from "../util/types";
 import { onAction, onError } from "../util/grpc";
 
-const REFRESH_TIMEOUT_SECONDS = 10;
+const REFRESH_TIMEOUT_SECONDS = 60;
 
 const OnGuildBoostParamsSchema = z.object({
 	guildId: DiscordSnowFlakeSchema,
