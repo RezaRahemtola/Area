@@ -48,7 +48,7 @@ export class CreateTodoistTaskReactions1699140054686 implements MigrationInterfa
                    `,
 			[
 				JSON.stringify(this.todoistUpdateTaskParametersFormFlow),
-				JSON.stringify(this.todoistUpdateTaskParametersFormFlow),
+				JSON.stringify(this.todoistIdParametersFormFlow),
 			],
 		);
 
