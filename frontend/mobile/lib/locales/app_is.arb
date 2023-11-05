@@ -56,7 +56,7 @@
     "on-new-video-sub": "Virkjað þegar nýju myndbandi er hlaðið upp á Youtube",
 
     "send-email": "Sendu tölvupóst",
-    "send-email-sub": "Sendu tölvupóst með Google GMAIL",
+    "send-email-sub": "Sendu tölvupóst",
     "create-draft-email": "Búðu til drög að tölvupósti",
     "create-draft-email-sub": "Búðu til drög að tölvupósti með Gmail",
     "update-signature-email": "Uppfærðu undirskrift tölvupósts",
@@ -101,23 +101,11 @@
     "create-post": "Búðu til færslu",
     "create-post-sub": "Búðu til nýja LinkedIn færslu",
 
-    "on-pull-request-merge": "á pull beiðni sameiningu",
-    "on-pull-request-merge-sub": "riggar þegar dragbeiðni er sameinuð á Github geymslu",
-    "on-pull-request-create": "á draga beiðni búa til",
-    "on-pull-request-create-sub": "riggar þegar dragbeiðni er búin til á Github geymslu",
-    "on-pull-request-close": "á draga beiðni loka",
-    "on-pull-request-close-sub": "riggar þegar dragbeiðni er lokað á Github geymslu",
-    "on-commit": "við skuldbindum okkur",
-    "on-commit-sub": "riggers þegar commit er ýtt á Github geymslu",
     "on-issue-reopen": "við gefum út aftur",
     "on-issue-reopen-sub": "riggar þegar mál er opnað aftur á Github geymslu",
     "on-issue-close": "við útgáfu lokað",
     "on-issue-close-sub": "riggar þegar mál er lokað á Github geymslu",
-    "on-issue-create": "um málefni búa til",
-    "on-issue-create-sub": "riggar þegar mál er búið til á Github geymslu",
 
-    "create-issue": "skapa mál",
-    "create-issue-sub": "Búðu til mál á Github geymslu",
     "reopen-issue": "endurupptaka mál",
     "reopen-issue-sub": "Opnaðu aftur mál á Github geymslu",
     "close-issue": "loka máli",
@@ -133,15 +121,15 @@
     "create-issue-sub": "Bjó til mál á línulegu vinnusvæðinu",
 
     "on-commit": "við skuldbindum okkur",
-    "on-commit-sub": "Kemur af stað þegar skuldbindingu er ýtt á Gitlab verkefni",
+    "on-commit-sub": "Kemur af stað þegar skuldbindingu er ýtt á verkefni",
     "on-pull-request-close": "á draga beiðni loka",
-    "on-pull-request-close-sub": "Kemur af stað þegar sameiningarbeiðni er lokað á Gitlab verkefni",
+    "on-pull-request-close-sub": "Kemur af stað þegar sameiningarbeiðni er lokað á verkefni",
     "on-pull-request-create": "á draga beiðni búa til",
-    "on-pull-request-create-sub": "Kemur af stað þegar sameiningarbeiðni er búin til í Gitlab verkefni",
+    "on-pull-request-create-sub": "Kemur af stað þegar sameiningarbeiðni er búin til í verkefni",
     "on-pull-request-merge": "á pull beiðni sameiningu",
-    "on-pull-request-merge-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
+    "on-pull-request-merge-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í verkefni",
     "on-pull-request-reopen": "á pull beiðni opna aftur",
-    "on-pull-request-reopen-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
+    "on-pull-request-reopen-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í verkefni",
 
     "on-status-create": "Á stöðu búin til",
     "on-status-create-sub": "Virkar þegar staða Facebook-síðu er uppfærð",
@@ -175,9 +163,6 @@
     "create-tweet": "Sendu tíst",
     "create-tweet-sub": "Settu tíst á Twitter (X)",
 
-    "send-email": "Sendu tölvupóst",
-    "send-email-sub": "Sendu tölvupóst með Microsoft Outlook",
-
     "create-message": "Sendu skilaboð",
     "create-message-sub": "Sendu skilaboð í Slack herbergi",
 
@@ -195,5 +180,5 @@
     "disable-workflow": "Slökktu á verkflæði",
     "disable-workflow-sub": "Slökktu á verkflæði",
     "enable-workflow": "Virkjaðu verkflæði",
-    "enable-workflow-sub": "Virkjaðu verkflæði",
+    "enable-workflow-sub": "Virkjaðu verkflæði"
 }

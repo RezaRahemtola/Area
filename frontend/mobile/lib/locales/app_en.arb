@@ -55,7 +55,6 @@
     "on-new-video": "On new video",
     "on-new-video-sub": "Triggers when an video is uploaded on a Youtube channel",
 
-    "send-email": "send email",
     "create-draft-email": "create draft email",
     "update-signature-email": "update signature email",
     "create-comment-youtube": "create comment youtube",
@@ -77,7 +76,6 @@
     "form-convert-to-quiz": "form convert to quiz",
     "update-spreadsheet-title": "update spreadsheet title",
 
-    "send-email-sub": "Send an email with Google GMAIL",
     "create-draft-email-sub": "Create a draft email with Gmail",
     "update-signature-email-sub": "Update the signature of your Gmail account",
     "create-comment-youtube-sub": "Post a comment on a YouTube video",
@@ -103,23 +101,13 @@
     "create-post-sub": "Creates a new LinkedIn post",
 
 
-    "on-pull-request-merge": "on pull request merge",
-    "on-pull-request-merge-sub": "Triggers when a pull request is merged on a Github repository",
-    "on-pull-request-create": "on pull request create",
-    "on-pull-request-create-sub": "Triggers when a pull request is created on a Github repository",
-    "on-pull-request-close": "on pull request close",
-    "on-pull-request-close-sub": "Triggers when a pull request is closed on a Github repository",
-    "on-commit": "on commit",
-    "on-commit-sub": "Triggers when an commit is pushed on a Github repository",
     "on-issue-reopen": "on issue reopen",
     "on-issue-reopen-sub": "Triggers when an issue is reopened on a Github repository",
     "on-issue-close": "on issue close",
     "on-issue-close-sub": "Triggers when an issue is closed on a Github repository",
-    "on-issue-create": "on issue create",
-    "on-issue-create-sub": "Triggers when an issue is created on a Github repository",
 
     "create-issue": "create issue",
-    "create-issue-sub": "Creates an issue on a Github repository",
+    "create-issue-sub": "Creates an issue on a project",
     "reopen-issue": "reopen issue",
     "reopen-issue-sub": "Reopen an issue on a Github repository",
     "close-issue": "close issue",
@@ -129,21 +117,18 @@
     "seconds-interval-sub": "Trigger every X seconds",
 
     "on-issue-create": "On issue create",
-    "on-issue-create-sub": "Triggers when an issue is created on a Linear workspace",
-
-    "create-issue": "Create issue",
-    "create-issue-sub": "Create an issue on a Linear workspace",
+    "on-issue-create-sub": "Triggers when an issue is created on a project",
 
     "on-commit": "on commit",
-    "on-commit-sub": "Triggers when an commit is pushed on a Gitlab project",
+    "on-commit-sub": "Triggers when an commit is pushed on a project",
     "on-pull-request-close": "on pull request close",
-    "on-pull-request-close-sub": "Triggers when a merge request is closed on a Gitlab project",
+    "on-pull-request-close-sub": "Triggers when a merge request is closed on a project",
     "on-pull-request-create": "on pull request create",
-    "on-pull-request-create-sub": "Triggers when a merge request is created on a Gitlab project",
+    "on-pull-request-create-sub": "Triggers when a merge request is created on a project",
     "on-pull-request-merge": "on pull request merge",
-    "on-pull-request-merge-sub": "Triggers when a merge request is merged on a Gitlab project",
+    "on-pull-request-merge-sub": "Triggers when a merge request is merged on a project",
     "on-pull-request-reopen": "on pull request reopen",
-    "on-pull-request-reopen-sub": "Triggers when a merge request is merged on a Gitlab project",
+    "on-pull-request-reopen-sub": "Triggers when a merge request is merged on a project",
 
     "on-status-create": "On status created",
     "on-status-create-sub": "Triggers when the status of a Facebook page is updated",
@@ -178,7 +163,7 @@
     "create-tweet-sub": "Post a tweet on Twitter (X)",
 
     "send-email": "Send email",
-    "send-email-sub": "Send an email with Microsoft Outlook",
+    "send-email-sub": "Send an email",
 
     "create-message": "Post message",
     "create-message-sub": "Post a message on a Slack channel",
@@ -197,5 +182,5 @@
     "disable-workflow": "disable workflow",
     "disable-workflow-sub": "Disable a workflow",
     "enable-workflow": "enable workflow",
-    "enable-workflow-sub": "Enable a workflow",
+    "enable-workflow-sub": "Enable a workflow"
 }
