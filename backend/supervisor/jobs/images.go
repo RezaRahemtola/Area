@@ -71,7 +71,16 @@ var JobToImage = map[string]string{
 
 var OptArgument = map[string]string{
 	"airtable-delete-record":                 "delete-record",
+	"discord-on-avatar-change":               "on-avatar-change",
+	"discord-on-guild-avatar-change":         "on-guild-avatar-change",
+	"discord-on-guild-boost":                 "on-guild-boost",
+	"discord-on-guild-deafen":                "on-guild-deafen",
 	"discord-on-guild-join":                  "on-guild-join",
+	"discord-on-guild-leave":                 "on-guild-leave",
+	"discord-on-guild-mute":                  "on-guild-mute",
+	"discord-on-guild-nickname-change":       "on-guild-nickname-change",
+	"discord-on-guild-roles-change":          "on-guild-roles-change",
+	"discord-on-guild-timeout":               "on-guild-timeout",
 	"github-close-issue":                     "close-issue",
 	"github-create-issue":                    "create-issue",
 	"github-reopen-issue":                    "reopen-issue",
