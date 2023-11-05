@@ -100,4 +100,26 @@
 
     "create-post": "Búðu til færslu",
     "create-post-sub": "Búðu til nýja LinkedIn færslu"
+
+    "on-pull-request-merge": "á pull beiðni sameiningu",
+    "on-pull-request-merge-sub": "riggar þegar dragbeiðni er sameinuð á Github geymslu",
+    "on-pull-request-create": "á draga beiðni búa til",
+    "on-pull-request-create-sub": "riggar þegar dragbeiðni er búin til á Github geymslu",
+    "on-pull-request-close": "á draga beiðni loka",
+    "on-pull-request-close-sub": "riggar þegar dragbeiðni er lokað á Github geymslu",
+    "on-commit": "við skuldbindum okkur",
+    "on-commit-sub": "riggers þegar commit er ýtt á Github geymslu",
+    "on-issue-reopen": "við gefum út aftur",
+    "on-issue-reopen-sub": "riggar þegar mál er opnað aftur á Github geymslu",
+    "on-issue-close": "við útgáfu lokað",
+    "on-issue-close-sub": "riggar þegar mál er lokað á Github geymslu",
+    "on-issue-create": "um málefni búa til",
+    "on-issue-create-sub": "riggar þegar mál er búið til á Github geymslu",
+
+    "create-issue": "skapa mál",
+    "create-issue-sub": "Búðu til mál á Github geymslu",
+    "reopen-issue": "endurupptaka mál",
+    "reopen-issue-sub": "Opnaðu aftur mál á Github geymslu",
+    "close-issue": "loka máli",
+    "close-issue-sub": "Lokaðu vandamáli á Github geymslu",
 }
