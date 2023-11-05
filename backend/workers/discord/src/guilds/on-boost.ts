@@ -59,7 +59,7 @@ export default async function onGuildBoost(discordClient: DiscordOauth2) {
 				name: "discord-on-guild-boost",
 				identifier: params.identifier,
 				params: {
-					guildName: guild.id,
+					guildName: guild.name,
 				},
 			});
 		}
