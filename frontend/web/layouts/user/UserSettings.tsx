@@ -69,7 +69,6 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 					className="select select-bordered select-primary bg-neutral"
 					value={userSettings.language}
 					onChange={(e) => {
-						console.log(e.target.value);
 						setUserSettings((prev) => ({ ...prev, language: e.target.value as InterfaceLanguage }));
 					}}
 				>

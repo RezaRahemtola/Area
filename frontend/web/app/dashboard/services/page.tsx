@@ -88,6 +88,7 @@ const ServicesPage = () => {
 	const [, setCachedServices] = useAtom(servicesAtom);
 	const [displayedServices, setDisplayedServices] = useState<Service[]>([]);
 	const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
@@ -99,7 +100,7 @@ const ServicesPage = () => {
 	}, []);
 
 	return (
-		<DashboardPageWrapper title="Services">
+		<DashboardPageWrapper title={t("services.title")}>
 			{displayedServices.map((service) => (
 				<ServiceLine
 					service={service}

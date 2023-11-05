@@ -40,6 +40,12 @@ const translations = {
 			description: "Atburður sem verkflæði keyrir þegar það er ræst",
 		},
 		chooseEvent: "Veldu viðburð",
+		noAccountToConnect: "Enginn reikningur til að tengjast",
+		accountAlreadyConnected: "Reikningur þegar tengdur",
+		parameters: "Færibreytur",
+		connectAccount: "Tengdu reikninginn þinn",
+		back: "Til baka",
+		next: "Næst",
 	},
 	library: {
 		title: "Verkflæði mín",
@@ -69,6 +75,7 @@ const translations = {
 		},
 	},
 	services: {
+		title: "Þjónusta",
 		actions: "Aðgerðir",
 		reactions: "Viðbrögð",
 		noArea: "Þessi þjónusta hefur engar aðgerðir eða viðbrögð",
