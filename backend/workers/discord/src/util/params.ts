@@ -4,10 +4,10 @@ import { configDotenv } from "dotenv";
 configDotenv();
 
 export const DiscordAuthSchema = z.object({
-	token_type: z.string(),
-	expires_in: z.number(),
+	token_type: z.string().optional(),
+	expires_in: z.number().optional(),
 	access_token: z.string(),
-	refresh_token: z.string(),
+	refresh_token: z.string().optional(),
 });
 type DiscordAuthType = z.infer<typeof DiscordAuthSchema>;
 
