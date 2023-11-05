@@ -23,6 +23,8 @@ import { ServiceName, ServicesService } from "../services/services.service";
 import { OwnerJobParams, OwnerUniqueJobParams, UniqueJobParams } from "../types/jobParams";
 import { plainToInstance } from "class-transformer";
 import { GrpcService } from "../grpc/grpc.service";
+import ActivityLog from "../activity/entities/activity-log.entity";
+import { WorkflowSummaryDto } from "./dto/workflow-summary.dto";
 
 @Injectable()
 export class WorkflowsService {
@@ -35,6 +37,8 @@ export class WorkflowsService {
 		private readonly workflowAreaRepository: Repository<WorkflowArea>,
 		@InjectRepository(Area)
 		private readonly areaRepository: Repository<Area>,
+		@InjectRepository(ActivityLog)
+		private readonly activityRepository: Repository<ActivityLog>,
 		@Inject(forwardRef(() => JobsService))
 		private readonly jobsService: JobsService,
 		@Inject(forwardRef(() => GrpcService))
@@ -42,6 +46,26 @@ export class WorkflowsService {
 		private readonly connectionsService: ConnectionsService,
 		private readonly servicesService: ServicesService,
 	) {}
+
+	async getWorkflowsSummary(ownerId: string): Promise<WorkflowSummaryDto> {
+		const workflowRuns = await this.activityRepository.count({
+			where: { type: "ran", workflow: { ownerId } },
+			relations: { workflow: true },
+		});
+		const workflowErrors = await this.activityRepository.count({
+			where: { type: "error", workflow: { ownerId } },
+			relations: { workflow: true },
+		});
+		const workflows = await this.workflowRepository.countBy({ ownerId });
+		const activeWorkflows = await this.workflowRepository.countBy({ ownerId, active: true });
+
+		return {
+			workflowRuns,
+			workflowErrors,
+			workflows,
+			activeWorkflows,
+		};
+	}
 
 	async getWorkflowByNameAndOwner(name: string, ownerId: string) {
 		return this.workflowRepository.findOneBy({
