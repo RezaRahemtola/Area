@@ -99,7 +99,7 @@
     "update-spreadsheet-title-sub": "Mise à jour du titre d'une feuille de calcul Google",
 
     "create-post": "Créer un post",
-    "create-post-sub": "Créé un nouveau post LinkedIn"
+    "create-post-sub": "Crée un nouveau post LinkedIn"
 
     "on-pull-request-merge": "lors de la fusion d'une Pull Request",
     "on-pull-request-merge-sub": "S'active lorsqu'une pull request est fusionnée sur un dépôt Githuby",
@@ -130,7 +130,7 @@
     "on-issue-create-sub": "S'active quand une Issue est créée sur le workspace Linéar",
 
     "create-issue": "Créer une Issue",
-    "create-issue-sub": "Créé une issue sur le workspace Linéar",
+    "create-issue-sub": "Crée une issue sur le workspace Linéar",
 
     "on-commit": "En cas de commit",
     "on-commit-sub": "Se déclenche lorsqu'un commit est poussé sur un projet Gitlab",
@@ -142,4 +142,10 @@
     "on-pull-request-merge-sub": "Déclenche la fusion d'une Pull Request sur un projet Gitlab",
     "on-pull-request-reopen": "En cas de réouverture d'une Pull Request",
     "on-pull-request-reopen-sub": "Déclenche la fusion d'une Pull Request sur un projet Gitlab.",
+
+    "on-status-create": "En cas de création de status",
+    "on-status-create-sub": "S'active quand le status d'une page Facebook est mis à jour",
+
+    "create-board": "Créer une planche",
+    "create-board-sub": "Crée une planche",
 }
