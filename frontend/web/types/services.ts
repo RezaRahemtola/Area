@@ -22,5 +22,6 @@ export type Area = {
 	id: string;
 	description: string;
 	parametersFormFlow: AreaParameter[];
+	parametersReturnFlow: string[];
 	serviceScopesNeeded: string[];
 };
