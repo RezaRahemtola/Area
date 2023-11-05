@@ -57,15 +57,15 @@ const ServiceLine = ({
 								<li className="list-item" key={action.id}>
 									<p className="text-md font-medium">
 									{
-											t(("areaTranslations." + action.id).replace(/-/g, "_")) === (("areaTranslations." + action.id).replace(/-/g, "_"))
+											t((`areaTranslations.${  action.id}`).replace(/-/g, "_")) === ((`areaTranslations.${  action.id}`).replace(/-/g, "_"))
 												? action.id
-												: t(("areaTranslations." + action.id).replace(/-/g, "_"))}
+												: t((`areaTranslations.${  action.id}`).replace(/-/g, "_"))}
 									</p>
 									<p className="text-sm">
 										{
-											t(("areaTranslations." + action.id + "_sub").replace(/-/g, "_")) === (("areaTranslations." + action.id + "_sub").replace(/-/g, "_"))
+											t((`areaTranslations.${  action.id  }_sub`).replace(/-/g, "_")) === ((`areaTranslations.${  action.id  }_sub`).replace(/-/g, "_"))
 												? action.description
-												: t(("areaTranslations." + action.id + "_sub").replace(/-/g, "_"))}
+												: t((`areaTranslations.${  action.id  }_sub`).replace(/-/g, "_"))}
 									</p>
 								</li>
 							))}
@@ -80,15 +80,15 @@ const ServiceLine = ({
 								<li className="list-item" key={reaction.id}>
 									<p className="text-md font-medium">
 									{
-											t(("areaTranslations." + reaction.id).replace(/-/g, "_")) === (("areaTranslations." + reaction.id).replace(/-/g, "_"))
+											t((`areaTranslations.${  reaction.id}`).replace(/-/g, "_")) === ((`areaTranslations.${  reaction.id}`).replace(/-/g, "_"))
 												? reaction.id
-												: t(("areaTranslations." + reaction.id).replace(/-/g, "_"))}
+												: t((`areaTranslations.${  reaction.id}`).replace(/-/g, "_"))}
 									</p>
 									<p className="text-sm">
 										{
-											t(("areaTranslations." + reaction.id + "_sub").replace(/-/g, "_")) === (("areaTranslations." + reaction.id + "_sub").replace(/-/g, "_"))
+											t((`areaTranslations.${  reaction.id  }_sub`).replace(/-/g, "_")) === ((`areaTranslations.${  reaction.id  }_sub`).replace(/-/g, "_"))
 												? reaction.description
-												: t(("areaTranslations." + reaction.id + "_sub").replace(/-/g, "_"))}
+												: t((`areaTranslations.${  reaction.id  }_sub`).replace(/-/g, "_"))}
 									</p>
 								</li>
 							))}
