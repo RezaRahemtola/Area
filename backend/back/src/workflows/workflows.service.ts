@@ -195,7 +195,6 @@ export class WorkflowsService {
 				workflow,
 			);
 			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
-			await queryRunner.commitTransaction();
 
 			if (workflow.active) {
 				this.logger.log(`Launching workflow ${id}'s action...`);
@@ -209,6 +208,7 @@ export class WorkflowsService {
 					name,
 				},
 			});
+			await queryRunner.commitTransaction();
 			return {
 				id,
 			};
