@@ -16,8 +16,6 @@ There are only two requirements for the workers:
 
 ## Requests
 
-
-
 The supervisor responds to the following requests:
 
 ### OnAction / OnReaction
