@@ -31,7 +31,7 @@ export default async function onGuildLeave(discordClient: DiscordOauth2) {
 					.filter(({ id }) => !params.guildId || params.guildId === id)
 					.map(async ({ name: guildName }) =>
 						onAction(client, {
-							name: "discord-on-guild-join",
+							name: "discord-on-guild-leave",
 							identifier: params.identifier,
 							params: {
 								guildName,
