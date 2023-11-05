@@ -6,9 +6,6 @@ const LandingNavbar = () => (
 		centerContent={
 			<ul className="menu menu-horizontal px-1">
 				<li>
-					<Link href="/features">Features</Link>
-				</li>
-				<li>
 					<Link href="/pricing">Pricing</Link>
 				</li>
 				<li>
