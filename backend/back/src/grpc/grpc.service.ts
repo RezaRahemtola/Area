@@ -76,17 +76,16 @@ export class GrpcService implements OnModuleInit {
 		await this.activityService.createActivityLogsForJobIdentifier("ran", data.identifier);
 		await this.jobsService.launchNextJob(data);
 
-		if (data.name !== "area-on-action") {
-			const owners = await this.jobsService.getWorkflowOwnersForJob(data.identifier);
-			for (const owner of owners) {
-				await this.onAction({
-					name: "area-on-action",
-					identifier: `area-on-action-${owner}`,
-					params: {
-						name: data.name,
-					},
-				});
-			}
+		if (data.name === "area-on-action") return;
+		const owners = await this.jobsService.getWorkflowOwnersForJob(data.identifier);
+		for (const owner of owners) {
+			await this.onAction({
+				name: "area-on-action",
+				identifier: `area-on-action-${owner}`,
+				params: {
+					name: data.name,
+				},
+			});
 		}
 	}
 
