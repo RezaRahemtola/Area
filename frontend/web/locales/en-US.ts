@@ -82,6 +82,9 @@ const translations = {
 		reactions: "Reactions",
 		noArea: "This service doesn't have any action or reaction",
 	},
+	activity: {
+		title: "Activity",
+	},
 	landing: {
 		actions: {
 			downloadApk: " Download APK",

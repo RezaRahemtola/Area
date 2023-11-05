@@ -112,7 +112,7 @@ const LibraryWorkflowTable = () => {
 					<table className="table">
 						<thead className="text-neutral-content">
 							<tr>
-								<th className="table-cell " colSpan={2}>
+								<th className="table-cell" colSpan={2}>
 									<div className="flex">
 										<label className="custom-checkbox">
 											<input

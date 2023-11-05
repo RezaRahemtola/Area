@@ -82,6 +82,9 @@ const translations = {
 		reactions: "Viðbrögð",
 		noArea: "Þessi þjónusta hefur engar aðgerðir eða viðbrögð",
 	},
+	activity: {
+		title: "Virkni",
+	},
 	landing: {
 		actions: {
 			downloadApk: " Sækja APK",
