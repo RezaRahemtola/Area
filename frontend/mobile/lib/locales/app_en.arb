@@ -150,4 +150,13 @@
 
     "create-board": "Create a board",
     "create-board-sub": "Creates a new board",
+    
+    "lol-on-game-end": "On game end",
+    "lol-on-game-end-sub": "Triggers when a player ends a LoL match",
+    "lol-on-game-loss": "On game loss",
+    "lol-on-game-loss-sub": "Triggers when a player lost a LoL match",
+    "lol-on-game-win": "On game win",
+    "lol-on-game-win-sub": "Triggers when a player won a LoL match",
+    "lol-on-level-up": "On level up",
+    "lol-on-level-up-sub": "Triggers when a LoL summoner levels up",
 }
