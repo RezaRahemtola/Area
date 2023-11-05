@@ -107,7 +107,7 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 					<input
 						type="checkbox"
 						name="workflow-selector"
-						className="checkbox border-primary"
+						className="checkbox border-accent"
 						checked={selected}
 						onChange={(e) => onSelect(workflow.id, e.target.checked)}
 					/>
@@ -138,7 +138,7 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 					<summary className="btn btn-ghost btn-xs">
 						<FontAwesomeIcon icon="ellipsis" />
 					</summary>
-					<ul className="dropdown-content z-[1] menu p-2 shadow-xl bg-base-content rounded-box w-52">
+					<ul className="dropdown-content z-[1] menu p-2 shadow-xl bg-neutral rounded-box w-52">
 						<li>
 							<a className="hover:text-neutral-content" onClick={onClickRename}>
 								<FontAwesomeIcon icon="input-text" />
