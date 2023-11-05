@@ -124,4 +124,13 @@
     "reopen-issue-sub": "Reopen an issue on a Github repository",
     "close-issue": "close issue",
     "close-issue-sub": "Close an issue on a Github repository",
+
+    "seconds-interval": "Seconds interval",
+    "seconds-interval-sub": "Trigger every X seconds",
+
+    "on-issue-create": "On issue create",
+    "on-issue-create-sub": "Triggers when an issue is created on a Linear workspace",
+
+    "create-issue": "Create issue",
+    "create-issue-sub": "Create an issue on a Linear workspace",
 }
