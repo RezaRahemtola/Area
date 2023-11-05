@@ -17,7 +17,7 @@ export class BackJobsService {
 
 	async toggleWorkflow(params: WorkflowToggleParams, newState: boolean) {
 		const jobName = `area-${newState ? "enable" : "disable"}-workflow`;
-		const workflow = await this.workflowsService.getWorkflowIdByName(params.workflowName, params.ownerId);
+		const workflow = await this.workflowsService.getWorkflowByNameAndOwner(params.workflowName, params.ownerId);
 
 		if (workflow.active === newState) return;
 		try {

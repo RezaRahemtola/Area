@@ -43,7 +43,7 @@ export class WorkflowsService {
 		private readonly servicesService: ServicesService,
 	) {}
 
-	async getWorkflowIdByName(name: string, ownerId: string) {
+	async getWorkflowByNameAndOwner(name: string, ownerId: string) {
 		return this.workflowRepository.findOneBy({
 			name,
 			ownerId,
