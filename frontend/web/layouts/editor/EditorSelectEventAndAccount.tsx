@@ -105,7 +105,10 @@ const EditorSelectEventAndAccount = ({
 						</option>
 						{areaChoices.map((choice) => (
 							<option value={choice.id} key={choice.id}>
-								{choice.id}
+								{t(`areaTranslations.${choice.id}`.replace(/-/g, "_")) ===
+								`areaTranslations.${choice.id}`.replace(/-/g, "_")
+									? choice.id
+									: t(`areaTranslations.${choice.id}`.replace(/-/g, "_"))}
 							</option>
 						))}
 					</select>
