@@ -1,3 +1,41 @@
+<a name="v1.6.0"></a>
+# [v1.6.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.6.0) - 05 Nov 2023
+
+## Changes
+
+End of project release
+
+## 🚀 Features
+
+- Web dashboard [@RezaRahemtola](https://github.com/RezaRahemtola) ([#229](https://github.com/RezaRahemtola/Area/issues/229))
+- Update darklight web theme [@Tomi-Tom](https://github.com/Tomi-Tom) ([#226](https://github.com/RezaRahemtola/Area/issues/226))
+- Activity page web [@RezaRahemtola](https://github.com/RezaRahemtola) ([#225](https://github.com/RezaRahemtola/Area/issues/225))
+- Landing web pages [@RezaRahemtola](https://github.com/RezaRahemtola) ([#220](https://github.com/RezaRahemtola/Area/issues/220))
+- feat(back): Linear Project and Comment AREAs [@EdenComp](https://github.com/EdenComp) ([#219](https://github.com/RezaRahemtola/Area/issues/219))
+- Added numerous discord action to the list of AREAs [@Croos3r](https://github.com/Croos3r) ([#218](https://github.com/RezaRahemtola/Area/issues/218))
+- fix(back): AREAs QA [@EdenComp](https://github.com/EdenComp) ([#216](https://github.com/RezaRahemtola/Area/issues/216))
+- Login OAuth web [@RezaRahemtola](https://github.com/RezaRahemtola) ([#217](https://github.com/RezaRahemtola/Area/issues/217))
+- Fix missing web translations and display areas return parameters [@RezaRahemtola](https://github.com/RezaRahemtola) ([#215](https://github.com/RezaRahemtola/Area/issues/215))
+- Theme traduction in mobile [@axel-denis](https://github.com/axel-denis) ([#228](https://github.com/RezaRahemtola/Area/issues/228))
+- Areas Translations (mobile+web) [@axel-denis](https://github.com/axel-denis) ([#221](https://github.com/RezaRahemtola/Area/issues/221))
+- Backend: Dashboard stats [@EdenComp](https://github.com/EdenComp) ([#224](https://github.com/RezaRahemtola/Area/issues/224))
+- Mobile Activities page [@axel-denis](https://github.com/axel-denis) ([#205](https://github.com/RezaRahemtola/Area/issues/205))
+
+## 🐛 Bug Fixes
+
+- hotfix: linear-create-comment [@EdenComp](https://github.com/EdenComp) ([#227](https://github.com/RezaRahemtola/Area/issues/227))
+- Fixed workflow create and update bug [@Croos3r](https://github.com/Croos3r) ([#222](https://github.com/RezaRahemtola/Area/issues/222))
+
+## 📄 Documentation
+
+- Documentation: Supervisor, worker, and create a worker internal guide [@EdenComp](https://github.com/EdenComp) ([#223](https://github.com/RezaRahemtola/Area/issues/223))
+- Landing web pages [@RezaRahemtola](https://github.com/RezaRahemtola) ([#220](https://github.com/RezaRahemtola/Area/issues/220))
+- Update changelog for "v1.5.0" [@github-actions](https://github.com/github-actions) ([#214](https://github.com/RezaRahemtola/Area/issues/214))
+
+
+[Changes][v1.6.0]
+
+
 <a name="v1.5.0"></a>
 # [v1.5.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.5.0) - 05 Nov 2023
 
@@ -617,6 +655,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.6.0]: https://github.com/RezaRahemtola/Area/compare/v1.5.0...v1.6.0
 [v1.5.0]: https://github.com/RezaRahemtola/Area/compare/v1.4.0...v1.5.0
 [v1.4.0]: https://github.com/RezaRahemtola/Area/compare/v1.3.0...v1.4.0
 [v1.3.0]: https://github.com/RezaRahemtola/Area/compare/v1.2.0...v1.3.0
