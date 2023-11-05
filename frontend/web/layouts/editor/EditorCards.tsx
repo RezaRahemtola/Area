@@ -6,26 +6,10 @@ import { editorWorkflowAtom } from "@/stores/editor";
 import EditorSeparator from "@/components/editor/EditorSeparator";
 import ActionCard from "@/components/editor/action/ActionCard";
 import ReactionCard from "@/components/editor/reaction/ReactionCard";
-import { EditorWorkflowReaction } from "@/types/workflows";
+import { getSortedReactions } from "@/utils/workflows";
 
 const EditorCards = () => {
 	const [workflow] = useAtom(editorWorkflowAtom);
-
-	const getSortedReactions = (
-		reactions: EditorWorkflowReaction[],
-		basePreviousId: string,
-	): EditorWorkflowReaction[] => {
-		const sortedReactions = [];
-		let previousId = basePreviousId;
-
-		for (let i = 0; i < reactions.length; i++) {
-			const reaction = reactions.find((r) => r.previousAreaId === previousId);
-			if (reaction === undefined) break;
-			sortedReactions.push(reaction);
-			previousId = reaction.id;
-		}
-		return sortedReactions;
-	};
 
 	return (
 		<div className="bg-neutral">
