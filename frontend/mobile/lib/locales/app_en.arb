@@ -159,4 +159,15 @@
     "lol-on-game-win-sub": "Triggers when a player won a LoL match",
     "lol-on-level-up": "On level up",
     "lol-on-level-up-sub": "Triggers when a LoL summoner levels up",
+
+    "create-task": "create task",
+    "create-task-sub": "Create a task on Todoist",
+    "reopen-task": "reopen task",
+    "reopen-task-sub": "Reopen a task on Todoist",
+    "close-task": "close task",
+    "close-task-sub": "Close a task on Todoist",
+    "update-task": "update task",
+    "update-task-sub": "Update a task on Todoist",
+    "delete-task": "delete task",
+    "delete-task-sub": "Delete a task on Todoist",
 }

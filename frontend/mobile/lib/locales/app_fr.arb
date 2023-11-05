@@ -157,4 +157,15 @@
     "lol-on-game-win-sub": "Déclenchement lorsqu'un joueur a gagné un match LoL",
     "lol-on-level-up": "Au niveau supérieur",
     "lol-on-level-up-sub": "Se déclenche lorsqu'un invocateur LoL monte en niveau.",
+
+    "create-task": "créer une tâche",
+    "create-task-sub": "Créer une tâche sur Todoist",
+    "reopen-task": "rouvrir une tâche",
+    "reopen-task-sub": "Rouvrir une tâche sur Todoist",
+    "close-task": "fermer une tâche",
+    "close-task-sub": "Fermer une tâche sur Todoist",
+    "update-task": "mettre à jour une tâche",
+    "update-task-sub": "Mettre à jour une tâche sur Todoist",
+    "delete-task": "supprimer une tâche",
+    "delete-task-sub": "Supprimer une tâche sur Todoist",
 }
