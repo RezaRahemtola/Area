@@ -33,12 +33,18 @@ import {
 	TodoistUpdateTaskParams,
 	TwitterCreateTweetParams,
 	UniqueJobParams,
+	WorkflowToggleParams,
 	YoutubeChannelParams,
 } from "./jobParams";
 
 export const JobParamsClasses = {
 	"airtable-delete-record": AirtableDeleteRecordParams,
+	"area-disable-workflow": WorkflowToggleParams,
+	"area-enable-workflow": WorkflowToggleParams,
+	"area-on-account-connect": OwnerJobParams,
 	"area-on-action": OwnerJobParams,
+	"area-on-workflow-create": OwnerJobParams,
+	"area-on-workflow-toggle": OwnerJobParams,
 	"discord-on-guild-join": UniqueJobParams,
 	"facebook-on-status-create": FacebookPageParams,
 	"github-close-issue": GithubCloseIssueParams,

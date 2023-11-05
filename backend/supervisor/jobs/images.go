@@ -2,9 +2,7 @@ package jobs
 
 var JobToImage = map[string]string{
 	"airtable-delete-record":                 "supervisor-airtable",
-	"area-on-action":                         "",
 	"discord-on-guild-join":                  "supervisor-discord",
-	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
 	"github-reopen-issue":                    "supervisor-github",
@@ -42,7 +40,6 @@ var JobToImage = map[string]string{
 	"google-update-spreadsheet-title":        "supervisor-google",
 	"google-update-signature-email":          "supervisor-google",
 	"linear-create-issue":                    "supervisor-linear",
-	"linear-on-issue-create":                 "",
 	"linkedin-create-post":                   "supervisor-linkedin",
 	"microsoft-outlook-send-email":           "supervisor-microsoft",
 	"miro-create-board":                      "supervisor-miro",

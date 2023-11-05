@@ -9,10 +9,12 @@ import { User } from "../users/entities/user.entity";
 import { JobsModule } from "../jobs/jobs.module";
 import { ConnectionsModule } from "../connections/connections.module";
 import { ServicesModule } from "../services/services.module";
+import { GrpcModule } from "../grpc/grpc.module";
 
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Workflow, WorkflowArea, Area, User]),
+		forwardRef(() => GrpcModule),
 		forwardRef(() => JobsModule),
 		ConnectionsModule,
 		ServicesModule,

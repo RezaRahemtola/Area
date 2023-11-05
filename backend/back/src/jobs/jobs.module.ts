@@ -5,6 +5,7 @@ import { WorkflowsModule } from "../workflows/workflows.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import WorkflowArea from "../workflows/entities/workflow-area.entity";
 import { ConnectionsModule } from "../connections/connections.module";
+import { BackJobsService } from "./back-jobs.service";
 
 @Module({
 	imports: [
@@ -14,7 +15,7 @@ import { ConnectionsModule } from "../connections/connections.module";
 		forwardRef(() => GrpcModule),
 	],
 	controllers: [],
-	providers: [JobsService],
+	providers: [BackJobsService, JobsService],
 	exports: [JobsService],
 })
 export class JobsModule {}

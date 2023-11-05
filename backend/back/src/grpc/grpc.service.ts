@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
-import { AuthenticatedJobData, GrpcResponse, JobData, JobId, JobList } from "./grpc.dto";
+import { AuthenticatedJobData, GrpcResponse, JobData, JobError, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
 import { JobsParams, JobsType } from "../types/jobs";
 import { JobsIdentifiers } from "../types/jobIds";
@@ -95,7 +95,7 @@ export class GrpcService implements OnModuleInit {
 		await this.jobsService.launchNextJob(data);
 	}
 
-	async onError(data: JobData) {
+	async onError(data: JobError) {
 		this.logger.error(`Received error job data ${JSON.stringify(data, undefined, 2)}`);
 		await this.activityService.createActivityLogsForJobIdentifier("error", data.identifier);
 	}
