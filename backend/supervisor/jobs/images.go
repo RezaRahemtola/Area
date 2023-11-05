@@ -2,7 +2,18 @@ package jobs
 
 var JobToImage = map[string]string{
 	"airtable-delete-record":                 "supervisor-airtable",
+	"area-on-action":                         "",
+	"discord-on-avatar-change":               "supervisor-discord",
+	"discord-on-guild-avatar-change":         "supervisor-discord",
+	"discord-on-guild-boost":                 "supervisor-discord",
+	"discord-on-guild-deafen":                "supervisor-discord",
 	"discord-on-guild-join":                  "supervisor-discord",
+	"discord-on-guild-leave":                 "supervisor-discord",
+	"discord-on-guild-mute":                  "supervisor-discord",
+	"discord-on-guild-nickname-change":       "supervisor-discord",
+	"discord-on-guild-roles-change":          "supervisor-discord",
+	"discord-on-guild-timeout":               "supervisor-discord",
+	"facebook-on-status-create":              "",
 	"github-close-issue":                     "supervisor-github",
 	"github-create-issue":                    "supervisor-github",
 	"github-reopen-issue":                    "supervisor-github",
