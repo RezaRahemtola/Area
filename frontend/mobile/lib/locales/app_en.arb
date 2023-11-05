@@ -50,6 +50,9 @@
     "returnParameters": "The following data is returned by this area and can be used in the next one:",
     "ran": "Ran ",
     "errorOn": "Error on ",
+    "auto": "auto",
+    "dark": "dark",
+    "light": "light",
 
 
     "on_new_video": "On new video",

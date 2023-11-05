@@ -50,6 +50,9 @@
     "returnParameters": "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:",
     "ran": "byrjaði: ",
     "errorOn": "Villa:  ",
+    "auto": "bíll",
+    "dark": "myrkur",
+    "light": "skýr",
 
 
     "on_new_video": "Ef um nýtt myndband er að ræða",

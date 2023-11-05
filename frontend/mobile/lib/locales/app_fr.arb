@@ -50,6 +50,9 @@
     "returnParameters": "Les données suivantes sont renvoyées par cette area et peuvent être utilisées dans la suivante :",
     "ran": "Lancé: ",
     "errorOn": "Erreur: ",
+    "auto": "auto",
+    "dark": "sombre",
+    "light": "clair",
 
 
     "on_new_video": "En cas de nouvelle vidéo",
