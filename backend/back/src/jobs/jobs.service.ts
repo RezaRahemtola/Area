@@ -10,7 +10,7 @@ import { Repository } from "typeorm";
 import { AuthenticatedJobData, JobData } from "../grpc/grpc.dto";
 import { RuntimeException } from "@nestjs/core/errors/exceptions";
 import { ConnectionsService } from "../connections/connections.service";
-import { uniqBy } from "lodash";
+import { uniq, uniqBy } from "lodash";
 
 @Injectable()
 export class JobsService {
@@ -87,6 +87,15 @@ export class JobsService {
 		const reactionJobs = nextJobs.flat();
 		this.logger.log(`Found ${reactionJobs.length} reactions for job ${jobId}`);
 		return reactionJobs;
+	}
+
+	async getWorkflowOwnersForJob(jobId: string): Promise<string[]> {
+		const jobs = await this.workflowAreaRepository.find({
+			where: { jobId },
+			relations: { nextWorkflowReactions: { area: true }, workflow: true, actionOfWorkflow: true },
+		});
+		const owners = jobs.map((job) => job.actionOfWorkflow.ownerId);
+		return uniq(owners);
 	}
 
 	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams[TJobs]> {

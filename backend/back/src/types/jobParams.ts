@@ -17,6 +17,11 @@ export class UniqueJobParams {
 	workflowStepId: string;
 }
 
+export class OwnerJobParams {
+	@IsUUID(4)
+	ownerId: string;
+}
+
 export class TimerSecondIntervalParams extends UniqueJobParams {
 	@IsNumber()
 	seconds: number;

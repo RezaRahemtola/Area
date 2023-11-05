@@ -604,5 +604,13 @@ export class OauthService {
 				throw new Error("Cannot create OAuth connection for riot service");
 			},
 		},
+		area: {
+			urlFactory: () => {
+				throw new Error("Cannot create OAuth URL for area service");
+			},
+			connectionFactory: () => {
+				throw new Error("Cannot create OAuth connection for area service");
+			},
+		},
 	};
 }

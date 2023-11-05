@@ -20,7 +20,7 @@ import { JobsService } from "../jobs/jobs.service";
 import { JobParamsClasses, JobsType } from "../types/jobs";
 import { ConnectionsService } from "../connections/connections.service";
 import { ServiceName, ServicesService } from "../services/services.service";
-import { UniqueJobParams } from "../types/jobParams";
+import { OwnerJobParams, UniqueJobParams } from "../types/jobParams";
 import { plainToInstance } from "class-transformer";
 
 @Injectable()
@@ -424,6 +424,9 @@ export class WorkflowsService {
 		const jobType = `${areaServiceId}-${areaId}`;
 		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof UniqueJobParams) {
 			parameters.workflowStepId = id;
+		}
+		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof OwnerJobParams) {
+			parameters.ownerId = userId;
 		}
 		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
 			throw new BadRequestException(`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`);
