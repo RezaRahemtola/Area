@@ -10,6 +10,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  airtable:
+    container_name: airtable
+    build:
+      context: ../workers/airtable
+
+  discord:
+    container_name: discord
+    build:
+      context: ../workers/discord
+      args:
+        - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+        - DISCORD_CLIENT_SECRET=$[DISCORD_CLIENT_SECRET}
+
   github:
     container_name: github
     build:
@@ -45,6 +58,11 @@ services:
     build:
       context: ../workers/linkedin
 
+  microsoft:
+    container_name: microsoft
+    build:
+      context: ../workers/microsoft
+
   miro:
     container_name: miro
     build:
@@ -60,3 +78,16 @@ services:
   seconds-interval:
     container_name: seconds-interval
     build: ../workers/seconds-interval
+
+  slack:
+    container_name: slack
+    build: ../workers/slack
+
+  todoist:
+    container_name: todoist
+    build: ../workers/todoist
+
+  twitter:
+    container_name: twitter
+    build: ../workers/twitter
+

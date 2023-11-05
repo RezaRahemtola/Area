@@ -20,6 +20,7 @@ const translations = {
 			password: "Password",
 			passwordPlaceholder: "Enter password",
 		},
+		callbackOAuth: "Authentication successful, you can now close this page!",
 	},
 	dashboard: {
 		title: "Dashboard",
@@ -40,6 +41,13 @@ const translations = {
 			description: "An event a workflow performs after it start",
 		},
 		chooseEvent: "Choose an event",
+		noAccountToConnect: "No account to connect",
+		accountAlreadyConnected: "Account already connected",
+		parameters: "Parameters",
+		connectAccount: "Connect your account",
+		back: "Back",
+		next: "Next",
+		returnParameters: "The following data is returned by this area and can be used in the next one:",
 	},
 	library: {
 		title: "My workflows",
@@ -69,6 +77,7 @@ const translations = {
 		},
 	},
 	services: {
+		title: "Services",
 		actions: "Actions",
 		reactions: "Reactions",
 		noArea: "This service doesn't have any action or reaction",
@@ -84,6 +93,8 @@ const translations = {
 		save: "Save",
 		close: "Close",
 		edit: "Edit",
+		duplicate: "Duplicate",
+		copy: "Copy",
 	},
 };
 

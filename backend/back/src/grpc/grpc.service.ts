@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { ClientGrpc } from "@nestjs/microservices";
-import { AuthenticatedJobData, GrpcResponse, JobData, JobId, JobList } from "./grpc.dto";
+import { AuthenticatedJobData, GrpcResponse, JobData, JobError, JobId, JobList } from "./grpc.dto";
 import { firstValueFrom, Observable } from "rxjs";
 import { JobsParams, JobsType } from "../types/jobs";
 import { JobsIdentifiers } from "../types/jobIds";
@@ -35,11 +35,7 @@ export class GrpcService implements OnModuleInit {
 		await this.jobsService.synchronizeJobs();
 	}
 
-	launchJob<TJob extends JobsType, TParams extends JobsParams["mappings"][TJob]>(
-		name: TJob,
-		params: TParams,
-		auth: unknown,
-	): Promise<GrpcResponse> {
+	launchJob<TJob extends JobsType>(name: TJob, params: JobsParams[TJob], auth: unknown): Promise<GrpcResponse> {
 		const identifier = JobsIdentifiers[name](params);
 		this.logger.log(
 			`Launching job ${identifier} with name ${name} and params ${JSON.stringify({
@@ -79,6 +75,18 @@ export class GrpcService implements OnModuleInit {
 		this.logger.log(`Received action job data ${JSON.stringify(data, undefined, 2)}`);
 		await this.activityService.createActivityLogsForJobIdentifier("ran", data.identifier);
 		await this.jobsService.launchNextJob(data);
+
+		if (data.name === "area-on-action") return;
+		const owners = await this.jobsService.getWorkflowOwnersForAction(data.identifier);
+		for (const owner of owners) {
+			await this.onAction({
+				name: "area-on-action",
+				identifier: `area-on-action-${owner}`,
+				params: {
+					name: data.name,
+				},
+			});
+		}
 	}
 
 	async onReaction(data: JobData) {
@@ -87,7 +95,7 @@ export class GrpcService implements OnModuleInit {
 		await this.jobsService.launchNextJob(data);
 	}
 
-	async onError(data: JobData) {
+	async onError(data: JobError) {
 		this.logger.error(`Received error job data ${JSON.stringify(data, undefined, 2)}`);
 		await this.activityService.createActivityLogsForJobIdentifier("error", data.identifier);
 	}

@@ -13,7 +13,7 @@ import { libraryOpenedWorkflowOptionsAtom } from "@/stores/library";
 import { servicesAtom } from "@/stores";
 import services from "@/services";
 import { editorWorkflowAtom, selectedEditorAreaAtom } from "@/stores/editor";
-import { convertWorkflowToEditorWorkflow } from "@/utils/workflows";
+import { convertWorkflowToDuplicateEditorWorkflow, convertWorkflowToEditorWorkflow, getSortedReactions } from "@/utils/workflows";
 
 const ServiceLogo = ({ area }: { area: WorkflowAction }) => {
 	const [servicePicture, setServicePicture] = useState<string | undefined>();
@@ -83,6 +83,13 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 		router.push("/editor");
 	};
 
+	const onClickDuplicate = async (copyText: string) => {
+		const duplicatedWorkflow = await convertWorkflowToDuplicateEditorWorkflow(workflow, copyText);
+		setEditorWorkflow(duplicatedWorkflow);
+		setSelectedEditorArea(null);
+		router.push("/editor");
+	};
+
 	const onClickDelete = async () => {
 		await services.workflows.deleteOne(workflow.id);
 		onWorkflowChange(workflow.id);
@@ -110,7 +117,7 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 				<div className="flex items-center space-x-3">
 					<ServiceLogo area={workflow.action} />
 
-					{workflow.reactions.map((reaction) => (
+					{getSortedReactions(workflow.reactions, workflow.action.id).map((reaction) => (
 						<ServiceLogo area={reaction} key={reaction.id} />
 					))}
 				</div>
@@ -142,6 +149,12 @@ const LibraryWorkflowLine = ({ workflow, selected, onSelect, onWorkflowChange }:
 							<a className="hover:text-neutral-content" onClick={onClickEdit}>
 								<FontAwesomeIcon icon="pen" />
 								{t("actions.edit")}
+							</a>
+						</li>
+						<li>
+							<a className="hover:text-neutral-content" onClick={() => onClickDuplicate(t("actions.copy"))}>
+								<FontAwesomeIcon icon="copy" />
+								{t("actions.duplicate")}
 							</a>
 						</li>
 						<li>

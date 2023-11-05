@@ -37,6 +37,7 @@ export default async function reopenIssue() {
 			name: "github-reopen-issue",
 			identifier: params.identifier,
 			params: {
+				workflowStepId: params.workflowStepId,
 				url: res.data.url,
 			},
 		});

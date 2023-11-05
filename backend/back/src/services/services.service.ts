@@ -25,6 +25,7 @@ export const SERVICE_NAMES = [
 	"todoist",
 	"slack",
 	"riot",
+	"area",
 ] as const;
 export type ServiceName = (typeof SERVICE_NAMES)[number];
 

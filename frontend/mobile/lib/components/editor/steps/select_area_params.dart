@@ -1,4 +1,5 @@
 import 'package:area_mobile/components/editor/params/param_field.dart';
+import 'package:area_mobile/components/editor/params/param_return.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,7 +32,7 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 600,
+        height: 650,
         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           const SizedBox(height: 25),
           Text(AppLocalizations.of(context)!.editorChooseParams,
@@ -42,6 +43,7 @@ class _SelectAreaParamsState extends State<SelectAreaParams> {
                 .map((param) => EditorParamField(parameter: param))
                 .toList(),
           ),
+          EditorReturnParams(returnParams: widget.area.returnParameters),
           ButtonBar(mainAxisSize: MainAxisSize.min, children: <Widget>[
             ElevatedButton(
               onPressed: () => widget.onBack(),

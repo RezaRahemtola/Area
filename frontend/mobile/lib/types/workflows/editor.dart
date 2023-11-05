@@ -2,20 +2,26 @@ class AreaParameterWithValue {
   final String name;
   final String type;
   final bool required;
-  Object? value;
+  final List<dynamic>? values;
+  dynamic value;
 
   AreaParameterWithValue(
       {required this.name,
       required this.type,
       required this.required,
+      this.values,
       this.value});
 }
 
 class EditorWorkflowElementArea {
   final String id;
   List<AreaParameterWithValue> parameters;
+  List<String> returnParameters;
 
-  EditorWorkflowElementArea({required this.id, required this.parameters});
+  EditorWorkflowElementArea(
+      {required this.id,
+      required this.parameters,
+      this.returnParameters = const []});
 }
 
 class EditorWorkflowElementService {
@@ -37,13 +43,13 @@ class EditorWorkflowReaction {
   final String id;
   EditorWorkflowElementArea? area;
   EditorWorkflowElementService? areaService;
-  final String previousId;
+  final String previousAreaId;
 
   EditorWorkflowReaction(
       {required this.id,
       this.area,
       this.areaService,
-      required this.previousId});
+      required this.previousAreaId});
 }
 
 class EditorWorkflow {

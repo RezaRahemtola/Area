@@ -1,18 +1,37 @@
 import { JobsParams, JobsType } from "./jobs";
 
 type JobsIdentifiers = {
-	[key in JobsType]: (obj: JobsParams["mappings"][key]) => string;
+	[key in JobsType]: (obj: JobsParams[key]) => `${key}-${string}`;
 };
 
-function uniqueJobId(jobId: string, workflowStepId: string) {
+function uniqueJobId<TJobType extends JobsType>(jobId: TJobType, workflowStepId: string): `${TJobType}-${string}` {
 	return `${jobId}-${workflowStepId}`;
 }
 
-function uniqueWebhookId(service: string, webhookId: string) {
-	return `${service}-${webhookId}`;
+function uniqueWebhookId<TJobType extends JobsType>(jobId: TJobType, webhookId: string): `${TJobType}-${string}` {
+	return `${jobId}-${webhookId}`;
 }
 
 export const JobsIdentifiers: JobsIdentifiers = {
+	"airtable-delete-record": ({ workflowStepId }) => uniqueJobId("airtable-delete-record", workflowStepId),
+	"area-disable-workflow": ({ workflowStepId }) => uniqueJobId("area-disable-workflow", workflowStepId),
+	"area-enable-workflow": ({ workflowStepId }) => uniqueJobId("area-enable-workflow", workflowStepId),
+	"area-on-account-connect": ({ ownerId }) => `area-on-account-connect-${ownerId}`,
+	"area-on-action": ({ ownerId }) => `area-on-action-${ownerId}`,
+	"area-on-workflow-create": ({ ownerId }) => `area-on-workflow-create-${ownerId}`,
+	"area-on-workflow-toggle": ({ ownerId }) => `area-on-workflow-toggle-${ownerId}`,
+	"discord-on-avatar-change": ({ workflowStepId }) => uniqueJobId("discord-on-avatar-change", workflowStepId),
+	"discord-on-guild-avatar-change": ({ workflowStepId }) =>
+		uniqueJobId("discord-on-guild-avatar-change", workflowStepId),
+	"discord-on-guild-boost": ({ workflowStepId }) => uniqueJobId("discord-on-guild-boost", workflowStepId),
+	"discord-on-guild-deafen": ({ workflowStepId }) => uniqueJobId("discord-on-guild-deafen", workflowStepId),
+	"discord-on-guild-join": ({ workflowStepId }) => uniqueJobId("discord-on-guild-join", workflowStepId),
+	"discord-on-guild-leave": ({ workflowStepId }) => uniqueJobId("discord-on-guild-leave", workflowStepId),
+	"discord-on-guild-mute": ({ workflowStepId }) => uniqueJobId("discord-on-guild-mute", workflowStepId),
+	"discord-on-guild-nickname-change": ({ workflowStepId }) =>
+		uniqueJobId("discord-on-guild-nickname-change", workflowStepId),
+	"discord-on-guild-roles-change": ({ workflowStepId }) => uniqueJobId("discord-on-guild-roles-change", workflowStepId),
+	"discord-on-guild-timeout": ({ workflowStepId }) => uniqueJobId("discord-on-guild-timeout", workflowStepId),
 	"facebook-on-status-create": ({ pageId }) => uniqueWebhookId("facebook-on-status-create", pageId),
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),
@@ -58,13 +77,27 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"google-update-spreadsheet-title": ({ workflowStepId }) =>
 		uniqueJobId("google-update-spreadsheet-title", workflowStepId),
 	"google-update-signature-email": ({ workflowStepId }) => uniqueJobId("google-update-signature-email", workflowStepId),
+	"linear-create-comment": ({ workflowStepId }) => uniqueJobId("linear-create-comment", workflowStepId),
+	"linear-create-project": ({ workflowStepId }) => uniqueJobId("linear-create-project", workflowStepId),
 	"linear-create-issue": ({ workflowStepId }) => uniqueJobId("linear-create-issue", workflowStepId),
+	"linear-on-comment-create": ({ workspace }) => uniqueWebhookId("linear-on-comment-create", workspace),
 	"linear-on-issue-create": ({ workspace }) => uniqueWebhookId("linear-on-issue-create", workspace),
+	"linear-on-issue-update": ({ workspace }) => uniqueWebhookId("linear-on-issue-update", workspace),
+	"linear-on-project-create": ({ workspace }) => uniqueWebhookId("linear-on-project-create", workspace),
+	"linear-on-project-update": ({ workspace }) => uniqueWebhookId("linear-on-project-update", workspace),
 	"linkedin-create-post": ({ workflowStepId }) => uniqueJobId("linkedin-create-post", workflowStepId),
+	"microsoft-outlook-send-email": ({ workflowStepId }) => uniqueJobId("microsoft-outlook-send-email", workflowStepId),
 	"miro-create-board": ({ workflowStepId }) => uniqueJobId("miro-create-board", workflowStepId),
 	"riot-lol-on-game-end": ({ region, summoner }) => `riot-lol-on-game-end-${region}-${summoner}`,
 	"riot-lol-on-game-loss": ({ region, summoner }) => `riot-lol-on-game-loss-${region}-${summoner}`,
 	"riot-lol-on-game-win": ({ region, summoner }) => `riot-lol-on-game-win-${region}-${summoner}`,
 	"riot-lol-on-level-up": ({ region, summoner }) => `riot-lol-on-level-up-${region}-${summoner}`,
+	"slack-create-message": ({ workflowStepId }) => uniqueJobId("slack-create-message", workflowStepId),
 	"timer-seconds-interval": ({ workflowStepId }) => uniqueJobId("timer-seconds-interval", workflowStepId),
+	"todoist-close-task": ({ workflowStepId }) => uniqueJobId("todoist-close-task", workflowStepId),
+	"todoist-create-task": ({ workflowStepId }) => uniqueJobId("todoist-create-task", workflowStepId),
+	"todoist-delete-task": ({ workflowStepId }) => uniqueJobId("todoist-delete-task", workflowStepId),
+	"todoist-reopen-task": ({ workflowStepId }) => uniqueJobId("todoist-reopen-task", workflowStepId),
+	"todoist-update-task": ({ workflowStepId }) => uniqueJobId("todoist-update-task", workflowStepId),
+	"twitter-create-tweet": ({ workflowStepId }) => uniqueJobId("twitter-create-tweet", workflowStepId),
 };

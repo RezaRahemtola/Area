@@ -27,7 +27,11 @@ export const convertAreaParamsToWorkflowPayloadParams = (parameters: AreaParamet
 		if (param.type === "integer") {
 			value = parseInt(value as unknown as string, 10) as never;
 		} else if (param.type === "text-array") {
-			value = (value as unknown as string).split(",") as never;
+			if (value === undefined) {
+				value = [] as never;
+			} else {
+				value = (value as unknown as string).split(",") as never;
+			}
 		}
 		// eslint-disable-next-line no-param-reassign
 		result[param.name] = value as never;
@@ -45,7 +49,13 @@ const workflowParametersToEditorWorkflowParameters = async (
 		: await services.services.getServiceReactions(serviceId);
 	const { parametersFormFlow } = areas.data!.find((a) => a.id === areaId)!;
 
-	return parametersFormFlow.map((formFlowParam) => ({ ...formFlowParam, value: parameters[formFlowParam.name] }));
+	return parametersFormFlow.map((formFlowParam) => {
+		let value = parameters[formFlowParam.name];
+		if (formFlowParam.type === "text-array") {
+			value = (value as unknown as string[]).join(",") as never;
+		}
+		return { ...formFlowParam, value };
+	});
 };
 
 export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promise<EditorWorkflow> => {
@@ -71,11 +81,10 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 			},
 		},
 		reactions: await Promise.all(
-			workflow.reactions.map(async (baseReaction) => {
+			workflow.reactions.map(async (baseReaction): Promise<EditorWorkflowReaction> => {
 				const reactionService = await services.services.getOne(baseReaction.areaServiceId);
 				return {
 					id: baseReaction.id,
-					parameters: baseReaction.parameters,
 					area: {
 						id: baseReaction.areaId,
 						parameters: await workflowParametersToEditorWorkflowParameters(
@@ -95,4 +104,50 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 		),
 		active: workflow.active,
 	};
+};
+
+export const convertWorkflowToDuplicateEditorWorkflow = async (
+	workflow: Workflow,
+	copyText: string,
+): Promise<EditorWorkflow> => {
+	const editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
+
+	const idMapping: Record<string, string> = {};
+	[editorWorkflow.action.id, ...editorWorkflow.reactions.map((e) => e.id)].forEach((id) => (idMapping[id] = uuidv4()));
+
+	const newAction: EditorWorkflowAction = {
+		id: idMapping[editorWorkflow.action.id],
+		area: editorWorkflow.action.area,
+		areaService: editorWorkflow.action.areaService,
+	};
+
+	const newReactions: EditorWorkflowReaction[] = editorWorkflow.reactions.map((reaction) => ({
+		id: idMapping[reaction.id],
+		area: reaction.area,
+		areaService: reaction.areaService,
+		previousAreaId: idMapping[editorWorkflow.reactions.find((e) => e.id === reaction.id)!.previousAreaId],
+	}));
+
+	return {
+		name: `${editorWorkflow.name} (${copyText})`,
+		action: newAction,
+		reactions: newReactions,
+		active: editorWorkflow.active,
+	};
+};
+
+export const getSortedReactions = <T extends { previousAreaId: string; id: string }>(
+	reactions: T[],
+	basePreviousId: string,
+): T[] => {
+	const sortedReactions = [];
+	let previousId = basePreviousId;
+
+	for (let i = 0; i < reactions.length; i++) {
+		const reaction = reactions.find((r) => r.previousAreaId === previousId);
+		if (reaction === undefined) break;
+		sortedReactions.push(reaction);
+		previousId = reaction.id;
+	}
+	return sortedReactions;
 };

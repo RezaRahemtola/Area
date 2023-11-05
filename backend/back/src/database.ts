@@ -75,6 +75,20 @@ import ActivityLog from "./activity/entities/activity-log.entity";
 import { AddActivityLogEntity1698986590525 } from "./migrations/1698986590525-AddActivityLogEntity";
 import { CreateRiotGamesService1698964479750 } from "./services/seed/1698964479750-CreateRiotGamesService";
 import { CreateRiotGamesActions1698964479850 } from "./workflows/seed/1698964479850-CreateRiotGamesActions";
+import { CreateTodoistCreateTaskReaction1699101589099 } from "./workflows/seed/1699101589099-CreateTodoistCreateTaskReaction";
+import { CreateAirtableDeleteRecordReaction1699107944021 } from "./workflows/seed/1699107944021-CreateAirtableDeleteRecordReaction";
+import { CreateTwitterCreateTweetReaction1699115775099 } from "./workflows/seed/1699115775099-CreateTwitterCreateTweetReaction";
+import { ChangeRiotLogoToSvg1699116526789 } from "./services/seed/1699116526789-ChangeRiotLogoToSvg";
+import { CreateOutlookSendEmailReaction1699126617355 } from "./workflows/seed/1699126617355-CreateOutlookSendEmailReaction";
+import { CreateSlackCreateMessageReaction1699131357051 } from "./workflows/seed/1699131357051-CreateSlackCreateMessageReaction";
+import { CreateDiscordOnGuildJoinAction1699140593736 } from "./workflows/seed/1699140593736-CreateDiscordOnGuildJoinAction";
+import { CreateTodoistTaskReactions1699140054686 } from "./workflows/seed/1699140054686-CreateTodoistTaskReactions";
+import { CreateAreaService1699143731594 } from "./services/seed/1699143731594-CreateAreaService";
+import { CreateAreaOnActionAction1699145276143 } from "./workflows/seed/1699145276143-CreateAreaOnActionAction";
+import { CreateDiscordNewActions1699165196600 } from "./workflows/seed/1699165196600-CreateDiscordNewActions";
+import { CreateAreaAreas1699152935342 } from "./workflows/seed/1699152935342-CreateAreaAreas";
+import { FixAddScopeToLinearOnIssueCreate1699190007820 } from "./workflows/seed/1699190007820-FixAddScopeToLinearOnIssueCreate";
+import { CreateLinearProjectCommentAREAs1699202040386 } from "./workflows/seed/1699202040386-CreateLinearProjectCommentAREAs";
 
 dotenv.config();
 
@@ -153,6 +167,20 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		AddActivityLogEntity1698986590525,
 		CreateRiotGamesService1698964479750,
 		CreateRiotGamesActions1698964479850,
+		CreateTodoistCreateTaskReaction1699101589099,
+		CreateAirtableDeleteRecordReaction1699107944021,
+		CreateTwitterCreateTweetReaction1699115775099,
+		ChangeRiotLogoToSvg1699116526789,
+		CreateOutlookSendEmailReaction1699126617355,
+		CreateSlackCreateMessageReaction1699131357051,
+		CreateDiscordOnGuildJoinAction1699140593736,
+		CreateTodoistTaskReactions1699140054686,
+		CreateAreaService1699143731594,
+		CreateAreaOnActionAction1699145276143,
+		CreateDiscordNewActions1699165196600,
+		CreateAreaAreas1699152935342,
+		FixAddScopeToLinearOnIssueCreate1699190007820,
+		CreateLinearProjectCommentAREAs1699202040386,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };

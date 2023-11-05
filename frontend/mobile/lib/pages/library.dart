@@ -2,12 +2,15 @@ import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/components/library/workflow_tile.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Library extends StatefulWidget {
-  const Library({Key? key}) : super(key: key);
+  final Function(EditorWorkflow workflow) onOpenEditor;
+
+  const Library({required this.onOpenEditor, Key? key}) : super(key: key);
 
   @override
   State<Library> createState() => _LibraryState();
@@ -76,31 +79,30 @@ class _LibraryState extends State<Library> {
                 ),
               ),
               Expanded(
-                child: workflows.isEmpty
-                    ? EmptyNotice(
-                        message: AppLocalizations.of(context)!.noWorkflows,
-                      )
-                    : FutureBuilder<ServiceReturn<List<Workflow>>>(
-                        future: services.workflows.getAll(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(
-                              child: Text(AppLocalizations.of(context)!
-                                  .error(snapshot.error.toString())),
-                            );
-                          } else {
-                            if (needRefresh) {
-                              needRefresh = false;
-                              if (snapshot.data!.data != null) {
-                                initialWorkflows = snapshot.data!.data!;
-                                workflows = snapshot.data!.data!;
-                              }
-                            }
-                            return ListView.builder(
+                child: FutureBuilder<ServiceReturn<List<Workflow>>>(
+                  future: services.workflows.getAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(AppLocalizations.of(context)!
+                            .error(snapshot.error.toString())),
+                      );
+                    } else {
+                      if (needRefresh) {
+                        needRefresh = false;
+                        if (snapshot.data!.data != null) {
+                          initialWorkflows = snapshot.data!.data!;
+                          workflows = snapshot.data!.data!;
+                        }
+                      }
+                      return workflows.isEmpty
+                          ? EmptyNotice(
+                              message:
+                                  AppLocalizations.of(context)!.noWorkflows,
+                            )
+                          : ListView.builder(
                               itemCount: workflows.length,
                               itemBuilder: (context, index) {
                                 return WorkflowTile(
@@ -113,12 +115,13 @@ class _LibraryState extends State<Library> {
                                     });
                                     _updateSearch(searchController.text);
                                   },
+                                  onOpenEditor: widget.onOpenEditor,
                                 );
                               },
                             );
-                          }
-                        },
-                      ),
+                    }
+                  },
+                ),
               ),
             ],
           ),

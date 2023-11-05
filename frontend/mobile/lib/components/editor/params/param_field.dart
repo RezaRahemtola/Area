@@ -13,16 +13,25 @@ class EditorParamField extends StatefulWidget {
 
 class _EditorParamFieldState extends State<EditorParamField> {
   late AreaParameterWithValue parameter;
+  dynamic stateValue;
 
   @override
   void initState() {
     super.initState();
     parameter = widget.parameter;
+    if (parameter.value == null) {
+      if (parameter.type == "boolean") {
+        parameter.value = false;
+      } else if (parameter.type == "integer") {
+        parameter.value = "0";
+      }
+    }
+    stateValue = widget.parameter.value;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (["short-text", "email"].contains(parameter.type)) {
+    if (["short-text", "email", "text-array"].contains(parameter.type)) {
       return TextFormField(
         decoration: InputDecoration(labelText: parameter.name),
         initialValue: parameter.value as String?,
@@ -44,6 +53,34 @@ class _EditorParamFieldState extends State<EditorParamField> {
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly
           ]);
+    } else if (parameter.type == "boolean") {
+      return SwitchListTile(
+        title: Text(parameter.name),
+        value: stateValue,
+        onChanged: (bool value) {
+          parameter.value = value;
+          setState(() {
+            stateValue = value;
+          });
+        },
+      );
+    } else if (parameter.type == "select") {
+      return DropdownButtonFormField(
+          value: stateValue,
+          items: parameter.values!.map((dynamic v) {
+            return DropdownMenuItem<String>(
+              value: v,
+              child: Text(v),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value == null) return;
+            parameter.value = value;
+            setState(() {
+              stateValue = value;
+            });
+          },
+          decoration: InputDecoration(labelText: parameter.name));
     }
     return const Text("Never displayed");
   }

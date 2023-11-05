@@ -34,6 +34,7 @@ import {
 	PickType,
 } from "@nestjs/swagger";
 import Workflow from "./entities/workflow.entity";
+import { WorkflowSummaryDto } from "./dto/workflow-summary.dto";
 
 @ApiBearerAuth()
 @ApiTags("Workflows")
@@ -47,6 +48,15 @@ export class WorkflowsController {
 	private readonly logger = new Logger(WorkflowsController.name);
 
 	constructor(private readonly workspacesService: WorkflowsService) {}
+
+	@ApiOkResponse({
+		description: "The workflows summary was successfully retrieved",
+		type: WorkflowSummaryDto,
+	})
+	@Get("summary")
+	async getWorkflowsSummary(@Req() { user: { id: ownerId } }: APIRequest) {
+		return await this.workspacesService.getWorkflowsSummary(ownerId);
+	}
 
 	@ApiOkResponse({
 		description: "The workflow was successfully created",

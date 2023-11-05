@@ -32,6 +32,7 @@ const EditorSelectEventAndAccount = ({
 	const [selectedParameters, setSelectedParameters] = useState<AreaParameterWithValue[]>(
 		workflowArea.area?.parameters ?? [],
 	);
+	const [returnParameters, setReturnParameters] = useState<string[]>([]);
 	const { t } = useTranslation();
 
 	useEffect(() => {
@@ -42,6 +43,7 @@ const EditorSelectEventAndAccount = ({
 					workflowArea.areaService!.id,
 					chosenArea.serviceScopesNeeded,
 				);
+				setReturnParameters(chosenArea.parametersReturnFlow);
 				setConnectAccountUrl(connectService.data ? connectService.data.oauthUrl : null);
 			}
 		})();
@@ -78,7 +80,8 @@ const EditorSelectEventAndAccount = ({
 		);
 	};
 
-	const noAccountMessage = connectAccountUrl === "" ? "No account to connect" : "Account already connected";
+	const noAccountMessage =
+		connectAccountUrl === "" ? t("editor.noAccountToConnect") : t("editor.accountAlreadyConnected");
 
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
@@ -113,7 +116,7 @@ const EditorSelectEventAndAccount = ({
 						{selectedParameters.length > 0 && (
 							<>
 								<label className="label">
-									<span className="label-text text-neutral-content">Parameters</span>
+									<span className="label-text text-neutral-content">{t("editor.parameters")}</span>
 								</label>
 								{selectedParameters.map((param) => (
 									<EditorAreParameter key={param.name} parameter={param} onValueChange={onParamValueChange} />
@@ -122,7 +125,7 @@ const EditorSelectEventAndAccount = ({
 						)}
 
 						<label className="label">
-							<span className="label-text text-neutral-content">Connect your account</span>
+							<span className="label-text text-neutral-content">{t("editor.connectAccount")}</span>
 						</label>
 						{connectAccountUrl ? (
 							<button className="btn btn-ghost w-16 h-16">
@@ -137,6 +140,18 @@ const EditorSelectEventAndAccount = ({
 						) : (
 							<span>{noAccountMessage}</span>
 						)}
+						{returnParameters.length > 0 && (
+							<>
+								<label className="label mt-5">
+									<span className="label-text text-neutral-content">{t("editor.returnParameters")}</span>
+								</label>
+								{returnParameters.map((returnParam) => (
+									<kbd className="kbd kbd-sm bg-neutral" key={returnParam}>
+										${returnParam}
+									</kbd>
+								))}
+							</>
+						)}
 					</>
 				)}
 
@@ -145,14 +160,14 @@ const EditorSelectEventAndAccount = ({
 						className="btn btn-outline btn-base-100 text-neutral-content hover:text-neutral-content"
 						onClick={() => onEvent("back")}
 					>
-						Back
+						{t("editor.back")}
 					</button>
 					<button
 						className="btn btn-primary btn-wide disabled:bg-primary"
 						disabled={!selectedEventId}
 						onClick={() => onEvent("next", { id: selectedEventId!, parameters: selectedParameters })}
 					>
-						Next
+						{t("editor.next")}
 					</button>
 				</div>
 			</>

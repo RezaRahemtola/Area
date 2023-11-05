@@ -20,6 +20,7 @@ const translations = {
 			password: "Mot de passe",
 			passwordPlaceholder: "Entrez un mot de passe",
 		},
+		callbackOAuth: "Authentification réussie, vous pouvez désormais fermer cette page !",
 	},
 	dashboard: {
 		title: "Tableau de bord",
@@ -40,6 +41,14 @@ const translations = {
 			description: "Un événement qu'un workflow exécutes une fois lancé",
 		},
 		chooseEvent: "Choisissez un événement",
+		noAccountToConnect: "Aucun compte à connecter",
+		accountAlreadyConnected: "Compte déjà connecté",
+		parameters: "Paramètres",
+		connectAccount: "Connectez votre compte",
+		back: "Précédent",
+		next: "Suivant",
+		returnParameters:
+			"Les données suivantes sont renvoyées par cette area et peuvent être utilisées dans la suivante :",
 	},
 	library: {
 		title: "Mes workflows",
@@ -69,6 +78,7 @@ const translations = {
 		},
 	},
 	services: {
+		title: "Services",
 		actions: "Actions",
 		reactions: "Réactions",
 		noArea: "Ce service n'a pas d'action ou de réaction",
@@ -84,6 +94,8 @@ const translations = {
 		save: "Sauvegarder",
 		close: "Fermer",
 		edit: "Modifier",
+		duplicate: "Dupliquer",
+		copy: "Copie",
 	},
 };
 

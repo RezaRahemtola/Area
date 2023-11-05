@@ -3,7 +3,7 @@ import { credentials } from "@grpc/grpc-js";
 import parseArguments, { getFromEnv } from "../util/params";
 import { AreaBackServiceClient } from "../proto/area_back";
 import "../proto/google/protobuf/struct";
-import { onReaction } from "../util/grpc";
+import { onAction } from "../util/grpc";
 import {
 	handleRiotError,
 	LolCluster,
@@ -44,7 +44,7 @@ async function sendNewMatchData({ riot, client, identifier, cluster, matchId, pl
 		level: player.champLevel,
 	};
 
-	await onReaction(client, {
+	await onAction(client, {
 		name: "riot-lol-on-game-end",
 		identifier,
 		params: {
@@ -56,7 +56,7 @@ async function sendNewMatchData({ riot, client, identifier, cluster, matchId, pl
 	const altName = `riot-lol-on-game-${player.win ? "win" : "loss"}`;
 	const altIdentifer = `${altName}-${identifier.substring(17)}`;
 
-	await onReaction(client, {
+	await onAction(client, {
 		name: altName,
 		identifier: altIdentifer,
 		params: {

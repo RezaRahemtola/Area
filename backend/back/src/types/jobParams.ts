@@ -6,7 +6,10 @@ import {
 	IsOptional,
 	IsString,
 	IsUUID,
+	Matches,
+	Max,
 	MaxLength,
+	Min,
 	MinLength,
 } from "class-validator";
 
@@ -15,12 +18,27 @@ export class UniqueJobParams {
 	workflowStepId: string;
 }
 
+export class OwnerJobParams {
+	@IsUUID(4)
+	ownerId: string;
+}
+
+export class OwnerUniqueJobParams extends UniqueJobParams {
+	@IsUUID(4)
+	ownerId: string;
+}
+
+export class WorkflowToggleParams extends OwnerUniqueJobParams {
+	@IsString()
+	workflowName: string;
+}
+
 export class TimerSecondIntervalParams extends UniqueJobParams {
 	@IsNumber()
 	seconds: number;
 }
 
-export class GoogleEmailParams extends UniqueJobParams {
+export class EmailParams extends UniqueJobParams {
 	@IsEmail()
 	to: string;
 
@@ -221,6 +239,23 @@ export class LinearCreateIssueParams extends UniqueJobParams {
 	priority: LinearIssuePriority;
 }
 
+export class LinearCreateProjectParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	@IsOptional()
+	description: string;
+}
+
+export class LinearCreateCommentParams extends UniqueJobParams {
+	@IsString()
+	body: string;
+
+	@IsNumber()
+	issueId: number;
+}
+
 export class MiroCreateBoardParams extends UniqueJobParams {
 	@IsString()
 	name: string;
@@ -247,14 +282,79 @@ enum RiotRegion {
 	"tr",
 	"ru",
 }
-type RiotRegionType = keyof typeof RiotRegion;
 
 export class RiotActionsParams extends UniqueJobParams {
 	@IsEnum(RiotRegion)
-	region: RiotRegionType;
+	region: RiotRegion;
 
 	@IsString()
 	@MinLength(3)
 	@MaxLength(16)
 	summoner: string;
+}
+
+export class TodoistCreateTaskParams extends UniqueJobParams {
+	@IsString()
+	content: string;
+
+	@IsString()
+	@IsOptional()
+	description: string;
+
+	@IsNumber()
+	@IsOptional()
+	@Min(1)
+	@Max(4)
+	priority: number;
+
+	@IsString()
+	@IsOptional()
+	dueDate: string;
+}
+
+export class TodoistUpdateTaskParams extends TodoistCreateTaskParams {
+	@IsString()
+	id: string;
+}
+
+export class TodoistTaskParams extends UniqueJobParams {
+	@IsString()
+	id: string;
+}
+
+export class AirtableDeleteRecordParams extends UniqueJobParams {
+	@IsString()
+	baseId: string;
+
+	@IsString()
+	tableId: string;
+
+	@IsString()
+	recordId: string;
+}
+
+export class TwitterCreateTweetParams extends UniqueJobParams {
+	@IsString()
+	text: string;
+}
+
+export class SlackCreateMessageParams extends UniqueJobParams {
+	@IsString()
+	channelId: string;
+
+	@IsString()
+	text: string;
+}
+
+export class DiscordOptionalGuildIdParams extends UniqueJobParams {
+	@IsOptional()
+	@IsString()
+	@Matches(/^\d{17,19}$/)
+	guildId: string;
+}
+
+export class DiscordGuildIdParams extends UniqueJobParams {
+	@IsString()
+	@Matches(/^\d{17,19}$/)
+	guildId: string;
 }

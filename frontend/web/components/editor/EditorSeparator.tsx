@@ -4,22 +4,22 @@ import { editorWorkflowAtom } from "@/stores/editor";
 import { getEmptyEditorReaction } from "@/utils/workflows";
 
 const EditorSeparator = ({ previousId }: { previousId: string }) => {
-	const [editorWorkflow, setEditorWorkflow] = useAtom(editorWorkflowAtom);
+	const [, setEditorWorkflow] = useAtom(editorWorkflowAtom);
 	const onClick = () => {
 		const newReaction = getEmptyEditorReaction(previousId);
-		let oldPreviousId = previousId;
-		const newPreviousId = newReaction.id;
-		const newReactions = structuredClone(editorWorkflow.reactions);
 
-		let matchingReaction = newReactions.find((r) => r.previousAreaId === oldPreviousId);
-		while (matchingReaction) {
-			oldPreviousId = matchingReaction.id;
-			matchingReaction.previousAreaId = newPreviousId;
-			matchingReaction = newReactions.find((r) => r.previousAreaId === oldPreviousId);
-		}
-		newReactions.push(newReaction);
-
-		setEditorWorkflow((prev) => ({ ...prev, reactions: newReactions }));
+		setEditorWorkflow((prev) => ({
+			...prev,
+			reactions: [
+				...prev.reactions.map((r) => {
+					if (r.previousAreaId === previousId) {
+						return { ...r, previousAreaId: newReaction.id };
+					}
+					return r;
+				}),
+				newReaction,
+			],
+		}));
 	};
 
 	return (

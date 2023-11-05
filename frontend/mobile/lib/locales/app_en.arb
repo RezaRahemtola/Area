@@ -29,6 +29,8 @@
     "back": "Back",
     "rename": "Rename",
     "edit": "Edit",
+    "duplicate": "Duplicate",
+    "copyWorkflow": "Copy",
     "delete": "Delete",
     "editorActionDescription": "An event that starts your workflow",
     "editorReactionDescription": "An event a workflow performs after it start",
@@ -42,5 +44,10 @@
     "accountAlreadyConnected": "Account already connected",
     "noWorkflows": "No workflows found",
     "noActions": "No actions for this service",
-    "noReactions": "No reactions for this service"
+    "noReactions": "No reactions for this service",
+    "noActivity": "No activity",
+    "page": "Page {number}",
+    "returnParameters": "The following data is returned by this area and can be used in the next one:",
+    "ran": "Ran ",
+    "errorOn": "Error on "
 }

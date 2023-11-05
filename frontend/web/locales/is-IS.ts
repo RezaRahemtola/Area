@@ -20,6 +20,7 @@ const translations = {
 			password: "Lykilorð",
 			passwordPlaceholder: "Sláðu inn lykilorð",
 		},
+		callbackOAuth: "Auðkenning tókst, þú getur nú lokað þessari síðu!",
 	},
 	dashboard: {
 		title: "Mælaborð",
@@ -40,6 +41,13 @@ const translations = {
 			description: "Atburður sem verkflæði keyrir þegar það er ræst",
 		},
 		chooseEvent: "Veldu viðburð",
+		noAccountToConnect: "Enginn reikningur til að tengjast",
+		accountAlreadyConnected: "Reikningur þegar tengdur",
+		parameters: "Færibreytur",
+		connectAccount: "Tengdu reikninginn þinn",
+		back: "Til baka",
+		next: "Næst",
+		returnParameters: "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:",
 	},
 	library: {
 		title: "Verkflæði mín",
@@ -69,6 +77,7 @@ const translations = {
 		},
 	},
 	services: {
+		title: "Þjónusta",
 		actions: "Aðgerðir",
 		reactions: "Viðbrögð",
 		noArea: "Þessi þjónusta hefur engar aðgerðir eða viðbrögð",
@@ -84,6 +93,8 @@ const translations = {
 		save: "Að standa vörð",
 		close: "Loka",
 		edit: "Til að breyta",
+		duplicate: "Afrit",
+		copy: "Afrita",
 	},
 };
 

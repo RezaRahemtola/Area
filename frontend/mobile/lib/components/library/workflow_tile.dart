@@ -1,7 +1,9 @@
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
+import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,10 +11,12 @@ import 'package:flutter_svg/svg.dart';
 class WorkflowTile extends StatefulWidget {
   final Workflow workflow;
   final Function onUpdate;
+  final Function(EditorWorkflow workflow) onOpenEditor;
 
   const WorkflowTile({
     required this.workflow,
     required this.onUpdate,
+    required this.onOpenEditor,
     Key? key,
   }) : super(key: key);
 
@@ -24,12 +28,17 @@ class _WorkflowTileState extends State<WorkflowTile> {
   final GlobalKey _menuKey = GlobalKey();
 
   _renameWorkflow(String name) async {
-    await services.workflows.rename(widget.workflow, name);
+    await services.workflows.rename(widget.workflow.id, name);
     widget.onUpdate();
   }
 
   _deleteWorkflow() async {
-    await services.workflows.delete(widget.workflow);
+    await services.workflows.deleteOne(widget.workflow.id);
+    widget.onUpdate();
+  }
+
+  _toggleWorkflow(bool newState) async {
+    await services.workflows.toggleOne(widget.workflow.id, newState);
     widget.onUpdate();
   }
 
@@ -56,8 +65,26 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.edit),
               title: Text(AppLocalizations.of(context)!.edit),
-              // TODO - open workflow editor
-              onTap: () => {}),
+              onTap: () async {
+                Navigator.pop(context);
+                final editorWorkflow =
+                    await convertWorkflowToEditorWorkflow(widget.workflow);
+                widget.onOpenEditor(editorWorkflow);
+              }),
+        ),
+        PopupMenuItem(
+          value: "duplicate",
+          child: ListTile(
+              leading: const Icon(Icons.content_copy),
+              title: Text(AppLocalizations.of(context)!.duplicate),
+              onTap: () async {
+                Navigator.pop(context);
+                final duplicatedWorkflow =
+                    await convertWorkflowToDuplicateEditorWorkflow(
+                        widget.workflow,
+                        AppLocalizations.of(context)!.copyWorkflow);
+                widget.onOpenEditor(duplicatedWorkflow);
+              }),
         ),
         PopupMenuItem(
           value: "delete",
@@ -116,7 +143,8 @@ class _WorkflowTileState extends State<WorkflowTile> {
                           width: 32,
                           height: 32,
                         ),
-                        ...widget.workflow.reactions
+                        ...getSortedReactions(widget.workflow.reactions,
+                                widget.workflow.action.id)
                             .map((reaction) => SvgPicture.network(
                                   services
                                       .firstWhere(
@@ -132,7 +160,9 @@ class _WorkflowTileState extends State<WorkflowTile> {
                       width: 75,
                       child: Switch(
                         value: widget.workflow.active,
-                        onChanged: (bool value) {},
+                        onChanged: (bool value) {
+                          _toggleWorkflow(value);
+                        },
                       ),
                     ));
               }

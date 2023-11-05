@@ -3,7 +3,7 @@ import { RiotAPI } from "@fightmegg/riot-api";
 import parseArguments, { getFromEnv } from "../util/params";
 import { AreaBackServiceClient } from "../proto/area_back";
 import { handleRiotError, LolDataSchema, LolDataType, RiotGamesError, RiotRegionToLolRegion } from "../util/types";
-import { onReaction } from "../util/grpc";
+import { onAction } from "../util/grpc";
 
 const REFRESH_TIMEOUT = 10;
 
@@ -26,7 +26,7 @@ export default async function onLolLevelUp() {
 				});
 
 				if (newLevel !== summonerLevel) {
-					await onReaction(client, {
+					await onAction(client, {
 						name: "riot-lol-on-level-up",
 						identifier: params.identifier,
 						params: {

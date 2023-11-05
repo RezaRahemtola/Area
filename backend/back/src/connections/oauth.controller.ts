@@ -1,7 +1,9 @@
 import {
 	Controller,
 	ForbiddenException,
+	forwardRef,
 	Get,
+	Inject,
 	InternalServerErrorException,
 	Logger,
 	Param,
@@ -17,6 +19,7 @@ import { ServiceIdParamDto } from "../param-validators.dto";
 import { ConnectionsService } from "./connections.service";
 import { AuthService } from "../auth/auth.service";
 import { UsersService } from "../users/users.service";
+import { GrpcService } from "../grpc/grpc.service";
 
 @ApiTags("OAuth Callbacks")
 @Controller("connections/oauth")
@@ -29,6 +32,8 @@ export class OauthController {
 		private readonly connectionService: ConnectionsService,
 		private readonly authService: AuthService,
 		private readonly usersService: UsersService,
+		@Inject(forwardRef(() => GrpcService))
+		private readonly grpcService: GrpcService,
 	) {}
 
 	@Get("/:serviceId/callback")
@@ -66,6 +71,13 @@ export class OauthController {
 			const connection = await this.connectionService.createUserConnection(userId, serviceId, scopes, data);
 			if (!connection) throw new InternalServerErrorException("Failed to create connection");
 			this.logger.log(`Connection created for user ${userId}, redirecting to frontend...`);
+			await this.grpcService.onAction({
+				name: "area-on-account-connect",
+				identifier: `area-on-account-connect-${userId}`,
+				params: {
+					service: serviceId,
+				},
+			});
 		}
 		return response.redirect(
 			`${this.configService.getOrThrow<string>("FRONT_OAUTH_REDIRECTION_URL")}?${queryParams.toString()}`,

@@ -5,6 +5,7 @@ import 'package:area_mobile/pages/library.dart';
 import 'package:area_mobile/pages/services.dart';
 import 'package:area_mobile/pages/user.dart';
 import 'package:area_mobile/storage/index.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,8 +23,10 @@ class _LandingPageState extends State<LandingPage> {
   bool isLoggedIn = false;
   int _selectedIndex = 2;
   int libraryKey = 0;
+  int editorKey = 0;
   String locale = "en";
   String theme = "light";
+  EditorWorkflow editorWorkflow = getEmptyWorkflow();
 
   @override
   void initState() {
@@ -82,6 +85,7 @@ class _LandingPageState extends State<LandingPage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (editorWorkflow.id != null) editorWorkflow = getEmptyWorkflow();
     });
   }
 
@@ -95,7 +99,6 @@ class _LandingPageState extends State<LandingPage> {
           if (!isLoggedIn) {
             return LoginPage(
               onSuccess: _checkAuth,
-              updateTheme: widget.updateTheme,
             );
           }
           return Scaffold(
@@ -135,19 +138,36 @@ class _LandingPageState extends State<LandingPage> {
               index: _selectedIndex,
               children: <Widget>[
                 Center(
-                  child: Library(key: ValueKey(libraryKey)),
+                  child: Library(
+                    key: ValueKey(libraryKey),
+                    onOpenEditor: (EditorWorkflow workflowToOpen) async {
+                      setState(() {
+                        editorWorkflow = workflowToOpen;
+                        editorKey++;
+                        _selectedIndex = 2;
+                      });
+                    },
+                  ),
                 ),
                 const Center(
                   child: Services(),
                 ),
                 Center(
                   child: Editor(
-                    workflow: getEmptyWorkflow(),
-                    onSave: () => _onItemTapped(0),
+                    key: ValueKey(editorKey),
+                    workflow: editorWorkflow,
+                    onSave: () {
+                      setState(() {
+                        editorKey++;
+                        libraryKey++;
+                        editorWorkflow = getEmptyWorkflow();
+                      });
+                      _onItemTapped(0);
+                    },
                   ),
                 ),
                 const Center(
-                  child: Activity(),
+                  child: Activities(),
                 ),
                 Center(
                   child: User(

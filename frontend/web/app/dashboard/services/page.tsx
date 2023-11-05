@@ -85,19 +85,23 @@ const ServiceLine = ({
 };
 
 const ServicesPage = () => {
-	const [cachedServices, setCachedServices] = useAtom(servicesAtom);
+	const [, setCachedServices] = useAtom(servicesAtom);
+	const [displayedServices, setDisplayedServices] = useState<Service[]>([]);
 	const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		(async () => {
 			const fetchedServices = await services.services.getAll();
-			setCachedServices(fetchedServices.data ?? []);
+			const result = fetchedServices.data ?? [];
+			setCachedServices(result);
+			setDisplayedServices(result);
 		})();
 	}, []);
 
 	return (
-		<DashboardPageWrapper title="Services">
-			{cachedServices.map((service) => (
+		<DashboardPageWrapper title={t("services.title")}>
+			{displayedServices.map((service) => (
 				<ServiceLine
 					service={service}
 					selectedServiceId={selectedServiceId}

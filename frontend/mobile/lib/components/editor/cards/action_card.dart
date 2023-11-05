@@ -8,11 +8,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
 class EditorActionCard extends StatefulWidget {
+  final String? workflowId;
   final EditorWorkflowAction action;
   final Function(EditorWorkflowAction updatedAction) onUpdate;
 
   const EditorActionCard(
-      {super.key, required this.action, required this.onUpdate});
+      {super.key,
+      required this.workflowId,
+      required this.action,
+      required this.onUpdate});
 
   @override
   State<EditorActionCard> createState() => _EditorActionCardState();
@@ -20,12 +24,15 @@ class EditorActionCard extends StatefulWidget {
 
 class _EditorActionCardState extends State<EditorActionCard> {
   late EditorWorkflowAction action;
-  EditorWorkflowStep step = EditorWorkflowStep.service;
+  late EditorWorkflowStep step;
 
   @override
   void initState() {
     super.initState();
     action = widget.action;
+    step = widget.workflowId != null
+        ? EditorWorkflowStep.parameters
+        : EditorWorkflowStep.service;
   }
 
   @override
@@ -102,8 +109,11 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                         .map((param) => AreaParameterWithValue(
                                             name: param.name,
                                             type: param.type,
-                                            required: param.required))
-                                        .toList());
+                                            required: param.required,
+                                            values: param.values))
+                                        .toList(),
+                                    returnParameters:
+                                        selectedArea.parametersReturnFlow);
                               });
                               widget.onUpdate(action);
                             }

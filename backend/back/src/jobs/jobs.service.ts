@@ -10,7 +10,10 @@ import { Repository } from "typeorm";
 import { AuthenticatedJobData, JobData } from "../grpc/grpc.dto";
 import { RuntimeException } from "@nestjs/core/errors/exceptions";
 import { ConnectionsService } from "../connections/connections.service";
-import { uniqBy } from "lodash";
+import { partition, uniq, uniqBy } from "lodash";
+import { AREAS_WITHOUT_GRPC } from "./jobs.dto";
+import { BackJobsService } from "./back-jobs.service";
+import Workflow from "../workflows/entities/workflow.entity";
 
 @Injectable()
 export class JobsService {
@@ -21,6 +24,7 @@ export class JobsService {
 		@Inject(forwardRef(() => GrpcService)) private readonly grpcService: GrpcService,
 		@Inject(forwardRef(() => WorkflowsService)) private readonly workflowsService: WorkflowsService,
 		@InjectRepository(WorkflowArea) private readonly workflowAreaRepository: Repository<WorkflowArea>,
+		private readonly backJobsService: BackJobsService,
 	) {}
 
 	getJobName(areaServiceId: string, areaId: string): JobsType {
@@ -61,9 +65,13 @@ export class JobsService {
 		);
 	}
 
-	async getReactionsForJob(jobId: string): Promise<AuthenticatedJobData[]> {
+	async getReactionsForJob(jobId: string, active?: boolean): Promise<AuthenticatedJobData[]> {
+		if (active !== undefined) this.logger.log(`The workflows need to be ${active ? "active" : "inactive"}`);
 		const jobs = await this.workflowAreaRepository.find({
-			where: { jobId },
+			where: [
+				{ jobId, actionOfWorkflow: { active } },
+				{ jobId, workflow: { active } },
+			],
 			relations: { nextWorkflowReactions: { area: true }, workflow: true, actionOfWorkflow: true },
 		});
 		const nextJobs = await Promise.all(
@@ -89,7 +97,16 @@ export class JobsService {
 		return reactionJobs;
 	}
 
-	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams["mappings"][TJobs]> {
+	async getWorkflowOwnersForAction(jobId: string, active?: boolean): Promise<string[]> {
+		const jobs = await this.workflowAreaRepository.find({
+			where: { jobId, actionOfWorkflow: { active } },
+			relations: { actionOfWorkflow: true },
+		});
+		const owners = jobs.map((job) => job.actionOfWorkflow.ownerId);
+		return uniq(owners);
+	}
+
+	async convertParams<TJobs extends JobsType>(job: JobsType, params: unknown): Promise<JobsParams[TJobs]> {
 		const data = plainToInstance<object, unknown>(JobParamsClasses[job], params);
 		let errors = [];
 
@@ -109,14 +126,15 @@ export class JobsService {
 			const message = Object.values(errors[0].constraints)[0] as string;
 			throw new BadRequestException(`Invalid job parameters: ${message}`);
 		}
-		return data as JobsParams["mappings"][TJobs];
+		return data as JobsParams[TJobs];
 	}
 
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
 		const uniqueJobs = uniqBy(jobs, (job) => job.identifier);
+		const [backJobs, grpcJobs] = partition(uniqueJobs, (job) => AREAS_WITHOUT_GRPC.includes(job.name as JobsType));
 
 		this.logger.log(`Launching ${uniqueJobs.length} jobs`);
-		for (const job of uniqueJobs) {
+		for (const job of grpcJobs) {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType, job.params);
 			const response = await this.grpcService.launchJob(jobType, params, job.auth);
@@ -125,6 +143,9 @@ export class JobsService {
 				// TODO: Error handling in db & front
 				throw new RuntimeException(`Error while launching job: ${response.error.message}`);
 			}
+		}
+		for (const job of backJobs) {
+			await this.backJobsService.executeBackJob(job);
 		}
 	}
 
@@ -143,7 +164,7 @@ export class JobsService {
 	}
 
 	async launchNextJob(data: JobData): Promise<void> {
-		const jobs = await this.getReactionsForJob(data.identifier);
+		const jobs = await this.getReactionsForJob(data.identifier, true);
 		this.logger.log(`Launching next ${jobs.length} jobs for job ${data.identifier}`);
 		for (const job of jobs) {
 			job.params = this.replaceParamsInJob(data.params, job.params);
@@ -151,27 +172,21 @@ export class JobsService {
 		await this.launchJobs(jobs);
 	}
 
-	async launchWorkflowAction(workflowId: string, ownerId: string) {
-		const { action } = await this.workflowsService.getWorkflowWithAreas(workflowId, undefined, true);
-		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
+	async launchWorkflowAction({ action, id }: Workflow, ownerId: string) {
+		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.area.serviceId);
 
 		const job: AuthenticatedJobData = {
-			name: this.getJobName(action.areaServiceId, action.areaId),
+			name: this.getJobName(action.area.serviceId, action.area.id),
 			identifier: action.jobId,
 			params: action.parameters,
 			auth: connection?.data ?? {},
 		};
-		this.logger.log(`Launching workflow action job ${job.identifier} for workflow ${workflowId}`);
+		this.logger.log(`Launching workflow action job ${job.identifier} for workflow ${id}`);
 		await this.launchJobs([job]);
 	}
 
-	async stopWorkflowActionIfNecessary(workflowId: string) {
-		const workflowAction = await this.workflowAreaRepository.findOne({
-			where: { actionOfWorkflow: { id: workflowId } },
-			relations: { actionOfWorkflow: true },
-		});
-
-		return this.stopJobIdIfNecessary(workflowAction.jobId);
+	async stopWorkflowActionIfNecessary({ action: { jobId } }: Workflow) {
+		return this.stopJobIdIfNecessary(jobId);
 	}
 
 	async stopJobIdIfNecessary(jobId: string) {

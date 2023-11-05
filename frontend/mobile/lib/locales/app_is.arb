@@ -29,6 +29,8 @@
     "back": "Fyrri",
     "rename": "Endurnefna",
     "edit": "Til að breyta",
+    "duplicate": "Afrit",
+    "copyWorkflow": "Afrita",
     "delete": "EYÐA",
     "editorActionDescription": "Atburður sem ræsir vinnuflæðið þitt",
     "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst",
@@ -42,5 +44,10 @@
     "accountAlreadyConnected": "Reikningur þegar tengdur",
     "noWorkflows": "Engin verkflæði fundust",
     "noActions": "Engin aðgerð möguleg fyrir þessa þjónustu",
-    "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu"
+    "noReactions": "Engin viðbrögð möguleg fyrir þessa þjónustu",
+    "noActivity": "Engin starfsemi",
+    "page": "Bls {number}",
+    "returnParameters": "Eftirfarandi gögn eru skilað af þessu svæði og hægt er að nota þau á því næsta:",
+    "ran": "byrjaði: ",
+    "errorOn": "Villa:  "
 }

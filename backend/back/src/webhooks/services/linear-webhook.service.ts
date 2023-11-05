@@ -3,12 +3,11 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { ConfigService } from "@nestjs/config";
 import { GrpcService } from "../../grpc/grpc.service";
 
-type LinearBodyActions = "create";
+type LinearBodyActions = "create" | "update";
 
 type LinearBaseBody = {
 	action: LinearBodyActions;
 	createdAt: string;
-	organizationId: string;
 	url: string;
 };
 
@@ -33,7 +32,31 @@ type LinearIssueBody = LinearBaseBody & {
 	};
 };
 
-type LinearWebhookBody = LinearIssueBody;
+type LinearProjectBody = LinearBaseBody & {
+	type: "Project";
+	data: {
+		name: string;
+		description: string;
+		state: string;
+		startDate: string;
+		targetDate: string;
+	};
+};
+
+type LinearCommentBody = LinearBaseBody & {
+	type: "Comment";
+	data: {
+		body: string;
+		issue: {
+			name: string;
+		};
+		user: {
+			name: string;
+		};
+	};
+};
+
+type LinearWebhookBody = LinearIssueBody | LinearProjectBody | LinearCommentBody;
 
 @Injectable()
 export class LinearWebhookService {
@@ -57,6 +80,28 @@ export class LinearWebhookService {
 		switch (body.action) {
 			case "create":
 				return "linear-on-issue-create";
+			case "update":
+				return "linear-on-issue-update";
+			default:
+				return null;
+		}
+	}
+
+	getProjectAction(body: LinearProjectBody): string | null {
+		switch (body.action) {
+			case "create":
+				return "linear-on-project-create";
+			case "update":
+				return "linear-on-project-update";
+			default:
+				return null;
+		}
+	}
+
+	getCommentAction(body: LinearCommentBody): string | null {
+		switch (body.action) {
+			case "create":
+				return "linear-on-comment-create";
 			default:
 				return null;
 		}
@@ -98,6 +143,42 @@ export class LinearWebhookService {
 							cycleName: body.data.cycle?.name,
 							cycleNumber: body.data.cycle?.number,
 							state: body.data.state?.name,
+						},
+					});
+				}
+				break;
+
+			case "Project":
+				action = this.getProjectAction(body);
+				if (action) {
+					await this.grpcService.onAction({
+						name: action,
+						identifier: this.identifierFromRepo(action, this.getWorkspace(body.url)),
+						params: {
+							url: body.url,
+							name: body.data.name,
+							description: body.data.description,
+							createdAt: body.createdAt,
+							state: body.data.state,
+							startDate: body.data.startDate,
+							targetDate: body.data.targetDate,
+						},
+					});
+				}
+				break;
+
+			case "Comment":
+				action = this.getCommentAction(body);
+				if (action) {
+					await this.grpcService.onAction({
+						name: action,
+						identifier: this.identifierFromRepo(action, this.getWorkspace(body.url)),
+						params: {
+							url: body.url,
+							body: body.data.body,
+							createdAt: body.createdAt,
+							issue: body.data.issue.name,
+							author: body.data.user.name,
 						},
 					});
 				}

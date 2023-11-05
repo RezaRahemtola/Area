@@ -45,11 +45,15 @@ const PricingPlanCard = ({ name, price, features, isPopular = false }: PricingPl
 			</ul>
 		</div>
 		<div className="mt-6">
-			<button
-				className={`btn w-full ${isPopular ? "btn-secondary bg-gradient-to-r from-secondary/75 to-secondary/100" : ""}`}
-			>
-				Get Started
-			</button>
+			<a href={`https://www.paypal.com/paypalme/PoCInnovation/${price}`} target="_blank">
+				<button
+					className={`btn w-full ${
+						isPopular ? "btn-secondary bg-gradient-to-r from-secondary/75 to-secondary/100" : ""
+					}`}
+				>
+					Get Started
+				</button>
+			</a>
 		</div>
 	</div>
 );

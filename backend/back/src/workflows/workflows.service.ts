@@ -20,8 +20,11 @@ import { JobsService } from "../jobs/jobs.service";
 import { JobParamsClasses, JobsType } from "../types/jobs";
 import { ConnectionsService } from "../connections/connections.service";
 import { ServiceName, ServicesService } from "../services/services.service";
-import { UniqueJobParams } from "../types/jobParams";
+import { OwnerJobParams, OwnerUniqueJobParams, UniqueJobParams } from "../types/jobParams";
 import { plainToInstance } from "class-transformer";
+import { GrpcService } from "../grpc/grpc.service";
+import ActivityLog from "../activity/entities/activity-log.entity";
+import { WorkflowSummaryDto } from "./dto/workflow-summary.dto";
 
 @Injectable()
 export class WorkflowsService {
@@ -34,11 +37,42 @@ export class WorkflowsService {
 		private readonly workflowAreaRepository: Repository<WorkflowArea>,
 		@InjectRepository(Area)
 		private readonly areaRepository: Repository<Area>,
+		@InjectRepository(ActivityLog)
+		private readonly activityRepository: Repository<ActivityLog>,
 		@Inject(forwardRef(() => JobsService))
 		private readonly jobsService: JobsService,
+		@Inject(forwardRef(() => GrpcService))
+		private readonly grpcService: GrpcService,
 		private readonly connectionsService: ConnectionsService,
 		private readonly servicesService: ServicesService,
 	) {}
+
+	async getWorkflowsSummary(ownerId: string): Promise<WorkflowSummaryDto> {
+		const workflowRuns = await this.activityRepository.count({
+			where: { type: "ran", workflow: { ownerId } },
+			relations: { workflow: true },
+		});
+		const workflowErrors = await this.activityRepository.count({
+			where: { type: "error", workflow: { ownerId } },
+			relations: { workflow: true },
+		});
+		const workflows = await this.workflowRepository.countBy({ ownerId });
+		const activeWorkflows = await this.workflowRepository.countBy({ ownerId, active: true });
+
+		return {
+			workflowRuns,
+			workflowErrors,
+			workflows,
+			activeWorkflows,
+		};
+	}
+
+	async getWorkflowByNameAndOwner(name: string, ownerId: string) {
+		return this.workflowRepository.findOneBy({
+			name,
+			ownerId,
+		});
+	}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
 		this.logger.log(`Getting workflow ${id}...`);
@@ -173,7 +207,7 @@ export class WorkflowsService {
 				throw new NotFoundException(`User ${ownerId} not found.`);
 			}
 
-			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
+			let workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
 
 			const actionToSave = await this.createWorkflowArea(queryRunner, ownerId, action, workflow, true);
@@ -184,14 +218,25 @@ export class WorkflowsService {
 				reactions,
 				workflow,
 			);
-			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
-			await queryRunner.commitTransaction();
+			workflow = await queryRunner.manager.save(Workflow, {
+				...workflow,
+				action: actionToSave,
+				reactions: reactionsToSave,
+			});
 
 			if (workflow.active) {
 				this.logger.log(`Launching workflow ${id}'s action...`);
-				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
+				await this.jobsService.launchWorkflowAction(workflow, ownerId);
 			}
 			this.logger.log(`Created workflow ${id} owned by ${ownerId}.`);
+			await this.grpcService.onAction({
+				name: "area-on-workflow-create",
+				identifier: `area-on-workflow-create-${ownerId}`,
+				params: {
+					name,
+				},
+			});
+			await queryRunner.commitTransaction();
 			return {
 				id,
 			};
@@ -287,37 +332,34 @@ export class WorkflowsService {
 		}
 	}
 
-	async toggleWorkflows(workflows: string[], newState: boolean, ownerId: string) {
-		this.logger.log(`Toggling ${workflows.length} workflows to ${newState}`);
-		const { affected } = await this.workflowRepository.update(
-			{
-				id: In(workflows),
-				active: !newState,
-				ownerId,
-			},
-			{ active: () => `${newState}` },
-		);
-		if (newState) {
-			this.logger.log(`Launching ${workflows.length} workflows...`);
-			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId, ownerId)));
-		} else {
-			this.logger.log(`Stopping ${workflows.length} workflows...`);
-			await Promise.all(workflows.map((workflowId) => this.jobsService.stopWorkflowActionIfNecessary(workflowId)));
-		}
-		return affected > 0;
+	async toggleWorkflows(workflowIds: string[], newState: boolean, ownerId: string) {
+		this.logger.log(`Toggling ${workflowIds.length} workflows to ${newState}`);
+		await Promise.all(workflowIds.map((workflowId) => this.toggleWorkflow(workflowId, newState, ownerId)));
+		this.logger.log(`Toggled ${workflowIds.length} workflows to ${newState}`);
+		return true;
 	}
 
 	async toggleWorkflow(workflowId: string, newState: boolean, ownerId: string) {
 		this.logger.log(`Toggling workflow ${workflowId}...`);
-		const workflow = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
+		const workflow = await this.workflowRepository.findOne({
+			where: { id: workflowId, ownerId },
+			relations: { action: { area: true } },
+		});
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		await this.workflowRepository.update(workflowId, { active: newState });
 		if (!newState) {
 			this.logger.log(`Stopping workflow ${workflowId}...`);
-			await this.jobsService.stopWorkflowActionIfNecessary(workflowId);
+			await this.jobsService.stopWorkflowActionIfNecessary(workflow);
 		} else {
 			this.logger.log(`Launching workflow ${workflowId}...`);
-			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
+			await this.jobsService.launchWorkflowAction(workflow, ownerId);
+			await this.grpcService.onAction({
+				name: "area-on-workflow-toggle",
+				identifier: `area-on-workflow-toggle-${ownerId}`,
+				params: {
+					name: workflow.name,
+				},
+			});
 		}
 		this.logger.log(`Toggled workflow ${workflowId} to ${newState}`);
 		return { newState };
@@ -422,8 +464,12 @@ export class WorkflowsService {
 			);
 		}
 		const jobType = `${areaServiceId}-${areaId}`;
-		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof UniqueJobParams) {
+		const paramsInstance = plainToInstance(JobParamsClasses[jobType], parameters);
+		if (paramsInstance instanceof UniqueJobParams) {
 			parameters.workflowStepId = id;
+		}
+		if (paramsInstance instanceof OwnerJobParams || paramsInstance instanceof OwnerUniqueJobParams) {
+			parameters.ownerId = userId;
 		}
 		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {
 			throw new BadRequestException(`Invalid parameters for workflow area ${id} (${jobType}): ${err.message}`);

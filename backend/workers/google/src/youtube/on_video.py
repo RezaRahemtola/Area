@@ -67,7 +67,7 @@ def on_video():
                         "createdAt": last_video["createdAt"],
                         "url": last_video["url"]
                     })
-                    AreaBackServiceStub(channel).OnReaction(JobData(name="google-on-new-video", identifier=args["identifier"], params=params))
+                    AreaBackServiceStub(channel).OnAction(JobData(name="google-on-new-video", identifier=args["identifier"], params=params))
                 first_video = last_video
 
     except Exception as e:
