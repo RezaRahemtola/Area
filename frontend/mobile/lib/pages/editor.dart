@@ -119,8 +119,10 @@ class _EditorState extends State<Editor> {
                   late ServiceReturn<int> response;
                   if (workflow.id != null) {
                     response = await services.workflows.update(workflow);
-                    await services.workflows
-                        .toggleOne(workflow.id!, workflow.active);
+                    if (response.error == null) {
+                      await services.workflows
+                          .toggleOne(workflow.id!, workflow.active);
+                    }
                   } else {
                     response = await services.workflows.create(workflow);
                   }

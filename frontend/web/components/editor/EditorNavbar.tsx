@@ -21,7 +21,7 @@ const EditorNavbar = ({ isAuthenticated }: EditorNavbarProps) => {
 		let response;
 		if (workflow.id !== undefined) {
 			response = await services.workflows.update({ ...workflow, id: workflow.id });
-			await services.workflows.toggleOne(workflow.id, workflow.active);
+			if (!response.error) await services.workflows.toggleOne(workflow.id, workflow.active);
 		} else {
 			response = await services.workflows.create(workflow);
 		}
