@@ -131,4 +131,15 @@
 
     "create-issue": "Búðu til tölublað",
     "create-issue-sub": "Bjó til mál á línulegu vinnusvæðinu",
+
+    "on-commit": "við skuldbindum okkur",
+    "on-commit-sub": "Kemur af stað þegar skuldbindingu er ýtt á Gitlab verkefni",
+    "on-pull-request-close": "á draga beiðni loka",
+    "on-pull-request-close-sub": "Kemur af stað þegar sameiningarbeiðni er lokað á Gitlab verkefni",
+    "on-pull-request-create": "á draga beiðni búa til",
+    "on-pull-request-create-sub": "Kemur af stað þegar sameiningarbeiðni er búin til í Gitlab verkefni",
+    "on-pull-request-merge": "á pull beiðni sameiningu",
+    "on-pull-request-merge-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
+    "on-pull-request-reopen": "á pull beiðni opna aftur",
+    "on-pull-request-reopen-sub": "Kemur af stað þegar sameiningarbeiðni er sameinuð í Gitlab verkefni",
 }

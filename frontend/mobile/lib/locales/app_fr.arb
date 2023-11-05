@@ -131,4 +131,15 @@
 
     "create-issue": "Créer une Issue",
     "create-issue-sub": "Créé une issue sur le workspace Linéar",
+
+    "on-commit": "En cas de commit",
+    "on-commit-sub": "Se déclenche lorsqu'un commit est poussé sur un projet Gitlab",
+    "on-pull-request-close": "En cas de fermeture d'une demande d'extraction",
+    "on-pull-request-close-sub": "Déclenche la fermeture d'une Pull Request sur un projet Gitlab",
+    "on-pull-request-create": "lors de la création d'une Pull Request",
+    "on-pull-request-create-sub": "Déclenche la création d'une Pull Request sur un projet Gitlab",
+    "on-pull-request-merge": "En cas de Pull Request",
+    "on-pull-request-merge-sub": "Déclenche la fusion d'une Pull Request sur un projet Gitlab",
+    "on-pull-request-reopen": "En cas de réouverture d'une Pull Request",
+    "on-pull-request-reopen-sub": "Déclenche la fusion d'une Pull Request sur un projet Gitlab.",
 }
