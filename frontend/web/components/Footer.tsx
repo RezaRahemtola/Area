@@ -3,7 +3,7 @@ import FontAwesomeIcon from "@/components/FontAwesomeIcon";
 import ApkDownloadButton from "@/components/ApkDownloadButton";
 
 const Footer = () => (
-	<footer className="footer p-10 bg-primary text-primary-content">
+	<footer className="footer p-10 bg-neutral text-primary-content">
 		<aside>
 			<Image src="/logo.png" alt="Area logo" width={50} height={50} />
 			<p>

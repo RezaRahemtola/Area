@@ -20,7 +20,7 @@ const EditorPage = () => {
 	}, []);
 
 	return (
-		<div className="bg-neutral text-neutral-content min-h-screen  w-screen justify-center items-center">
+		<div className="bg-primary text-neutral-content min-h-screen  w-screen justify-center items-center">
 			<div className="pt-7">
 				<EditorCards />
 			</div>
