@@ -55,27 +55,27 @@
     "on-new-video": "On new video",
     "on-new-video-sub": "Triggers when an video is uploaded on a Youtube channel",
 
-    "send-email": "send email"
-    "create-draft-email": "create draft email"
-    "update-signature-email": "update signature email"
-    "create-comment-youtube": "create comment youtube"
-    "create-document-docs": "create document docs"
-    "create-presentation": "create presentation"
-    "create-spreadsheet": "create spreadsheet"
-    "create-form": "create form"
-    "create-contact": "create contact"
-    "create-task-list": "create task list"
-    "create-course": "create course"
-    "create-calendar": "create calendar"
-    "create-drive-folder": "create drive folder"
-    "duplicate-drive-file": "duplicate drive file"
-    "form-add-youtube-item": "form add youtube item"
-    "create-slide-on-presentation": "create slide on presentation"
-    "create-shared-drive": "create shared drive"
-    "change-gmail-interface-language": "change gmail interface language"
-    "form-update-description": "form update description"
-    "form-convert-to-quiz": "form convert to quiz"
-    "update-spreadsheet-title": "update spreadsheet title"
+    "send-email": "send email",
+    "create-draft-email": "create draft email",
+    "update-signature-email": "update signature email",
+    "create-comment-youtube": "create comment youtube",
+    "create-document-docs": "create document docs",
+    "create-presentation": "create presentation",
+    "create-spreadsheet": "create spreadsheet",
+    "create-form": "create form",
+    "create-contact": "create contact",
+    "create-task-list": "create task list",
+    "create-course": "create course",
+    "create-calendar": "create calendar",
+    "create-drive-folder": "create drive folder",
+    "duplicate-drive-file": "duplicate drive file",
+    "form-add-youtube-item": "form add youtube item",
+    "create-slide-on-presentation": "create slide on presentation",
+    "create-shared-drive": "create shared drive",
+    "change-gmail-interface-language": "change gmail interface language",
+    "form-update-description": "form update description",
+    "form-convert-to-quiz": "form convert to quiz",
+    "update-spreadsheet-title": "update spreadsheet title",
 
     "send-email-sub": "Send an email with Google GMAIL",
     "create-draft-email-sub": "Create a draft email with Gmail",
@@ -100,23 +100,23 @@
     "update-spreadsheet-title-sub": "Update a Google Spreadsheet title",
 
     "create-post": "Creates a post",
-    "create-post-sub": "Creates a new LinkedIn post"
+    "create-post-sub": "Creates a new LinkedIn post",
 
 
     "on-pull-request-merge": "on pull request merge",
-    "on-pull-request-merge-sub": Triggers when a pull request is merged on a Github repository,
+    "on-pull-request-merge-sub": "Triggers when a pull request is merged on a Github repository",
     "on-pull-request-create": "on pull request create",
-    "on-pull-request-create-sub": Triggers when a pull request is created on a Github repository,
+    "on-pull-request-create-sub": "Triggers when a pull request is created on a Github repository",
     "on-pull-request-close": "on pull request close",
-    "on-pull-request-close-sub": Triggers when a pull request is closed on a Github repository,
+    "on-pull-request-close-sub": "Triggers when a pull request is closed on a Github repository",
     "on-commit": "on commit",
-    "on-commit-sub": Triggers when an commit is pushed on a Github repository,
+    "on-commit-sub": "Triggers when an commit is pushed on a Github repository",
     "on-issue-reopen": "on issue reopen",
-    "on-issue-reopen-sub": Triggers when an issue is reopened on a Github repository,
+    "on-issue-reopen-sub": "Triggers when an issue is reopened on a Github repository",
     "on-issue-close": "on issue close",
-    "on-issue-close-sub": Triggers when an issue is closed on a Github repository,
+    "on-issue-close-sub": "Triggers when an issue is closed on a Github repository",
     "on-issue-create": "on issue create",
-    "on-issue-create-sub": Triggers when an issue is created on a Github repository,
+    "on-issue-create-sub": "Triggers when an issue is created on a Github repository",
 
     "create-issue": "create issue",
     "create-issue-sub": "Creates an issue on a Github repository",
