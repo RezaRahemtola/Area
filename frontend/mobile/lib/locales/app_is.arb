@@ -183,4 +183,17 @@
 
     "on-guild-join": "Þegar þú ferð inn á netþjón",
     "on-guild-join-sub": "Ræst þegar notandi tengist discord netþjóni.",
+
+    "on-action": "Ef um aðgerð er að ræða",
+    "on-action-sub": "Kveikir þegar verkflæðisaðgerð er ræst.",
+    "on-account-connect": "Ef um tengingu er að ræða",
+    "on-account-connect-sub": "Virkar þegar nýr OAuth reikningur er tengdur",
+    "on-workflow-create": "Að búa til verkflæði",
+    "on-workflow-create-sub": "Kveikir þegar nýtt verkflæði er búið til",
+    "on-workflow-toggle": "Ef virkjun á verkflæði",
+    "on-workflow-toggle-sub": "Virkar þegar verkflæði er virkjað",
+    "disable-workflow": "Slökktu á verkflæði",
+    "disable-workflow-sub": "Slökktu á verkflæði",
+    "enable-workflow": "Virkjaðu verkflæði",
+    "enable-workflow-sub": "Virkjaðu verkflæði",
 }
