@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-String getLocalizedString(String key, BuildContext context) {
+String getAreaTrad(String key, BuildContext context) {
   switch (key) {
     case "on_new_video":
       return AppLocalizations.of(context)!.on_new_video;
