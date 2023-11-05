@@ -28,7 +28,7 @@ import {
 import ConnectDto from "./dto/oauth.dto";
 import { OauthService } from "./oauth.service";
 import { ServiceIdParamDto } from "../param-validators.dto";
-import { ServicesService } from "src/services/services.service";
+import { ServicesService } from "../services/services.service";
 
 @ApiTags("OAuth Connections")
 @ApiProduces("application/json")

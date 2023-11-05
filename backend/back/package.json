@@ -17,13 +17,18 @@
     "migration:show": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:show -d src/database.ts",
     "migration:revert": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:revert -d src/database.ts",
     "schema:drop": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm schema:drop -d src/database.ts",
+    "test:migration:run": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:run -d test/database.ts",
+    "test:migration:generate": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:generate -d test/database.ts",
+    "test:migration:show": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:show -d test/database.ts",
+    "test:migration:revert": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm migration:revert -d test/database.ts",
+    "test:schema:drop": "infisical run --path=/backend/back -- yarn typeorm-ts-node-esm schema:drop -d test/database.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --passWithNoTests --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config test/jest-e2e.json"
+    "test:e2e": "jest --config test/jest-e2e.json --coverage"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.5",
