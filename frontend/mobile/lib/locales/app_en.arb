@@ -133,4 +133,15 @@
 
     "create-issue": "Create issue",
     "create-issue-sub": "Create an issue on a Linear workspace",
+
+    "on-commit": "on commit",
+    "on-commit-sub": "Triggers when an commit is pushed on a Gitlab project",
+    "on-pull-request-close": "on pull request close",
+    "on-pull-request-close-sub": "Triggers when a merge request is closed on a Gitlab project",
+    "on-pull-request-create": "on pull request create",
+    "on-pull-request-create-sub": "Triggers when a merge request is created on a Gitlab project",
+    "on-pull-request-merge": "on pull request merge",
+    "on-pull-request-merge-sub": "Triggers when a merge request is merged on a Gitlab project",
+    "on-pull-request-reopen": "on pull request reopen",
+    "on-pull-request-reopen-sub": "Triggers when a merge request is merged on a Gitlab project",
 }
