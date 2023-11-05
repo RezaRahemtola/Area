@@ -81,6 +81,7 @@ import { CreateTwitterCreateTweetReaction1699115775099 } from "./workflows/seed/
 import { ChangeRiotLogoToSvg1699116526789 } from "./services/seed/1699116526789-ChangeRiotLogoToSvg";
 import { CreateOutlookSendEmailReaction1699126617355 } from "./workflows/seed/1699126617355-CreateOutlookSendEmailReaction";
 import { CreateSlackCreateMessageReaction1699131357051 } from "./workflows/seed/1699131357051-CreateSlackCreateMessageReaction";
+import { CreateDiscordOnGuildJoinAction1699140593736 } from "./workflows/seed/1699140593736-CreateDiscordOnGuildJoinAction";
 
 dotenv.config();
 
@@ -165,6 +166,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		ChangeRiotLogoToSvg1699116526789,
 		CreateOutlookSendEmailReaction1699126617355,
 		CreateSlackCreateMessageReaction1699131357051,
+		CreateDiscordOnGuildJoinAction1699140593736,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
