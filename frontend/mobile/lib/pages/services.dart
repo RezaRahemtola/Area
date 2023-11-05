@@ -1,5 +1,6 @@
 import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/components/services/service_card.dart';
+import 'package:area_mobile/components/trad.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/services/services/areas.dart';
 import 'package:area_mobile/types/services.dart';
@@ -157,8 +158,14 @@ class ActionOrReactionItem extends StatelessWidget {
     return Card(
         elevation: 8,
         child: ListTile(
-          title: Text(item.id),
-          subtitle: Text(item.description),
+          title: Text(getAreaTrad(item.id.replaceAll("-", "_"), context) == ""
+              ? item.id
+              : getAreaTrad(item.id.replaceAll("-", "_"), context)),
+          subtitle: Text(
+              getAreaTrad("${item.id.replaceAll("-", "_")}_sub", context) == ""
+                  ? item.description
+                  : getAreaTrad(
+                      "${item.id.replaceAll("-", "_")}_sub", context)),
           // Add more information if needed
         ));
   }
