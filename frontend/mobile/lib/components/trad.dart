@@ -227,6 +227,12 @@ String getAreaTrad(String key, BuildContext context) {
       return AppLocalizations.of(context)!.enable_workflow;
     case "enable_workflow_sub":
       return AppLocalizations.of(context)!.enable_workflow_sub;
+    case "auto":
+      return AppLocalizations.of(context)!.auto;
+    case "dark":
+      return AppLocalizations.of(context)!.dark;
+    case "light":
+      return AppLocalizations.of(context)!.light;
   }
   return "";
 }

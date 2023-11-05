@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/trad.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/me.dart';
@@ -121,7 +122,7 @@ class _UserHero extends State<User> {
                               ].map((String theme) {
                                 return DropdownMenuItem<String>(
                                   value: theme,
-                                  child: Text(theme),
+                                  child: Text(getAreaTrad(theme, context)),
                                 );
                               }).toList(),
                               onChanged: (value) {
