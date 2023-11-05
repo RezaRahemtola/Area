@@ -99,7 +99,7 @@
     "update-spreadsheet-title-sub": "Uppfærir titil á Google töflureiknie",
 
     "create-post": "Búðu til færslu",
-    "create-post-sub": "Búðu til nýja LinkedIn færslu"
+    "create-post-sub": "Búðu til nýja LinkedIn færslu",
 
     "on-pull-request-merge": "á pull beiðni sameiningu",
     "on-pull-request-merge-sub": "riggar þegar dragbeiðni er sameinuð á Github geymslu",
