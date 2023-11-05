@@ -7,27 +7,18 @@ import { onError, onReaction } from "../util/grpc";
 import parseArguments, { LinearAuthSchema } from "../util/params";
 import { LinearErrorData } from "../util/types";
 
-const PriorityArray = ["Urgent", "High", "Medium", "Low"];
-
-const CreateIssueSchema = z.object({
+const CreateProjectSchema = z.object({
 	auth: LinearAuthSchema,
 	target: z.string().optional(),
 	identifier: z.string(),
 	workflowStepId: z.string(),
-	title: z.string(),
+	name: z.string(),
 	description: z.string().optional(),
-	estimate: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().nonnegative()).optional(),
-	priority: z
-		.preprocess((a) => {
-			const priority = z.string().parse(a);
-			return PriorityArray.indexOf(priority) + 1;
-		}, z.number().min(1).max(4))
-		.optional(),
 });
-type CreateIssueType = z.infer<typeof CreateIssueSchema>;
+type CreateProjectType = z.infer<typeof CreateProjectSchema>;
 
-export default async function createIssue() {
-	const params = parseArguments<CreateIssueType>(CreateIssueSchema);
+export default async function createProject() {
+	const params = parseArguments<CreateProjectType>(CreateProjectSchema);
 	const client = new AreaBackServiceClient(params.target ?? "localhost:50050", credentials.createInsecure());
 
 	try {
@@ -36,20 +27,18 @@ export default async function createIssue() {
 		});
 		const teams = await linearClient.teams();
 
-		const res = await linearClient.createIssue({
-			teamId: teams.nodes[0]!.id,
-			title: params.title,
+		const res = await linearClient.createProject({
+			teamIds: teams.nodes.map((t) => t.id),
+			name: params.name,
 			description: params.description,
-			estimate: params.estimate,
-			priority: params.priority,
 		});
-		const issue = await res.issue;
+		const project = await res.project;
 		await onReaction(client, {
-			name: "linear-create-issue",
+			name: "linear-create-project",
 			identifier: params.identifier,
 			params: {
 				workflowStepId: params.workflowStepId,
-				url: issue?.url,
+				url: project?.url,
 			},
 		});
 	} catch (e) {

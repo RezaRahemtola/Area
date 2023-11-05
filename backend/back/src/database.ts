@@ -88,6 +88,7 @@ import { CreateAreaOnActionAction1699145276143 } from "./workflows/seed/16991452
 import { CreateDiscordNewActions1699165196600 } from "./workflows/seed/1699165196600-CreateDiscordNewActions";
 import { CreateAreaAreas1699152935342 } from "./workflows/seed/1699152935342-CreateAreaAreas";
 import { FixAddScopeToLinearOnIssueCreate1699190007820 } from "./workflows/seed/1699190007820-FixAddScopeToLinearOnIssueCreate";
+import { CreateLinearProjectCommentAREAs1699202040386 } from "./workflows/seed/1699202040386-CreateLinearProjectCommentAREAs";
 
 dotenv.config();
 
@@ -179,6 +180,7 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateDiscordNewActions1699165196600,
 		CreateAreaAreas1699152935342,
 		FixAddScopeToLinearOnIssueCreate1699190007820,
+		CreateLinearProjectCommentAREAs1699202040386,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
