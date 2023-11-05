@@ -96,9 +96,9 @@ export class JobsService {
 		return reactionJobs;
 	}
 
-	async getWorkflowOwnersForJob(jobId: string): Promise<string[]> {
+	async getWorkflowOwnersForAction(jobId: string, active?: boolean): Promise<string[]> {
 		const jobs = await this.workflowAreaRepository.find({
-			where: { jobId },
+			where: { jobId, actionOfWorkflow: { active } },
 			relations: { actionOfWorkflow: true },
 		});
 		const owners = jobs.map((job) => job.actionOfWorkflow.ownerId);

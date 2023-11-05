@@ -7,7 +7,7 @@ import { onError, onReaction } from "../util/grpc";
 import parseArguments, { LinearAuthSchema } from "../util/params";
 import { LinearErrorData } from "../util/types";
 
-const PriorityArray = ["Low", "Medium", "High", "Urgent"];
+const PriorityArray = ["Urgent", "High", "Medium", "Low"];
 
 const CreateIssueSchema = z.object({
 	auth: LinearAuthSchema,
@@ -16,7 +16,7 @@ const CreateIssueSchema = z.object({
 	workflowStepId: z.string(),
 	title: z.string(),
 	description: z.string().optional(),
-	estimate: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().positive()).optional(),
+	estimate: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().nonnegative()).optional(),
 	priority: z
 		.preprocess((a) => {
 			const priority = z.string().parse(a);
