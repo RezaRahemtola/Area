@@ -170,4 +170,19 @@
     "update-task-sub": "Update a task on Todoist",
     "delete-task": "delete task",
     "delete-task-sub": "Delete a task on Todoist",
+
+    "delete-record": "Delete record",
+    "delete-record-sub": "Delete a record from an Airtable base table",
+
+    "create-tweet": "Post a tweet",
+    "create-tweet-sub": "Post a tweet on Twitter (X)",
+
+    "send-email": "Send email",
+    "send-email-sub": "Send an email with Microsoft Outlook",
+
+    "create-message": "Post message",
+    "create-message-sub": "Post a message on a Slack channel",
+
+    "on-guild-join": "On guild join",
+    "on-guild-join-sub": "Fired when the user join a guild on discord.",
 }

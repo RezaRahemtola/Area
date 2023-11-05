@@ -168,4 +168,19 @@
     "update-task-sub": "Uppfærðu verkefni á Todoist",
     "delete-task": "eyða verkefni",
     "delete-task-sub": "Eyða verkefni á Todoist",
+
+    "delete-record": "Eyða upptöku",
+    "delete-record-sub": "Eyða skrá af AirTable borði",
+
+    "create-tweet": "Sendu tíst",
+    "create-tweet-sub": "Settu tíst á Twitter (X)",
+
+    "send-email": "Sendu tölvupóst",
+    "send-email-sub": "Sendu tölvupóst með Microsoft Outlook",
+
+    "create-message": "Sendu skilaboð",
+    "create-message-sub": "Sendu skilaboð í Slack herbergi",
+
+    "on-guild-join": "Þegar þú ferð inn á netþjón",
+    "on-guild-join-sub": "Ræst þegar notandi tengist discord netþjóni.",
 }

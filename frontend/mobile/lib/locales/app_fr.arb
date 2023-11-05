@@ -168,4 +168,19 @@
     "update-task-sub": "Mettre à jour une tâche sur Todoist",
     "delete-task": "supprimer une tâche",
     "delete-task-sub": "Supprimer une tâche sur Todoist",
+
+    "delete-record": "Supprimer un enregistrement",
+    "delete-record-sub": "Supprimer un enregistrement d'un tableau AirTable",
+
+    "create-tweet": "Poster un tweet",
+    "create-tweet-sub": "Poste un tweet sur Twitter (X)",
+
+    "send-email": "Envoyer un mail",
+    "send-email-sub": "Envoie un mail avec Microsoft Outlook",
+
+    "create-message": "Poster un message",
+    "create-message-sub": "Poste un message dans un salon Slack",
+
+    "on-guild-join": "En cas d'entrée sur un serveur",
+    "on-guild-join-sub": "Lancé quand l'utilisateur rejoint un serveur discord.",
 }
