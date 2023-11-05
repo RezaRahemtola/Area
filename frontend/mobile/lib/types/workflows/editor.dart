@@ -2,12 +2,14 @@ class AreaParameterWithValue {
   final String name;
   final String type;
   final bool required;
+  final List<dynamic>? values;
   dynamic value;
 
   AreaParameterWithValue(
       {required this.name,
       required this.type,
       required this.required,
+      this.values,
       this.value});
 }
 

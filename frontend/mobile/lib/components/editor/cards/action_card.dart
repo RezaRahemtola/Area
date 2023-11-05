@@ -109,7 +109,8 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                         .map((param) => AreaParameterWithValue(
                                             name: param.name,
                                             type: param.type,
-                                            required: param.required))
+                                            required: param.required,
+                                            values: param.values))
                                         .toList());
                               });
                               widget.onUpdate(action);

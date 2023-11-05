@@ -32,19 +32,20 @@ class FlowParams {
   final String name;
   final String type;
   final bool required;
+  final List<dynamic>? values;
 
-  const FlowParams({
-    required this.name,
-    required this.type,
-    required this.required,
-  });
+  const FlowParams(
+      {required this.name,
+      required this.type,
+      required this.required,
+      this.values});
 
   factory FlowParams.fromJson(Map<String, dynamic> json) {
     return FlowParams(
-      name: json['name'],
-      type: json['type'],
-      required: json['required'],
-    );
+        name: json['name'],
+        type: json['type'],
+        required: json['required'],
+        values: json["values"]);
   }
 }
 
