@@ -5,7 +5,7 @@ It uses `gRPC` to communicate with the backend. The supervisor is written in `Go
 
 Let's take the following schema to understand the role of the supervisor:
 
-![archi.png](archi.png)
+![archi.png](../_assets/archi.png)
 
 The supervisor role is to orchestrate the execution of jobs. It receives gRPC requests from the backend and executes the jobs with the passed parameters.
 
@@ -15,7 +15,7 @@ Workers communicate directly with the backend to send data and errors.
 
 ## Requirements
 
-The supervisor runs in a **Docker container** and is connected to the **Docker Engine API**, allowing it to create and remove containers.
+The supervisor runs in a **Docker container** and is connected to the [Docker Engine API](https://docs.docker.com/engine/api/), allowing it to create and remove containers.
 > :warn: As the supervisor is running in a Docker container, it needs the access of the Docker Socket, which you need to mount in the container.
 
 ## Requests and responses
@@ -26,22 +26,22 @@ The supervisor responds to the following requests:
 
 ### LaunchJob: Launch a job with the given parameters
 
-The job parameters must have been checked before sending to the supervisor.<br/>
+The job parameters must have been checked before sending to the supervisor.\
 The supervisor will inject some parameters in the job container:
 - ``--identifier``: The unique identifier of the job
 - ``--target``: URI of the backend
 
-An error will be thrown if the job name is incorrect.<br/>
-If the job is already running, the supervisor won't do anything and return successfully.<br/>
+An error will be thrown if the job name is incorrect.\
+If the job is already running, the supervisor won't do anything and return successfully.
 
 ### KillJob: Stop a job with the given identifier
 
-The supervisor will stop the job with the given identifier.<br/>
-If the job is not running, the supervisor won't do anything and return successfully.<br/>
+The supervisor will stop the job with the given identifier.\
+If the job is not running, the supervisor won't do anything and return successfully.
 
 ### KillAllJobs: Stop all running jobs
 
-The supervisor will stop all running jobs.<br/>
+The supervisor will stop all running jobs.
 
 ## Debug
 

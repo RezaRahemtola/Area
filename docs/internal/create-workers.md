@@ -19,7 +19,7 @@ You can then use the language / framework you want to create your worker.
 
 ### Arguments handling
 
-Your worker will receive arguments, using `argv`.<br/>
+Your worker will receive arguments, using `argv`.\
 The syntax of the arguments is the following: `--key value`
 
 :warn: There are 3 special parameters that are injected by the supervisor:
@@ -37,7 +37,7 @@ The last step of the creation of a *worker* is to create a Dockerfile to build i
 
 The Dockerfile must be located in the root of the worker directory.
 
-You also have to register your worker in the [Supervisor docker-compose.yaml](../../backend/supervisor/docker-compose.yml).
+You also have to register your worker in the [Supervisor docker-compose.yaml](https://github.com/RezaRahemtola/Area/tree/main/backend/supervisor/docker-compose.yml).
 
 ## Step 2: Create a new AREA
 
@@ -47,13 +47,13 @@ The second step is to create one or several AREAs for your worker.
 
 To register a job, please add it to the following files:
 
-- The jobs list in the backend: [jobs.ts](../../backend/back/src/types/jobs.ts)
-> You can create a template class that will be automatically validated in the [jobParams.ts file](../../backend/back/src/types/jobParams.ts)
+- The jobs list in the backend: [jobs.ts](https://github.com/RezaRahemtola/Area/tree/main/backend/back/src/types/jobs.ts)
+> You can create a template class that will be automatically validated in the [jobParams.ts file](https://github.com/RezaRahemtola/Area/tree/main/backend/back/src/types/jobParams.ts)
 
-- The jobs identifier factory: [jobIds.ts](../../backend/back/src/types/jobIds.ts)
+- The jobs identifier factory: [jobIds.ts](https://github.com/RezaRahemtola/Area/tree/main/backend/back/src/types/jobIds.ts)
 > :warn: The job identifier factory is used to generate the unique identifier of a job. It must be unique for every different job. (See [Jobs identification](../architecture/supervisor.md#jobs-identification))
 
-- The [supervisor data](../../backend/supervisor/jobs/images.go) in the supervisor
+- The [supervisor data](https://github.com/RezaRahemtola/Area/tree/main/backend/supervisor/jobs/images.go) in the supervisor
 > :bulb: The JobToImage map associates the job name to the name of the Docker image to use to run the job, which is in most cases `supervisor-{yourWorker}`.
 
 > The OptArg map associates the job name to the first argument, which can be used by your worker to determine which job to launch.
@@ -101,7 +101,7 @@ You must use the following JSON format:
 ]
 ```
 
-> :bulb: The supported types are available [here](../../backend/back/src/services/dto/area.dto.ts)
+> :bulb: The supported types are available [here](https://github.com/RezaRahemtola/Area/tree/main/backend/back/src/services/dto/area.dto.ts)
 
 > The `values` property is only needed for the `select` type.
 
