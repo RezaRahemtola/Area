@@ -148,4 +148,13 @@
 
     "create-board": "Créer une planche",
     "create-board-sub": "Crée une planche",
+
+    "lol-on-game-end": "A la fin du match",
+    "lol-on-game-end-sub": "Se déclenche lorsqu'un joueur termine un match LoL.",
+    "lol-on-game-loss": "À la perte d'un match",
+    "lol-on-game-loss-sub": "Se déclenche lorsqu'un joueur a perdu un match LoL.",
+    "lol-on-game-win": "Lors de la victoire d'un match",
+    "lol-on-game-win-sub": "Déclenchement lorsqu'un joueur a gagné un match LoL",
+    "lol-on-level-up": "Au niveau supérieur",
+    "lol-on-level-up-sub": "Se déclenche lorsqu'un invocateur LoL monte en niveau.",
 }

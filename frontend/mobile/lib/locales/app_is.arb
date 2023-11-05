@@ -148,4 +148,13 @@
 
     "create-board": "Búðu til borð",
     "create-board-sub": "Búðu til borð",
+
+    "lol-on-game-end": "Í lok leiks",
+    "lol-on-game-end-sub": "Virkar þegar leikmaður klárar LoL leik.",
+    "lol-on-game-loss": "Að tapa leik",
+    "lol-on-game-loss-sub": "Virkar þegar leikmaður hefur tapað LoL leik.",
+    "lol-on-game-win": "Þegar unnið er leik",
+    "lol-on-game-win-sub": "Virkar þegar leikmaður hefur unnið LoL leik",
+    "lol-on-level-up": "Á næsta stigi",
+    "lol-on-level-up-sub": "Kemur í gang þegar LoL kallar hækkar.",
 }
