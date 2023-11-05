@@ -11,7 +11,7 @@ const members = [
 	},
 	{
 		name: "Florian Lauch",
-		title: "Lead Workers",
+		title: "Lead Microservices",
 		image: "https://github.com/EdenComp.png",
 		github: "https://github.com/EdenComp",
 		linkedin: "https://www.linkedin.com/in/florianlauch/",

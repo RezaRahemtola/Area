@@ -12,7 +12,7 @@ You can learn more about the project [here](general/project) 😄
 
 ## Getting started 🚀
 
-To start using our amazing platform, go to [`https://area.rezar.fr`](https://area.rezar.fr) and create your account to start creating workflows!\
+To start using our amazing platform, go to [`https://area.rezar.fr`](https://area.rezar.fr) and setup your account to start creating workflows!
 
 If you want a more detailed guide of the different options to use Area (including self-hosted 💻), [check this page](general/getting-started).
 
@@ -26,7 +26,7 @@ and a [supervisor](architecture/supervisor) to create Docker containers on-deman
 
 ## Contribute 🤝
 
-If you want to go a step forward and participate in the development of features to enhance Area, we'd be glad to onboard you 🥇\
+If you want to go a step forward and participate in the development of features to enhance Area, we'd be glad to onboard you 🥇
 
 Reach out to [`cramptarea@gmail.com`](mailto:cramptarea@gmail.com) and we'll get back to you in a few business days!
 
