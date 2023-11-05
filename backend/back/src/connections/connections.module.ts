@@ -10,6 +10,7 @@ import { OauthController } from "./oauth.controller";
 import { OauthService } from "./oauth.service";
 import { UsersModule } from "../users/users.module";
 import { AuthModule } from "../auth/auth.module";
+import { GrpcModule } from "../grpc/grpc.module";
 
 @Module({
 	imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from "../auth/auth.module";
 		forwardRef(() => ServicesModule),
 		HttpModule,
 		UsersModule,
+		forwardRef(() => GrpcModule),
 		forwardRef(() => AuthModule),
 	],
 	controllers: [ConnectionsController, OauthController],

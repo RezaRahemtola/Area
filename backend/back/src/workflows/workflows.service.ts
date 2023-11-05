@@ -20,8 +20,9 @@ import { JobsService } from "../jobs/jobs.service";
 import { JobParamsClasses, JobsType } from "../types/jobs";
 import { ConnectionsService } from "../connections/connections.service";
 import { ServiceName, ServicesService } from "../services/services.service";
-import { OwnerJobParams, UniqueJobParams } from "../types/jobParams";
+import { OwnerJobParams, OwnerUniqueJobParams, UniqueJobParams } from "../types/jobParams";
 import { plainToInstance } from "class-transformer";
+import { GrpcService } from "../grpc/grpc.service";
 
 @Injectable()
 export class WorkflowsService {
@@ -36,9 +37,18 @@ export class WorkflowsService {
 		private readonly areaRepository: Repository<Area>,
 		@Inject(forwardRef(() => JobsService))
 		private readonly jobsService: JobsService,
+		@Inject(forwardRef(() => GrpcService))
+		private readonly grpcService: GrpcService,
 		private readonly connectionsService: ConnectionsService,
 		private readonly servicesService: ServicesService,
 	) {}
+
+	async getWorkflowIdByName(name: string, ownerId: string) {
+		return this.workflowRepository.findOneBy({
+			name,
+			ownerId,
+		});
+	}
 
 	async getWorkflowWithAreas(id: string, ownerId?: string, isActive?: boolean) {
 		this.logger.log(`Getting workflow ${id}...`);
@@ -192,6 +202,13 @@ export class WorkflowsService {
 				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
 			}
 			this.logger.log(`Created workflow ${id} owned by ${ownerId}.`);
+			await this.grpcService.onAction({
+				name: "area-on-workflow-create",
+				identifier: `area-on-workflow-create-${ownerId}`,
+				params: {
+					name,
+				},
+			});
 			return {
 				id,
 			};
@@ -299,7 +316,19 @@ export class WorkflowsService {
 		);
 		if (newState) {
 			this.logger.log(`Launching ${workflows.length} workflows...`);
-			await Promise.all(workflows.map((workflowId) => this.jobsService.launchWorkflowAction(workflowId, ownerId)));
+			await Promise.all(
+				workflows.map(async (workflowId) => {
+					await this.jobsService.launchWorkflowAction(workflowId, ownerId);
+					const { name } = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
+					await this.grpcService.onAction({
+						name: "area-on-workflow-toggle",
+						identifier: `area-on-workflow-toggle-${ownerId}`,
+						params: {
+							name,
+						},
+					});
+				}),
+			);
 		} else {
 			this.logger.log(`Stopping ${workflows.length} workflows...`);
 			await Promise.all(workflows.map((workflowId) => this.jobsService.stopWorkflowActionIfNecessary(workflowId)));
@@ -318,6 +347,13 @@ export class WorkflowsService {
 		} else {
 			this.logger.log(`Launching workflow ${workflowId}...`);
 			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
+			await this.grpcService.onAction({
+				name: "area-on-workflow-toggle",
+				identifier: `area-on-workflow-toggle-${ownerId}`,
+				params: {
+					name: workflow.name,
+				},
+			});
 		}
 		this.logger.log(`Toggled workflow ${workflowId} to ${newState}`);
 		return { newState };
@@ -422,10 +458,11 @@ export class WorkflowsService {
 			);
 		}
 		const jobType = `${areaServiceId}-${areaId}`;
-		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof UniqueJobParams) {
+		const paramsInstance = plainToInstance(JobParamsClasses[jobType], parameters);
+		if (paramsInstance instanceof UniqueJobParams) {
 			parameters.workflowStepId = id;
 		}
-		if (plainToInstance(JobParamsClasses[jobType], parameters) instanceof OwnerJobParams) {
+		if (paramsInstance instanceof OwnerJobParams || paramsInstance instanceof OwnerUniqueJobParams) {
 			parameters.ownerId = userId;
 		}
 		workflowArea.parameters = await this.jobsService.convertParams(jobType as JobsType, parameters).catch((err) => {

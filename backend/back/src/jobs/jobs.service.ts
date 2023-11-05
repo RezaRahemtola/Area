@@ -10,7 +10,9 @@ import { Repository } from "typeorm";
 import { AuthenticatedJobData, JobData } from "../grpc/grpc.dto";
 import { RuntimeException } from "@nestjs/core/errors/exceptions";
 import { ConnectionsService } from "../connections/connections.service";
-import { uniq, uniqBy } from "lodash";
+import { partition, uniq, uniqBy } from "lodash";
+import { AREAS_WITHOUT_GRPC } from "./jobs.dto";
+import { BackJobsService } from "./back-jobs.service";
 
 @Injectable()
 export class JobsService {
@@ -21,6 +23,7 @@ export class JobsService {
 		@Inject(forwardRef(() => GrpcService)) private readonly grpcService: GrpcService,
 		@Inject(forwardRef(() => WorkflowsService)) private readonly workflowsService: WorkflowsService,
 		@InjectRepository(WorkflowArea) private readonly workflowAreaRepository: Repository<WorkflowArea>,
+		private readonly backJobsService: BackJobsService,
 	) {}
 
 	getJobName(areaServiceId: string, areaId: string): JobsType {
@@ -61,9 +64,13 @@ export class JobsService {
 		);
 	}
 
-	async getReactionsForJob(jobId: string): Promise<AuthenticatedJobData[]> {
+	async getReactionsForJob(jobId: string, active?: boolean): Promise<AuthenticatedJobData[]> {
+		if (active !== undefined) this.logger.log(`The workflows need to be ${active ? "active" : "inactive"}`);
 		const jobs = await this.workflowAreaRepository.find({
-			where: { jobId },
+			where: [
+				{ jobId, actionOfWorkflow: { active } },
+				{ jobId, workflow: { active } },
+			],
 			relations: { nextWorkflowReactions: { area: true }, workflow: true, actionOfWorkflow: true },
 		});
 		const nextJobs = await Promise.all(
@@ -92,7 +99,7 @@ export class JobsService {
 	async getWorkflowOwnersForJob(jobId: string): Promise<string[]> {
 		const jobs = await this.workflowAreaRepository.find({
 			where: { jobId },
-			relations: { nextWorkflowReactions: { area: true }, workflow: true, actionOfWorkflow: true },
+			relations: { actionOfWorkflow: true },
 		});
 		const owners = jobs.map((job) => job.actionOfWorkflow.ownerId);
 		return uniq(owners);
@@ -123,9 +130,10 @@ export class JobsService {
 
 	async launchJobs(jobs: AuthenticatedJobData[]): Promise<void> {
 		const uniqueJobs = uniqBy(jobs, (job) => job.identifier);
+		const [backJobs, grpcJobs] = partition(uniqueJobs, (job) => AREAS_WITHOUT_GRPC.includes(job.name as JobsType));
 
 		this.logger.log(`Launching ${uniqueJobs.length} jobs`);
-		for (const job of uniqueJobs) {
+		for (const job of grpcJobs) {
 			const jobType: JobsType = job.name as JobsType;
 			const params = await this.convertParams(jobType, job.params);
 			const response = await this.grpcService.launchJob(jobType, params, job.auth);
@@ -134,6 +142,9 @@ export class JobsService {
 				// TODO: Error handling in db & front
 				throw new RuntimeException(`Error while launching job: ${response.error.message}`);
 			}
+		}
+		for (const job of backJobs) {
+			await this.backJobsService.executeBackJob(job);
 		}
 	}
 
@@ -152,7 +163,7 @@ export class JobsService {
 	}
 
 	async launchNextJob(data: JobData): Promise<void> {
-		const jobs = await this.getReactionsForJob(data.identifier);
+		const jobs = await this.getReactionsForJob(data.identifier, true);
 		this.logger.log(`Launching next ${jobs.length} jobs for job ${data.identifier}`);
 		for (const job of jobs) {
 			job.params = this.replaceParamsInJob(data.params, job.params);

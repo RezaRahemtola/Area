@@ -22,6 +22,16 @@ export class OwnerJobParams {
 	ownerId: string;
 }
 
+export class OwnerUniqueJobParams extends UniqueJobParams {
+	@IsUUID(4)
+	ownerId: string;
+}
+
+export class WorkflowToggleParams extends OwnerUniqueJobParams {
+	@IsString()
+	workflowName: string;
+}
+
 export class TimerSecondIntervalParams extends UniqueJobParams {
 	@IsNumber()
 	seconds: number;

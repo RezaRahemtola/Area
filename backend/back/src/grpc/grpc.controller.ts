@@ -1,7 +1,7 @@
 import { Controller } from "@nestjs/common";
 import { GrpcMethod } from "@nestjs/microservices";
 import { ApiExcludeController } from "@nestjs/swagger";
-import { JobData } from "./grpc.dto";
+import { JobData, JobError } from "./grpc.dto";
 import { GrpcService } from "./grpc.service";
 
 @ApiExcludeController()
@@ -20,7 +20,7 @@ export class GrpcController {
 	}
 
 	@GrpcMethod("AreaBackService", "OnError")
-	async onError(data: JobData): Promise<void> {
+	async onError(data: JobError): Promise<void> {
 		await this.grpcService.onError(data);
 	}
 }
