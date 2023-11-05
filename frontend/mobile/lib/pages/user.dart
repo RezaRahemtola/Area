@@ -55,7 +55,7 @@ class _UserHero extends State<User> {
                   return const CircularProgressIndicator();
                 } else {
                   final UserMe? user = snapshot.data?.data;
-                  if (user != null) {
+                  if (user != null && newLocale == "") {
                     newLocale = user.settings.language;
                     newTheme = user.settings.theme;
                     newEmail = user.email;
