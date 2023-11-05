@@ -1,6 +1,7 @@
 import 'package:area_mobile/components/editor/steps/action/select_action_event.dart';
 import 'package:area_mobile/components/editor/steps/action/select_action_service.dart';
 import 'package:area_mobile/components/editor/steps/select_area_params.dart';
+import 'package:area_mobile/components/trad.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:flutter/material.dart';
@@ -57,8 +58,9 @@ class _EditorActionCardState extends State<EditorActionCard> {
                 ? AppLocalizations.of(context)!
                     .actionService(action.areaService!.id)
                 : AppLocalizations.of(context)!.action),
-            subtitle: Text(action.area?.id ??
-                AppLocalizations.of(context)!.editorActionDescription),
+            subtitle: Text(action.area?.id != null
+                ? getAreaTrad(action.area!.id.replaceAll("-", "_"), context)
+                : AppLocalizations.of(context)!.editorActionDescription),
             onTap: () {
               showModalBottomSheet<void>(
                   isScrollControlled: true,

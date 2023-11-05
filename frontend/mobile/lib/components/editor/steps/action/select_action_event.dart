@@ -1,3 +1,4 @@
+import 'package:area_mobile/components/trad.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
@@ -83,8 +84,8 @@ class _SelectActionEventState extends State<SelectActionEvent> {
                           items: areas.map((Area area) {
                             return DropdownMenuItem<String>(
                               value: area.id,
-                              // TODO: display description
-                              child: Text(area.id),
+                              child: Text(getAreaTrad(
+                                  area.id.replaceAll("-", "_"), context)),
                             );
                           }).toList(),
                           onChanged: (value) async {
