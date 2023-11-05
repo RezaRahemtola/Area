@@ -238,6 +238,23 @@ export class LinearCreateIssueParams extends UniqueJobParams {
 	priority: LinearIssuePriority;
 }
 
+export class LinearCreateProjectParams extends UniqueJobParams {
+	@IsString()
+	name: string;
+
+	@IsString()
+	@IsOptional()
+	description: string;
+}
+
+export class LinearCreateCommentParams extends UniqueJobParams {
+	@IsString()
+	body: string;
+
+	@IsNumber()
+	issueId: number;
+}
+
 export class MiroCreateBoardParams extends UniqueJobParams {
 	@IsString()
 	name: string;

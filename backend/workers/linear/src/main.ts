@@ -1,7 +1,11 @@
 import createIssue from "./issues/create";
+import createProject from "./project/create";
+import createComment from "./comments/create";
 
 const areas: Record<string, () => Promise<void>> = {
+    "create-comment": createComment,
     "create-issue": createIssue,
+    "create-project": createProject,
 }
 async function main() {
     const job = process.argv[2];
