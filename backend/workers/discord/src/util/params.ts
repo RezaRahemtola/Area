@@ -46,8 +46,7 @@ export default function parseArguments<T>(schema: ZodSchema): T {
 
 	try {
 		if (data.auth) {
-			const auth = DiscordAuthSchema.parse(JSON.parse(data.auth as string));
-			data.auth = auth;
+			data.auth = DiscordAuthSchema.parse(JSON.parse(data.auth as string));
 		}
 		ret = schema.parse(data);
 	} catch (e) {
