@@ -84,6 +84,8 @@ const translations = {
 		save: "Að standa vörð",
 		close: "Loka",
 		edit: "Til að breyta",
+		duplicate: "Afrit",
+		copy: "Afrita",
 	},
 };
 

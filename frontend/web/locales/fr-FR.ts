@@ -84,6 +84,8 @@ const translations = {
 		save: "Sauvegarder",
 		close: "Fermer",
 		edit: "Modifier",
+		duplicate: "Dupliquer",
+		copy: "Copie",
 	},
 };
 
