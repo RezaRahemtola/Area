@@ -1,3 +1,34 @@
+<a name="v1.5.0"></a>
+# [v1.5.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.5.0) - 05 Nov 2023
+
+## Changes
+
+Workflows duplication, Area service, last non covered services added with areas
+
+## 🚀 Features
+
+- Duplicate mobile workflow [@RezaRahemtola](https://github.com/RezaRahemtola) ([#210](https://github.com/RezaRahemtola/Area/issues/210))
+- Duplicate web workflow [@RezaRahemtola](https://github.com/RezaRahemtola) ([#211](https://github.com/RezaRahemtola/Area/issues/211))
+- Backend: Inception part 69 [@EdenComp](https://github.com/EdenComp) ([#213](https://github.com/RezaRahemtola/Area/issues/213))
+- Backend: Inception part 1 [@EdenComp](https://github.com/EdenComp) ([#209](https://github.com/RezaRahemtola/Area/issues/209))
+- Backend: Todoist task reactions and small fixes on gRPC calls [@EdenComp](https://github.com/EdenComp) ([#207](https://github.com/RezaRahemtola/Area/issues/207))
+- Added on discord guild join action [@Croos3r](https://github.com/Croos3r) ([#208](https://github.com/RezaRahemtola/Area/issues/208))
+- Workflow editor handle all parameter types [@RezaRahemtola](https://github.com/RezaRahemtola) ([#206](https://github.com/RezaRahemtola/Area/issues/206))
+- Open workflow in editor from mobile library and modify it  [@RezaRahemtola](https://github.com/RezaRahemtola) ([#202](https://github.com/RezaRahemtola/Area/issues/202))
+- Backend Slack first reaction: create a message [@EdenComp](https://github.com/EdenComp) ([#203](https://github.com/RezaRahemtola/Area/issues/203))
+- Toggle workflow in mobile library [@RezaRahemtola](https://github.com/RezaRahemtola) ([#199](https://github.com/RezaRahemtola/Area/issues/199))
+- Microsoft first reaction: send email using outlook [@EdenComp](https://github.com/EdenComp) ([#201](https://github.com/RezaRahemtola/Area/issues/201))
+
+## 🐛 Bug Fixes
+
+- Fix web editor reaction insertion & reaction orders [@RezaRahemtola](https://github.com/RezaRahemtola) ([#212](https://github.com/RezaRahemtola/Area/issues/212))
+- Factorization of job and jobs params typings [@Croos3r](https://github.com/Croos3r) ([#204](https://github.com/RezaRahemtola/Area/issues/204))
+- Fixed user update bug when passing email [@Croos3r](https://github.com/Croos3r) ([#200](https://github.com/RezaRahemtola/Area/issues/200))
+
+
+[Changes][v1.5.0]
+
+
 <a name="v1.4.0"></a>
 # [v1.4.0 🌈](https://github.com/RezaRahemtola/Area/releases/tag/v1.4.0) - 04 Nov 2023
 
@@ -586,6 +617,7 @@ Setup
 [Changes][v0.0.1]
 
 
+[v1.5.0]: https://github.com/RezaRahemtola/Area/compare/v1.4.0...v1.5.0
 [v1.4.0]: https://github.com/RezaRahemtola/Area/compare/v1.3.0...v1.4.0
 [v1.3.0]: https://github.com/RezaRahemtola/Area/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/RezaRahemtola/Area/compare/v1.1.0...v1.2.0
