@@ -13,6 +13,7 @@ import { ConnectionsService } from "../connections/connections.service";
 import { partition, uniq, uniqBy } from "lodash";
 import { AREAS_WITHOUT_GRPC } from "./jobs.dto";
 import { BackJobsService } from "./back-jobs.service";
+import Workflow from "../workflows/entities/workflow.entity";
 
 @Injectable()
 export class JobsService {
@@ -171,27 +172,21 @@ export class JobsService {
 		await this.launchJobs(jobs);
 	}
 
-	async launchWorkflowAction(workflowId: string, ownerId: string) {
-		const { action } = await this.workflowsService.getWorkflowWithAreas(workflowId, undefined, true);
-		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.areaServiceId);
+	async launchWorkflowAction({ action, id }: Workflow, ownerId: string) {
+		const connection = await this.connectionsService.getUserConnectionForService(ownerId, action.area.serviceId);
 
 		const job: AuthenticatedJobData = {
-			name: this.getJobName(action.areaServiceId, action.areaId),
+			name: this.getJobName(action.area.serviceId, action.area.id),
 			identifier: action.jobId,
 			params: action.parameters,
 			auth: connection?.data ?? {},
 		};
-		this.logger.log(`Launching workflow action job ${job.identifier} for workflow ${workflowId}`);
+		this.logger.log(`Launching workflow action job ${job.identifier} for workflow ${id}`);
 		await this.launchJobs([job]);
 	}
 
-	async stopWorkflowActionIfNecessary(workflowId: string) {
-		const workflowAction = await this.workflowAreaRepository.findOne({
-			where: { actionOfWorkflow: { id: workflowId } },
-			relations: { actionOfWorkflow: true },
-		});
-
-		return this.stopJobIdIfNecessary(workflowAction.jobId);
+	async stopWorkflowActionIfNecessary({ action: { jobId } }: Workflow) {
+		return this.stopJobIdIfNecessary(jobId);
 	}
 
 	async stopJobIdIfNecessary(jobId: string) {

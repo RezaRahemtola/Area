@@ -183,7 +183,7 @@ export class WorkflowsService {
 				throw new NotFoundException(`User ${ownerId} not found.`);
 			}
 
-			const workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
+			let workflow = await queryRunner.manager.save(Workflow, { name, owner, active });
 			const { id } = workflow;
 
 			const actionToSave = await this.createWorkflowArea(queryRunner, ownerId, action, workflow, true);
@@ -194,11 +194,15 @@ export class WorkflowsService {
 				reactions,
 				workflow,
 			);
-			await queryRunner.manager.save(Workflow, { ...workflow, action: actionToSave, reactions: reactionsToSave });
+			workflow = await queryRunner.manager.save(Workflow, {
+				...workflow,
+				action: actionToSave,
+				reactions: reactionsToSave,
+			});
 
 			if (workflow.active) {
 				this.logger.log(`Launching workflow ${id}'s action...`);
-				await this.jobsService.launchWorkflowAction(workflow.id, ownerId);
+				await this.jobsService.launchWorkflowAction(workflow, ownerId);
 			}
 			this.logger.log(`Created workflow ${id} owned by ${ownerId}.`);
 			await this.grpcService.onAction({
@@ -304,49 +308,56 @@ export class WorkflowsService {
 		}
 	}
 
-	async toggleWorkflows(workflows: string[], newState: boolean, ownerId: string) {
-		this.logger.log(`Toggling ${workflows.length} workflows to ${newState}`);
+	async toggleWorkflows(workflowIds: string[], newState: boolean, ownerId: string) {
+		this.logger.log(`Toggling ${workflowIds.length} workflows to ${newState}`);
 		const { affected } = await this.workflowRepository.update(
 			{
-				id: In(workflows),
+				id: In(workflowIds),
 				active: !newState,
 				ownerId,
 			},
 			{ active: () => `${newState}` },
 		);
 		if (newState) {
-			this.logger.log(`Launching ${workflows.length} workflows...`);
+			this.logger.log(`Launching ${workflowIds.length} workflows...`);
 			await Promise.all(
-				workflows.map(async (workflowId) => {
-					await this.jobsService.launchWorkflowAction(workflowId, ownerId);
-					const { name } = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
+				workflowIds.map(async (workflowId) => {
+					const workflow = await this.workflowRepository.findOne({
+						where: { id: workflowId, ownerId },
+						relations: { action: { area: true } },
+					});
+					await this.jobsService.launchWorkflowAction(workflow, ownerId);
 					await this.grpcService.onAction({
 						name: "area-on-workflow-toggle",
 						identifier: `area-on-workflow-toggle-${ownerId}`,
 						params: {
-							name,
+							name: workflow.name,
 						},
 					});
 				}),
 			);
 		} else {
-			this.logger.log(`Stopping ${workflows.length} workflows...`);
-			await Promise.all(workflows.map((workflowId) => this.jobsService.stopWorkflowActionIfNecessary(workflowId)));
+			this.logger.log(`Stopping ${workflowIds.length} workflows...`);
+			const workflows = await this.workflowRepository.find({ where: { id: In(workflowIds) } });
+			await Promise.all(workflows.map(this.jobsService.stopWorkflowActionIfNecessary));
 		}
 		return affected > 0;
 	}
 
 	async toggleWorkflow(workflowId: string, newState: boolean, ownerId: string) {
 		this.logger.log(`Toggling workflow ${workflowId}...`);
-		const workflow = await this.workflowRepository.findOneBy({ id: workflowId, ownerId });
+		const workflow = await this.workflowRepository.findOne({
+			where: { id: workflowId, ownerId },
+			relations: { action: { area: true } },
+		});
 		if (!workflow) throw new NotFoundException(`Workflow ${workflowId} not found.`);
 		await this.workflowRepository.update(workflowId, { active: newState });
 		if (!newState) {
 			this.logger.log(`Stopping workflow ${workflowId}...`);
-			await this.jobsService.stopWorkflowActionIfNecessary(workflowId);
+			await this.jobsService.stopWorkflowActionIfNecessary(workflow);
 		} else {
 			this.logger.log(`Launching workflow ${workflowId}...`);
-			await this.jobsService.launchWorkflowAction(workflowId, ownerId);
+			await this.jobsService.launchWorkflowAction(workflow, ownerId);
 			await this.grpcService.onAction({
 				name: "area-on-workflow-toggle",
 				identifier: `area-on-workflow-toggle-${ownerId}`,
