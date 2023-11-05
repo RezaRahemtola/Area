@@ -157,4 +157,15 @@
     "lol-on-game-win-sub": "Virkar þegar leikmaður hefur unnið LoL leik",
     "lol-on-level-up": "Á næsta stigi",
     "lol-on-level-up-sub": "Kemur í gang þegar LoL kallar hækkar.",
+
+    "create-task": "búa til verkefni",
+    "create-task-sub": "Búðu til verkefni á Todoist",
+    "reopen-task": "opna verkefni aftur",
+    "reopen-task-sub": "Opnaðu verkefni aftur í Todoist",
+    "close-task": "loka verkefni",
+    "close-task-sub": "Lokaðu verkefni í Todoist",
+    "update-task": "uppfæra verkefni",
+    "update-task-sub": "Uppfærðu verkefni á Todoist",
+    "delete-task": "eyða verkefni",
+    "delete-task-sub": "Eyða verkefni á Todoist",
 }
