@@ -81,7 +81,7 @@ const UserSettings = ({ user }: UserSettingsProps) => {
 			</div>
 
 			<button
-				className="btn btn-secondary"
+				className="btn btn-secondary text-base-100"
 				onClick={async () => {
 					const settings = {
 						...userSettings,
