@@ -10,8 +10,7 @@ class Activity {
       required this.type,
       required this.createdAt,
       required this.workflowArea,
-      required this.workflow
-      });
+      required this.workflow});
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
@@ -28,10 +27,10 @@ class WorkflowArea {
   String id;
   ActivityArea area;
 
-  WorkflowArea(
-      {required this.id,
-      required this.area,
-      });
+  WorkflowArea({
+    required this.id,
+    required this.area,
+  });
 
   factory WorkflowArea.fromJson(Map<String, dynamic> json) {
     return WorkflowArea(

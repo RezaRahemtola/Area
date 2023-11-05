@@ -4,6 +4,7 @@ import 'package:area_mobile/types/services.dart';
 import 'package:area_mobile/types/user/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class Activities extends StatefulWidget {
   const Activities({Key? key}) : super(key: key);
@@ -40,7 +41,9 @@ class _ActivitiesState extends State<Activities> {
                   Expanded(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("Page $page")])),
+                          children: [
+                        Text(AppLocalizations.of(context)!.page(page))
+                      ])),
                   IconButton(
                       onPressed: () => setState(() {
                             page += 1;
@@ -55,8 +58,10 @@ class _ActivitiesState extends State<Activities> {
                   child: FutureBuilder<ServiceReturn<List<Activity>>>(
                       future: services.user.getActivity(page - 1),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Center(
                             child: Text(AppLocalizations.of(context)!
@@ -67,7 +72,6 @@ class _ActivitiesState extends State<Activities> {
                             ...?snapshot.data?.data
                           ];
                           if (activities.isEmpty && page != 1) {
-                              print("page-re");
                             WidgetsBinding.instance
                                 .addPostFrameCallback((timeStamp) {
                               setState(() {
@@ -75,12 +79,10 @@ class _ActivitiesState extends State<Activities> {
                               });
                             });
                           } else if (activities.isEmpty) {
-                              print("empty");
                             return EmptyNotice(
                                 message:
                                     AppLocalizations.of(context)!.noActivity);
                           }
-                              print("listview");
                           return ListView.builder(
                               itemCount: activities.length,
                               itemBuilder: (context, index) {
@@ -117,7 +119,8 @@ class ActivityEntry extends StatelessWidget {
               ? AppLocalizations.of(context)!.ran
               : AppLocalizations.of(context)!.errorOn) +
           activity.workflow.name),
-      subtitle: Text(activity.createdAt),
+      subtitle: Text(DateFormat('yyyy-MM-dd HH:mm:ss')
+          .format(DateTime.parse(activity.createdAt))),
     );
   }
 }

@@ -46,6 +46,7 @@
     "noActions": "Aucune action possible pour ce service",
     "noReactions": "Aucune réaction possible pour ce service",
     "noActivity": "Pas d'activité",
+    "page": "Page {number}",
     "returnParameters": "Les données suivantes sont renvoyées par cette area et peuvent être utilisées dans la suivante :",
     "ran": "Lancé: ",
     "errorOn": "Erreur: "
