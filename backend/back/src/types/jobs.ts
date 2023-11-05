@@ -23,6 +23,7 @@ import {
 	LinkedinCreatePostParams,
 	MiroCreateBoardParams,
 	NameParams,
+	OwnerJobParams,
 	RiotActionsParams,
 	SlackCreateMessageParams,
 	TimerSecondIntervalParams,
@@ -37,6 +38,7 @@ import {
 
 export const JobParamsClasses = {
 	"airtable-delete-record": AirtableDeleteRecordParams,
+	"area-on-action": OwnerJobParams,
 	"discord-on-guild-join": UniqueJobParams,
 	"facebook-on-status-create": FacebookPageParams,
 	"github-close-issue": GithubCloseIssueParams,

@@ -14,6 +14,7 @@ function uniqueWebhookId<TJobType extends JobsType>(jobId: TJobType, webhookId: 
 
 export const JobsIdentifiers: JobsIdentifiers = {
 	"airtable-delete-record": ({ workflowStepId }) => uniqueJobId("airtable-delete-record", workflowStepId),
+	"area-on-action": ({ ownerId }) => `area-on-action-${ownerId}`,
 	"discord-on-guild-join": ({ workflowStepId }) => uniqueJobId("discord-on-guild-join", workflowStepId),
 	"facebook-on-status-create": ({ pageId }) => uniqueWebhookId("facebook-on-status-create", pageId),
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),

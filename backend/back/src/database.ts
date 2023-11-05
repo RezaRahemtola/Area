@@ -83,6 +83,8 @@ import { CreateOutlookSendEmailReaction1699126617355 } from "./workflows/seed/16
 import { CreateSlackCreateMessageReaction1699131357051 } from "./workflows/seed/1699131357051-CreateSlackCreateMessageReaction";
 import { CreateDiscordOnGuildJoinAction1699140593736 } from "./workflows/seed/1699140593736-CreateDiscordOnGuildJoinAction";
 import { CreateTodoistTaskReactions1699140054686 } from "./workflows/seed/1699140054686-CreateTodoistTaskReactions";
+import { CreateAreaService1699143731594 } from "./services/seed/1699143731594-CreateAreaService";
+import { CreateAreaOnActionAction1699145276143 } from "./workflows/seed/1699145276143-CreateAreaOnActionAction";
 
 dotenv.config();
 
@@ -169,6 +171,8 @@ export const DATA_SOURCE_OPTIONS: DataSourceOptions = {
 		CreateSlackCreateMessageReaction1699131357051,
 		CreateDiscordOnGuildJoinAction1699140593736,
 		CreateTodoistTaskReactions1699140054686,
+		CreateAreaService1699143731594,
+		CreateAreaOnActionAction1699145276143,
 	],
 	synchronize: process.env.NODE_ENV === "development",
 };
