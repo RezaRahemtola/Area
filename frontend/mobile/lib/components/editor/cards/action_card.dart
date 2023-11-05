@@ -111,7 +111,9 @@ class _EditorActionCardState extends State<EditorActionCard> {
                                             type: param.type,
                                             required: param.required,
                                             values: param.values))
-                                        .toList());
+                                        .toList(),
+                                    returnParameters:
+                                        selectedArea.parametersReturnFlow);
                               });
                               widget.onUpdate(action);
                             }

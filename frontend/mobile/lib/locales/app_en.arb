@@ -44,5 +44,6 @@
     "accountAlreadyConnected": "Account already connected",
     "noWorkflows": "No workflows found",
     "noActions": "No actions for this service",
-    "noReactions": "No reactions for this service"
+    "noReactions": "No reactions for this service",
+    "returnParameters": "The following data is returned by this area and can be used in the next one:"
 }
