@@ -21,4 +21,19 @@ const updateProfile = async (data: UserProfileUpdate): Promise<ServiceReturn<voi
 	}
 };
 
-export { getProfile, updateProfile };
+export type UserStats = {
+	workflowRuns: number;
+	workflowErrors: number;
+	workflows: number;
+	activeWorkflows: number;
+};
+const getStats = async (): Promise<ServiceReturn<UserStats>> => {
+	try {
+		const response = await axiosInstance.get<UserStats>(`/workflows/summary`);
+		return { data: response.data, error: undefined };
+	} catch (error) {
+		return { data: null, error: SERVICE_ERROR_UNKNOWN };
+	}
+};
+
+export { getProfile, updateProfile, getStats };
