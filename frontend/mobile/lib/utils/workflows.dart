@@ -9,7 +9,7 @@ getEmptyEditorAction(String id) {
 
 getEmptyEditorReaction(String previousId) {
   return EditorWorkflowReaction(
-      id: const UuidV4().generate().toString(), previousId: previousId);
+      id: const UuidV4().generate().toString(), previousAreaId: previousId);
 }
 
 EditorWorkflow getEmptyWorkflow() {
@@ -101,7 +101,21 @@ Future<EditorWorkflow> convertWorkflowToEditorWorkflow(
             areaService: EditorWorkflowElementService(
                 id: baseReaction.areaServiceId,
                 imageUrl: reactionService.data!.imageUrl),
-            previousId: baseReaction.previousAreaId);
+            previousAreaId: baseReaction.previousAreaId);
       })),
       active: workflow.active);
+}
+
+List<T> getSortedReactions<T>(List<dynamic> reactions, String basePreviousId) {
+  final sortedReactions = [];
+  var previousId = basePreviousId;
+
+  for (var _ in reactions) {
+    final reaction =
+        reactions.firstWhere((r) => r.previousAreaId == previousId);
+    if (reaction == null) break;
+    sortedReactions.add(reaction);
+    previousId = reaction.id;
+  }
+  return sortedReactions as List<T>;
 }

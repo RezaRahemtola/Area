@@ -22,7 +22,7 @@ Future<ServiceReturn<int>> create(EditorWorkflow workflow) async {
                     reaction.area!.parameters),
                 "areaId": reaction.area?.id,
                 "areaServiceId": reaction.areaService?.id,
-                "previousAreaId": reaction.previousId,
+                "previousAreaId": reaction.previousAreaId,
               }))
           .toList(),
     });
@@ -50,7 +50,7 @@ Future<ServiceReturn<int>> update(EditorWorkflow workflow) async {
                     reaction.area!.parameters),
                 "areaId": reaction.area?.id,
                 "areaServiceId": reaction.areaService?.id,
-                "previousAreaId": reaction.previousId,
+                "previousAreaId": reaction.previousAreaId,
               }))
           .toList(),
     });

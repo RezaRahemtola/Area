@@ -81,19 +81,23 @@ class _EditorState extends State<Editor> {
                       });
                     },
                   ),
-                  ...workflow.reactions.map(((reaction) => EditorReactionCard(
-                        workflowId: workflow.id,
-                        reaction: reaction,
-                        key: ValueKey(reaction.id),
-                        onUpdate: (EditorWorkflowReaction updatedReaction) {
-                          setState(() {
-                            workflow.reactions = workflow.reactions.map((r) {
-                              if (r.id == reaction.id) return updatedReaction;
-                              return r;
-                            }).toList();
-                          });
-                        },
-                      ))),
+                  ...getSortedReactions(workflow.reactions, workflow.action.id)
+                      .map(((reaction) => EditorReactionCard(
+                            workflowId: workflow.id,
+                            reaction: reaction,
+                            key: ValueKey(reaction.id),
+                            onUpdate: (EditorWorkflowReaction updatedReaction) {
+                              setState(() {
+                                workflow.reactions =
+                                    workflow.reactions.map((r) {
+                                  if (r.id == reaction.id) {
+                                    return updatedReaction;
+                                  }
+                                  return r;
+                                }).toList();
+                              });
+                            },
+                          ))),
                 ],
               ),
               ElevatedButton(

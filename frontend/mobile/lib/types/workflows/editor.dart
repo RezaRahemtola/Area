@@ -39,13 +39,13 @@ class EditorWorkflowReaction {
   final String id;
   EditorWorkflowElementArea? area;
   EditorWorkflowElementService? areaService;
-  final String previousId;
+  final String previousAreaId;
 
   EditorWorkflowReaction(
       {required this.id,
       this.area,
       this.areaService,
-      required this.previousId});
+      required this.previousAreaId});
 }
 
 class EditorWorkflow {
