@@ -49,5 +49,56 @@
     "page": "Page {number}",
     "returnParameters": "The following data is returned by this area and can be used in the next one:",
     "ran": "Ran ",
-    "errorOn": "Error on "
+    "errorOn": "Error on ",
+
+
+    "on-new-video": "On new video",
+    "on-new-video-sub": "Triggers when an video is uploaded on a Youtube channel",
+
+    "send-email": "send email"
+    "create-draft-email": "create draft email"
+    "update-signature-email": "update signature email"
+    "create-comment-youtube": "create comment youtube"
+    "create-document-docs": "create document docs"
+    "create-presentation": "create presentation"
+    "create-spreadsheet": "create spreadsheet"
+    "create-form": "create form"
+    "create-contact": "create contact"
+    "create-task-list": "create task list"
+    "create-course": "create course"
+    "create-calendar": "create calendar"
+    "create-drive-folder": "create drive folder"
+    "duplicate-drive-file": "duplicate drive file"
+    "form-add-youtube-item": "form add youtube item"
+    "create-slide-on-presentation": "create slide on presentation"
+    "create-shared-drive": "create shared drive"
+    "change-gmail-interface-language": "change gmail interface language"
+    "form-update-description": "form update description"
+    "form-convert-to-quiz": "form convert to quiz"
+    "update-spreadsheet-title": "update spreadsheet title"
+
+    "send-email-sub": "Send an email with Google GMAIL",
+    "create-draft-email-sub": "Create a draft email with Gmail",
+    "update-signature-email-sub": "Update the signature of your Gmail account",
+    "create-comment-youtube-sub": "Post a comment on a YouTube video",
+    "create-document-docs-sub": "Create a new Google Docs",
+    "create-presentation-sub": "Create a new Google Slides",
+    "create-spreadsheet-sub": "Create a new Google Spreadsheet",
+    "create-form-sub": "Create a new Google Forms",
+    "create-contact-sub": "Create a new Google Contact",
+    "create-task-list-sub": "Create a new Google Task list",
+    "create-course-sub": "Create a new Google Classroom course",
+    "create-calendar-sub": "Create a new Google Calendar",
+    "create-drive-folder-sub": "Create a new Google Drive folder",
+    "duplicate-drive-file-sub": "Duplicate a file in Google Drive",
+    "form-add-youtube-item-sub": "Add a YouTube item in a Google Form",
+    "create-slide-on-presentation-sub": "Add a slide on a Google presentation",
+    "create-shared-drive-sub": "Create a Google shared drive",
+    "change-gmail-interface-language-sub": "Change the language of the GMail interface",
+    "form-update-description-sub": "Update the description of a Google Form",
+    "form-convert-to-quiz-sub": "Convert a Google Form to a graded quiz",
+    "update-spreadsheet-title-sub": "Update a Google Spreadsheet title",
+
+    "create-post": "Creates a post",
+    "create-post-sub": "Creates a new LinkedIn post"
 }
