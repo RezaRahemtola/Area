@@ -337,7 +337,6 @@ export class DiscordOptionalGuildIdParams extends UniqueJobParams {
 }
 
 export class DiscordGuildIdParams extends UniqueJobParams {
-	@IsOptional()
 	@IsString()
 	@Matches(/^\d{17,19}$/)
 	guildId: string;
