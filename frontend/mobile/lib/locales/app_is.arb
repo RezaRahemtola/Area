@@ -122,4 +122,13 @@
     "reopen-issue-sub": "Opnaðu aftur mál á Github geymslu",
     "close-issue": "loka máli",
     "close-issue-sub": "Lokaðu vandamáli á Github geymslu",
+
+    "seconds-interval": "Annað millibili",
+    "seconds-interval-sub": "Kveikja á X sekúndna fresti",
+
+    "on-issue-create": "Þegar búið er til útgáfu",
+    "on-issue-create-sub": "Virkjað þegar tölublað er búið til á línulegu vinnusvæðinu",
+
+    "create-issue": "Búðu til tölublað",
+    "create-issue-sub": "Bjó til mál á línulegu vinnusvæðinu",
 }

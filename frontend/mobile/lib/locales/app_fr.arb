@@ -122,4 +122,13 @@
     "reopen-issue-sub": "Rouvrir un dossier sur un dépôt Github",
     "close-issue": "fermer une Issue",
     "close-issue-sub": "Fermer une Issue sur un dépôt Github",
+
+    "seconds-interval": "Interval en secondes",
+    "seconds-interval-sub": "S'active toutes les X secondes",
+
+    "on-issue-create": "Lors d'une création d'Issue",
+    "on-issue-create-sub": "S'active quand une Issue est créée sur le workspace Linéar",
+
+    "create-issue": "Créer une Issue",
+    "create-issue-sub": "Créé une issue sur le workspace Linéar",
 }
