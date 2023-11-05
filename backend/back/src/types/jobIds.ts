@@ -21,6 +21,7 @@ export const JobsIdentifiers: JobsIdentifiers = {
 	"area-on-workflow-create": ({ ownerId }) => `area-on-workflow-create-${ownerId}`,
 	"area-on-workflow-toggle": ({ ownerId }) => `area-on-workflow-toggle-${ownerId}`,
 	"discord-on-guild-join": ({ workflowStepId }) => uniqueJobId("discord-on-guild-join", workflowStepId),
+	"discord-on-guild-leave": ({ workflowStepId }) => uniqueJobId("discord-on-guild-leave", workflowStepId),
 	"facebook-on-status-create": ({ pageId }) => uniqueWebhookId("facebook-on-status-create", pageId),
 	"github-close-issue": ({ workflowStepId }) => uniqueJobId("github-close-issue", workflowStepId),
 	"github-create-issue": ({ workflowStepId }) => uniqueJobId("github-create-issue", workflowStepId),

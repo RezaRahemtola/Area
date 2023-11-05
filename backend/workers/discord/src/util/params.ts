@@ -1,23 +1,8 @@
 import { z, ZodSchema } from "zod";
 import { configDotenv } from "dotenv";
+import { DiscordAuthSchema, DiscordAuthType } from "./types";
 
 configDotenv();
-
-export const DiscordAuthSchema = z.object({
-	token_type: z.string().optional(),
-	expires_in: z.number().optional(),
-	access_token: z.string(),
-	refresh_token: z.string().optional(),
-});
-type DiscordAuthType = z.infer<typeof DiscordAuthSchema>;
-
-export const DiscordDataSchema = z.object({
-	auth: DiscordAuthSchema,
-	target: z.string().optional(),
-	identifier: z.string(),
-	workflowStepId: z.string(),
-});
-export type DiscordDataType = z.infer<typeof DiscordDataSchema>;
 
 export function getFromEnv(key: string) {
 	const value = process.env[key];
@@ -27,9 +12,9 @@ export function getFromEnv(key: string) {
 	return value;
 }
 
-export default function parseArguments<T>(schema: ZodSchema): T {
+export default function parseArguments<TSchema extends ZodSchema>(schema: TSchema): z.infer<TSchema> {
 	const data: Record<string, string | DiscordAuthType> = {};
-	let ret: T;
+	let ret: TSchema;
 
 	for (let i = 3; i < process.argv.length; i++) {
 		if (process.argv[i]!.startsWith("--")) {

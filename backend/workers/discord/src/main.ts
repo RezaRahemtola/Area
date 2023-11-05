@@ -1,9 +1,13 @@
 import DiscordOauth2 from "discord-oauth2";
 import { getFromEnv } from "./util/params";
 import onGuildJoin from "./guilds/on-join";
+import onGuildLeave from "./guilds/on-leave";
+import onGuildBoost from "./guilds/on-guild-boost";
 
 const areas: Record<string, (client: DiscordOauth2) => Promise<void>> = {
 	"on-guild-join": onGuildJoin,
+	"on-guild-leave": onGuildLeave,
+	"on-guild-boost": onGuildBoost,
 };
 
 async function main() {

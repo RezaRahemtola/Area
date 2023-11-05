@@ -6,6 +6,7 @@ import {
 	IsOptional,
 	IsString,
 	IsUUID,
+	Matches,
 	Max,
 	MaxLength,
 	Min,
@@ -326,4 +327,18 @@ export class SlackCreateMessageParams extends UniqueJobParams {
 
 	@IsString()
 	text: string;
+}
+
+export class DiscordOptionalGuildIdParams extends UniqueJobParams {
+	@IsOptional()
+	@IsString()
+	@Matches(/^\d{17,19}$/)
+	guildId: string;
+}
+
+export class DiscordGuildIdParams extends UniqueJobParams {
+	@IsOptional()
+	@IsString()
+	@Matches(/^\d{17,19}$/)
+	guildId: string;
 }
