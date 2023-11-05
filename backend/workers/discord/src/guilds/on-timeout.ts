@@ -31,7 +31,7 @@ export default async function onGuildTimeout(discordClient: DiscordOauth2) {
 			if (newTimeoutState && new Date().getTime() < new Date(newTimeoutState).getTime()) {
 				if (!guild) {
 					await onError(client, {
-						error: "discord-on-guild-timeout",
+						error: "Cannot find guild",
 						identifier: params.identifier,
 						isAuthError: false,
 					});

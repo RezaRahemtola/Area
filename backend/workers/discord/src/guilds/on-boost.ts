@@ -23,33 +23,15 @@ export default async function onGuildBoost(discordClient: DiscordOauth2) {
 
 	let { premium_since: initialPremiumSince } = await getGuildMember();
 
-	if (initialPremiumSince === undefined || initialPremiumSince === null) {
-		await onError(client, {
-			identifier: params.identifier,
-			error: "discord-on-guild-boost",
-			isAuthError: false,
-		});
-		return;
-	}
-
 	setInterval(async () => {
 		const { premium_since: newPremiumSince } = await getGuildMember();
-
-		if (newPremiumSince === undefined || newPremiumSince === null) {
-			await onError(client, {
-				error: "discord-on-guild-boost",
-				identifier: params.identifier,
-				isAuthError: false,
-			});
-			return;
-		}
 
 		if (newPremiumSince !== initialPremiumSince) {
 			initialPremiumSince = newPremiumSince;
 			const guild = await getGuild();
 			if (!guild) {
 				await onError(client, {
-					error: "discord-on-guild-boost",
+					error: "Cannot find guild",
 					identifier: params.identifier,
 					isAuthError: false,
 				});
