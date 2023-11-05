@@ -1,6 +1,7 @@
 import 'package:area_mobile/components/editor/modals/name_modal.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_svg/svg.dart';
 class WorkflowTile extends StatefulWidget {
   final Workflow workflow;
   final Function onUpdate;
-  final Function(Workflow workflow) onOpenEditor;
+  final Function(EditorWorkflow workflow) onOpenEditor;
 
   const WorkflowTile({
     required this.workflow,
@@ -64,9 +65,25 @@ class _WorkflowTileState extends State<WorkflowTile> {
           child: ListTile(
               leading: const Icon(Icons.edit),
               title: Text(AppLocalizations.of(context)!.edit),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                widget.onOpenEditor(widget.workflow);
+                final editorWorkflow =
+                    await convertWorkflowToEditorWorkflow(widget.workflow);
+                widget.onOpenEditor(editorWorkflow);
+              }),
+        ),
+        PopupMenuItem(
+          value: "duplicate",
+          child: ListTile(
+              leading: const Icon(Icons.content_copy),
+              title: Text(AppLocalizations.of(context)!.duplicate),
+              onTap: () async {
+                Navigator.pop(context);
+                final duplicatedWorkflow =
+                    await convertWorkflowToDuplicateEditorWorkflow(
+                        widget.workflow,
+                        AppLocalizations.of(context)!.copyWorkflow);
+                widget.onOpenEditor(duplicatedWorkflow);
               }),
         ),
         PopupMenuItem(

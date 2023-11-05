@@ -29,6 +29,8 @@
     "back": "Précédent",
     "rename": "Renommer",
     "edit": "Modifier",
+    "duplicate": "Dupliquer",
+    "copyWorkflow": "Copie",
     "delete": "Supprimer",
     "editorActionDescription": "Un événement qui lance votre workflow",
     "editorReactionDescription": "Un événement qu'un workflow exécutes une fois lancé",

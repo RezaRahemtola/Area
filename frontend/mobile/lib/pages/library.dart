@@ -2,12 +2,13 @@ import 'package:area_mobile/components/empty_notice.dart';
 import 'package:area_mobile/components/library/workflow_tile.dart';
 import 'package:area_mobile/services/dio.dart';
 import 'package:area_mobile/types/services.dart';
+import 'package:area_mobile/types/workflows/editor.dart';
 import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Library extends StatefulWidget {
-  final Function(Workflow workflow) onOpenEditor;
+  final Function(EditorWorkflow workflow) onOpenEditor;
 
   const Library({required this.onOpenEditor, Key? key}) : super(key: key);
 

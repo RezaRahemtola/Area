@@ -29,6 +29,8 @@
     "back": "Fyrri",
     "rename": "Endurnefna",
     "edit": "Til að breyta",
+    "duplicate": "Afrit",
+    "copyWorkflow": "Afrita",
     "delete": "EYÐA",
     "editorActionDescription": "Atburður sem ræsir vinnuflæðið þitt",
     "editorReactionDescription": "Atburður sem verkflæði keyrir þegar það er ræst",

@@ -6,7 +6,6 @@ import 'package:area_mobile/pages/services.dart';
 import 'package:area_mobile/pages/user.dart';
 import 'package:area_mobile/storage/index.dart';
 import 'package:area_mobile/types/workflows/editor.dart';
-import 'package:area_mobile/types/workflows/workflows.dart';
 import 'package:area_mobile/utils/workflows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -141,11 +140,9 @@ class _LandingPageState extends State<LandingPage> {
                 Center(
                   child: Library(
                     key: ValueKey(libraryKey),
-                    onOpenEditor: (Workflow workflowToOpen) async {
-                      final newEditorWorkflow =
-                          await convertWorkflowToEditorWorkflow(workflowToOpen);
+                    onOpenEditor: (EditorWorkflow workflowToOpen) async {
                       setState(() {
-                        editorWorkflow = newEditorWorkflow;
+                        editorWorkflow = workflowToOpen;
                         editorKey++;
                         _selectedIndex = 2;
                       });
@@ -157,7 +154,7 @@ class _LandingPageState extends State<LandingPage> {
                 ),
                 Center(
                   child: Editor(
-                    key: ValueKey(editorWorkflow.id),
+                    key: ValueKey(editorKey),
                     workflow: editorWorkflow,
                     onSave: () {
                       setState(() {

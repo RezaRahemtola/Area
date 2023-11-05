@@ -106,6 +106,40 @@ Future<EditorWorkflow> convertWorkflowToEditorWorkflow(
       active: workflow.active);
 }
 
+Future<EditorWorkflow> convertWorkflowToDuplicateEditorWorkflow(
+    Workflow workflow, String copyText) async {
+  var editorWorkflow = await convertWorkflowToEditorWorkflow(workflow);
+
+  Map<String, String> idMapping = {};
+  for (var id in [
+    editorWorkflow.action.id,
+    ...editorWorkflow.reactions.map((e) => e.id)
+  ]) {
+    idMapping[id] = const UuidV4().generate().toString();
+  }
+
+  final newAction = EditorWorkflowAction(
+      id: idMapping[editorWorkflow.action.id]!,
+      area: editorWorkflow.action.area,
+      areaService: editorWorkflow.action.areaService);
+
+  final newReactions = editorWorkflow.reactions
+      .map((reaction) => EditorWorkflowReaction(
+          id: idMapping[reaction.id]!,
+          area: reaction.area,
+          areaService: reaction.areaService,
+          previousAreaId: idMapping[editorWorkflow.reactions
+              .firstWhere((e) => e.id == reaction.id)
+              .previousAreaId]!))
+      .toList();
+
+  return EditorWorkflow(
+      name: "${editorWorkflow.name} ($copyText)",
+      action: newAction,
+      reactions: newReactions,
+      active: editorWorkflow.active);
+}
+
 List<T> getSortedReactions<T>(List<dynamic> reactions, String basePreviousId) {
   final sortedReactions = [];
   var previousId = basePreviousId;
