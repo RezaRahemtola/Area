@@ -105,3 +105,19 @@ export const convertWorkflowToEditorWorkflow = async (workflow: Workflow): Promi
 		active: workflow.active,
 	};
 };
+
+export const getSortedReactions = <T extends { previousAreaId: string; id: string }>(
+	reactions: T[],
+	basePreviousId: string,
+): T[] => {
+	const sortedReactions = [];
+	let previousId = basePreviousId;
+
+	for (let i = 0; i < reactions.length; i++) {
+		const reaction = reactions.find((r) => r.previousAreaId === previousId);
+		if (reaction === undefined) break;
+		sortedReactions.push(reaction);
+		previousId = reaction.id;
+	}
+	return sortedReactions;
+};
