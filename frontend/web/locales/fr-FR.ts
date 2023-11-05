@@ -20,6 +20,7 @@ const translations = {
 			password: "Mot de passe",
 			passwordPlaceholder: "Entrez un mot de passe",
 		},
+		callbackOAuth: "Authentification réussie, vous pouvez désormais fermer cette page !",
 	},
 	dashboard: {
 		title: "Tableau de bord",

@@ -20,6 +20,7 @@ const translations = {
 			password: "Lykilorð",
 			passwordPlaceholder: "Sláðu inn lykilorð",
 		},
+		callbackOAuth: "Auðkenning tókst, þú getur nú lokað þessari síðu!",
 	},
 	dashboard: {
 		title: "Mælaborð",
