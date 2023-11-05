@@ -78,7 +78,8 @@ const EditorSelectEventAndAccount = ({
 		);
 	};
 
-	const noAccountMessage = connectAccountUrl === "" ? "No account to connect" : "Account already connected";
+	const noAccountMessage =
+		connectAccountUrl === "" ? t("editor.noAccountToConnect") : t("editor.accountAlreadyConnected");
 
 	return (
 		<EditorStepCardWrapper title={title} actions={actions}>
@@ -113,7 +114,7 @@ const EditorSelectEventAndAccount = ({
 						{selectedParameters.length > 0 && (
 							<>
 								<label className="label">
-									<span className="label-text text-neutral-content">Parameters</span>
+									<span className="label-text text-neutral-content">{t("editor.parameters")}</span>
 								</label>
 								{selectedParameters.map((param) => (
 									<EditorAreParameter key={param.name} parameter={param} onValueChange={onParamValueChange} />
@@ -122,7 +123,7 @@ const EditorSelectEventAndAccount = ({
 						)}
 
 						<label className="label">
-							<span className="label-text text-neutral-content">Connect your account</span>
+							<span className="label-text text-neutral-content">{t("editor.connectAccount")}</span>
 						</label>
 						{connectAccountUrl ? (
 							<button className="btn btn-ghost w-16 h-16">
@@ -145,14 +146,14 @@ const EditorSelectEventAndAccount = ({
 						className="btn btn-outline btn-neutral text-neutral-content hover:text-neutral-content"
 						onClick={() => onEvent("back")}
 					>
-						Back
+						{t("editor.back")}
 					</button>
 					<button
 						className="btn btn-primary btn-wide disabled:bg-accent"
 						disabled={!selectedEventId}
 						onClick={() => onEvent("next", { id: selectedEventId!, parameters: selectedParameters })}
 					>
-						Next
+						{t("editor.next")}
 					</button>
 				</div>
 			</>

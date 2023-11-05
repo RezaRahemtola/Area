@@ -40,6 +40,12 @@ const translations = {
 			description: "Un événement qu'un workflow exécutes une fois lancé",
 		},
 		chooseEvent: "Choisissez un événement",
+		noAccountToConnect: "Aucun compte à connecter",
+		accountAlreadyConnected: "Compte déjà connecté",
+		parameters: "Paramètres",
+		connectAccount: "Connectez votre compte",
+		back: "Précédent",
+		next: "Suivant",
 	},
 	library: {
 		title: "Mes workflows",
@@ -69,6 +75,7 @@ const translations = {
 		},
 	},
 	services: {
+		title: "Services",
 		actions: "Actions",
 		reactions: "Réactions",
 		noArea: "Ce service n'a pas d'action ou de réaction",
