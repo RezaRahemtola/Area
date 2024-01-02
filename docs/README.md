@@ -6,7 +6,7 @@ Here you'll find everything you need to know about the project, its features and
 ## What is it ❓
 
 Area is an automation platform, available as a web app and a mobile app, that allows you to
-combine Actions and REactions [from a large range of integrations]((https://rezarahemtola.notion.site/Area-Integrations-f382af642ddb49d4b5a52e3fc307bfd9)) to fit your needs.
+combine Actions and REactions [from a large range of integrations](https://rezarahemtola.notion.site/Area-Integrations-f382af642ddb49d4b5a52e3fc307bfd9)) to fit your needs.
 
 You can learn more about the project [here](general/project) 😄
 
